@@ -5,25 +5,46 @@ import { vars } from "@/styles/theme.css"
 const headerBlur = createVar()
 const headerShadow = createVar()
 const accentColor = createVar()
+const scrollProgress = createVar()
+
+// 스크롤 진행률 애니메이션
+const progressGradient = keyframes({
+  "0%": { backgroundPosition: "0% 50%" },
+  "50%": { backgroundPosition: "100% 50%" },
+  "100%": { backgroundPosition: "0% 50%" },
+})
 
 export const headerContainer = style({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
   padding: `${vars.space.md} ${vars.space.lg}`,
-  backgroundColor: "rgba(255, 255, 255, 0.8)",
-  backdropFilter: "blur(10px)",
-  WebkitBackdropFilter: "blur(10px)",
-  borderBottom: `1px solid rgba(230, 230, 230, 0.5)`,
+  backgroundColor: vars.colors.glass,
+  backdropFilter: "blur(16px)",
+  WebkitBackdropFilter: "blur(16px)",
+  borderBottom: `1px solid ${vars.colors.glassBorder}`,
   position: "sticky",
   top: 0,
   zIndex: vars.zIndices.sticky,
-  transition: "all 0.3s ease",
-  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
+  transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+  boxShadow: vars.shadows.glass,
   vars: {
-    [headerBlur]: "10px",
-    [headerShadow]: "0 1px 3px rgba(0, 0, 0, 0.05)",
-    [accentColor]: "rgba(230, 230, 230, 0.5)",
+    [headerBlur]: "16px",
+    [headerShadow]: vars.shadows.glass,
+    [accentColor]: vars.colors.glassBorder,
+    [scrollProgress]: "0%",
+  },
+  "::after": {
+    content: '""',
+    position: "absolute",
+    bottom: "0",
+    left: "0",
+    height: "2px",
+    width: scrollProgress,
+    background: `linear-gradient(90deg, ${vars.colors.primary}, ${vars.colors.secondary})`,
+    backgroundSize: "200% 200%",
+    animation: `${progressGradient} 3s ease infinite`,
+    opacity: 0.9,
   },
   "@media": {
     "(max-width: 768px)": {
@@ -42,11 +63,12 @@ export const logoLink = style({
   display: "inline-flex",
   alignItems: "center",
   gap: vars.space.xs,
-  transition: "transform 0.2s ease, opacity 0.2s ease",
+  transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
   selectors: {
     "&:hover": {
       opacity: 0.9,
-      transform: "scale(1.02)",
+      transform: "translateY(-1px) scale(1.03)",
+      filter: "brightness(1.05)",
     },
   },
 })
@@ -305,11 +327,25 @@ export const mobileNavLink = style({
 // 별도의 activeLink 클래스를 생성하여 모바일 상태에서도 활성화 스타일을 적용할 수 있도록 함
 export const mobileActiveLink = style({
   color: vars.colors.primary,
-  borderLeftColor: vars.colors.primary,
-  backgroundColor: vars.colors.primaryLight,
+  borderLeft: `6px solid ${vars.colors.primary}`, // 더 두꺼운 왼쪽 테두리
+  background: `linear-gradient(to right, ${vars.colors.primaryLight}, rgba(255,255,255,0.7))`, // 그라데이션 배경
   fontWeight: vars.fontWeights.bold,
-  transform: "translateX(5px)",
-  boxShadow: "0 3px 10px rgba(0,0,0,0.12)",
+  letterSpacing: "-0.02em", // 자간 조정으로 시각적 차별화
+  transform: "translateX(6px)", // 약간 더 들여쓰기
+  boxShadow: `0 4px 12px rgba(0, 0, 0, 0.08)`, // 더 세련된 그림자
+  position: "relative", // 추가 요소를 위한 상대 위치
+  // 아이콘이 없는 오른쪽 점 표시기 추가
+  "::after": {
+    content: "''",
+    position: "absolute",
+    right: "16px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    width: "8px",
+    height: "8px",
+    borderRadius: "50%",
+    backgroundColor: vars.colors.primary,
+  },
 })
 
 // 모바일 사이드바 애니메이션
@@ -355,17 +391,15 @@ export const mobileSidebar = style({
   width: "80vw",
   maxWidth: "320px",
   height: "100vh",
-  background: vars.colors.white,
-  boxShadow: "5px 0 15px rgba(0,0,0,0.15)",
+  backgroundColor: "rgba(255, 255, 255, 0.95)", // 반투명 배경 (중복 제거)
+  backdropFilter: "blur(20px)",
+  WebkitBackdropFilter: "blur(20px)",
+  boxShadow: "5px 0 25px rgba(0,0,0,0.12)", // 더 진한 그림자로 통일
   zIndex: 2000,
   padding: 0,
   overflowY: "auto",
   transform: "translateX(-100%)",
   transition: "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
-  background: "rgba(255, 255, 255, 0.95)", // 반투명 배경
-  backdropFilter: "blur(20px)",
-  WebkitBackdropFilter: "blur(20px)",
-  boxShadow: "5px 0 25px rgba(0,0,0,0.12)",
   selectors: {
     "&[data-open='true']": {
       transform: "translateX(0)",
@@ -468,6 +502,15 @@ export const sidebarNavLinkActive = style({
   backgroundColor: vars.colors.primaryLight,
   fontWeight: vars.fontWeights.bold,
   borderLeftColor: vars.colors.primary,
+  position: "relative", // 아이콘 추가를 위한 위치 설정
+  // 오른쪽에 작은 표시 아이콘 추가
+  "::after": {
+    content: "'›'", // 화살표 문자
+    position: "absolute",
+    right: "16px",
+    fontSize: "18px",
+    color: vars.colors.primary,
+  },
 })
 
 // 구분선
