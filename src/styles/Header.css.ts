@@ -1,16 +1,30 @@
-import { style } from "@vanilla-extract/css"
+import { style, keyframes, createVar } from "@vanilla-extract/css"
 import { vars } from "@/styles/theme.css"
+
+// 애플 스타일 미니멀리즘을 위한 추가 변수
+const headerBlur = createVar()
+const headerShadow = createVar()
+const accentColor = createVar()
 
 export const headerContainer = style({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
   padding: `${vars.space.md} ${vars.space.lg}`,
-  backgroundColor: vars.colors.white,
-  borderBottom: `1px solid ${vars.colors.accent}`,
+  backgroundColor: "rgba(255, 255, 255, 0.8)",
+  backdropFilter: "blur(10px)",
+  WebkitBackdropFilter: "blur(10px)",
+  borderBottom: `1px solid rgba(230, 230, 230, 0.5)`,
   position: "sticky",
   top: 0,
   zIndex: vars.zIndices.sticky,
+  transition: "all 0.3s ease",
+  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
+  vars: {
+    [headerBlur]: "10px",
+    [headerShadow]: "0 1px 3px rgba(0, 0, 0, 0.05)",
+    [accentColor]: "rgba(230, 230, 230, 0.5)",
+  },
   "@media": {
     "(max-width: 768px)": {
       padding: `${vars.space.sm} ${vars.space.md}`,
@@ -25,13 +39,24 @@ export const logoContainer = style({
 
 export const logoLink = style({
   textDecoration: "none",
-  display: "inline-block",
+  display: "inline-flex",
+  alignItems: "center",
+  gap: vars.space.xs,
+  transition: "transform 0.2s ease, opacity 0.2s ease",
+  selectors: {
+    "&:hover": {
+      opacity: 0.9,
+      transform: "scale(1.02)",
+    },
+  },
 })
 
 export const logoText = style({
   fontSize: vars.fontSizes.xl,
   fontWeight: vars.fontWeights.bold,
   color: vars.colors.primary,
+  letterSpacing: "-0.03em", // 애플 스타일 타이포그래피
+  transition: "color 0.2s ease",
   "@media": {
     "(max-width: 768px)": {
       fontSize: vars.fontSizes.lg,
@@ -54,10 +79,27 @@ export const navLink = style({
   fontSize: vars.fontSizes.md,
   color: vars.colors.text,
   textDecoration: "none",
-  transition: "color 0.2s ease-in-out",
+  transition: "all 0.2s ease-in-out",
+  position: "relative",
+  padding: `${vars.space.xs} ${vars.space.sm}`,
   selectors: {
     "&:hover": {
       color: vars.colors.primary,
+    },
+    "&:hover::after": {
+      width: "100%",
+      opacity: 1,
+    },
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      bottom: "-2px",
+      left: "0",
+      width: "0%",
+      height: "2px",
+      backgroundColor: vars.colors.primary,
+      transition: "width 0.3s ease, opacity 0.3s ease",
+      opacity: 0,
     },
   },
 })
@@ -65,8 +107,18 @@ export const navLink = style({
 export const activeLink = style({
   color: vars.colors.primary,
   fontWeight: vars.fontWeights.bold,
-  textDecoration: "underline",
-  textUnderlineOffset: "4px",
+  selectors: {
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      bottom: "-2px",
+      left: "0",
+      width: "100%",
+      height: "2px",
+      backgroundColor: vars.colors.primary,
+      opacity: 1,
+    },
+  },
 })
 
 export const ctaButtonContainer = style({
@@ -111,7 +163,7 @@ export const mobileMenuButton = style({
   background: "none",
   border: "none",
   cursor: "pointer",
-  zIndex: 2000, // 상당히 높은 값으로 설정
+  zIndex: 2000,
   padding: vars.space.xs,
   margin: `0 ${vars.space.sm}`,
   borderRadius: vars.radii.sm,
@@ -258,4 +310,197 @@ export const mobileActiveLink = style({
   fontWeight: vars.fontWeights.bold,
   transform: "translateX(5px)",
   boxShadow: "0 3px 10px rgba(0,0,0,0.12)",
+})
+
+// 모바일 사이드바 애니메이션
+const slideInLeft = keyframes({
+  "0%": { transform: "translateX(-100%)" },
+  "100%": { transform: "translateX(0)" },
+})
+
+const slideOutLeft = keyframes({
+  "0%": { transform: "translateX(0)" },
+  "100%": { transform: "translateX(-100%)" },
+})
+
+// 모바일 사이드바 오버레이
+export const mobileSidebarOverlay = style({
+  position: "fixed",
+  top: 0,
+  left: 0,
+  width: "100vw",
+  height: "100vh",
+  background: "rgba(26, 58, 109, 0.7)", // primary 색상 기반 반투명 배경
+  backdropFilter: "blur(5px)",
+  WebkitBackdropFilter: "blur(5px)",
+  zIndex: 1000,
+  opacity: 0,
+  pointerEvents: "none",
+  transition: "opacity 0.3s ease-in-out",
+  selectors: {
+    "&[data-open='true']": {
+      opacity: 1,
+      pointerEvents: "auto",
+    },
+  },
+})
+
+// 모바일 사이드바 컨테이너
+export const mobileSidebar = style({
+  display: "flex",
+  flexDirection: "column",
+  position: "fixed",
+  top: 0,
+  left: 0,
+  width: "80vw",
+  maxWidth: "320px",
+  height: "100vh",
+  background: vars.colors.white,
+  boxShadow: "5px 0 15px rgba(0,0,0,0.15)",
+  zIndex: 2000,
+  padding: 0,
+  overflowY: "auto",
+  transform: "translateX(-100%)",
+  transition: "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
+  background: "rgba(255, 255, 255, 0.95)", // 반투명 배경
+  backdropFilter: "blur(20px)",
+  WebkitBackdropFilter: "blur(20px)",
+  boxShadow: "5px 0 25px rgba(0,0,0,0.12)",
+  selectors: {
+    "&[data-open='true']": {
+      transform: "translateX(0)",
+      animation: `${slideInLeft} 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards`,
+    },
+    "&[data-open='false']": {
+      animation: `${slideOutLeft} 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards`,
+    },
+  },
+})
+
+// 사이드바 헤더
+export const sidebarHeader = style({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: `${vars.space.md} ${vars.space.lg}`,
+  borderBottom: `1px solid rgba(230, 230, 230, 0.5)`,
+  marginBottom: vars.space.md,
+})
+
+// 사이드바 로고
+export const sidebarLogo = style({
+  fontSize: vars.fontSizes.xl,
+  fontWeight: vars.fontWeights.bold,
+  color: vars.colors.primary,
+  letterSpacing: "-0.03em",
+})
+
+// 닫기 버튼
+export const sidebarCloseButton = style({
+  background: "none",
+  border: "none",
+  borderRadius: "50%",
+  width: "36px",
+  height: "36px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  color: vars.colors.textLight,
+  transition: "all 0.2s ease",
+  selectors: {
+    "&:hover": {
+      color: vars.colors.primary,
+      backgroundColor: "rgba(0, 0, 0, 0.05)",
+      transform: "rotate(90deg)",
+    },
+  },
+})
+
+// 사이드바 콘텐츠
+export const sidebarContent = style({
+  padding: `${vars.space.md} ${vars.space.lg}`,
+  display: "flex",
+  flexDirection: "column",
+  height: "100%",
+})
+
+// 사이드바 섹션 제목
+export const sidebarSectionTitle = style({
+  fontSize: vars.fontSizes.sm,
+  color: vars.colors.textLight,
+  marginBottom: vars.space.sm,
+  paddingLeft: vars.space.xs,
+})
+
+// 사이드바 내비게이션 링크 컨테이너
+export const sidebarNavLinks = style({
+  display: "flex",
+  flexDirection: "column",
+  gap: vars.space.xs,
+  marginBottom: vars.space.xl,
+})
+
+// 사이드바 내비게이션 링크
+export const sidebarNavLink = style({
+  display: "block",
+  fontSize: vars.fontSizes.lg,
+  color: vars.colors.text,
+  fontWeight: vars.fontWeights.medium,
+  textDecoration: "none",
+  padding: `${vars.space.md} ${vars.space.lg}`,
+  borderRadius: vars.radii.lg,
+  transition: "all 0.2s ease-in-out",
+  borderLeft: "3px solid transparent",
+  selectors: {
+    "&:hover": {
+      color: vars.colors.primary,
+      backgroundColor: vars.colors.primaryLight,
+      borderLeftColor: vars.colors.primary,
+      transform: "translateX(4px)",
+    },
+  },
+})
+
+// 활성화된 사이드바 링크
+export const sidebarNavLinkActive = style({
+  color: vars.colors.primary,
+  backgroundColor: vars.colors.primaryLight,
+  fontWeight: vars.fontWeights.bold,
+  borderLeftColor: vars.colors.primary,
+})
+
+// 구분선
+export const divider = style({
+  height: "1px",
+  backgroundColor: "rgba(230, 230, 230, 0.5)",
+  margin: `${vars.space.md} 0`,
+  width: "100%",
+})
+
+// 사이드바 CTA 버튼
+export const sidebarCTAButton = style({
+  marginTop: "auto",
+  width: "100%",
+  padding: `${vars.space.md} ${vars.space.lg}`,
+  fontSize: vars.fontSizes.md,
+  fontWeight: vars.fontWeights.bold,
+  borderRadius: vars.radii.lg,
+  border: "none",
+  cursor: "pointer",
+  backgroundColor: vars.colors.primary,
+  color: vars.colors.white,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: vars.space.sm,
+  transition: "all 0.2s ease-in-out",
+  boxShadow: "0 4px 12px rgba(26, 58, 109, 0.25)",
+  selectors: {
+    "&:hover": {
+      backgroundColor: vars.colors.primaryDark,
+      transform: "translateY(-2px)",
+      boxShadow: "0 6px 16px rgba(26, 58, 109, 0.35)",
+    },
+  },
 })

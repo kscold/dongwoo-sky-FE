@@ -5,6 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { IoClose } from "react-icons/io5"
+import { FaPhoneAlt } from "react-icons/fa"
 import * as styles from "../../../styles/Header.css"
 
 const navItems = [
@@ -32,21 +33,21 @@ const Header = () => {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
   }
-  
+
   // 모바일 장치 감지
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 768)
     }
-    
+
     // 초기 상태 설정
     checkIfMobile()
-    
+
     // 화면 크기 변경 시 반응
-    window.addEventListener('resize', checkIfMobile)
-    
+    window.addEventListener("resize", checkIfMobile)
+
     return () => {
-      window.removeEventListener('resize', checkIfMobile)
+      window.removeEventListener("resize", checkIfMobile)
     }
   }, [])
 
@@ -95,7 +96,7 @@ const Header = () => {
         aria-label={isMobileMenuOpen ? "메뉴 닫기" : "메뉴 열기"}
         aria-expanded={isMobileMenuOpen}
       >
-        <GiHamburgerMenu size={28} />
+        <GiHamburgerMenu size={24} />
       </button>
 
       {/* CTA 버튼 */}
@@ -104,144 +105,63 @@ const Header = () => {
           {isMobile ? "빠른 상담" : "빠른 상담: 010-1234-5678"}
         </button>
       </div>
-      
-      {/* 모바일 메뉴 - 왼쪽 사이드바로 변경 */}
-      {isMobileMenuOpen && (
-        <>
-          {/* 오버레이 - 배경 암막 */}
-          <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              background: 'rgba(26, 58, 109, 0.7)', // 프로젝트 primary 색상 적용
-              backdropFilter: 'blur(5px)',
-              zIndex: 1000,
-            }}
+
+      {/* 모바일 사이드바 오버레이 */}
+      <div
+        className={styles.mobileSidebarOverlay}
+        data-open={isMobileMenuOpen}
+        onClick={closeMobileMenu}
+        data-testid="mobile-overlay"
+      />
+
+      {/* 모바일 사이드바 */}
+      <div
+        className={styles.mobileSidebar}
+        data-open={isMobileMenuOpen}
+        data-testid="mobile-sidebar"
+      >
+        {/* 사이드바 헤더 */}
+        <div className={styles.sidebarHeader}>
+          <div className={styles.sidebarLogo}>DONGWOO SKY</div>
+          <button
+            className={styles.sidebarCloseButton}
             onClick={closeMobileMenu}
-            data-testid="mobile-overlay"
-          />
-          
-          {/* 왼쪽 사이드바 네비게이션 */}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column' as const,
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '80vw',
-              maxWidth: '320px',
-              height: '100vh',
-              background: '#FFFFFF',
-              boxShadow: '5px 0 15px rgba(0,0,0,0.1)',
-              zIndex: 2000,
-              padding: '12px 16px',
-              overflowY: 'auto',
-            }}
-            data-testid="mobile-sidebar"
+            aria-label="메뉴 닫기"
           >
-            {/* 사이드바 헤더 */}
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center', 
-              padding: '8px 4px',
-              marginBottom: '15px'
-            }}>
-              <div style={{ 
-                fontSize: '1.125rem', 
-                fontWeight: 'bold',
-                color: '#1A3A6D',
-                letterSpacing: '-0.02em'
-              }}>
-                DONGWOO SKY
-              </div>
-              <button
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  borderRadius: '50%',
-                  width: '32px',
-                  height: '32px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  color: '#666',
-                  transition: 'all 0.2s ease',
-                }}
+            <IoClose size={22} />
+          </button>
+        </div>
+
+        {/* 사이드바 콘텐츠 */}
+        <div className={styles.sidebarContent}>
+          {/* 서비스 안내 섹션 */}
+          <div className={styles.sidebarSectionTitle}>서비스 안내</div>
+
+          {/* 네비게이션 링크 */}
+          <div className={styles.sidebarNavLinks}>
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`${styles.sidebarNavLink} ${
+                  isActive(item.href) ? styles.sidebarNavLinkActive : ""
+                }`}
                 onClick={closeMobileMenu}
-                aria-label="메뉴 닫기"
               >
-                <IoClose size={22} />
-              </button>
-            </div>
-            
-            {/* 서비스 안내 텍스트 */}
-            <div style={{ 
-              marginBottom: '8px', 
-              color: '#666',
-              fontSize: '0.9rem',
-              paddingLeft: '4px'
-            }}>
-              서비스 안내
-            </div>
-            
-            {/* 네비게이션 링크 */}
-            <div style={{ marginBottom: '24px' }}>
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  style={{
-                    display: 'block',
-                    fontSize: '1rem',
-                    color: isActive(item.href) ? '#1A3A6D' : '#333',
-                    backgroundColor: isActive(item.href) ? '#EDF2F7' : 'transparent',
-                    textDecoration: 'none',
-                    fontWeight: isActive(item.href) ? 'bold' : 'normal',
-                    padding: '12px 16px',
-                    margin: '4px 0',
-                    borderRadius: '8px',
-                    transition: 'all 0.15s ease-in-out',
-                  }}
-                  onClick={closeMobileMenu}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-            
-            {/* 구분선 */}
-            <div style={{ 
-              height: '1px', 
-              backgroundColor: '#EDF2F7',
-              margin: '8px 0 16px'
-            }}></div>
-            
-            {/* CTA 버튼 - 모바일 메뉴 내부 */}
-            <div style={{ padding: '8px 0' }}>
-              <button style={{
-                width: '100%',
-                padding: '14px',
-                fontSize: '0.9rem',
-                fontWeight: 'bold',
-                borderRadius: '8px',
-                border: 'none',
-                cursor: 'pointer',
-                backgroundColor: '#1A73E8', // 이미지의 버튼 색상과 일치하도록 파란색으로 변경
-                color: 'white',
-                transition: 'all 0.2s ease-in-out',
-              }}>
-                빠른 상담
-              </button>
-            </div>
+                {item.label}
+              </Link>
+            ))}
           </div>
-        </>
-      )}
+
+          <div className={styles.divider} />
+
+          {/* CTA 버튼 - 모바일 메뉴 내부 */}
+          <button className={styles.sidebarCTAButton}>
+            <FaPhoneAlt size={16} />
+            빠른 상담
+          </button>
+        </div>
+      </div>
     </header>
   )
 }
