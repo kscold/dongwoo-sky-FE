@@ -17,6 +17,7 @@ export const vars = createGlobalTheme(":root", {
     black: "#000000",
     error: "#E53E3E", // 좀 더 현대적인 에러 색상
     success: "#10B981", // 세련된 성공 색상
+    danger: "#DC2626", // 위험 색상 (error와 유사하지만 더 진함)
     border: "#E2E8F0", // 세련된 테두리 색
     borderLight: "#EDF2F7", // 더 밝은 테두리 색
     glass: "rgba(255, 255, 255, 0.8)", // 유리 효과
@@ -36,6 +37,8 @@ export const vars = createGlobalTheme(":root", {
     overlayDark: "rgba(0, 0, 0, 0.7)", // 오버레이용 어두운 색
     overlayLight: "rgba(255, 255, 255, 0.92)", // 오버레이용 밝은 색
     accentTertiary: "#F59E0B", // 강조용 악센트 색상 (중장비 테마와 어울리는 주황색)
+    primaryDark: "#083472", // 이미 정의된 primaryDark 재참조
+    primaryTransparent: "rgba(14, 77, 164, 0.15)", // 이미 정의된 primaryTransparent 재참조
   },
   fonts: {
     heading: "Pretendard, Inter, Noto Sans KR, sans-serif",
