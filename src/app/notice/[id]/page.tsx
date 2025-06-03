@@ -2,26 +2,31 @@
 
 import { useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { format } from "date-fns"
 import { ko } from "date-fns/locale"
 import { useNoticeDetail } from "@/hooks/useNotice"
 import * as styles from "../../../styles/notice.css"
 
-interface PageParams {
-  params: {
+interface PageProps {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
-export default function NoticeDetailPage({ params }: PageParams) {
-  const { id } = params
+export default function NoticeDetailPage({ params }: PageProps) {
   const { notice, loading, error, fetchNotice } = useNoticeDetail()
 
   useEffect(() => {
-    if (id) {
-      fetchNotice(id)
+    const loadNotice = async () => {
+      const resolvedParams = await params
+      if (resolvedParams.id) {
+        fetchNotice(resolvedParams.id)
+      }
     }
-  }, [id, fetchNotice])
+
+    loadNotice()
+  }, [params, fetchNotice])
 
   // 날짜 포맷 함수
   const formatDate = (dateString?: string) => {
@@ -90,18 +95,64 @@ export default function NoticeDetailPage({ params }: PageParams) {
           <div className={styles.detailAttachments}>
             <h3 className={styles.attachmentsTitle}>첨부파일</h3>
             <ul className={styles.attachmentsList}>
-              {notice.attachments.map((attachment, index) => (
-                <li key={index} className={styles.attachmentItem}>
-                  <a
-                    href={attachment.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.attachmentLink}
-                  >
-                    {attachment.name}
-                  </a>
-                </li>
-              ))}
+              {notice.attachments.map((attachment, index) => {
+                // 이미지 파일인지 확인
+                const isImage =
+                  attachment.url &&
+                  (attachment.url.toLowerCase().includes(".jpg") ||
+                    attachment.url.toLowerCase().includes(".jpeg") ||
+                    attachment.url.toLowerCase().includes(".png") ||
+                    attachment.url.toLowerCase().includes(".gif") ||
+                    attachment.url.toLowerCase().includes(".webp"))
+
+                return (
+                  <li key={index} className={styles.attachmentItem}>
+                    {isImage ? (
+                      <div className={styles.imageAttachment}>
+                        <Image
+                          src={attachment.url}
+                          alt={attachment.name || "첨부 이미지"}
+                          className={styles.attachmentImage}
+                          width={600}
+                          height={400}
+                          style={{
+                            width: "auto",
+                            height: "auto",
+                            maxWidth: "100%",
+                          }}
+                          onError={(e) => {
+                            // 이미지 로드 실패시 링크로 대체
+                            const target = e.target as HTMLElement
+                            target.style.display = "none"
+                            const fallbackLink =
+                              target.nextElementSibling as HTMLElement
+                            if (fallbackLink)
+                              fallbackLink.style.display = "block"
+                          }}
+                        />
+                        <a
+                          href={attachment.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.attachmentLink}
+                          style={{ display: "none" }}
+                        >
+                          📎 {attachment.name}
+                        </a>
+                      </div>
+                    ) : (
+                      <a
+                        href={attachment.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.attachmentLink}
+                      >
+                        📎 {attachment.name}
+                      </a>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
           </div>
         )}

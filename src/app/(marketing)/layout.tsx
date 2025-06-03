@@ -1,13 +1,13 @@
-'use client';
+"use client"
 
-import React from 'react';
-import Header from '@/components/layout/Header/Header'; 
-import Footer from '@/components/layout/Footer/Footer'; 
+import React from "react"
+import Header from "@/components/layout/Header"
+import Footer from "@/components/layout/Footer"
 
 export default function MarketingLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <div>
@@ -15,5 +15,5 @@ export default function MarketingLayout({
       <main>{children}</main>
       <Footer />
     </div>
-  );
-} 
+  )
+}

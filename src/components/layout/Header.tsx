@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { IoClose } from "react-icons/io5"
 import { FaPhoneAlt } from "react-icons/fa"
-import * as styles from "../../../styles/Header.css"
+import * as styles from "../../styles/Header.css"
 
 const navItems = [
   { href: "/service-guide", label: "서비스 안내" },
@@ -72,7 +72,7 @@ const Header = () => {
     <header className={styles.headerContainer}>
       <div className={styles.logoContainer}>
         <Link href="/" className={styles.logoLink}>
-          <span className={styles.logoText}>DONGWOO SKY</span>
+          <span className={styles.logoText}>EOULLIM SKY</span>
         </Link>
       </div>
       {/* 데스크탑 네비 */}
@@ -122,7 +122,7 @@ const Header = () => {
       >
         {/* 사이드바 헤더 */}
         <div className={styles.sidebarHeader}>
-          <div className={styles.sidebarLogo}>DONGWOO SKY</div>
+          <div className={styles.sidebarLogo}>EOULLIM SKY</div>
           <button
             className={styles.sidebarCloseButton}
             onClick={closeMobileMenu}

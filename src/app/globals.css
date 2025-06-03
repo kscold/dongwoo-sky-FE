@@ -3,8 +3,50 @@
   Vanilla Extract의 theme.css.ts 및 reset.css.ts에서 관리합니다.
   필요에 따라 여기에 최소한의 전역 스타일을 추가할 수 있습니다.
 */
-body {
-  /* 예시: antialiased 렌더링은 layout.tsx에서 next/font를 통해 적용되거나, 
-     Tailwind CSS의 antialiased 클래스를 body에 직접 추가할 수 있습니다. 
-     여기서는 Tailwind가 처리하도록 비워둡니다. */
+
+/* 모달 애니메이션 키프레임 */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }

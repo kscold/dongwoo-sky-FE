@@ -1,8 +1,8 @@
-import React from 'react';
-import * as styles from '../../../styles/Footer.css';
+import React from "react"
+import * as styles from "@/styles/Footer.css"
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear()
   return (
     <footer className={styles.footerContainer}>
       <div className={styles.footerContent}>
@@ -19,7 +19,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer; 
+export default Footer

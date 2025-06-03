@@ -14,7 +14,7 @@ export const noticeApi = {
     return response.data
   },
 
-  // 공개된 공지사항만 가져오기
+  // 공개된 공지사항만 가져오기 (모달이 아닌 일반 공지사항만)
   getPublished: async (): Promise<Notice[]> => {
     console.log(
       "API 요청 URL:",
@@ -23,20 +23,30 @@ export const noticeApi = {
     try {
       const response = await apiClient.get<Notice[]>("/notices/published")
       console.log("API 응답:", response.data)
-      return response.data
+      // isModal이 false인 공지사항만 필터링
+      const filteredNotices = response.data.filter(
+        (notice) => notice.isModal !== true
+      )
+      console.log("필터링된 공지사항:", filteredNotices)
+      return filteredNotices
     } catch (error) {
       console.error("API 오류:", error)
       throw error
     }
   },
 
-  // 모달로 표시할 공지사항 가져오기
+  // 모달로 표시할 공지사항 가져오기 (isModal이 true인 공지사항만)
   getModal: async (): Promise<Notice[]> => {
     console.log("API 요청 URL:", `${apiClient.defaults.baseURL}/notices/modal`)
     try {
       const response = await apiClient.get<Notice[]>("/notices/modal")
       console.log("API 응답:", response.data)
-      return response.data
+      // isModal이 true인 공지사항만 필터링
+      const modalNotices = response.data.filter(
+        (notice) => notice.isModal === true
+      )
+      console.log("모달 공지사항:", modalNotices)
+      return modalNotices
     } catch (error) {
       console.error("API 오류:", error)
       throw error

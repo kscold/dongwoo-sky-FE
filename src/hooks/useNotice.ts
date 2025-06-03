@@ -245,3 +245,77 @@ export const useFileUpload = () => {
     uploadFiles,
   }
 }
+
+// 전역 공지사항 모달 훅
+export const useNotice = () => {
+  const [currentNotice, setCurrentNotice] = useState<Notice | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [loadingState, setLoadingState] = useState({ isLoading: false })
+
+  // 모달 열기
+  const openModal = useCallback((notice: Notice) => {
+    setCurrentNotice(notice)
+    setIsModalOpen(true)
+  }, [])
+
+  // 모달 닫기
+  const closeModal = useCallback(() => {
+    setIsModalOpen(false)
+    setCurrentNotice(null)
+  }, [])
+
+  // 오늘 하루 보지 않기
+  const closeTodayModal = useCallback(() => {
+    if (currentNotice) {
+      localStorage.setItem(
+        `notice_hidden_${currentNotice._id}`,
+        new Date().toDateString()
+      )
+    }
+    closeModal()
+  }, [currentNotice, closeModal])
+
+  // 페이지 로드 시 모달 공지사항 확인
+  useEffect(() => {
+    const checkModalNotices = async () => {
+      setLoadingState({ isLoading: true })
+      try {
+        const notices = await noticeApi.getAll()
+        const modalNotices = notices.filter(
+          (notice) => notice.isModal && notice.isPublished
+        )
+
+        // 오늘 숨김 처리된 공지사항 제외
+        const today = new Date().toDateString()
+        const visibleNotices = modalNotices.filter((notice) => {
+          const hiddenDate = localStorage.getItem(`notice_hidden_${notice._id}`)
+          return hiddenDate !== today
+        })
+
+        if (visibleNotices.length > 0) {
+          // 최신 공지사항을 모달로 표시
+          const latestNotice = visibleNotices.sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )[0]
+          openModal(latestNotice)
+        }
+      } catch (err) {
+        console.error("모달 공지사항 확인 중 오류:", err)
+      } finally {
+        setLoadingState({ isLoading: false })
+      }
+    }
+
+    checkModalNotices()
+  }, [openModal])
+
+  return {
+    currentNotice,
+    isModalOpen,
+    closeModal,
+    closeTodayModal,
+    loadingState,
+    openModal,
+  }
+}

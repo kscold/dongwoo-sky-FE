@@ -37,8 +37,6 @@ export const vars = createGlobalTheme(":root", {
     overlayDark: "rgba(0, 0, 0, 0.7)", // 오버레이용 어두운 색
     overlayLight: "rgba(255, 255, 255, 0.92)", // 오버레이용 밝은 색
     accentTertiary: "#F59E0B", // 강조용 악센트 색상 (중장비 테마와 어울리는 주황색)
-    primaryDark: "#083472", // 이미 정의된 primaryDark 재참조
-    primaryTransparent: "rgba(14, 77, 164, 0.15)", // 이미 정의된 primaryTransparent 재참조
   },
   fonts: {
     heading: "Pretendard, Inter, Noto Sans KR, sans-serif",

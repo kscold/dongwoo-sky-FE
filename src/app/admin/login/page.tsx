@@ -1,32 +1,48 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAdmin } from "@/context/AdminContext"
 import * as styles from "../../../styles/login.css"
 
 export default function AdminLoginPage() {
-  const [id, setId] = useState("")
+  const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
-  const { login } = useAdmin()
+  const { login, isLoggedIn, loading, error: adminError } = useAdmin()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // 이미 로그인된 경우 대시보드로 리다이렉트
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/admin/dashboard")
+    }
+  }, [isLoggedIn, router])
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
+    setIsSubmitting(true)
 
-    if (!id || !password) {
+    if (!username || !password) {
       setError("아이디와 비밀번호를 모두 입력해주세요.")
+      setIsSubmitting(false)
       return
     }
 
-    const success = login(id, password)
+    try {
+      const success = await login({ username, password })
 
-    if (success) {
-      router.push("/admin/dashboard")
-    } else {
-      setError("아이디 또는 비밀번호가 올바르지 않습니다.")
+      if (success) {
+        router.push("/admin/dashboard")
+      } else {
+        setError(adminError || "로그인에 실패했습니다.")
+      }
+    } catch {
+      setError("로그인 중 오류가 발생했습니다.")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -39,16 +55,17 @@ export default function AdminLoginPage() {
 
         <form onSubmit={handleSubmit} className={styles.loginForm}>
           <div className={styles.inputGroup}>
-            <label htmlFor="id" className={styles.inputLabel}>
+            <label htmlFor="username" className={styles.inputLabel}>
               관리자 아이디
             </label>
             <input
-              id="id"
+              id="username"
               type="text"
-              value={id}
-              onChange={(e) => setId(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className={styles.input}
               placeholder="관리자 아이디 입력"
+              disabled={isSubmitting || loading}
             />
           </div>
 
@@ -63,11 +80,16 @@ export default function AdminLoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className={styles.input}
               placeholder="비밀번호 입력"
+              disabled={isSubmitting || loading}
             />
           </div>
 
-          <button type="submit" className={styles.loginButton}>
-            로그인
+          <button
+            type="submit"
+            className={styles.loginButton}
+            disabled={isSubmitting || loading}
+          >
+            {isSubmitting || loading ? "로그인 중..." : "로그인"}
           </button>
         </form>
 

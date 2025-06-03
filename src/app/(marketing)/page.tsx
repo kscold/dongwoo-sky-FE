@@ -5,8 +5,9 @@ import Link from "next/link"
 import { format } from "date-fns"
 import { ko } from "date-fns/locale"
 import { useNoticeList } from "@/hooks/useNotice"
-import * as heroStyles from "@/components/sections/landing/HeroSection/HeroSection.css"
-import * as noticeStyles from "@/components/sections/landing/NoticeSection/NoticeSection.css"
+import { getLocationBasedBrandName, testFunction } from "@/utils/location"
+import * as heroStyles from "@/styles/landing/HeroSection.css"
+import * as noticeStyles from "@/styles/landing/NoticeSection.css"
 
 const placeholderImages = [
   "https://images.unsplash.com/photo-1506784983877-45594efa4c88?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -16,6 +17,7 @@ const placeholderImages = [
 
 const HeroSection = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [brandName, setBrandName] = useState<string>("어울림 스카이")
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -24,6 +26,23 @@ const HeroSection = () => {
       )
     }, 5000)
     return () => clearInterval(timer)
+  }, [])
+
+  useEffect(() => {
+    const fetchBrandName = async () => {
+      try {
+        // 먼저 테스트 함수 호출
+        console.log("🧪 메인 페이지 테스트 함수 결과:", testFunction())
+
+        const locationBrandName = await getLocationBasedBrandName()
+        setBrandName(locationBrandName)
+      } catch (error) {
+        console.error("Failed to get location-based brand name:", error)
+        // 기본값 유지
+      }
+    }
+
+    fetchBrandName()
   }, [])
 
   return (
@@ -37,9 +56,9 @@ const HeroSection = () => {
       <div className={heroStyles.heroOverlay} />
       <div className={heroStyles.heroContent}>
         <h1 className={heroStyles.heroTitle}>
-          하늘 위 모든 솔루션,{" "}
-          <span className={heroStyles.heroTitleHighlight}>동우스카이</span>가
-          함께합니다.
+          <span className={heroStyles.heroPreTitle}>하늘 위 모든 솔루션,</span>
+          <span className={heroStyles.heroMainTitle}>{brandName}</span>
+          <span className={heroStyles.heroPostTitle}>함께합니다.</span>
         </h1>
         <p className={heroStyles.heroSubtitle}>
           최신 스카이 장비로 어떤 높이의 작업이든 신속하고 안전하게! 지금 바로
@@ -91,7 +110,7 @@ const NoticeSection = () => {
 
   return (
     <section className={noticeStyles.noticeSection}>
-      <h2 className={noticeStyles.sectionTitle}>공지사항</h2>
+      <h2 className={noticeStyles.sectionTitle}>어울림 스카이 소식</h2>
       {loading ? (
         <p className={noticeStyles.noticeEmptyMessage}>
           공지사항을 불러오는 중입니다...

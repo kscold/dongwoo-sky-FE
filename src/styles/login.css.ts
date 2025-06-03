@@ -77,7 +77,7 @@ export const errorMessage = style({
   color: vars.colors.danger,
   fontSize: vars.fontSizes.sm,
   padding: vars.space.sm,
-  backgroundColor: vars.colors.dangerLight,
+  backgroundColor: "#FEF2F2", // 연한 빨간색 배경
   borderRadius: vars.radii.sm,
   marginBottom: vars.space.md,
 })
