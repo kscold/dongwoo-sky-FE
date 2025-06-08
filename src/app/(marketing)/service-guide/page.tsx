@@ -2,6 +2,7 @@
 
 import React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import {
   WrenchScrewdriverIcon, // 작업 범위 아이콘, 서비스 진행 아이콘
   UserCircleIcon, // 팀원 프로필 아이콘
@@ -9,32 +10,11 @@ import {
   ChatBubbleBottomCenterTextIcon, // 서비스 진행 아이콘
   TruckIcon, // 서비스 진행 아이콘
   CreditCardIcon, // 서비스 진행 아이콘
-  PhotoIcon, // 이미지 Placeholder 아이콘
 } from "@heroicons/react/24/solid"
+
 import * as styles from "../../../styles/service-guide.css"
 import * as contactStyles from "../../../styles/contact.css" // 서비스 진행 순서 스타일 재활용
-
-// 장비 데이터 예시
-const equipmentData = [
-  {
-    name: "스카이차 (고소작업차)",
-    description:
-      "최대 75m까지 작업 가능한 다양한 높이의 스카이차를 보유하고 있습니다. 건물 외벽 청소, 페인트, 간판 설치/철거, 유리 교체, 가지치기 등 정밀하고 안전한 고소 작업을 지원합니다.",
-    imagePlaceholder: "스카이차 이미지",
-  },
-  {
-    name: "카고 크레인 (5톤 ~ 25톤)",
-    description:
-      "다양한 톤수의 카고 크레인을 통해 건설 자재, 중량 기계, 컨테이너 등 무거운 화물의 상하차 및 운반 작업을 신속하고 안전하게 처리합니다. 협소한 공간 작업도 가능합니다.",
-    imagePlaceholder: "카고 크레인 이미지",
-  },
-  {
-    name: "미니 굴착기 (0.8톤 ~ 3.5톤)",
-    description:
-      "도심 협소 공간, 실내 철거, 배관 공사, 조경 작업 등에 최적화된 소형 굴착기입니다. 강력한 굴착력과 섬세한 작업 능력을 겸비하여 효율적인 작업 진행을 돕습니다.",
-    imagePlaceholder: "미니 굴착기 이미지",
-  },
-]
+import EquipmentSwiper from "../../../components/equipment/EquipmentSwiper"
 
 // 작업 가능 범위 데이터 예시
 const capabilitiesData = [
@@ -114,27 +94,10 @@ export default function ServiceGuidePage() {
         </p>
       </div>
 
-      {/* 장비 소개 Section */}
+      {/* 장비 소개 Section - 스와이퍼로 교체 */}
       <div className={styles.sectionContainer}>
         <h2 className={styles.sectionTitle}>보유 장비 소개</h2>
-        <div className={styles.equipmentGrid}>
-          {equipmentData.map((item) => (
-            <div key={item.name} className={styles.equipmentCard}>
-              <div className={styles.equipmentImagePlaceholder}>
-                <PhotoIcon
-                  style={{ width: "50px", height: "50px", marginRight: "8px" }}
-                />{" "}
-                {item.imagePlaceholder}
-              </div>
-              <div className={styles.equipmentContent}>
-                <h3 className={styles.equipmentTitle}>{item.name}</h3>
-                <p className={styles.equipmentDescription}>
-                  {item.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <EquipmentSwiper />
       </div>
 
       {/* 작업 가능 범위 Section */}
@@ -156,9 +119,11 @@ export default function ServiceGuidePage() {
         <div className={styles.profileCard}>
           <div className={styles.profileImageContainer}>
             {imageUrl ? (
-              <img
+              <Image
                 src={imageUrl}
                 alt={name}
+                width={300}
+                height={300}
                 style={{ width: "100%", borderRadius: "1rem" }}
               />
             ) : (

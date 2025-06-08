@@ -1,285 +1,299 @@
-'use client';
+"use client"
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { FaTruckMoving, FaBuilding, FaCalculator, FaInfoCircle, FaChevronDown } from 'react-icons/fa';
-import { IconType } from 'react-icons';
+import React, { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import {
+  FaTruckMoving,
+  FaBuilding,
+  FaCalculator,
+  FaInfoCircle,
+} from "react-icons/fa"
+import Image from "next/image"
 
-import * as styles from '@/styles/pricing.css'; // Vanilla Extract 스타일 import
+import * as styles from "@/styles/pricing.css"
+import { VehicleType } from "@/types/vehicle-type"
+import { vehicleTypeApi } from "@/api/vehicle-type"
 
-// 타입 정의
-interface ChoiceDetail {
-  label: string;
-  basePrice?: number;
-  perFloorIncrement?: number;
-  floorThreshold?: number;
-  basePriceHalfDay?: number;
-  basePriceFullDay?: number;
+// 아이콘 맵핑
+const getVehicleIcon = (type: string) => {
+  switch (type) {
+    case "ladder":
+      return FaTruckMoving
+    case "sky":
+      return FaBuilding
+    default:
+      return FaTruckMoving
+  }
 }
-
-interface OptionConfig {
-  label: string;
-  type: 'slider' | 'select' | 'radio';
-  min?: number;
-  max?: number;
-  defaultValue: string | number;
-  unit?: string;
-  choices?: Record<string, ChoiceDetail>;
-}
-
-type TruckOptions = Record<string, OptionConfig>;
-
-interface TruckData {
-  name: string;
-  icon: IconType;
-  options: TruckOptions;
-}
-
-type PricingData = Record<string, TruckData>;
-
-const pricingData: PricingData = {
-  general: {
-    name: '일반 사다리차',
-    icon: FaTruckMoving,
-    options: {
-      floor: {
-        label: '층수',
-        type: 'slider',
-        min: 2,
-        max: 25,
-        defaultValue: 5,
-        unit: '층',
-      },
-      workType: {
-        label: '작업 종류',
-        type: 'select',
-        defaultValue: 'oneHour',
-        choices: {
-          singleFurniture: { label: '가구 1개 (기본 5층까지)', basePrice: 70000, perFloorIncrement: 10000, floorThreshold: 5 },
-          oneHour: { label: '1시간 작업 (기본 5층까지)', basePrice: 120000, perFloorIncrement: 10000, floorThreshold: 5 },
-          halfDay: { label: '반나절 (4시간)', basePrice: 350000 },
-          fullDay: { label: '하루 (8시간)', basePrice: 550000 },
-        },
-      },
-    },
-  },
-  sky: {
-    name: '스카이 사다리차',
-    icon: FaBuilding,
-    options: {
-      tonnage: {
-        label: '톤수 및 최대 높이',
-        type: 'select',
-        defaultValue: '3.5t',
-        choices: {
-          '3.5t': { label: '1~3.5톤 (최대 25m)', basePriceHalfDay: 400000, basePriceFullDay: 600000 },
-          '5t': { label: '5톤 (최대 45m)', basePriceHalfDay: 500000, basePriceFullDay: 700000 },
-          '8t': { label: '8톤 (최대 54m)', basePriceHalfDay: 700000, basePriceFullDay: 900000 },
-          '17t': { label: '17톤 (최대 65m)', basePriceHalfDay: 900000, basePriceFullDay: 1200000 },
-          '19t': { label: '19톤 (최대 75m)', basePriceHalfDay: 1300000, basePriceFullDay: 1800000 },
-        },
-      },
-      workDuration: {
-        label: '작업 시간',
-        type: 'radio',
-        defaultValue: 'halfDay',
-        choices: {
-          halfDay: { label: '반나절 (오전/오후)' },
-          fullDay: { label: '하루' },
-        },
-      },
-    },
-  },
-};
-
-type SelectedOptions = Record<string, string | number>;
 
 export default function PricingPage() {
-  const router = useRouter();
-  const [selectedTruck, setSelectedTruck] = useState<string>('general');
-  const [options, setOptions] = useState<SelectedOptions>({});
-  const [estimatedPrice, setEstimatedPrice] = useState<number>(0);
+  const router = useRouter()
+  const [vehicleTypes, setVehicleTypes] = useState<VehicleType[]>([])
+  const [loading, setLoading] = useState(true)
+  const [selectedVehicle, setSelectedVehicle] = useState<string>("")
+  const [estimatedPrice, setEstimatedPrice] = useState<number>(0)
+  const [workingHours, setWorkingHours] = useState<number>(4)
+  const [basePrice, setBasePrice] = useState<number>(0)
+  const [hourlyRate, setHourlyRate] = useState<number>(0)
 
+  // 차량 타입 데이터 로드
   useEffect(() => {
-    const currentTruckOptions = pricingData[selectedTruck].options;
-    const initialOptions: SelectedOptions = {};
-    for (const key in currentTruckOptions) {
-      initialOptions[key] = currentTruckOptions[key].defaultValue;
-    }
-    setOptions(initialOptions);
-  }, [selectedTruck]);
-
-  useEffect(() => {
-    calculatePrice();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [options, selectedTruck]);
-
-  const handleOptionChange = (optionKey: string, value: string | number) => {
-    setOptions(prev => ({ ...prev, [optionKey]: value }));
-  };
-
-  const calculatePrice = () => {
-    const currentTruckData = pricingData[selectedTruck];
-    let price = 0;
-
-    if (!currentTruckData || Object.keys(options).length === 0) {
-        setEstimatedPrice(0);
-        return;
-    }
-
-    if (selectedTruck === 'general') {
-      const floor = parseInt(String(options.floor), 10);
-      const workType = String(options.workType);
-      const workTypeData = currentTruckData.options.workType.choices?.[workType];
-      
-      if (workTypeData?.basePrice !== undefined) {
-        price = workTypeData.basePrice;
-        if (workTypeData.perFloorIncrement && workTypeData.floorThreshold !== undefined && floor > workTypeData.floorThreshold) {
-          price += (floor - workTypeData.floorThreshold) * workTypeData.perFloorIncrement;
-        } 
-      }
-    } else if (selectedTruck === 'sky') {
-      const tonnage = String(options.tonnage);
-      const tonnageData = currentTruckData.options.tonnage.choices?.[tonnage];
-      const workDuration = String(options.workDuration);
-
-      if (tonnageData) {
-        if (workDuration === 'fullDay' && tonnageData.basePriceFullDay !== undefined) {
-            price = tonnageData.basePriceFullDay;
-        } else if (workDuration === 'halfDay' && tonnageData.basePriceHalfDay !== undefined) {
-            price = tonnageData.basePriceHalfDay;
+    const loadVehicleTypes = async () => {
+      try {
+        const data = await vehicleTypeApi.getAll()
+        const activeVehicleTypes = data
+          .filter((v: VehicleType) => v.isActive)
+          .sort((a: VehicleType, b: VehicleType) => a.sortOrder - b.sortOrder)
+        setVehicleTypes(activeVehicleTypes)
+        if (activeVehicleTypes.length > 0) {
+          setSelectedVehicle(activeVehicleTypes[0]._id)
         }
+      } catch (error) {
+        console.error("차량 타입 로드 실패:", error)
+      } finally {
+        setLoading(false)
       }
     }
-    setEstimatedPrice(price);
-  };
+    loadVehicleTypes()
+  }, [])
+
+  useEffect(() => {
+    // 선택된 차량이 변경될 때 가격 정보 파싱
+    if (selectedVehicle) {
+      const currentVehicle = vehicleTypes.find(
+        (v: VehicleType) => v._id === selectedVehicle
+      )
+      if (currentVehicle) {
+        // 가격대 정보에서 기본 가격과 시간당 요금 파싱
+        let parsedBasePrice = 0
+        let parsedHourlyRate = 0
+
+        currentVehicle.priceRanges.forEach((priceRange) => {
+          // "기본 4시간: 180,000원" 패턴 매칭
+          const baseMatch = priceRange.match(
+            /기본\s*(\d+)시간:\s*(\d{1,3}(?:,\d{3})*)원/
+          )
+          if (baseMatch) {
+            const hours = parseInt(baseMatch[1])
+            const price = parseInt(baseMatch[2].replace(/,/g, ""))
+            parsedBasePrice = price
+            // 기본 시간을 기준으로 시간당 요금 계산
+            parsedHourlyRate = Math.round(price / hours)
+            setWorkingHours(hours) // 기본 시간으로 설정
+          }
+
+          // "시간당 추가: 45,000원" 패턴 매칭
+          const hourlyMatch = priceRange.match(
+            /시간당\s*추가:\s*(\d{1,3}(?:,\d{3})*)원/
+          )
+          if (hourlyMatch) {
+            parsedHourlyRate = parseInt(hourlyMatch[1].replace(/,/g, ""))
+          }
+        })
+
+        setBasePrice(parsedBasePrice)
+        setHourlyRate(parsedHourlyRate)
+
+        // 초기 가격 계산
+        setEstimatedPrice(parsedBasePrice)
+      }
+    }
+  }, [selectedVehicle, vehicleTypes])
+
+  // 작업 시간이 변경될 때 가격 재계산
+  useEffect(() => {
+    if (basePrice > 0 && hourlyRate > 0) {
+      // 기본 4시간 기준으로 가격 계산
+      const baseHours = 4
+      if (workingHours <= baseHours) {
+        setEstimatedPrice(basePrice)
+      } else {
+        const additionalHours = workingHours - baseHours
+        setEstimatedPrice(basePrice + additionalHours * hourlyRate)
+      }
+    }
+  }, [workingHours, basePrice, hourlyRate])
+
+  const handleVehicleChange = (vehicleId: string) => {
+    setSelectedVehicle(vehicleId)
+  }
 
   const handleInquiry = () => {
-    const inquiryDetails = {
-      truckType: pricingData[selectedTruck].name,
-      options: Object.entries(options).reduce((acc, [key, value]) => {
-        const truckOpt = pricingData[selectedTruck].options[key];
-        if (truckOpt) {
-            if (truckOpt.type === 'select' || truckOpt.type === 'radio') {
-                acc[truckOpt.label] = truckOpt.choices?.[String(value)]?.label || String(value);
-            } else {
-                acc[truckOpt.label] = `${String(value)}${truckOpt.unit || ''}`;
-            }
-        }
-        return acc;
-      }, {} as Record<string, string>),
-      estimatedPrice: estimatedPrice.toLocaleString(),
-    };
-    const query = encodeURIComponent(JSON.stringify(inquiryDetails));
-    router.push(`/contact?details=${query}`);
-  };
+    const currentVehicle = vehicleTypes.find(
+      (v: VehicleType) => v._id === selectedVehicle
+    )
+    if (!currentVehicle) return
 
-  const CurrentIcon = pricingData[selectedTruck]?.icon || FaTruckMoving;
+    const inquiryDetails = {
+      vehicleType: currentVehicle.name,
+      workingHours: `${workingHours}시간`,
+      specifications: currentVehicle.specifications,
+      estimatedPrice: estimatedPrice.toLocaleString(),
+      priceRanges: currentVehicle.priceRanges,
+      basePrice: basePrice.toLocaleString(),
+      hourlyRate: hourlyRate.toLocaleString(),
+    }
+    const query = encodeURIComponent(JSON.stringify(inquiryDetails))
+    router.push(`/contact?details=${query}`)
+  }
+
+  if (loading) {
+    return (
+      <div className={styles.pageWrapper}>
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <h1 className={styles.mainTitle}>로딩 중...</h1>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const currentVehicle = vehicleTypes.find((v) => v._id === selectedVehicle)
+  const CurrentIcon = currentVehicle
+    ? getVehicleIcon(currentVehicle.type)
+    : FaTruckMoving
 
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h1 className={styles.mainTitle}>
-            실시간 요금 계산기
-          </h1>
+          <h1 className={styles.mainTitle}>실시간 요금 계산기</h1>
           <p className={styles.subTitle}>
-            필요한 장비와 작업 조건을 선택하고, 합리적인 예상 비용을 바로 확인해보세요.
+            필요한 장비와 작업 조건을 선택하고, 합리적인 예상 비용을 바로
+            확인해보세요.
           </p>
         </div>
 
         <div className={styles.card}>
           <h2 className={styles.cardTitle}>1. 차량 종류 선택</h2>
           <div className={styles.truckSelectorGrid}>
-            {Object.keys(pricingData).map(key => {
-              const Icon = pricingData[key].icon;
-              const isSelected = selectedTruck === key;
+            {vehicleTypes.map((vehicle) => {
+              const Icon = getVehicleIcon(vehicle.type)
+              const isSelected = selectedVehicle === vehicle._id
               return (
                 <button
-                  key={key}
-                  onClick={() => setSelectedTruck(key)}
-                  className={isSelected ? styles.truckButtonSelected : styles.truckButtonDefault}
+                  key={vehicle._id}
+                  onClick={() => handleVehicleChange(vehicle._id)}
+                  className={
+                    isSelected
+                      ? styles.truckButtonSelected
+                      : styles.truckButtonDefault
+                  }
                 >
-                  <Icon className={`${styles.truckIcon} ${isSelected ? styles.truckIconSelected : styles.truckIconDefault}`} />
-                  <span className={styles.truckButtonText}>{pricingData[key].name}</span>
+                  {vehicle.iconUrl ? (
+                    <div className={styles.vehicleIconContainer}>
+                      <Image
+                        src={vehicle.iconUrl}
+                        alt={vehicle.name}
+                        width={32}
+                        height={32}
+                        className={styles.vehicleIconImage}
+                      />
+                    </div>
+                  ) : (
+                    <Icon
+                      className={`${styles.truckIcon} ${
+                        isSelected
+                          ? styles.truckIconSelected
+                          : styles.truckIconDefault
+                      }`}
+                    />
+                  )}
+                  <span className={styles.truckButtonText}>{vehicle.name}</span>
                 </button>
-              );
+              )
             })}
           </div>
         </div>
 
-        {selectedTruck && pricingData[selectedTruck] && (
+        {currentVehicle && (
           <div className={styles.card}>
-            <div className={`${styles.cardTitle} ${styles.optionHeaderContainer}`}>
-              <CurrentIcon className={styles.optionHeaderIcon} /> 
-              <h2>
-                {pricingData[selectedTruck].name} 상세 옵션
-              </h2>
+            <div
+              className={`${styles.cardTitle} ${styles.optionHeaderContainer}`}
+            >
+              <CurrentIcon className={styles.optionHeaderIcon} />
+              <h2>{currentVehicle.name} 상세 정보</h2>
             </div>
 
             <div className={styles.optionsSectionContainer}>
-              {Object.entries(pricingData[selectedTruck].options).map(([key, config]) => (
-                <div key={key} className={styles.optionItem}>
-                  <label htmlFor={key} className={styles.optionLabel}>
-                    {config.label}
-                  </label>
-                  {config.type === 'slider' && (
-                    <div className={styles.sliderContainer}>
-                      <input
-                        type="range"
-                        id={key}
-                        min={config.min}
-                        max={config.max}
-                        value={options[key] || config.defaultValue}
-                        onChange={(e) => handleOptionChange(key, e.target.value)}
-                        className={styles.sliderInput}
-                      />
-                      <span className={styles.sliderValueDisplay}>
-                        {options[key] || config.defaultValue} {config.unit}
-                      </span>
-                    </div>
-                  )}
-                  {config.type === 'select' && config.choices && (
-                    <div className={styles.selectContainer}>
-                      <select
-                        id={key}
-                        value={options[key] || config.defaultValue}
-                        onChange={(e) => handleOptionChange(key, e.target.value)}
-                        className={styles.selectInput}
-                      >
-                        {Object.entries(config.choices).map(([value, details]) => (
-                          <option key={value} value={value}>{details.label}</option>
-                        ))}
-                      </select>
-                      <FaChevronDown className={styles.selectIcon} />
-                    </div>
-                  )}
-                  {config.type === 'radio' && config.choices && (
-                    <div className={styles.radioGroup}>
-                      {Object.entries(config.choices).map(([value, details]) => (
-                        <button
-                          key={value}
-                          onClick={() => handleOptionChange(key, value)}
-                          className={options[key] === value ? styles.radioButtonSelected : styles.radioButtonDefault}
-                        >
-                          {details.label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+              <div className={styles.optionItem}>
+                <label className={styles.optionLabel}>작업 시간 선택</label>
+                <div className={styles.sliderContainer}>
+                  <div className={styles.sliderHeader}>
+                    <span className={styles.sliderLabel}>작업 시간</span>
+                    <span className={styles.sliderValue}>
+                      {workingHours}시간
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="1"
+                    max="12"
+                    value={workingHours}
+                    onChange={(e) => setWorkingHours(parseInt(e.target.value))}
+                    className={styles.slider}
+                  />
+                  <div className={styles.sliderTicks}>
+                    <span>1시간</span>
+                    <span>6시간</span>
+                    <span>12시간</span>
+                  </div>
                 </div>
-              ))}
+              </div>
+
+              <div className={styles.optionItem}>
+                <label className={styles.optionLabel}>차량 사양</label>
+                <p className={styles.optionDescription}>
+                  {currentVehicle.specifications}
+                </p>
+              </div>
+
+              <div className={styles.optionItem}>
+                <label className={styles.optionLabel}>가격 정보</label>
+                <div className={styles.priceRangeList}>
+                  {currentVehicle.priceRanges.map((priceRange, index) => (
+                    <div key={index} className={styles.priceRangeItem}>
+                      {priceRange}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {currentVehicle.description && (
+                <div className={styles.optionItem}>
+                  <label className={styles.optionLabel}>설명</label>
+                  <p className={styles.optionDescription}>
+                    {currentVehicle.description}
+                  </p>
+                </div>
+              )}
             </div>
-          
+
             <div className={styles.priceDisplaySection}>
               <div className={styles.priceDisplayCard}>
                 <FaCalculator className={styles.priceIcon} />
-                <p className={styles.priceLabel}>예상 작업 비용</p>
+                <p className={styles.priceLabel}>예상 총 비용</p>
                 <p className={styles.priceValue}>
-                  {estimatedPrice > 0 ? `${estimatedPrice.toLocaleString()} 원` : '옵션을 선택해주세요'}
+                  {estimatedPrice > 0
+                    ? `${estimatedPrice.toLocaleString()} 원`
+                    : "가격 정보를 확인하세요"}
                 </p>
+                {workingHours > 4 && hourlyRate > 0 && (
+                  <div className={styles.priceBreakdown}>
+                    <p className={styles.priceBreakdownItem}>
+                      기본 4시간: {basePrice.toLocaleString()}원
+                    </p>
+                    <p className={styles.priceBreakdownItem}>
+                      추가 {workingHours - 4}시간:{" "}
+                      {((workingHours - 4) * hourlyRate).toLocaleString()}원
+                    </p>
+                  </div>
+                )}
                 <p className={styles.priceInfoText}>
-                  <FaInfoCircle className={styles.infoIcon} /> 위 금액은 일반적인 경우의 예상 비용이며, 실제 현장 조건, 작업 난이도, 추가 요청 사항에 따라 변동될 수 있습니다.
+                  <FaInfoCircle className={styles.infoIcon} /> 위 금액은 예상
+                  요금이며, 실제 현장 조건, 작업 난이도, 추가 요청 사항에 따라
+                  변동될 수 있습니다.
                 </p>
               </div>
             </div>
@@ -287,15 +301,15 @@ export default function PricingPage() {
             <div className={styles.inquiryButtonContainer}>
               <button
                 onClick={handleInquiry}
-                disabled={estimatedPrice === 0}
+                disabled={!currentVehicle}
                 className={styles.inquiryButton}
               >
-                선택 조건으로 견적 문의하기
+                {currentVehicle?.name} ({workingHours}시간) 견적 문의하기
               </button>
             </div>
           </div>
         )}
       </div>
     </div>
-  );
-} 
+  )
+}

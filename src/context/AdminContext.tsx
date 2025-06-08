@@ -11,6 +11,7 @@ import { adminApi, AdminLoginDto, AdminDashboardResponse } from "@/api/admin"
 
 interface AdminContextType {
   isLoggedIn: boolean
+  isAuthenticated: boolean
   adminToken: string | null
   dashboardData: AdminDashboardResponse | null
   loading: boolean
@@ -22,6 +23,7 @@ interface AdminContextType {
 
 const AdminContext = createContext<AdminContextType>({
   isLoggedIn: false,
+  isAuthenticated: false,
   adminToken: null,
   dashboardData: null,
   loading: false,
@@ -128,6 +130,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     <AdminContext.Provider
       value={{
         isLoggedIn,
+        isAuthenticated: isLoggedIn,
         adminToken,
         dashboardData,
         loading,

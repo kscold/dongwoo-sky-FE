@@ -70,7 +70,9 @@ export const getAddressFromCoords = async (
         response.status,
         response.statusText
       )
-      throw new Error("Failed to fetch address data")
+      throw new Error(
+        `카카오 주소 API 요청 실패: ${response.status} ${response.statusText}`
+      )
     }
 
     const data = await response.json()
