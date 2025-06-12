@@ -12,9 +12,10 @@ import {
   CreditCardIcon, // 서비스 진행 아이콘
 } from "@heroicons/react/24/solid"
 
-import * as styles from "../../../styles/service-guide.css"
-import * as contactStyles from "../../../styles/contact.css" // 서비스 진행 순서 스타일 재활용
 import EquipmentSwiper from "../../../components/equipment/EquipmentSwiper"
+
+import * as styles from "../../../styles/ServiceGuide.css"
+import * as contactStyles from "../../../styles/Contact.css"
 
 // 작업 가능 범위 데이터 예시
 const capabilitiesData = [

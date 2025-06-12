@@ -1,4 +1,5 @@
 import { style, keyframes } from "@vanilla-extract/css"
+import { vars } from "./theme.css"
 
 // 애니메이션 정의
 const floatAnimation = keyframes({
@@ -33,8 +34,8 @@ const pulseRing = keyframes({
 // 기본 컨테이너 스타일
 export const floatingContainer = style({
   position: "fixed",
-  bottom: "30px",
-  zIndex: 9999,
+  bottom: "20px",
+  zIndex: vars.zIndices.docked, // 10 - 모바일 메뉴보다 낮게 설정
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -44,9 +45,13 @@ export const floatingContainer = style({
       left: "50%",
       transform: "translateX(-50%)",
       right: "auto",
+      width: "calc(100vw - 40px)", // 뷰포트 기준으로 조정
+      maxWidth: "320px", // 최대 너비 증가
+      padding: "0 20px", // 패딩으로 여백 보장
     },
     "screen and (min-width: 769px)": {
       right: "30px",
+      width: "auto",
     },
   },
 })
@@ -115,11 +120,15 @@ export const phoneButton = style({
 
   "@media": {
     "screen and (max-width: 768px)": {
-      padding: "18px 22px",
-      fontSize: "16px",
+      padding: "16px 20px",
+      fontSize: "15px",
       borderRadius: "25px",
-      gap: "14px",
-      fontWeight: "800",
+      gap: "12px",
+      fontWeight: "700",
+      width: "100%", // 전체 너비 사용
+      maxWidth: "280px", // 최대 너비 제한
+      justifyContent: "center", // 중앙 정렬
+      minHeight: "56px", // 터치하기 좋은 높이
     },
   },
 })

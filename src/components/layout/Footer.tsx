@@ -9,14 +9,7 @@ const Footer = () => {
         <p className={styles.copyrightText}>
           &copy; {currentYear} SKY WORK. All rights reserved.
         </p>
-        <div className={styles.footerLinks}>
-          <a href="/privacy" className={styles.footerLink}>
-            개인정보처리방침
-          </a>
-          <a href="/terms" className={styles.footerLink}>
-            이용약관
-          </a>
-        </div>
+        <div className={styles.footerLinks}></div>
       </div>
     </footer>
   )

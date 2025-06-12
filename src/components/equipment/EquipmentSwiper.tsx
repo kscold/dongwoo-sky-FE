@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/24/solid"
 import { Equipment } from "@/types/equipment"
 import { equipmentApi } from "@/api/equipment"
-import * as styles from "../../styles/equipment-swiper.css"
+import * as styles from "../../styles/EquipmentSwiper.css"
 
 // Swiper CSS imports
 import "swiper/css"

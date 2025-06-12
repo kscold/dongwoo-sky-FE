@@ -8,12 +8,20 @@ import React, {
   useCallback,
 } from "react"
 import { adminApi, AdminLoginDto, AdminDashboardResponse } from "@/api/admin"
+import { noticeApi } from "@/api/notice"
+
+interface StatsData {
+  totalNotices: number
+  publishedNotices: number
+  modalNotices: number
+}
 
 interface AdminContextType {
   isLoggedIn: boolean
   isAuthenticated: boolean
   adminToken: string | null
   dashboardData: AdminDashboardResponse | null
+  stats: StatsData | null
   loading: boolean
   error: string | null
   login: (credentials: AdminLoginDto) => Promise<boolean>
@@ -26,6 +34,7 @@ const AdminContext = createContext<AdminContextType>({
   isAuthenticated: false,
   adminToken: null,
   dashboardData: null,
+  stats: null,
   loading: false,
   error: null,
   login: async () => false,
@@ -40,36 +49,59 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [adminToken, setAdminToken] = useState<string | null>(null)
   const [dashboardData, setDashboardData] =
     useState<AdminDashboardResponse | null>(null)
+  const [stats, setStats] = useState<StatsData | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   // refreshDashboard 함수를 useCallback으로 메모이제이션
   const refreshDashboard = useCallback(async (): Promise<void> => {
-    if (!adminToken) return
+    if (!adminToken && !isLoggedIn) return
 
     setLoading(true)
     setError(null)
 
     try {
-      const data = await adminApi.getDashboard(adminToken)
-      setDashboardData(data)
+      // 통계 정보 가져오기
+      const statsData = await noticeApi.getStats()
+      setStats(statsData)
+
+      // 기존 대시보드 데이터도 가져오기 (있다면)
+      try {
+        if (adminToken) {
+          const dashData = await adminApi.getDashboard(adminToken)
+          setDashboardData({ ...dashData, stats: statsData })
+        } else {
+          setDashboardData({
+            success: true,
+            message: "통계 정보만 로드됨",
+            admin: { username: "unknown", token: adminToken || "" },
+            stats: statsData,
+          })
+        }
+      } catch {
+        // 대시보드 API가 없어도 통계는 표시
+        setDashboardData({
+          success: true,
+          message: "통계 정보만 로드됨",
+          admin: { username: "unknown", token: adminToken || "" },
+          stats: statsData,
+        })
+      }
     } catch (err) {
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "대시보드 정보를 불러오는 중 오류가 발생했습니다."
-      setError(errorMessage)
-      // 토큰이 유효하지 않은 경우 로그아웃 처리
-      if (errorMessage.includes("토큰") || errorMessage.includes("인증")) {
-        setIsLoggedIn(false)
-        setAdminToken(null)
-        setDashboardData(null)
-        localStorage.removeItem("adminToken")
+      console.error("대시보드 새로고침 오류:", err)
+      // 네트워크 오류는 조용히 처리
+      if (
+        err &&
+        typeof err === "object" &&
+        "code" in err &&
+        err.code !== "ERR_NETWORK"
+      ) {
+        setError("대시보드 정보를 불러오는데 실패했습니다.")
       }
     } finally {
       setLoading(false)
     }
-  }, [adminToken])
+  }, [adminToken, isLoggedIn])
 
   // 컴포넌트 마운트 시 로컬 스토리지에서 로그인 상태 확인
   useEffect(() => {
@@ -133,6 +165,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         isAuthenticated: isLoggedIn,
         adminToken,
         dashboardData,
+        stats,
         loading,
         error,
         login,

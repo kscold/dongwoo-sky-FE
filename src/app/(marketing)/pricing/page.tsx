@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa"
 import Image from "next/image"
 
-import * as styles from "@/styles/pricing.css"
+import * as styles from "@/styles/Pricing.css"
 import { VehicleType } from "@/types/vehicle-type"
 import { vehicleTypeApi } from "@/api/vehicle-type"
 

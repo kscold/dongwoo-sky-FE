@@ -30,7 +30,7 @@ import {
   adminLoadingSpinner,
   adminError,
   adminSuccess,
-} from "@/styles/admin-common.css"
+} from "@/styles/admin/AdminCommon.css"
 
 export default function AdminProfilePage() {
   const router = useRouter()

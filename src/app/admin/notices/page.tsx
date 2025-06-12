@@ -6,7 +6,7 @@ import { useAdmin } from "@/context/AdminContext"
 import { Notice } from "@/types/notice"
 import { useNoticeList, useNoticeManagement } from "@/hooks/useNotice"
 import Link from "next/link"
-import * as styles from "../../../styles/notices.css"
+import * as styles from "../../../styles/Notices.css"
 
 export default function AdminNoticesPage() {
   const { isLoggedIn } = useAdmin()

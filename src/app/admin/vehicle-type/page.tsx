@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { useAdmin } from "@/context/AdminContext"
 import { vehicleTypeApi } from "@/api/vehicle-type"
 import {
@@ -34,7 +35,7 @@ import {
   adminLoadingSpinner,
   adminError,
   adminSuccess,
-} from "@/styles/admin-common.css"
+} from "@/styles/admin/AdminCommon.css"
 
 export default function AdminVehicleTypePage() {
   const router = useRouter()
@@ -243,12 +244,12 @@ export default function AdminVehicleTypePage() {
                   </td>
                   <td className={adminTableCell}>
                     {vehicleType.iconUrl ? (
-                      <img
+                      <Image
                         src={vehicleType.iconUrl}
                         alt={vehicleType.name}
+                        width={30}
+                        height={30}
                         style={{
-                          width: "30px",
-                          height: "30px",
                           objectFit: "contain",
                         }}
                       />

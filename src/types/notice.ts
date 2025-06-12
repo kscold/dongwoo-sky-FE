@@ -47,3 +47,11 @@ export interface FileUploadResponse {
   key: string
   name: string
 }
+
+// 공지사항 통계 타입
+export interface NoticeStats {
+  totalNotices: number
+  publishedNotices: number
+  modalNotices: number
+  recentNotices: number
+}

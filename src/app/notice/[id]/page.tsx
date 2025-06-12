@@ -5,8 +5,9 @@ import Link from "next/link"
 import Image from "next/image"
 import { format } from "date-fns"
 import { ko } from "date-fns/locale"
+
 import { useNoticeDetail } from "@/hooks/useNotice"
-import * as styles from "../../../styles/notice.css"
+import * as styles from "../../../styles/Notice.css"
 
 interface PageProps {
   params: Promise<{

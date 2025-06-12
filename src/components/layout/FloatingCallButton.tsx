@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
-import * as styles from "../../styles/floating-call.css"
+
 import { getLocationBasedBrandName, testFunction } from "@/utils/location"
+import * as styles from "../../styles/FloatingCall.css"
 
 const FloatingCallButton: React.FC = () => {
   const pathname = usePathname()
@@ -27,8 +28,8 @@ const FloatingCallButton: React.FC = () => {
     fetchBrandName()
   }, [])
 
-  // 홈화면이 아닌 경우 렌더링하지 않음
-  if (pathname !== "/") {
+  // 관리자 페이지에서는 렌더링하지 않음
+  if (pathname.startsWith("/admin")) {
     return null
   }
 

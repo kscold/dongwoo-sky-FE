@@ -1,16 +1,17 @@
 "use client"
 
 import { useEffect } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useAdmin } from "@/context/AdminContext"
-import Link from "next/link"
-import * as styles from "../../../styles/dashboard.css"
+import * as styles from "../../../styles/Dashboard.css"
 
 export default function AdminDashboardPage() {
   const {
     isLoggedIn,
     logout,
     dashboardData,
+    stats,
     loading: adminLoading,
     refreshDashboard,
   } = useAdmin()
@@ -37,80 +38,119 @@ export default function AdminDashboardPage() {
 
   return (
     <div className={styles.dashboardContainer}>
-      <div className={styles.dashboardHeader}>
-        <h1 className={styles.dashboardTitle}>관리자 대시보드</h1>
-        <div className={styles.headerActions}>
-          <Link href="/" className={styles.viewSiteButton}>
-            사이트 보기
-          </Link>
-          <button onClick={handleLogout} className={styles.logoutButton}>
-            로그아웃
-          </button>
-        </div>
-      </div>
-
-      {adminLoading && (
-        <div style={{ padding: "20px", textAlign: "center" }}>
-          <p>대시보드 정보를 불러오는 중...</p>
-        </div>
-      )}
-
-      {dashboardData && (
-        <div className={styles.statsContainer}>
-          <div className={styles.statCard}>
-            <h3 className={styles.statTitle}>공지사항 총개수</h3>
-            <p className={styles.statValue}>
-              {dashboardData.stats.totalNotices}
+      <div className={styles.dashboardWrapper}>
+        <div className={styles.dashboardHeader}>
+          <div className={styles.headerContent}>
+            <h1 className={styles.dashboardTitle}>어울림 스카이 관리자</h1>
+            <p className={styles.dashboardSubtitle}>
+              중장비 렌탈 서비스 관리 시스템
             </p>
           </div>
-          <div className={styles.statCard}>
-            <h3 className={styles.statTitle}>공개 공지사항</h3>
-            <p className={styles.statValue}>
-              {dashboardData.stats.publishedNotices}
-            </p>
-          </div>
-          <div className={styles.statCard}>
-            <h3 className={styles.statTitle}>모달 표시 공지사항</h3>
-            <p className={styles.statValue}>
-              {dashboardData.stats.modalNotices}
-            </p>
+          <div className={styles.headerActions}>
+            <Link href="/" className={styles.viewSiteButton}>
+              🌐 사이트 보기
+            </Link>
+            <button onClick={handleLogout} className={styles.logoutButton}>
+              👋 로그아웃
+            </button>
           </div>
         </div>
-      )}
 
-      <div className={styles.dashboardContent}>
-        <h2 className={styles.sectionTitle}>관리 메뉴</h2>
-        <div className={styles.menuGrid}>
-          <Link href="/admin/notices" className={styles.menuCard}>
-            <div className={styles.menuIconWrapper}>
-              <span className={styles.menuIcon}>📝</span>
+        <div className={styles.dashboardContent}>
+          {adminLoading && (
+            <div
+              style={{
+                padding: "20px",
+                textAlign: "center",
+                fontSize: "1.1rem",
+              }}
+            >
+              <p>📊 대시보드 정보를 불러오는 중...</p>
             </div>
-            <div className={styles.menuInfo}>
-              <h2 className={styles.menuTitle}>공지사항 관리</h2>
-              <p className={styles.menuDescription}>
-                공지사항을 등록, 수정, 삭제하고 모달 표시 여부를 설정할 수
-                있습니다.
+          )}
+
+          {(stats || dashboardData?.stats) && (
+            <div className={styles.statsGrid}>
+              <div className={styles.statCard}>
+                <div className={styles.statIcon}>📄</div>
+                <div className={styles.statNumber}>
+                  {stats?.totalNotices ||
+                    dashboardData?.stats?.totalNotices ||
+                    0}
+                </div>
+                <div className={styles.statLabel}>총 공지사항</div>
+              </div>
+              <div className={styles.statCard}>
+                <div className={styles.statIcon}>✅</div>
+                <div className={styles.statNumber}>
+                  {stats?.publishedNotices ||
+                    dashboardData?.stats?.publishedNotices ||
+                    0}
+                </div>
+                <div className={styles.statLabel}>공개 공지사항</div>
+              </div>
+              <div className={styles.statCard}>
+                <div className={styles.statIcon}>🏗️</div>
+                <div className={styles.statNumber}>0</div>
+                <div className={styles.statLabel}>등록된 장비</div>
+              </div>
+              <div className={styles.statCard}>
+                <div className={styles.statIcon}>🔧</div>
+                <div className={styles.statNumber}>0</div>
+                <div className={styles.statLabel}>제공 서비스</div>
+              </div>
+            </div>
+          )}
+
+          <div className={styles.quickActionsGrid}>
+            <Link href="/admin/notices" className={styles.actionCard}>
+              <div className={styles.actionIcon}>📢</div>
+              <h3 className={styles.actionTitle}>공지사항 관리</h3>
+              <p className={styles.actionDescription}>
+                사이트 공지사항을 작성, 수정, 삭제할 수 있습니다.
               </p>
-            </div>
-            <div className={styles.menuAction}>
-              <span className={styles.actionArrow}>→</span>
-            </div>
-          </Link>
+            </Link>
 
-          <Link href="/admin/notices/create" className={styles.menuCard}>
-            <div className={styles.menuIconWrapper}>
-              <span className={styles.menuIcon}>➕</span>
-            </div>
-            <div className={styles.menuInfo}>
-              <h2 className={styles.menuTitle}>새 공지사항 작성</h2>
-              <p className={styles.menuDescription}>
-                새로운 공지사항을 작성하고 모달 표시 여부를 설정할 수 있습니다.
+            <Link href="/admin/equipment" className={styles.actionCard}>
+              <div className={styles.actionIcon}>🏗️</div>
+              <h3 className={styles.actionTitle}>장비 관리</h3>
+              <p className={styles.actionDescription}>
+                렌탈 장비 정보와 이미지를 관리할 수 있습니다.
               </p>
-            </div>
-            <div className={styles.menuAction}>
-              <span className={styles.actionArrow}>→</span>
-            </div>
-          </Link>
+            </Link>
+
+            <Link href="/admin/content" className={styles.actionCard}>
+              <div className={styles.actionIcon}>📝</div>
+              <h3 className={styles.actionTitle}>컨텐츠 관리</h3>
+              <p className={styles.actionDescription}>
+                작업자 자랑거리와 고객 리뷰를 관리할 수 있습니다.
+              </p>
+            </Link>
+
+            <Link href="/admin/landing-page" className={styles.actionCard}>
+              <div className={styles.actionIcon}>🎨</div>
+              <h3 className={styles.actionTitle}>랜딩 페이지 관리</h3>
+              <p className={styles.actionDescription}>
+                메인 페이지의 내용과 이미지를 관리할 수 있습니다.
+              </p>
+            </Link>
+
+            <Link href="/admin/service" className={styles.actionCard}>
+              <div className={styles.actionIcon}>⚙️</div>
+              <h3 className={styles.actionTitle}>서비스 관리</h3>
+              <p className={styles.actionDescription}>
+                제공하는 서비스의 정보와 가격을 관리할 수 있습니다.
+              </p>
+            </Link>
+
+            <Link href="/admin/profile" className={styles.actionCard}>
+              <div className={styles.actionIcon}>🏢</div>
+              <h3 className={styles.actionTitle}>회사 프로필 관리</h3>
+              <p className={styles.actionDescription}>
+                회사 정보, 연락처, 위치 정보를 관리할 수 있습니다.
+              </p>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

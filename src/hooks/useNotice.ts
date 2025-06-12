@@ -37,6 +37,21 @@ export const useNoticeList = () => {
       setNotices(data)
       return data
     } catch (err) {
+      // 네트워크 오류인 경우 빈 배열 반환하고 오류 로그만 출력
+      if (
+        err &&
+        typeof err === "object" &&
+        "code" in err &&
+        err.code === "ERR_NETWORK"
+      ) {
+        console.warn(
+          "백엔드 서버에 연결할 수 없습니다. 빈 데이터를 표시합니다."
+        )
+        setNotices([])
+        setError(null) // 사용자에게는 오류 표시하지 않음
+        return []
+      }
+
       setError(
         err instanceof Error
           ? err

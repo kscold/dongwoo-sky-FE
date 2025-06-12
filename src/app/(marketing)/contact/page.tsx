@@ -3,7 +3,7 @@
 import React from "react"
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid"
 
-import * as styles from "../../../styles/contact.css"
+import * as styles from "../../../styles/Contact.css"
 
 export default function ContactPage() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

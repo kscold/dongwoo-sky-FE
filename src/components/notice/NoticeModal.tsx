@@ -1,8 +1,9 @@
 "use client"
 
 import React from "react"
+import Image from "next/image"
 import { useNotice } from "@/hooks/useNotice"
-import * as styles from "@/styles/notice.css"
+import * as styles from "@/styles/Notice.css"
 
 export default function NoticeModal() {
   const {
@@ -61,7 +62,7 @@ export default function NoticeModal() {
                   if (isImage) {
                     return (
                       <div key={index} style={{ marginBottom: "12px" }}>
-                        <img
+                        <Image
                           src={attachment.url}
                           alt={attachment.name}
                           style={{

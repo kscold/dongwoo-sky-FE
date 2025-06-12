@@ -2,7 +2,7 @@
 
 // import type { Metadata } from "next"; // 사용하지 않으므로 제거
 import { Inter } from "next/font/google"
-import "@/styles/reset.css"
+import "@/styles/Reset.css"
 import "./globals.css"
 
 const inter = Inter({
@@ -19,6 +19,7 @@ const inter = Inter({
 // 동적 임포트로 모달 컴포넌트 가져오기
 import NoticeModal from "@/components/notice/NoticeModal"
 import FloatingCallButton from "@/components/layout/FloatingCallButton"
+import QueryProvider from "@/providers/query-provider"
 
 export default function RootLayout({
   children,
@@ -28,9 +29,11 @@ export default function RootLayout({
   return (
     <html lang="ko" className={inter.variable}>
       <body>
-        {children}
-        <NoticeModal />
-        <FloatingCallButton />
+        <QueryProvider>
+          {children}
+          <NoticeModal />
+          <FloatingCallButton />
+        </QueryProvider>
       </body>
     </html>
   )

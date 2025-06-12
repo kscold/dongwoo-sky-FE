@@ -105,7 +105,10 @@ export const getAddressFromCoords = async (
 
     return null
   } catch (error) {
-    console.error("Error getting address from coordinates:", error)
+    // 위치 정보 에러는 조용히 처리 (프로덕션 로그 방지)
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error getting address from coordinates:", error)
+    }
     return null
   }
 }
@@ -165,7 +168,10 @@ export const getLocationBasedBrandName = async (): Promise<string> => {
 
     return brandName
   } catch (error) {
-    console.error("❌ 위치 기반 브랜드명 가져오기 실패:", error)
+    // 위치 기반 브랜드명 실패는 조용히 처리 (프로덕션 로그 방지)
+    if (process.env.NODE_ENV === "development") {
+      console.error("❌ 위치 기반 브랜드명 가져오기 실패:", error)
+    }
     return "어울림 스카이" // 기본값
   }
 }

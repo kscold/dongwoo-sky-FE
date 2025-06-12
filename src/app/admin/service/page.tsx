@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react"
 import { serviceApi } from "@/api/service"
 import { Service, CreateServiceDto, UpdateServiceDto } from "@/types/service"
 import { useAdmin } from "@/context/AdminContext"
-import * as styles from "@/styles/admin-common.css"
+import * as styles from "@/styles/admin/AdminCommon.css"
 
 export default function AdminServicePage() {
   const { isAuthenticated } = useAdmin()

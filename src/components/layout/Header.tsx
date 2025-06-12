@@ -7,6 +7,7 @@ import { GiHamburgerMenu } from "react-icons/gi"
 import { IoClose } from "react-icons/io5"
 import { FaPhoneAlt } from "react-icons/fa"
 import * as styles from "../../styles/Header.css"
+import * as mobileStyles from "../../styles/MobileMenu.css"
 
 const navItems = [
   { href: "/service-guide", label: "서비스 안내" },
@@ -25,12 +26,27 @@ const Header = () => {
   }
 
   // 모바일 메뉴 토글 함수
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen)
+  const toggleMobileMenu = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log("햄버거 버튼 클릭됨! 현재 상태:", isMobileMenuOpen)
+    const newState = !isMobileMenuOpen
+    setIsMobileMenuOpen(newState)
+    console.log("새로운 상태:", newState)
   }
 
   // 모바일 메뉴 닫기 함수
-  const closeMobileMenu = () => {
+  const closeMobileMenu = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    console.log("모바일 메뉴 닫기")
+    setIsMobileMenuOpen(false)
+  }
+
+  // 링크 클릭 시 메뉴 닫기 함수
+  const handleLinkClick = () => {
     setIsMobileMenuOpen(false)
   }
 
@@ -55,10 +71,10 @@ const Header = () => {
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden"
-      document.body.style.touchAction = "none" // 터치 액션 비활성화
+      document.body.style.touchAction = "none"
     } else {
       document.body.style.overflow = ""
-      document.body.style.touchAction = "" // 터치 액션 되돌리기
+      document.body.style.touchAction = ""
     }
 
     // 컴포넌트 언마운트 시 스크롤 복원
@@ -68,63 +84,108 @@ const Header = () => {
     }
   }, [isMobileMenuOpen])
 
-  return (
-    <header className={styles.headerContainer}>
-      <div className={styles.logoContainer}>
-        <Link href="/" className={styles.logoLink}>
-          <span className={styles.logoText}>EOULLIM SKY</span>
-        </Link>
-      </div>
-      {/* 데스크탑 네비 */}
-      <nav className={styles.navContainer}>
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`${styles.navLink} ${
-              isActive(item.href) ? styles.activeLink : ""
-            }`}
-          >
-            {item.label}
-          </Link>
-        ))}
-      </nav>
-      {/* 모바일 햄버거 버튼 */}
-      <button
-        className={styles.mobileMenuButton}
-        onClick={toggleMobileMenu}
-        aria-label={isMobileMenuOpen ? "메뉴 닫기" : "메뉴 열기"}
-        aria-expanded={isMobileMenuOpen}
-      >
-        <GiHamburgerMenu size={24} />
-      </button>
+  // ESC 키로 모바일 메뉴 닫기
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false)
+      }
+    }
 
-      {/* CTA 버튼 */}
-      <div className={styles.ctaButtonContainer}>
-        <button className={styles.ctaButton}>
-          {isMobile ? "빠른 상담" : "빠른 상담: 010-1234-5678"}
+    if (isMobileMenuOpen) {
+      document.addEventListener("keydown", handleEscapeKey)
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey)
+    }
+  }, [isMobileMenuOpen])
+
+  return (
+    <>
+      <header className={styles.headerContainer}>
+        <div className={styles.logoContainer}>
+          <Link href="/" className={styles.logoLink}>
+            <span className={styles.logoText}>EOULLIM SKY</span>
+          </Link>
+        </div>
+
+        {/* 데스크탑 네비 */}
+        <nav className={styles.navContainer}>
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`${styles.navLink} ${
+                isActive(item.href) ? styles.activeLink : ""
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* CTA 버튼 */}
+        <div className={styles.ctaButtonContainer}>
+          <button
+            className={styles.ctaButton}
+            onClick={() => {
+              window.location.href = "tel:010-1234-5678"
+            }}
+          >
+            {isMobile ? "빠른 상담" : "빠른 상담: 010-1234-5678"}
+          </button>
+        </div>
+
+        {/* 모바일 햄버거 버튼 */}
+        <button
+          className={mobileStyles.mobileMenuButton}
+          onClick={toggleMobileMenu}
+          aria-label={isMobileMenuOpen ? "메뉴 닫기" : "메뉴 열기"}
+          aria-expanded={isMobileMenuOpen}
+          type="button"
+        >
+          <GiHamburgerMenu size={24} />
         </button>
-      </div>
+      </header>
 
       {/* 모바일 사이드바 오버레이 */}
       <div
-        className={styles.mobileSidebarOverlay}
-        data-open={isMobileMenuOpen}
+        className={`${mobileStyles.mobileNavOverlay} ${
+          isMobileMenuOpen ? mobileStyles.mobileNavOverlayOpen : ""
+        }`}
         onClick={closeMobileMenu}
         data-testid="mobile-overlay"
+        style={{
+          // 디버깅을 위한 강제 스타일
+          ...(isMobileMenuOpen && {
+            opacity: 1,
+            visibility: "visible",
+            pointerEvents: "auto",
+          }),
+        }}
       />
 
       {/* 모바일 사이드바 */}
       <div
-        className={styles.mobileSidebar}
-        data-open={isMobileMenuOpen}
+        className={`${mobileStyles.mobileNav} ${
+          isMobileMenuOpen ? mobileStyles.mobileNavOpen : ""
+        }`}
         data-testid="mobile-sidebar"
+        style={{
+          // 디버깅을 위한 강제 스타일
+          ...(isMobileMenuOpen && {
+            transform: "translateX(0)",
+            WebkitTransform: "translateX(0)",
+            visibility: "visible",
+          }),
+        }}
       >
         {/* 사이드바 헤더 */}
-        <div className={styles.sidebarHeader}>
-          <div className={styles.sidebarLogo}>EOULLIM SKY</div>
+        <div className={mobileStyles.sidebarHeader}>
+          <div className={mobileStyles.sidebarLogo}>EOULLIM SKY</div>
           <button
-            className={styles.sidebarCloseButton}
+            className={mobileStyles.sidebarCloseButton}
             onClick={closeMobileMenu}
             aria-label="메뉴 닫기"
           >
@@ -133,36 +194,42 @@ const Header = () => {
         </div>
 
         {/* 사이드바 콘텐츠 */}
-        <div className={styles.sidebarContent}>
+        <div className={mobileStyles.sidebarContent}>
           {/* 서비스 안내 섹션 */}
-          <div className={styles.sidebarSectionTitle}>서비스 안내</div>
+          <div className={mobileStyles.sidebarSectionTitle}>서비스 안내</div>
 
           {/* 네비게이션 링크 */}
-          <div className={styles.sidebarNavLinks}>
+          <div className={mobileStyles.sidebarNavLinks}>
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`${styles.sidebarNavLink} ${
-                  isActive(item.href) ? styles.sidebarNavLinkActive : ""
+                className={`${mobileStyles.sidebarNavLink} ${
+                  isActive(item.href) ? mobileStyles.sidebarNavLinkActive : ""
                 }`}
-                onClick={closeMobileMenu}
+                onClick={handleLinkClick}
               >
                 {item.label}
               </Link>
             ))}
           </div>
 
-          <div className={styles.divider} />
+          <div className={mobileStyles.divider} />
 
           {/* CTA 버튼 - 모바일 메뉴 내부 */}
-          <button className={styles.sidebarCTAButton}>
+          <button
+            className={mobileStyles.sidebarCTAButton}
+            onClick={() => {
+              // 전화 기능이나 상담 페이지로 이동
+              window.location.href = "tel:010-1234-5678"
+            }}
+          >
             <FaPhoneAlt size={16} />
             빠른 상담
           </button>
         </div>
       </div>
-    </header>
+    </>
   )
 }
 
