@@ -6,44 +6,59 @@ import { useAdmin } from "@/context/AdminContext"
 import * as styles from "../../../styles/Login.css"
 
 export default function AdminLoginPage() {
-  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
-  const { login, isLoggedIn, loading, error: adminError } = useAdmin()
+  const { login, user, isLoading } = useAdmin()
 
   // 이미 로그인된 경우 대시보드로 리다이렉트
   useEffect(() => {
-    if (isLoggedIn) {
+    if (user && user.role === "admin") {
       router.push("/admin/dashboard")
     }
-  }, [isLoggedIn, router])
+  }, [user, router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
     setIsSubmitting(true)
 
-    if (!username || !password) {
-      setError("아이디와 비밀번호를 모두 입력해주세요.")
+    if (!email || !password) {
+      setError("이메일과 비밀번호를 모두 입력해주세요.")
       setIsSubmitting(false)
       return
     }
 
     try {
-      const success = await login({ username, password })
+      const success = await login(email, password)
 
       if (success) {
         router.push("/admin/dashboard")
       } else {
-        setError(adminError || "로그인에 실패했습니다.")
+        setError("관리자 계정이 아니거나 로그인 정보가 올바르지 않습니다.")
       }
-    } catch {
-      setError("로그인 중 오류가 발생했습니다.")
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "로그인 중 오류가 발생했습니다."
+      setError(errorMessage)
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  // 로딩 중일 때 표시
+  if (isLoading) {
+    return (
+      <div className={styles.loginContainer}>
+        <div className={styles.loginCard}>
+          <div style={{ textAlign: "center", padding: "2rem" }}>
+            <p>로그인 상태를 확인하는 중입니다...</p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -55,17 +70,17 @@ export default function AdminLoginPage() {
 
         <form onSubmit={handleSubmit} className={styles.loginForm}>
           <div className={styles.inputGroup}>
-            <label htmlFor="username" className={styles.inputLabel}>
-              관리자 아이디
+            <label htmlFor="email" className={styles.inputLabel}>
+              관리자 이메일
             </label>
             <input
-              id="username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className={styles.input}
-              placeholder="관리자 아이디 입력"
-              disabled={isSubmitting || loading}
+              placeholder="관리자 이메일 입력"
+              disabled={isSubmitting}
             />
           </div>
 
@@ -80,16 +95,16 @@ export default function AdminLoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className={styles.input}
               placeholder="비밀번호 입력"
-              disabled={isSubmitting || loading}
+              disabled={isSubmitting}
             />
           </div>
 
           <button
             type="submit"
             className={styles.loginButton}
-            disabled={isSubmitting || loading}
+            disabled={isSubmitting}
           >
-            {isSubmitting || loading ? "로그인 중..." : "로그인"}
+            {isSubmitting ? "로그인 중..." : "로그인"}
           </button>
         </form>
 

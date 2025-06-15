@@ -5,51 +5,103 @@ export const container = style({
   maxWidth: "1200px",
   margin: "0 auto",
   padding: "2rem",
-  minHeight: "100vh",
+  minHeight: "calc(100vh - 140px)", // 헤더와 푸터 높이 고려
+
+  "@media": {
+    "(max-width: 768px)": {
+      padding: "1.5rem",
+    },
+    "(max-width: 480px)": {
+      padding: "1rem",
+    },
+  },
 })
 
 export const header = style({
   textAlign: "center",
-  marginBottom: "3rem",
-  paddingBottom: "2rem",
-  borderBottom: `2px solid ${vars.colors.border}`,
+  marginBottom: "4rem",
+  paddingTop: "2rem",
+  paddingBottom: "3rem",
+  background: `linear-gradient(135deg, ${vars.colors.primaryLight} 0%, ${vars.colors.accent} 100%)`,
+  borderRadius: "16px",
+  position: "relative",
+  overflow: "hidden",
+
+  "::before": {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: `linear-gradient(45deg, ${vars.colors.primary}15 0%, ${vars.colors.secondary}15 100%)`,
+    zIndex: -1,
+  },
 })
 
 export const title = style({
-  fontSize: "2.5rem",
+  fontSize: "3rem",
   fontWeight: "bold",
   color: vars.colors.text,
   marginBottom: "1rem",
+  textShadow: "0 2px 4px rgba(0,0,0,0.1)",
 
   "@media": {
     "(max-width: 768px)": {
+      fontSize: "2.5rem",
+    },
+    "(max-width: 480px)": {
       fontSize: "2rem",
     },
   },
 })
 
 export const subtitle = style({
-  fontSize: "1.125rem",
+  fontSize: "1.25rem",
   color: vars.colors.textLight,
   lineHeight: 1.6,
   marginBottom: "2rem",
+  maxWidth: "600px",
+  margin: "0 auto 2rem",
+
+  "@media": {
+    "(max-width: 768px)": {
+      fontSize: "1.125rem",
+      marginBottom: "1.5rem",
+    },
+    "(max-width: 480px)": {
+      fontSize: "1rem",
+      marginBottom: "1rem",
+      lineHeight: 1.5,
+    },
+  },
 })
 
 export const backButton = style({
   display: "inline-flex",
   alignItems: "center",
   gap: "0.5rem",
-  padding: "0.75rem 1.5rem",
+  padding: "1rem 2rem",
   backgroundColor: vars.colors.primary,
   color: "white",
   textDecoration: "none",
-  borderRadius: "8px",
-  fontWeight: "500",
-  transition: "all 0.3s ease",
+  borderRadius: "12px",
+  fontWeight: "600",
+  fontSize: "1rem",
+  boxShadow: "0 4px 15px rgba(14, 77, 164, 0.3)",
+  transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+  border: "none",
+  cursor: "pointer",
 
   ":hover": {
     backgroundColor: vars.colors.primaryDark,
     transform: "translateY(-2px)",
+    boxShadow: "0 8px 25px rgba(14, 77, 164, 0.4)",
+  },
+
+  ":active": {
+    transform: "translateY(0)",
+    boxShadow: "0 2px 10px rgba(14, 77, 164, 0.3)",
   },
 })
 
@@ -58,6 +110,17 @@ export const grid = style({
   gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
   gap: "2rem",
   marginBottom: "3rem",
+
+  "@media": {
+    "(max-width: 768px)": {
+      gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+      gap: "1.5rem",
+    },
+    "(max-width: 480px)": {
+      gridTemplateColumns: "1fr",
+      gap: "1rem",
+    },
+  },
 })
 
 export const card = style({
@@ -107,6 +170,15 @@ export const imagePlaceholder = style({
 
 export const content = style({
   padding: "1.5rem",
+
+  "@media": {
+    "(max-width: 768px)": {
+      padding: "1.25rem",
+    },
+    "(max-width: 480px)": {
+      padding: "1rem",
+    },
+  },
 })
 
 export const cardTitle = style({
@@ -115,6 +187,17 @@ export const cardTitle = style({
   color: vars.colors.text,
   marginBottom: "0.75rem",
   lineHeight: 1.4,
+
+  "@media": {
+    "(max-width: 768px)": {
+      fontSize: "1.125rem",
+      marginBottom: "0.5rem",
+    },
+    "(max-width: 480px)": {
+      fontSize: "1rem",
+      lineHeight: 1.3,
+    },
+  },
 })
 
 export const rating = style({
@@ -155,6 +238,17 @@ export const description = style({
   color: vars.colors.textLight,
   lineHeight: 1.6,
   marginBottom: "1rem",
+
+  "@media": {
+    "(max-width: 768px)": {
+      fontSize: "0.9rem",
+      lineHeight: 1.5,
+    },
+    "(max-width: 480px)": {
+      fontSize: "0.85rem",
+      lineHeight: 1.4,
+    },
+  },
 })
 
 export const stats = style({

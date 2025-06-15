@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useCustomerReview } from "@/hooks/use-content"
@@ -93,20 +94,26 @@ const CustomerReviewDetailPage = () => {
       {review.imageUrls && review.imageUrls.length > 0 && (
         <div className={styles.imageGallery}>
           <div className={styles.mainImage}>
-            <img
+            <Image
               src={review.imageUrls[0]}
               alt={review.title}
               className={styles.image}
+              width={600}
+              height={400}
+              style={{ objectFit: "cover" }}
             />
           </div>
           {review.imageUrls.length > 1 && (
             <div className={styles.thumbnails}>
               {review.imageUrls.slice(1).map((url, index) => (
-                <img
+                <Image
                   key={index}
                   src={url}
                   alt={`${review.title} ${index + 2}`}
                   className={styles.thumbnail}
+                  width={150}
+                  height={100}
+                  style={{ objectFit: "cover" }}
                 />
               ))}
             </div>

@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useWorkShowcase } from "@/hooks/use-content"
@@ -83,20 +84,26 @@ const WorkShowcaseDetailPage = () => {
       {showcase.imageUrls && showcase.imageUrls.length > 0 && (
         <div className={styles.imageGallery}>
           <div className={styles.mainImage}>
-            <img
+            <Image
               src={showcase.imageUrls[0]}
               alt={showcase.title}
               className={styles.image}
+              width={600}
+              height={400}
+              style={{ objectFit: "cover" }}
             />
           </div>
           {showcase.imageUrls.length > 1 && (
             <div className={styles.thumbnails}>
               {showcase.imageUrls.slice(1).map((url, index) => (
-                <img
+                <Image
                   key={index}
                   src={url}
                   alt={`${showcase.title} ${index + 2}`}
                   className={styles.thumbnail}
+                  width={150}
+                  height={100}
+                  style={{ objectFit: "cover" }}
                 />
               ))}
             </div>

@@ -30,7 +30,7 @@ export function useTopWorkShowcases() {
     queryKey: CONTENT_QUERY_KEYS.workShowcasesTop,
     queryFn: () => contentService.getTopWorkShowcases(),
     staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
-    cacheTime: 10 * 60 * 1000, // 10분간 메모리에 유지
+    gcTime: 10 * 60 * 1000, // 10분간 메모리에 유지
   })
 }
 
@@ -115,7 +115,7 @@ export function useTopCustomerReviews() {
     queryKey: CONTENT_QUERY_KEYS.customerReviewsTop,
     queryFn: () => contentService.getTopCustomerReviews(),
     staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   })
 }
 

@@ -1,179 +1,130 @@
 "use client"
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} from "react"
-import { adminApi, AdminLoginDto, AdminDashboardResponse } from "@/api/admin"
-import { noticeApi } from "@/api/notice"
-
-interface StatsData {
-  totalNotices: number
-  publishedNotices: number
-  modalNotices: number
-}
+import React, { createContext, useContext, useState, useEffect } from "react"
+import { User } from "@/types/auth"
+import { authApi } from "@/api/auth"
 
 interface AdminContextType {
-  isLoggedIn: boolean
+  user: User | null
+  isLoading: boolean
   isAuthenticated: boolean
-  adminToken: string | null
-  dashboardData: AdminDashboardResponse | null
-  stats: StatsData | null
-  loading: boolean
-  error: string | null
-  login: (credentials: AdminLoginDto) => Promise<boolean>
-  logout: () => Promise<void>
-  refreshDashboard: () => Promise<void>
+  login: (email: string, password: string) => Promise<boolean>
+  logout: () => void
+  checkAuth: () => Promise<boolean>
 }
 
-const AdminContext = createContext<AdminContextType>({
-  isLoggedIn: false,
-  isAuthenticated: false,
-  adminToken: null,
-  dashboardData: null,
-  stats: null,
-  loading: false,
-  error: null,
-  login: async () => false,
-  logout: async () => {},
-  refreshDashboard: async () => {},
-})
-
-export const useAdmin = () => useContext(AdminContext)
+const AdminContext = createContext<AdminContextType | undefined>(undefined)
 
 export function AdminProvider({ children }: { children: React.ReactNode }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [adminToken, setAdminToken] = useState<string | null>(null)
-  const [dashboardData, setDashboardData] =
-    useState<AdminDashboardResponse | null>(null)
-  const [stats, setStats] = useState<StatsData | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [user, setUser] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-  // refreshDashboard 함수를 useCallback으로 메모이제이션
-  const refreshDashboard = useCallback(async (): Promise<void> => {
-    if (!adminToken && !isLoggedIn) return
-
-    setLoading(true)
-    setError(null)
-
+  const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      // 통계 정보 가져오기
-      const statsData = await noticeApi.getStats()
-      setStats(statsData)
+      setIsLoading(true)
+      const response = await authApi.login({ email, password })
 
-      // 기존 대시보드 데이터도 가져오기 (있다면)
-      try {
-        if (adminToken) {
-          const dashData = await adminApi.getDashboard(adminToken)
-          setDashboardData({ ...dashData, stats: statsData })
-        } else {
-          setDashboardData({
-            success: true,
-            message: "통계 정보만 로드됨",
-            admin: { username: "unknown", token: adminToken || "" },
-            stats: statsData,
-          })
+      if (response.user && response.user.role === "admin") {
+        setUser(response.user)
+
+        // JWT 토큰 저장
+        if (response.access_token && typeof window !== "undefined") {
+          localStorage.setItem("auth_token", response.access_token)
         }
-      } catch {
-        // 대시보드 API가 없어도 통계는 표시
-        setDashboardData({
-          success: true,
-          message: "통계 정보만 로드됨",
-          admin: { username: "unknown", token: adminToken || "" },
-          stats: statsData,
-        })
-      }
-    } catch (err) {
-      console.error("대시보드 새로고침 오류:", err)
-      // 네트워크 오류는 조용히 처리
-      if (
-        err &&
-        typeof err === "object" &&
-        "code" in err &&
-        err.code !== "ERR_NETWORK"
-      ) {
-        setError("대시보드 정보를 불러오는데 실패했습니다.")
-      }
-    } finally {
-      setLoading(false)
-    }
-  }, [adminToken, isLoggedIn])
 
-  // 컴포넌트 마운트 시 로컬 스토리지에서 로그인 상태 확인
-  useEffect(() => {
-    const token = localStorage.getItem("adminToken")
-    if (token) {
-      setAdminToken(token)
-      setIsLoggedIn(true)
-      refreshDashboard()
-    }
-  }, [refreshDashboard])
-
-  const login = async (credentials: AdminLoginDto): Promise<boolean> => {
-    setLoading(true)
-    setError(null)
-
-    try {
-      const response = await adminApi.login(credentials)
-
-      if (response.success && response.token) {
-        setIsLoggedIn(true)
-        setAdminToken(response.token)
-        localStorage.setItem("adminToken", response.token)
-        await refreshDashboard()
         return true
       } else {
-        setError(response.message)
-        return false
+        // 관리자가 아닌 경우
+        throw new Error("관리자 권한이 필요합니다.")
       }
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "로그인 중 오류가 발생했습니다."
-      setError(errorMessage)
+    } catch (error) {
+      console.error("로그인 실패:", error)
+      setUser(null)
       return false
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
-  const logout = async (): Promise<void> => {
-    setLoading(true)
+  const logout = () => {
+    authApi.logout()
+    setUser(null)
+    // 브라우저에서 추가 클린업
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("auth_token")
+      localStorage.removeItem("user_data")
+    }
+  }
 
+  const checkAuth = async (): Promise<boolean> => {
     try {
-      if (adminToken) {
-        await adminApi.logout(adminToken)
+      setIsLoading(true)
+
+      // 토큰이 없으면 바로 false 반환
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem("auth_token")
+        if (!token) {
+          setUser(null)
+          return false
+        }
       }
-    } catch (err) {
-      console.error("로그아웃 요청 실패:", err)
+
+      const currentUser = await authApi.getCurrentUser()
+
+      if (currentUser && currentUser.role === "admin") {
+        setUser(currentUser)
+        return true
+      } else {
+        setUser(null)
+        return false
+      }
+    } catch (error) {
+      console.error("인증 확인 실패:", error)
+      setUser(null)
+      // 인증 실패 시 토큰 제거
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("auth_token")
+        localStorage.removeItem("user_data")
+      }
+      return false
     } finally {
-      setIsLoggedIn(false)
-      setAdminToken(null)
-      setDashboardData(null)
-      localStorage.removeItem("adminToken")
-      setLoading(false)
+      setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    // 브라우저 환경에서만 실행하고, 로그인 페이지가 아닐 때만 checkAuth 실행
+    if (typeof window !== "undefined") {
+      const isLoginPage = window.location.pathname === "/admin/login"
+      if (!isLoginPage) {
+        checkAuth()
+      } else {
+        // 로그인 페이지에서는 로딩 상태만 false로 설정
+        setIsLoading(false)
+      }
+    }
+  }, [])
 
   return (
     <AdminContext.Provider
       value={{
-        isLoggedIn,
-        isAuthenticated: isLoggedIn,
-        adminToken,
-        dashboardData,
-        stats,
-        loading,
-        error,
+        user,
+        isLoading,
+        isAuthenticated: !!user,
         login,
         logout,
-        refreshDashboard,
+        checkAuth,
       }}
     >
       {children}
     </AdminContext.Provider>
   )
+}
+
+export function useAdmin() {
+  const context = useContext(AdminContext)
+  if (context === undefined) {
+    throw new Error("useAdmin must be used within an AdminProvider")
+  }
+  return context
 }

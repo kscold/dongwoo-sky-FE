@@ -15,13 +15,19 @@ const FloatingCallButton: React.FC = () => {
     const fetchBrandName = async () => {
       try {
         // 먼저 테스트 함수 호출
-        console.log("🧪 테스트 함수 결과:", testFunction())
+        console.log("🧪 FloatingButton 테스트 함수 결과:", testFunction())
 
+        console.log("🔵 FloatingButton에서 위치 기반 브랜드명 가져오기 시작...")
         const locationBrandName = await getLocationBasedBrandName()
+        console.log("🔵 FloatingButton에서 받아온 브랜드명:", locationBrandName)
         setBrandName(locationBrandName)
       } catch (error) {
-        console.error("Failed to get location-based brand name:", error)
-        // 기본값 유지
+        console.log(
+          "📍 위치 기반 브랜드명을 가져올 수 없어서 기본값을 사용합니다."
+        )
+        console.log("FloatingButton 에러 상세:", error)
+        // 기본값 유지 - 사용자에게는 영향 없음
+        setBrandName("어울림 스카이")
       }
     }
 

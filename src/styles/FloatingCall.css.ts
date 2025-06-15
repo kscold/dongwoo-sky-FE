@@ -41,12 +41,12 @@ export const floatingContainer = style({
   justifyContent: "center",
   "@media": {
     "screen and (max-width: 768px)": {
-      bottom: "20px",
+      bottom: "20px", // 원래 위치로 복원
       left: "50%",
       transform: "translateX(-50%)",
       right: "auto",
       width: "calc(100vw - 40px)", // 뷰포트 기준으로 조정
-      maxWidth: "320px", // 최대 너비 증가
+      maxWidth: "300px", // 최대 너비 약간 줄임
       padding: "0 20px", // 패딩으로 여백 보장
     },
     "screen and (min-width: 769px)": {

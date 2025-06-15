@@ -65,6 +65,8 @@ export default function NoticeModal() {
                         <Image
                           src={attachment.url}
                           alt={attachment.name}
+                          width={600}
+                          height={400}
                           style={{
                             width: "100%",
                             height: "auto",

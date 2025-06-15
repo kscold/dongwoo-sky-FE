@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { format } from "date-fns"
 import { ko } from "date-fns/locale"
@@ -154,10 +155,13 @@ export default function ContentAdminPage() {
                   <div key={item._id} className={styles.contentCard}>
                     {item.imageUrls && item.imageUrls.length > 0 && (
                       <div className={styles.cardImage}>
-                        <img
+                        <Image
                           src={item.imageUrls[0]}
                           alt={item.title}
                           className={styles.cardImageElement}
+                          width={300}
+                          height={200}
+                          style={{ objectFit: "cover" }}
                         />
                       </div>
                     )}
@@ -223,10 +227,13 @@ export default function ContentAdminPage() {
                   <div key={item._id} className={styles.contentCard}>
                     {item.imageUrls && item.imageUrls.length > 0 && (
                       <div className={styles.cardImage}>
-                        <img
+                        <Image
                           src={item.imageUrls[0]}
                           alt={item.title}
                           className={styles.cardImageElement}
+                          width={300}
+                          height={200}
+                          style={{ objectFit: "cover" }}
                         />
                       </div>
                     )}

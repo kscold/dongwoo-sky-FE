@@ -7,33 +7,33 @@ import { useAdmin } from "@/context/AdminContext"
 import * as styles from "../../../styles/Dashboard.css"
 
 export default function AdminDashboardPage() {
-  const {
-    isLoggedIn,
-    logout,
-    dashboardData,
-    stats,
-    loading: adminLoading,
-    refreshDashboard,
-  } = useAdmin()
+  const { user, logout, isLoading } = useAdmin()
   const router = useRouter()
 
   // 로그인 상태가 아니면 로그인 페이지로 리다이렉트
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoading && (!user || user.role !== "admin")) {
       router.push("/admin/login")
-    } else {
-      refreshDashboard()
     }
-  }, [isLoggedIn, router, refreshDashboard])
+  }, [user, isLoading, router])
 
   // 로그아웃 핸들러
   const handleLogout = async () => {
-    await logout()
+    logout()
     router.push("/admin/login")
   }
 
-  if (!isLoggedIn) {
-    return null // 로그인 체크 중에는 아무것도 표시하지 않음
+  // 로딩 중이거나 사용자가 없으면 로딩 표시
+  if (isLoading || !user || user.role !== "admin") {
+    return (
+      <div className={styles.dashboardContainer}>
+        <div className={styles.dashboardWrapper}>
+          <div style={{ textAlign: "center", padding: "2rem" }}>
+            <p>로그인 상태를 확인하는 중입니다...</p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -45,6 +45,11 @@ export default function AdminDashboardPage() {
             <p className={styles.dashboardSubtitle}>
               중장비 렌탈 서비스 관리 시스템
             </p>
+            <div
+              style={{ fontSize: "0.9rem", color: "#666", marginTop: "0.5rem" }}
+            >
+              안녕하세요, {user.name || user.email}님!
+            </div>
           </div>
           <div className={styles.headerActions}>
             <Link href="/" className={styles.viewSiteButton}>
@@ -57,50 +62,28 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className={styles.dashboardContent}>
-          {adminLoading && (
-            <div
-              style={{
-                padding: "20px",
-                textAlign: "center",
-                fontSize: "1.1rem",
-              }}
-            >
-              <p>📊 대시보드 정보를 불러오는 중...</p>
+          <div className={styles.statsGrid}>
+            <div className={styles.statCard}>
+              <div className={styles.statIcon}>📄</div>
+              <div className={styles.statNumber}>-</div>
+              <div className={styles.statLabel}>총 공지사항</div>
             </div>
-          )}
-
-          {(stats || dashboardData?.stats) && (
-            <div className={styles.statsGrid}>
-              <div className={styles.statCard}>
-                <div className={styles.statIcon}>📄</div>
-                <div className={styles.statNumber}>
-                  {stats?.totalNotices ||
-                    dashboardData?.stats?.totalNotices ||
-                    0}
-                </div>
-                <div className={styles.statLabel}>총 공지사항</div>
-              </div>
-              <div className={styles.statCard}>
-                <div className={styles.statIcon}>✅</div>
-                <div className={styles.statNumber}>
-                  {stats?.publishedNotices ||
-                    dashboardData?.stats?.publishedNotices ||
-                    0}
-                </div>
-                <div className={styles.statLabel}>공개 공지사항</div>
-              </div>
-              <div className={styles.statCard}>
-                <div className={styles.statIcon}>🏗️</div>
-                <div className={styles.statNumber}>0</div>
-                <div className={styles.statLabel}>등록된 장비</div>
-              </div>
-              <div className={styles.statCard}>
-                <div className={styles.statIcon}>🔧</div>
-                <div className={styles.statNumber}>0</div>
-                <div className={styles.statLabel}>제공 서비스</div>
-              </div>
+            <div className={styles.statCard}>
+              <div className={styles.statIcon}>✅</div>
+              <div className={styles.statNumber}>-</div>
+              <div className={styles.statLabel}>공개 공지사항</div>
             </div>
-          )}
+            <div className={styles.statCard}>
+              <div className={styles.statIcon}>🏗️</div>
+              <div className={styles.statNumber}>-</div>
+              <div className={styles.statLabel}>등록된 장비</div>
+            </div>
+            <div className={styles.statCard}>
+              <div className={styles.statIcon}>🔧</div>
+              <div className={styles.statNumber}>-</div>
+              <div className={styles.statLabel}>제공 서비스</div>
+            </div>
+          </div>
 
           <div className={styles.quickActionsGrid}>
             <Link href="/admin/notices" className={styles.actionCard}>

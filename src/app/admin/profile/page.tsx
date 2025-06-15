@@ -34,7 +34,7 @@ import {
 
 export default function AdminProfilePage() {
   const router = useRouter()
-  const { isLoggedIn, logout } = useAdmin()
+  const { isAuthenticated, logout } = useAdmin()
 
   const [profiles, setProfiles] = useState<Profile[]>([])
   const [loading, setLoading] = useState(true)
@@ -57,10 +57,10 @@ export default function AdminProfilePage() {
 
   // 로그인 확인
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       router.push("/admin/login")
     }
-  }, [isLoggedIn, router])
+  }, [isAuthenticated, router])
 
   // 프로필 목록 조회
   const fetchProfiles = async () => {
@@ -78,10 +78,10 @@ export default function AdminProfilePage() {
   }
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isAuthenticated) {
       fetchProfiles()
     }
-  }, [isLoggedIn])
+  }, [isAuthenticated])
 
   // 폼 리셋
   const resetForm = () => {
@@ -178,7 +178,7 @@ export default function AdminProfilePage() {
     setFormData((prev) => ({ ...prev, [field]: items }))
   }
 
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     return <div>로그인이 필요합니다.</div>
   }
 

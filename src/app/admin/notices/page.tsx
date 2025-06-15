@@ -9,19 +9,19 @@ import Link from "next/link"
 import * as styles from "../../../styles/Notices.css"
 
 export default function AdminNoticesPage() {
-  const { isLoggedIn } = useAdmin()
+  const { isAuthenticated } = useAdmin()
   const router = useRouter()
   const { notices, loading, error, fetchAllNotices } = useNoticeList()
   const { deleteNotice, updateNotice } = useNoticeManagement()
 
   // 로그인 상태가 아니면 로그인 페이지로 리다이렉트
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       router.push("/admin/login")
     } else {
       fetchAllNotices()
     }
-  }, [isLoggedIn, router, fetchAllNotices])
+  }, [isAuthenticated, router, fetchAllNotices])
 
   // 공지사항 삭제 핸들러
   const handleDelete = async (id: string) => {
@@ -76,7 +76,7 @@ export default function AdminNoticesPage() {
     )}-${String(date.getDate()).padStart(2, "0")}`
   }
 
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     return null // 로그인 체크 중에는 아무것도 표시하지 않음
   }
 

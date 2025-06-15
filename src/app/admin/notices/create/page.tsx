@@ -9,7 +9,7 @@ import * as notice from "../../../../styles/Notice.css"
 import { useAdmin } from "@/context/AdminContext"
 
 export default function CreateNoticePage() {
-  const { isLoggedIn } = useAdmin()
+  const { isAuthenticated } = useAdmin()
   const router = useRouter()
   const { createNotice } = useNoticeManagement()
   const { uploadFiles } = useFileUpload()
@@ -106,7 +106,7 @@ export default function CreateNoticePage() {
   }
 
   // 로그인 상태가 아니면 아무것도 표시하지 않음
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     if (typeof window !== "undefined") {
       router.push("/admin/login")
     }

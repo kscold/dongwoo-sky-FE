@@ -15,25 +15,77 @@ export interface GeolocationPosition {
 }
 
 /**
+ * 위치 권한 상태 확인하는 함수
+ */
+export const checkLocationPermission = async (): Promise<void> => {
+  if (!navigator.permissions) {
+    console.log("🌍 Permissions API가 지원되지 않는 브라우저입니다.")
+    return
+  }
+
+  try {
+    const result = await navigator.permissions.query({ name: "geolocation" })
+    console.log("📍 현재 위치 권한 상태:", result.state)
+
+    switch (result.state) {
+      case "granted":
+        console.log("✅ 위치 권한이 허용되어 있습니다.")
+        break
+      case "denied":
+        console.log("❌ 위치 권한이 거부되어 있습니다.")
+        console.log("브라우저 설정에서 위치 권한을 허용해주세요.")
+        break
+      case "prompt":
+        console.log("⏳ 위치 권한을 요청할 예정입니다.")
+        break
+    }
+  } catch (error) {
+    console.log("위치 권한 상태를 확인할 수 없습니다:", error)
+  }
+}
+
+/**
  * 현재 위치를 가져오는 함수
  */
 export const getCurrentPosition = (): Promise<GeolocationPosition> => {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
+      console.log("🌍 Geolocation이 지원되지 않는 브라우저입니다.")
       reject(new Error("Geolocation is not supported by this browser."))
       return
     }
 
+    console.log("📍 위치 권한 요청 중...")
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        console.log("✅ 위치 정보 획득 성공:", position.coords)
         resolve(position)
       },
       (error) => {
+        // 사용자가 위치 권한을 거부했거나 다른 오류 발생
+        let errorMessage = ""
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = "사용자가 위치 권한을 거부했습니다."
+            break
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = "위치 정보를 사용할 수 없습니다."
+            break
+          case error.TIMEOUT:
+            errorMessage = "위치 정보 요청이 시간 초과되었습니다."
+            break
+          default:
+            errorMessage = "알 수 없는 위치 오류가 발생했습니다."
+            break
+        }
+        console.log("📍 위치 정보를 가져올 수 없습니다:", errorMessage)
+        console.log("브라우저 설정에서 위치 권한을 허용해주세요.")
         reject(error)
       },
       {
         enableHighAccuracy: true,
-        timeout: 10000,
+        timeout: 15000, // 15초로 증가
         maximumAge: 300000, // 5분 캐시
       }
     )
@@ -105,10 +157,14 @@ export const getAddressFromCoords = async (
 
     return null
   } catch (error) {
-    // 위치 정보 에러는 조용히 처리 (프로덕션 로그 방지)
-    if (process.env.NODE_ENV === "development") {
-      console.error("Error getting address from coordinates:", error)
-    }
+    // 위치 정보 에러는 조용히 처리
+    console.log(
+      "📍 주소 변환 중 오류 발생:",
+      error instanceof Error ? error.message : "알 수 없는 오류"
+    )
+    console.log(
+      "Kakao API 키가 올바른지, 네트워크 연결이 정상인지 확인해보세요."
+    )
     return null
   }
 }
@@ -153,6 +209,9 @@ export const getLocationBasedBrandName = async (): Promise<string> => {
   try {
     console.log("🚀 위치 기반 브랜드명 가져오기 시작")
 
+    // 먼저 위치 권한 상태 확인
+    await checkLocationPermission()
+
     const position = await getCurrentPosition()
     console.log("📍 위치 정보 획득 성공:", position.coords)
 
@@ -168,10 +227,12 @@ export const getLocationBasedBrandName = async (): Promise<string> => {
 
     return brandName
   } catch (error) {
-    // 위치 기반 브랜드명 실패는 조용히 처리 (프로덕션 로그 방지)
-    if (process.env.NODE_ENV === "development") {
-      console.error("❌ 위치 기반 브랜드명 가져오기 실패:", error)
-    }
+    // 위치 기반 브랜드명 실패는 조용히 처리 - 사용자에게 방해되지 않도록
+    console.log("📍 위치 기반 브랜드명을 가져올 수 없어서 기본값을 사용합니다.")
+    console.log(
+      "원인:",
+      error instanceof Error ? error.message : "알 수 없는 오류"
+    )
     return "어울림 스카이" // 기본값
   }
 }
@@ -206,4 +267,21 @@ export const testKakaoAPI = async (): Promise<void> => {
   } catch (error) {
     console.error("❌ Kakao API 테스트 실패:", error)
   }
+}
+
+// 브라우저 콘솔에서 테스트할 수 있도록 함수들을 전역으로 노출
+if (typeof window !== "undefined") {
+  ;(window as typeof window & { testLocation: object }).testLocation = {
+    testKakaoAPI,
+    getLocationBasedBrandName,
+    checkLocationPermission,
+    getCurrentPosition,
+    getAddressFromCoords,
+    generateBrandName,
+    testFunction,
+  }
+  console.log("🧪 위치 테스트 함수들이 window.testLocation에 노출되었습니다.")
+  console.log(
+    "사용법: window.testLocation.testKakaoAPI() 또는 window.testLocation.getLocationBasedBrandName()"
+  )
 }

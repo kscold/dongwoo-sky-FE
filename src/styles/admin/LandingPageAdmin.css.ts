@@ -174,7 +174,7 @@ export const value = style({
   border: `1px solid ${vars.colors.border}`,
   borderRadius: "8px",
   fontSize: "1rem",
-  color: vars.colors.text.primary,
+  color: vars.colors.text,
   lineHeight: "1.5",
 })
 
@@ -261,7 +261,7 @@ export const loadingMessage = style({
   textAlign: "center",
   padding: "3rem",
   fontSize: "1.2rem",
-  color: vars.colors.text.secondary,
+  color: vars.colors.textLight,
 })
 
 export const errorMessage = style({
@@ -278,8 +278,8 @@ export const emptyMessage = style({
   textAlign: "center",
   padding: "3rem",
   fontSize: "1.2rem",
-  color: vars.colors.text.secondary,
-  backgroundColor: vars.colors.background.light,
+  color: vars.colors.textLight,
+  backgroundColor: vars.colors.backgroundLight,
   borderRadius: "12px",
   border: `2px dashed ${vars.colors.border}`,
 })

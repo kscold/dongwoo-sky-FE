@@ -39,7 +39,7 @@ import {
 
 export default function AdminVehicleTypePage() {
   const router = useRouter()
-  const { isLoggedIn, logout } = useAdmin()
+  const { isAuthenticated, logout } = useAdmin()
 
   const [vehicleTypes, setVehicleTypes] = useState<VehicleType[]>([])
   const [loading, setLoading] = useState(true)
@@ -63,10 +63,10 @@ export default function AdminVehicleTypePage() {
 
   // 로그인 확인
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       router.push("/admin/login")
     }
-  }, [isLoggedIn, router])
+  }, [isAuthenticated, router])
 
   // 차량 타입 목록 조회
   const fetchVehicleTypes = async () => {
@@ -84,10 +84,10 @@ export default function AdminVehicleTypePage() {
   }
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isAuthenticated) {
       fetchVehicleTypes()
     }
-  }, [isLoggedIn])
+  }, [isAuthenticated])
 
   // 폼 리셋
   const resetForm = () => {
@@ -184,7 +184,7 @@ export default function AdminVehicleTypePage() {
     setFormData((prev) => ({ ...prev, [field]: items }))
   }
 
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     return <div>로그인이 필요합니다.</div>
   }
 
