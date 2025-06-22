@@ -4,7 +4,7 @@ import React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { useCustomerReview } from "@/hooks/use-content"
+import { useCustomerReview } from "@/hooks/useContent"
 import * as styles from "./styles.css.ts"
 
 const CustomerReviewDetailPage = () => {

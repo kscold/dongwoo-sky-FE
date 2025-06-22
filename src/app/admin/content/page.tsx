@@ -10,7 +10,7 @@ import {
   useTopCustomerReviews,
   useWorkShowcases,
   useCustomerReviews,
-} from "@/hooks/use-content"
+} from "@/hooks/useContent"
 import type { WorkShowcase, CustomerReview } from "@/types/content"
 import * as styles from "../../../styles/admin/ContentAdmin.css"
 
@@ -221,9 +221,11 @@ export default function ContentAdminPage() {
               </Link>
             </div>
 
-            {customerReviews && customerReviews.items.length > 0 ? (
+            {/* @ts-ignore */}
+            {customerReviews && customerReviews.data.length > 0 ? (
               <div className={styles.contentGrid}>
-                {customerReviews.items.map((item) => (
+                {/* @ts-ignore */}
+                {customerReviews.data.map((item) => (
                   <div key={item._id} className={styles.contentCard}>
                     {item.imageUrls && item.imageUrls.length > 0 && (
                       <div className={styles.cardImage}>

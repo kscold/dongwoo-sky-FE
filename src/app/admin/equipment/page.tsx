@@ -121,7 +121,7 @@ export default function AdminEquipmentPage() {
     if (!confirm("정말로 이 장비를 삭제하시겠습니까?")) return
 
     try {
-      await equipmentApi.delete(id)
+      await equipmentApi.remove(id)
       alert("장비가 삭제되었습니다.")
       fetchEquipment()
     } catch (error) {

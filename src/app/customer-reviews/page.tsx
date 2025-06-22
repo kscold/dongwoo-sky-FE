@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/layout/Header"
 import Footer from "@/components/layout/Footer"
-import { useCustomerReviews } from "@/hooks/use-content"
+import { useCustomerReviews } from "@/hooks/useContent"
 import type { CustomerReview } from "@/types/content"
 import * as styles from "./styles.css.ts"
 
@@ -73,7 +73,7 @@ const CustomerReviewsPage = () => {
     )
   }
 
-  const customerReviews = customerReviewsData?.items || []
+  const customerReviews = customerReviewsData?.data || []
   const totalPages = customerReviewsData?.totalPages || 1
 
   return (
@@ -96,7 +96,7 @@ const CustomerReviewsPage = () => {
           {customerReviews.length > 0 ? (
             <>
               <div className={styles.grid}>
-                {customerReviews.map((review: CustomerReview) => (
+                {customerReviews.map((review: any) => (
                   <Link
                     key={review._id}
                     href={`/customer-reviews/${review._id}`}
