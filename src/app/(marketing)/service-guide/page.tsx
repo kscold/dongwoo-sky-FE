@@ -14,8 +14,8 @@ import {
 
 import EquipmentSwiper from "../../../components/equipment/EquipmentSwiper"
 
-import * as styles from "../../../styles/ServiceGuide.css"
-import * as contactStyles from "../../../styles/Contact.css"
+import * as styles from "../../../styles/service-guide.css"
+import * as contactStyles from "../../../styles/contact.css"
 
 // 작업 가능 범위 데이터 예시
 const capabilitiesData = [

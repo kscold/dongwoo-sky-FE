@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useTopWorkShowcases, useTopCustomerReviews } from "@/hooks/useContent"
 import type { WorkShowcase, CustomerReview } from "@/api/content"
-import * as styles from "@/styles/landing/ContentSection.css"
+import * as styles from "@/styles/landing/content-section.css"
 
 const ContentSection = () => {
   const {

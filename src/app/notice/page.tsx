@@ -5,7 +5,7 @@ import Link from "next/link"
 import { format } from "date-fns"
 import { ko } from "date-fns/locale"
 import { usePublishedNotices } from "@/hooks/useNotices"
-import * as styles from "../../styles/Notice.css"
+import * as styles from "../../styles/notice.css"
 
 export default function NoticePage() {
   const { data: notices, isLoading, error } = usePublishedNotices()

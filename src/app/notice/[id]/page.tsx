@@ -7,7 +7,7 @@ import { format } from "date-fns"
 import { ko } from "date-fns/locale"
 
 import { useNotice } from "@/hooks/useNotices"
-import * as styles from "../../../styles/Notice.css"
+import * as styles from "../../../styles/notice.css"
 
 interface PageProps {
   params: Promise<{

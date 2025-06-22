@@ -6,7 +6,7 @@ import { useCreateNotice } from "@/hooks/useNotices"
 import { useNoticeImagesUpload } from "@/hooks/useFileUpload"
 import { CreateNoticeDto } from "@/types/notice"
 import Link from "next/link"
-import * as notice from "../../../../styles/Notice.css"
+import * as notice from "../../../../styles/notice.css"
 import { useAdmin } from "@/context/AdminContext"
 
 export default function CreateNoticePage() {

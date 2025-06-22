@@ -35,7 +35,7 @@ import {
   adminLoadingSpinner,
   adminError,
   adminSuccess,
-} from "@/styles/admin/AdminCommon.css"
+} from "@/styles/admin/admin-common.css"
 
 export default function AdminVehicleTypePage() {
   const router = useRouter()

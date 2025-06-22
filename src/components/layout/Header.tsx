@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { IoClose } from "react-icons/io5"
 import { FaPhoneAlt } from "react-icons/fa"
-import * as styles from "../../styles/Header.css"
-import * as mobileStyles from "../../styles/MobileMenu.css"
+import * as styles from "../../styles/header.css"
+import * as mobileStyles from "../../styles/mobile-menu.css"
 
 const navItems = [
   { href: "/service-guide", label: "서비스 안내", icon: "🛠️" },

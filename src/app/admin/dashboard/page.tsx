@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useAdmin } from "@/context/AdminContext"
 import ProtectedRoute from "@/components/auth/ProtectedRoute"
-import * as styles from "../../../styles/Dashboard.css"
+import * as styles from "../../../styles/dashboard.css"
 
 function AdminDashboardContent() {
   const { user, logout, isLoading } = useAdmin()

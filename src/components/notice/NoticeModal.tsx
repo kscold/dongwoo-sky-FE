@@ -3,7 +3,7 @@
 import React from "react"
 import Image from "next/image"
 import { useNoticeModal } from "@/hooks/useNoticeModal"
-import * as styles from "@/styles/Notice.css"
+import * as styles from "@/styles/notice.css"
 
 export default function NoticeModal() {
   const {

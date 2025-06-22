@@ -10,7 +10,7 @@ import {
   useUpdateNotice,
 } from "@/hooks/useNotices"
 import Link from "next/link"
-import * as styles from "../../../styles/Notices.css"
+import * as styles from "../../../styles/notices.css"
 
 export default function AdminNoticesPage() {
   const { isAuthenticated } = useAdmin()

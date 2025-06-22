@@ -8,7 +8,7 @@ import {
 } from "@/hooks/useLandingPage"
 import type { LandingPageData } from "@/types/landing-page"
 import ProtectedRoute from "@/components/auth/ProtectedRoute"
-import * as styles from "../../../styles/admin/LandingPageAdmin.css"
+import * as styles from "../../../styles/admin/landing-page-admin.css"
 
 function LandingPageAdminContent() {
   const { data, isLoading, error } = useLandingPageData()

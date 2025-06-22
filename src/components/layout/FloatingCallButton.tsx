@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 
 import { getLocationBasedBrandName, testFunction } from "@/utils/location"
-import * as styles from "../../styles/FloatingCall.css"
+import * as styles from "../../styles/floating-call.css"
 
 const FloatingCallButton: React.FC = () => {
   const pathname = usePathname()

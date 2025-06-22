@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useAdmin } from "@/context/AdminContext"
 import { Equipment, CreateEquipmentDto } from "@/types/equipment"
 import { equipmentApi } from "@/api/equipment"
-import * as styles from "../../../styles/admin/AdminEquipment.css"
+import * as styles from "../../../styles/admin/admin-equipment.css"
 import {
   PlusIcon,
   PencilIcon,

@@ -9,8 +9,8 @@ import { useLandingPageData } from "@/hooks/useLandingPage"
 import { getLocationBasedBrandName, testFunction } from "@/utils/location"
 import ContentSection from "@/components/landing/ContentSection"
 import type { LandingPageData } from "@/types/landing-page"
-import * as heroStyles from "@/styles/landing/HeroSection.css"
-import * as noticeStyles from "@/styles/landing/NoticeSection.css"
+import * as heroStyles from "@/styles/landing/hero-section.css"
+import * as noticeStyles from "@/styles/landing/notice-section.css"
 
 // 기본 폴백 이미지들
 const defaultImages = [
