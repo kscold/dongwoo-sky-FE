@@ -1,10 +1,8 @@
-"use client"
-
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useTopWorkShowcases, useTopCustomerReviews } from "@/hooks/use-content"
-import type { WorkShowcase, CustomerReview } from "@/types/content"
+import { useTopWorkShowcases, useTopCustomerReviews } from "@/hooks/useContent"
+import type { WorkShowcase, CustomerReview } from "@/api/content"
 import * as styles from "@/styles/landing/ContentSection.css"
 
 const ContentSection = () => {
@@ -104,9 +102,6 @@ const ContentSection = () => {
                           <span>🏗️</span>
                         </div>
                       )}
-                      <div className={styles.imageOverlay}>
-                        <span className={styles.categoryBadge}>작업 완료</span>
-                      </div>
                     </div>
                     <div className={styles.newsCardContent}>
                       <h4 className={styles.newsCardTitle}>{showcase.title}</h4>
@@ -119,8 +114,13 @@ const ContentSection = () => {
                           <span>{showcase.authorName}</span>
                         </div>
                         <div className={styles.metaItem}>
-                          <span className={styles.metaIcon}>👀</span>
-                          <span>{showcase.viewCount}</span>
+                          <span className={styles.metaIcon}>❤️</span>
+                          <span>{showcase.likeCount}</span>
+                        </div>
+                        <div className={styles.metaItem}>
+                          <span className={styles.categoryBadge}>
+                            ✅ 작업완료
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -194,17 +194,9 @@ const ContentSection = () => {
                           <span>💬</span>
                         </div>
                       )}
-                      <div className={styles.imageOverlay}>
-                        <div className={styles.ratingOverlay}>
-                          {renderStars(review.rating)}
-                        </div>
-                      </div>
                     </div>
                     <div className={styles.newsCardContent}>
                       <h4 className={styles.newsCardTitle}>{review.title}</h4>
-                      <div className={styles.rating}>
-                        {renderStars(review.rating)}
-                      </div>
                       <p className={styles.newsCardDesc}>
                         {stripHtml(review.content).slice(0, 80)}...
                       </p>
@@ -214,8 +206,13 @@ const ContentSection = () => {
                           <span>{review.customerName}</span>
                         </div>
                         <div className={styles.metaItem}>
-                          <span className={styles.metaIcon}>👀</span>
-                          <span>{review.viewCount}</span>
+                          <span className={styles.metaIcon}>👍</span>
+                          <span>{review.helpfulCount}</span>
+                        </div>
+                        <div className={styles.metaItem}>
+                          <span className={styles.rating}>
+                            {renderStars(review.rating)}
+                          </span>
                         </div>
                       </div>
                     </div>

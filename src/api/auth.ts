@@ -24,10 +24,10 @@ export const authApi = {
   },
 
   logout: () => {
-    // JWT 토큰 제거
+    // JWT 토큰 제거 - 일관된 키 사용
     if (typeof window !== "undefined") {
-      localStorage.removeItem("token")
-      sessionStorage.removeItem("token")
+      localStorage.removeItem("auth_token")
+      localStorage.removeItem("user_data")
     }
   },
 

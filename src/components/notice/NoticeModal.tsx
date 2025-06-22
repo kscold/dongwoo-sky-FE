@@ -2,7 +2,7 @@
 
 import React from "react"
 import Image from "next/image"
-import { useNotice } from "@/hooks/useNotice"
+import { useNoticeModal } from "@/hooks/useNoticeModal"
 import * as styles from "@/styles/Notice.css"
 
 export default function NoticeModal() {
@@ -12,7 +12,7 @@ export default function NoticeModal() {
     closeModal,
     closeTodayModal,
     loadingState,
-  } = useNotice()
+  } = useNoticeModal()
 
   if (!isModalOpen || !currentNotice || loadingState.isLoading) {
     return null
@@ -45,44 +45,46 @@ export default function NoticeModal() {
           {currentNotice.attachments &&
             currentNotice.attachments.length > 0 && (
               <div style={{ marginTop: "20px" }}>
-                {currentNotice.attachments.map((attachment, index) => {
-                  const fileExtension = attachment.name
-                    .split(".")
-                    .pop()
-                    ?.toLowerCase()
-                  const isImage = [
-                    "jpg",
-                    "jpeg",
-                    "png",
-                    "gif",
-                    "webp",
-                    "svg",
-                  ].includes(fileExtension || "")
+                {currentNotice.attachments.map(
+                  (attachment: any, index: number) => {
+                    const fileExtension = attachment.name
+                      .split(".")
+                      .pop()
+                      ?.toLowerCase()
+                    const isImage = [
+                      "jpg",
+                      "jpeg",
+                      "png",
+                      "gif",
+                      "webp",
+                      "svg",
+                    ].includes(fileExtension || "")
 
-                  if (isImage) {
-                    return (
-                      <div key={index} style={{ marginBottom: "12px" }}>
-                        <Image
-                          src={attachment.url}
-                          alt={attachment.name}
-                          width={600}
-                          height={400}
-                          style={{
-                            width: "100%",
-                            height: "auto",
-                            borderRadius: "12px",
-                            border: "1px solid rgba(0, 0, 0, 0.06)",
-                          }}
-                          onError={(e) => {
-                            console.log("이미지 로드 실패:", attachment.url)
-                            e.currentTarget.style.display = "none"
-                          }}
-                        />
-                      </div>
-                    )
+                    if (isImage) {
+                      return (
+                        <div key={index} style={{ marginBottom: "12px" }}>
+                          <Image
+                            src={attachment.url}
+                            alt={attachment.name}
+                            width={600}
+                            height={400}
+                            style={{
+                              width: "100%",
+                              height: "auto",
+                              borderRadius: "12px",
+                              border: "1px solid rgba(0, 0, 0, 0.06)",
+                            }}
+                            onError={(e) => {
+                              console.log("이미지 로드 실패:", attachment.url)
+                              e.currentTarget.style.display = "none"
+                            }}
+                          />
+                        </div>
+                      )
+                    }
+                    return null
                   }
-                  return null
-                })}
+                )}
               </div>
             )}
         </div>

@@ -4,36 +4,35 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAdmin } from "@/context/AdminContext"
 import { Notice } from "@/types/notice"
-import { useNoticeList, useNoticeManagement } from "@/hooks/useNotice"
+import {
+  useNotices,
+  useDeleteNotice,
+  useUpdateNotice,
+} from "@/hooks/useNotices"
 import Link from "next/link"
 import * as styles from "../../../styles/Notices.css"
 
 export default function AdminNoticesPage() {
   const { isAuthenticated } = useAdmin()
   const router = useRouter()
-  const { notices, loading, error, fetchAllNotices } = useNoticeList()
-  const { deleteNotice, updateNotice } = useNoticeManagement()
+  const { data: notices, isLoading, error } = useNotices()
+  const deleteNoticeMutation = useDeleteNotice()
+  const updateNoticeMutation = useUpdateNotice()
 
   // 로그인 상태가 아니면 로그인 페이지로 리다이렉트
   useEffect(() => {
     if (!isAuthenticated) {
       router.push("/admin/login")
-    } else {
-      fetchAllNotices()
     }
-  }, [isAuthenticated, router, fetchAllNotices])
+  }, [isAuthenticated, router])
 
   // 공지사항 삭제 핸들러
   const handleDelete = async (id: string) => {
     if (!window.confirm("이 공지사항을 삭제하시겠습니까?")) return
 
     try {
-      const success = await deleteNotice(id)
-      if (success) {
-        await fetchAllNotices() // 목록 새로고침
-      } else {
-        alert("공지사항 삭제에 실패했습니다.")
-      }
+      await deleteNoticeMutation.mutateAsync(id)
+      // React Query가 자동으로 목록을 새로고침합니다
     } catch (err) {
       console.error("공지사항 삭제 오류:", err)
       alert("공지사항 삭제에 실패했습니다.")
@@ -43,10 +42,11 @@ export default function AdminNoticesPage() {
   // 공지사항 모달 상태 토글
   const toggleModal = async (notice: Notice) => {
     try {
-      await updateNotice(notice._id, {
-        isModal: !notice.isModal,
+      await updateNoticeMutation.mutateAsync({
+        id: notice._id,
+        data: { isModal: !notice.isModal },
       })
-      await fetchAllNotices() // 목록 새로고침
+      // React Query가 자동으로 목록을 새로고침합니다
     } catch (err) {
       console.error("모달 상태 변경 오류:", err)
       alert("모달 상태 변경에 실패했습니다.")
@@ -56,10 +56,11 @@ export default function AdminNoticesPage() {
   // 공지사항 공개 상태 토글
   const togglePublished = async (notice: Notice) => {
     try {
-      await updateNotice(notice._id, {
-        isPublished: !notice.isPublished,
+      await updateNoticeMutation.mutateAsync({
+        id: notice._id,
+        data: { isPublished: !notice.isPublished },
       })
-      await fetchAllNotices() // 목록 새로고침
+      // React Query가 자동으로 목록을 새로고침합니다
     } catch (err) {
       console.error("공개 상태 변경 오류:", err)
       alert("공개 상태 변경에 실패했습니다.")
@@ -94,13 +95,13 @@ export default function AdminNoticesPage() {
         </div>
       </div>
 
-      {loading ? (
+      {isLoading ? (
         <div className={styles.loading}>로딩 중...</div>
       ) : error ? (
         <div className={styles.error}>
           공지사항을 불러오는데 문제가 발생했습니다
         </div>
-      ) : notices.length === 0 ? (
+      ) : notices?.length === 0 ? (
         <div className={styles.empty}>
           <p>등록된 공지사항이 없습니다.</p>
         </div>
@@ -117,7 +118,7 @@ export default function AdminNoticesPage() {
               </tr>
             </thead>
             <tbody>
-              {notices.map((notice) => (
+              {notices?.map((notice) => (
                 <tr key={notice._id} className={styles.tableRow}>
                   <td className={`${styles.tableCell} ${styles.titleCell}`}>
                     {notice.title}

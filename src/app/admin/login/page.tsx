@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAdmin } from "@/context/AdminContext"
-import * as styles from "../../../styles/Login.css"
+import * as styles from "../../../styles/login.css"
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("")
@@ -16,7 +16,14 @@ export default function AdminLoginPage() {
   // 이미 로그인된 경우 대시보드로 리다이렉트
   useEffect(() => {
     if (user && user.role === "admin") {
-      router.push("/admin/dashboard")
+      // 리다이렉트할 페이지가 있다면 해당 페이지로, 없다면 대시보드로
+      const redirectPath = localStorage.getItem("redirect_after_login")
+      if (redirectPath) {
+        localStorage.removeItem("redirect_after_login")
+        router.push(redirectPath)
+      } else {
+        router.push("/admin/dashboard")
+      }
     }
   }, [user, router])
 

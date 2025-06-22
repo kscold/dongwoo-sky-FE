@@ -4,16 +4,11 @@ import React from "react"
 import Link from "next/link"
 import { format } from "date-fns"
 import { ko } from "date-fns/locale"
-import { useNoticeList } from "@/hooks/useNotice"
+import { usePublishedNotices } from "@/hooks/useNotices"
 import * as styles from "../../styles/Notice.css"
 
 export default function NoticePage() {
-  const { notices, loading, error, fetchPublishedNotices } = useNoticeList()
-
-  // 컴포넌트 마운트 시 공지사항 로드
-  React.useEffect(() => {
-    fetchPublishedNotices()
-  }, [fetchPublishedNotices])
+  const { data: notices, isLoading, error } = usePublishedNotices()
 
   // 날짜 포맷 함수
   const formatDate = (dateString: string) => {
@@ -24,7 +19,7 @@ export default function NoticePage() {
     }
   }
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className={styles.container}>
         <h1 className={styles.title}>공지사항</h1>
@@ -58,9 +53,9 @@ export default function NoticePage() {
     <div className={styles.container}>
       <h1 className={styles.title}>공지사항</h1>
 
-      {notices.length > 0 ? (
+      {notices && notices.length > 0 ? (
         <ul className={styles.noticeList}>
-          {notices.map((notice) => (
+          {notices.map((notice: any) => (
             <li key={notice._id} className={styles.noticeItem}>
               <Link
                 href={`/notice/${notice._id}`}

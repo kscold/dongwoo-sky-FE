@@ -1,12 +1,12 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { format } from "date-fns"
 import { ko } from "date-fns/locale"
 
-import { useNoticeDetail } from "@/hooks/useNotice"
+import { useNotice } from "@/hooks/useNotices"
 import * as styles from "../../../styles/Notice.css"
 
 interface PageProps {
@@ -16,18 +16,17 @@ interface PageProps {
 }
 
 export default function NoticeDetailPage({ params }: PageProps) {
-  const { notice, loading, error, fetchNotice } = useNoticeDetail()
+  const [noticeId, setNoticeId] = useState<string | null>(null)
 
   useEffect(() => {
-    const loadNotice = async () => {
+    const loadParams = async () => {
       const resolvedParams = await params
-      if (resolvedParams.id) {
-        fetchNotice(resolvedParams.id)
-      }
+      setNoticeId(resolvedParams.id)
     }
+    loadParams()
+  }, [params])
 
-    loadNotice()
-  }, [params, fetchNotice])
+  const { data: notice, isLoading, error } = useNotice(noticeId || "")
 
   // 날짜 포맷 함수
   const formatDate = (dateString?: string) => {
@@ -41,7 +40,7 @@ export default function NoticeDetailPage({ params }: PageProps) {
     }
   }
 
-  if (loading) {
+  if (isLoading || !noticeId) {
     return (
       <div className={styles.container}>
         <h1 className={styles.title}>공지사항</h1>

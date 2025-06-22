@@ -731,3 +731,20 @@ export const attachmentLink = style({
     color: vars.colors.white,
   },
 })
+
+// 추가 메시지 스타일
+export const loadingMessage = style({
+  padding: vars.space.xxl,
+  textAlign: "center",
+  color: vars.colors.textLight,
+  fontSize: vars.fontSizes.md,
+})
+
+export const errorMessage = style({
+  padding: vars.space.xl,
+  backgroundColor: vars.colors.gray[50],
+  color: vars.colors.danger,
+  borderRadius: vars.radii.md,
+  textAlign: "center",
+  fontSize: vars.fontSizes.md,
+})

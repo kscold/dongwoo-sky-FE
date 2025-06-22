@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useNoticeManagement, useFileUpload } from "@/hooks/useNotice"
+import { useCreateNotice } from "@/hooks/useNotices"
+import { useNoticeImagesUpload } from "@/hooks/useFileUpload"
 import { CreateNoticeDto } from "@/types/notice"
 import Link from "next/link"
 import * as notice from "../../../../styles/Notice.css"
@@ -11,8 +12,8 @@ import { useAdmin } from "@/context/AdminContext"
 export default function CreateNoticePage() {
   const { isAuthenticated } = useAdmin()
   const router = useRouter()
-  const { createNotice } = useNoticeManagement()
-  const { uploadFiles } = useFileUpload()
+  const createNoticeMutation = useCreateNotice()
+  const uploadImagesMutation = useNoticeImagesUpload()
   const [formData, setFormData] = useState<CreateNoticeDto>({
     title: "",
     content: "",
@@ -40,9 +41,13 @@ export default function CreateNoticePage() {
       let attachments: { url: string; key: string; name: string }[] = []
       if (files.length > 0) {
         try {
-          const uploadedFiles = await uploadFiles(files)
-          if (uploadedFiles) {
-            attachments = uploadedFiles
+          const uploadResult = await uploadImagesMutation.mutateAsync(files)
+          if (uploadResult && uploadResult.urls) {
+            attachments = uploadResult.urls.map((url, index) => ({
+              url,
+              key: `upload_${Date.now()}_${index}`,
+              name: files[index]?.name || `file_${index}`,
+            }))
           }
         } catch (err) {
           console.error("파일 업로드 오류:", err)
@@ -51,7 +56,7 @@ export default function CreateNoticePage() {
       }
 
       // 공지사항 생성
-      const newNotice = await createNotice({
+      const newNotice = await createNoticeMutation.mutateAsync({
         ...formData,
         attachments,
       })

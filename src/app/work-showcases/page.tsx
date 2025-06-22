@@ -5,8 +5,8 @@ import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/layout/Header"
 import Footer from "@/components/layout/Footer"
-import { useWorkShowcases } from "@/hooks/use-content"
-import type { WorkShowcase } from "@/types/content"
+import { useWorkShowcases } from "@/hooks/useContent"
+import type { WorkShowcase } from "@/api/content"
 import * as styles from "./styles.css"
 
 const WorkShowcasesPage = () => {
@@ -135,13 +135,13 @@ const WorkShowcasesPage = () => {
                       </p>
                       <div className={styles.stats}>
                         <span className={styles.stat}>
-                          👀 {showcase.viewCount}
+                          👀 {showcase.viewCount || 0}
                         </span>
                         <span className={styles.stat}>
                           ❤️ {showcase.likeCount}
                         </span>
                         <span className={styles.date}>
-                          {formatDate(showcase.publishedAt)}
+                          {formatDate(showcase.createdAt)}
                         </span>
                       </div>
                     </div>

@@ -42,21 +42,19 @@ export default function SystemTestPage() {
       })
     }
 
-    // Test 2: Frontend service call
+    // Test 2: Frontend API call via hooks (Note: This test simulates the API call)
     try {
-      console.log("Test 2: Testing frontend service...")
-      const { landingPageService } = await import(
-        "@/services/landing-page.service"
-      )
-      const data = await landingPageService.getCurrentLandingPage()
+      console.log("Test 2: Testing frontend API...")
+      const { landingPageApi } = await import("@/api/landingPage")
+      const data = await landingPageApi.getCurrentLandingPage()
       results.push({
-        test: "Frontend Service",
+        test: "Frontend API",
         status: "✅ SUCCESS",
         data: data,
       })
     } catch (error) {
       results.push({
-        test: "Frontend Service",
+        test: "Frontend API",
         status: "❌ FAILED",
         error: error instanceof Error ? error.message : String(error),
       })
@@ -65,7 +63,7 @@ export default function SystemTestPage() {
     // Test 3: React Query Hook
     try {
       console.log("Test 3: Testing React Query...")
-      await import("@/hooks/use-landing-page")
+      await import("@/hooks/useLandingPage")
       // Note: This won't work in this context, but we'll try anyway
       results.push({
         test: "React Query Hook",

@@ -4,36 +4,17 @@ import { useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useAdmin } from "@/context/AdminContext"
+import ProtectedRoute from "@/components/auth/ProtectedRoute"
 import * as styles from "../../../styles/Dashboard.css"
 
-export default function AdminDashboardPage() {
+function AdminDashboardContent() {
   const { user, logout, isLoading } = useAdmin()
   const router = useRouter()
-
-  // 로그인 상태가 아니면 로그인 페이지로 리다이렉트
-  useEffect(() => {
-    if (!isLoading && (!user || user.role !== "admin")) {
-      router.push("/admin/login")
-    }
-  }, [user, isLoading, router])
 
   // 로그아웃 핸들러
   const handleLogout = async () => {
     logout()
     router.push("/admin/login")
-  }
-
-  // 로딩 중이거나 사용자가 없으면 로딩 표시
-  if (isLoading || !user || user.role !== "admin") {
-    return (
-      <div className={styles.dashboardContainer}>
-        <div className={styles.dashboardWrapper}>
-          <div style={{ textAlign: "center", padding: "2rem" }}>
-            <p>로그인 상태를 확인하는 중입니다...</p>
-          </div>
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -48,7 +29,7 @@ export default function AdminDashboardPage() {
             <div
               style={{ fontSize: "0.9rem", color: "#666", marginTop: "0.5rem" }}
             >
-              안녕하세요, {user.name || user.email}님!
+              안녕하세요, {user?.name || user?.email}님!
             </div>
           </div>
           <div className={styles.headerActions}>
@@ -137,5 +118,13 @@ export default function AdminDashboardPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function AdminDashboardPage() {
+  return (
+    <ProtectedRoute>
+      <AdminDashboardContent />
+    </ProtectedRoute>
   )
 }

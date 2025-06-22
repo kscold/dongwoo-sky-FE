@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { contentService } from "@/services/content.service"
+import { contentApi } from "@/api/content"
 import type {
   WorkShowcase,
   CustomerReview,
@@ -7,7 +7,7 @@ import type {
   UpdateWorkShowcaseDto,
   CreateCustomerReviewDto,
   UpdateCustomerReviewDto,
-} from "@/types/content"
+} from "@/api/content"
 
 // Query Keys
 export const CONTENT_QUERY_KEYS = {
@@ -28,7 +28,7 @@ export const CONTENT_QUERY_KEYS = {
 export function useTopWorkShowcases() {
   return useQuery<WorkShowcase[], Error>({
     queryKey: CONTENT_QUERY_KEYS.workShowcasesTop,
-    queryFn: () => contentService.getTopWorkShowcases(),
+    queryFn: () => contentApi.getTopWorkShowcases(),
     staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
     gcTime: 10 * 60 * 1000, // 10분간 메모리에 유지
   })
@@ -37,7 +37,7 @@ export function useTopWorkShowcases() {
 export function useWorkShowcases(page: number = 1, limit: number = 10) {
   return useQuery({
     queryKey: CONTENT_QUERY_KEYS.workShowcasesList(page, limit),
-    queryFn: () => contentService.getAllWorkShowcases(page, limit),
+    queryFn: () => contentApi.getAllWorkShowcases(page, limit),
     staleTime: 2 * 60 * 1000,
   })
 }
@@ -45,7 +45,7 @@ export function useWorkShowcases(page: number = 1, limit: number = 10) {
 export function useWorkShowcase(id: string) {
   return useQuery({
     queryKey: CONTENT_QUERY_KEYS.workShowcase(id),
-    queryFn: () => contentService.getWorkShowcaseById(id),
+    queryFn: () => contentApi.getWorkShowcaseById(id),
     enabled: !!id,
   })
 }
@@ -54,7 +54,7 @@ export function useCreateWorkShowcase() {
   const queryClient = useQueryClient()
 
   return useMutation<WorkShowcase, Error, CreateWorkShowcaseDto>({
-    mutationFn: (data) => contentService.createWorkShowcase(data),
+    mutationFn: (data) => contentApi.createWorkShowcase(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: CONTENT_QUERY_KEYS.workShowcases,
@@ -71,7 +71,7 @@ export function useUpdateWorkShowcase() {
     Error,
     { id: string; data: UpdateWorkShowcaseDto }
   >({
-    mutationFn: ({ id, data }) => contentService.updateWorkShowcase(id, data),
+    mutationFn: ({ id, data }) => contentApi.updateWorkShowcase(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({
         queryKey: CONTENT_QUERY_KEYS.workShowcases,
@@ -87,7 +87,7 @@ export function useDeleteWorkShowcase() {
   const queryClient = useQueryClient()
 
   return useMutation<void, Error, string>({
-    mutationFn: (id) => contentService.deleteWorkShowcase(id),
+    mutationFn: (id) => contentApi.deleteWorkShowcase(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: CONTENT_QUERY_KEYS.workShowcases,
@@ -99,21 +99,21 @@ export function useDeleteWorkShowcase() {
 export function useLikeWorkShowcase() {
   const queryClient = useQueryClient()
 
-  return useMutation<void, Error, string>({
-    mutationFn: (id) => contentService.likeWorkShowcase(id),
-    onSuccess: (_, id) => {
+  return useMutation<{ likes: number }, Error, string>({
+    mutationFn: (id) => contentApi.likeWorkShowcase(id),
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: CONTENT_QUERY_KEYS.workShowcase(id),
+        queryKey: CONTENT_QUERY_KEYS.workShowcases,
       })
     },
   })
 }
 
-// 고객 리뷰 훅들
+// 고객 후기 훅들
 export function useTopCustomerReviews() {
   return useQuery<CustomerReview[], Error>({
     queryKey: CONTENT_QUERY_KEYS.customerReviewsTop,
-    queryFn: () => contentService.getTopCustomerReviews(),
+    queryFn: () => contentApi.getTopCustomerReviews(),
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   })
@@ -122,7 +122,7 @@ export function useTopCustomerReviews() {
 export function useCustomerReviews(page: number = 1, limit: number = 10) {
   return useQuery({
     queryKey: CONTENT_QUERY_KEYS.customerReviewsList(page, limit),
-    queryFn: () => contentService.getAllCustomerReviews(page, limit),
+    queryFn: () => contentApi.getAllCustomerReviews(page, limit),
     staleTime: 2 * 60 * 1000,
   })
 }
@@ -130,7 +130,7 @@ export function useCustomerReviews(page: number = 1, limit: number = 10) {
 export function useCustomerReview(id: string) {
   return useQuery({
     queryKey: CONTENT_QUERY_KEYS.customerReview(id),
-    queryFn: () => contentService.getCustomerReviewById(id),
+    queryFn: () => contentApi.getCustomerReviewById(id),
     enabled: !!id,
   })
 }
@@ -139,7 +139,7 @@ export function useCreateCustomerReview() {
   const queryClient = useQueryClient()
 
   return useMutation<CustomerReview, Error, CreateCustomerReviewDto>({
-    mutationFn: (data) => contentService.createCustomerReview(data),
+    mutationFn: (data) => contentApi.createCustomerReview(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: CONTENT_QUERY_KEYS.customerReviews,
@@ -156,7 +156,7 @@ export function useUpdateCustomerReview() {
     Error,
     { id: string; data: UpdateCustomerReviewDto }
   >({
-    mutationFn: ({ id, data }) => contentService.updateCustomerReview(id, data),
+    mutationFn: ({ id, data }) => contentApi.updateCustomerReview(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({
         queryKey: CONTENT_QUERY_KEYS.customerReviews,
@@ -172,7 +172,7 @@ export function useDeleteCustomerReview() {
   const queryClient = useQueryClient()
 
   return useMutation<void, Error, string>({
-    mutationFn: (id) => contentService.deleteCustomerReview(id),
+    mutationFn: (id) => contentApi.deleteCustomerReview(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: CONTENT_QUERY_KEYS.customerReviews,
@@ -181,22 +181,24 @@ export function useDeleteCustomerReview() {
   })
 }
 
-export function useMarkCustomerReviewHelpful() {
+export function useMarkReviewHelpful() {
   const queryClient = useQueryClient()
 
-  return useMutation<void, Error, string>({
-    mutationFn: (id) => contentService.markCustomerReviewHelpful(id),
-    onSuccess: (_, id) => {
+  return useMutation<{ helpful: number }, Error, string>({
+    mutationFn: (id) => contentApi.markReviewHelpful(id),
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: CONTENT_QUERY_KEYS.customerReview(id),
+        queryKey: CONTENT_QUERY_KEYS.customerReviews,
       })
     },
   })
 }
 
-// 이미지 업로드 훅
-export function useUploadImages() {
+export function useUploadContentImages() {
   return useMutation<{ imageUrls: string[] }, Error, File[]>({
-    mutationFn: (files) => contentService.uploadMultipleImages(files),
+    mutationFn: (files) => contentApi.uploadImages(files),
+    onError: (error) => {
+      console.error("Content images upload failed:", error)
+    },
   })
 }

@@ -5,11 +5,12 @@ import {
   useLandingPageData,
   useUpdateLandingPage,
   useUploadHeroImage,
-} from "@/hooks/use-landing-page"
+} from "@/hooks/useLandingPage"
 import type { LandingPageData } from "@/types/landing-page"
+import ProtectedRoute from "@/components/auth/ProtectedRoute"
 import * as styles from "../../../styles/admin/LandingPageAdmin.css"
 
-export default function LandingPageAdmin() {
+function LandingPageAdminContent() {
   const { data, isLoading, error } = useLandingPageData()
   const updateMutation = useUpdateLandingPage()
   const uploadImageMutation = useUploadHeroImage()
@@ -395,5 +396,13 @@ export default function LandingPageAdmin() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LandingPageAdmin() {
+  return (
+    <ProtectedRoute>
+      <LandingPageAdminContent />
+    </ProtectedRoute>
   )
 }

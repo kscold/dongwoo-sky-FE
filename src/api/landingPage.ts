@@ -1,11 +1,11 @@
+import { apiClient } from "./client"
 import { LandingPageData } from "@/types/landing-page"
-import { apiClient } from "@/api/client"
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api"
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081/api"
 
-class LandingPageService {
+export const landingPageApi = {
   // 현재 활성화된 랜딩 페이지 데이터 가져오기
-  async getCurrentLandingPage(): Promise<LandingPageData> {
+  getCurrentLandingPage: async (): Promise<LandingPageData> => {
     try {
       const response = await apiClient.get<LandingPageData>(
         "/landing-pages/current"
@@ -14,41 +14,41 @@ class LandingPageService {
     } catch (error) {
       console.error("Failed to fetch landing page data:", error)
       // 폴백 데이터 반환
-      return this.getDefaultLandingPageData()
+      return getDefaultLandingPageData()
     }
-  }
+  },
 
   // 모든 랜딩 페이지 데이터 가져오기 (관리자용)
-  async getAllLandingPages(): Promise<LandingPageData[]> {
+  getAllLandingPages: async (): Promise<LandingPageData[]> => {
     const response = await apiClient.get<LandingPageData[]>("/landing-pages")
     return response.data
-  }
+  },
 
   // 랜딩 페이지 데이터 생성 (관리자용)
-  async createLandingPage(
+  createLandingPage: async (
     data: Partial<LandingPageData>
-  ): Promise<LandingPageData> {
+  ): Promise<LandingPageData> => {
     const response = await apiClient.post<LandingPageData>(
       "/landing-pages",
       data
     )
     return response.data
-  }
+  },
 
   // 랜딩 페이지 데이터 업데이트 (관리자용)
-  async updateLandingPage(
+  updateLandingPage: async (
     id: string,
     data: Partial<LandingPageData>
-  ): Promise<LandingPageData> {
+  ): Promise<LandingPageData> => {
     const response = await apiClient.patch<LandingPageData>(
       `/landing-pages/${id}`,
       data
     )
     return response.data
-  }
+  },
 
-  // 히어로 섹션 이미지 업로드 (관리자용) - JWT 토큰 인증 포함
-  async uploadHeroImage(file: File): Promise<{ imageUrl: string }> {
+  // 히어로 섹션 이미지 업로드 (관리자용)
+  uploadHeroImage: async (file: File): Promise<{ imageUrl: string }> => {
     const formData = new FormData()
     formData.append("file", file)
 
@@ -71,7 +71,6 @@ class LandingPageService {
           method: "POST",
           headers: {
             ...(token && { Authorization: `Bearer ${token}` }),
-            // Content-Type을 명시하지 않음 - 브라우저가 자동으로 multipart/form-data boundary 설정
           },
           body: formData,
         }
@@ -91,10 +90,10 @@ class LandingPageService {
       console.error("Upload failed:", errorMessage)
       throw new Error(errorMessage)
     }
-  }
+  },
 
-  // 히어로 섹션 다중 이미지 업로드 (관리자용) - JWT 토큰 인증 포함
-  async uploadHeroImages(files: File[]): Promise<{ imageUrls: string[] }> {
+  // 히어로 섹션 다중 이미지 업로드 (관리자용)
+  uploadHeroImages: async (files: File[]): Promise<{ imageUrls: string[] }> => {
     const formData = new FormData()
 
     files.forEach((file) => {
@@ -123,7 +122,6 @@ class LandingPageService {
           method: "POST",
           headers: {
             ...(token && { Authorization: `Bearer ${token}` }),
-            // Content-Type을 명시하지 않음 - 브라우저가 자동으로 multipart/form-data boundary 설정
           },
           body: formData,
         }
@@ -143,10 +141,10 @@ class LandingPageService {
       console.error("Multiple upload failed:", errorMessage)
       throw new Error(errorMessage)
     }
-  }
+  },
 
   // 업로드된 히어로 이미지들 조회 (관리자용)
-  async getHeroImages(): Promise<{ images: string[] }> {
+  getHeroImages: async (): Promise<{ images: string[] }> => {
     try {
       const response = await apiClient.get<{ images: string[] }>(
         "/landing-pages/hero-images"
@@ -159,10 +157,10 @@ class LandingPageService {
       console.error("Failed to get hero images:", errorMessage)
       throw new Error(errorMessage)
     }
-  }
+  },
 
   // 히어로 이미지를 메인 배경으로 설정 (관리자용)
-  async setHeroImage(imageUrl: string): Promise<LandingPageData> {
+  setHeroImage: async (imageUrl: string): Promise<LandingPageData> => {
     try {
       const response = await apiClient.patch<LandingPageData>(
         "/landing-pages/set-hero-image",
@@ -176,10 +174,10 @@ class LandingPageService {
       console.error("Failed to set hero image:", errorMessage)
       throw new Error(errorMessage)
     }
-  }
+  },
 
   // 히어로 이미지 삭제 (관리자용)
-  async deleteHeroImage(imageUrl: string): Promise<{ message: string }> {
+  deleteHeroImage: async (imageUrl: string): Promise<{ message: string }> => {
     try {
       const response = await apiClient.delete<{ message: string }>(
         "/landing-pages/hero-images",
@@ -193,25 +191,22 @@ class LandingPageService {
       console.error("Failed to delete hero image:", errorMessage)
       throw new Error(errorMessage)
     }
-  }
-
-  // 기본 폴백 데이터
-  private getDefaultLandingPageData(): LandingPageData {
-    return {
-      title: "어울림 스카이 - 중장비 렌탈 서비스",
-      heroSection: {
-        title: "어울림 스카이",
-        subtitle: "안전하고 신뢰할 수 있는 중장비 렌탈 서비스",
-        backgroundImageUrl: "/images/hero-default.jpg",
-        description:
-          "다양한 중장비를 합리적인 가격에 제공합니다. 전문적인 운영진과 함께하는 안전한 작업을 경험해보세요.",
-        ctaText: "서비스 문의하기",
-        ctaLink: "/contact",
-        isActive: true,
-      },
-    }
-  }
+  },
 }
 
-export const landingPageService = new LandingPageService()
-export default landingPageService
+// 기본 폴백 데이터
+function getDefaultLandingPageData(): LandingPageData {
+  return {
+    title: "어울림 스카이 - 중장비 렌탈 서비스",
+    heroSection: {
+      title: "어울림 스카이",
+      subtitle: "안전하고 신뢰할 수 있는 중장비 렌탈 서비스",
+      backgroundImageUrl: "/images/hero-default.jpg",
+      description:
+        "다양한 중장비를 합리적인 가격에 제공합니다. 전문적인 운영진과 함께하는 안전한 작업을 경험해보세요.",
+      ctaText: "서비스 문의하기",
+      ctaLink: "/contact",
+      isActive: true,
+    },
+  }
+}

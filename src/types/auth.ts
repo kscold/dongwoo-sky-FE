@@ -21,6 +21,15 @@ export interface RegisterRequest {
 }
 
 export interface AuthResponse {
+  success: boolean
   access_token: string
   user: User
+  message: string
+}
+
+export interface ApiResponse<T = any> {
+  success: boolean
+  data?: T
+  message: string
+  error?: string
 }

@@ -24,7 +24,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(true)
       const response = await authApi.login({ email, password })
 
-      if (response.user && response.user.role === "admin") {
+      if (response.success && response.user && response.user.role === "admin") {
         setUser(response.user)
 
         // JWT 토큰 저장
@@ -34,11 +34,14 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
         return true
       } else {
-        // 관리자가 아닌 경우
-        throw new Error("관리자 권한이 필요합니다.")
+        console.error("로그인 실패:", response.message)
+        setUser(null)
+        return false
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("로그인 실패:", error)
+      const errorMessage =
+        error.response?.data?.message || "로그인에 실패했습니다."
       setUser(null)
       return false
     } finally {
@@ -49,10 +52,12 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     authApi.logout()
     setUser(null)
-    // 브라우저에서 추가 클린업
+
+    // 로그인 페이지로 리다이렉트
     if (typeof window !== "undefined") {
       localStorage.removeItem("auth_token")
       localStorage.removeItem("user_data")
+      window.location.href = "/admin/login"
     }
   }
 
@@ -99,26 +104,21 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       if (!isLoginPage) {
         checkAuth()
       } else {
-        // 로그인 페이지에서는 로딩 상태만 false로 설정
         setIsLoading(false)
       }
     }
   }, [])
 
-  return (
-    <AdminContext.Provider
-      value={{
-        user,
-        isLoading,
-        isAuthenticated: !!user,
-        login,
-        logout,
-        checkAuth,
-      }}
-    >
-      {children}
-    </AdminContext.Provider>
-  )
+  const value: AdminContextType = {
+    user,
+    isLoading,
+    isAuthenticated: !!user && user.role === "admin",
+    login,
+    logout,
+    checkAuth,
+  }
+
+  return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
 }
 
 export function useAdmin() {

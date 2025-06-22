@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import { format } from "date-fns"
 import { ko } from "date-fns/locale"
-import { useNoticeList } from "@/hooks/useNotice"
-import { useLandingPageData } from "@/hooks/use-landing-page"
+import { usePublishedNotices } from "@/hooks/useNotices"
+import { useLandingPageData } from "@/hooks/useLandingPage"
 import { getLocationBasedBrandName, testFunction } from "@/utils/location"
 import ContentSection from "@/components/landing/ContentSection"
 import type { LandingPageData } from "@/types/landing-page"
@@ -174,7 +174,7 @@ const HeroSection = () => {
 }
 
 const NoticeSection = () => {
-  const { notices, loading, error, fetchPublishedNotices } = useNoticeList()
+  const { data: notices, isLoading, error } = usePublishedNotices()
 
   // 날짜 포맷 함수
   const formatDate = (dateString: string) => {
@@ -191,18 +191,7 @@ const NoticeSection = () => {
     return content.slice(0, maxLength) + "..."
   }
 
-  useEffect(() => {
-    const loadNotices = async () => {
-      try {
-        // 최근 공지사항 불러오기
-        await fetchPublishedNotices()
-      } catch (err) {
-        console.error("공지사항을 불러오는데 실패했습니다:", err)
-      }
-    }
-
-    loadNotices()
-  }, [fetchPublishedNotices])
+  // React Query handles data fetching automatically
 
   return (
     <section className={noticeStyles.noticeSection}>
@@ -214,7 +203,7 @@ const NoticeSection = () => {
           </p>
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className={noticeStyles.noticeLoadingContainer}>
             <div className={noticeStyles.noticeLoadingSpinner}>
               <div className={noticeStyles.noticeLoadingSpinnerDot}></div>
