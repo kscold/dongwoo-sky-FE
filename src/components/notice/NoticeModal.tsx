@@ -44,7 +44,7 @@ export default function NoticeModal() {
           {/* 첨부파일 이미지만 표시 */}
           {currentNotice.attachments &&
             currentNotice.attachments.length > 0 && (
-              <div style={{ marginTop: "20px" }}>
+              <div className={styles.imageContainer}>
                 {currentNotice.attachments.map(
                   (attachment: any, index: number) => {
                     const fileExtension = attachment.name
@@ -62,18 +62,13 @@ export default function NoticeModal() {
 
                     if (isImage) {
                       return (
-                        <div key={index} style={{ marginBottom: "12px" }}>
+                        <div key={index} className={styles.imageWrapper}>
                           <Image
                             src={attachment.url}
                             alt={attachment.name}
-                            width={600}
-                            height={400}
-                            style={{
-                              width: "100%",
-                              height: "auto",
-                              borderRadius: "12px",
-                              border: "1px solid rgba(0, 0, 0, 0.06)",
-                            }}
+                            width={800}
+                            height={600}
+                            className={styles.noticeImage}
                             onError={(e) => {
                               console.log("이미지 로드 실패:", attachment.url)
                               e.currentTarget.style.display = "none"

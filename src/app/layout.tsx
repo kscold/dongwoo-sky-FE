@@ -2,6 +2,7 @@
 
 // import type { Metadata } from "next"; // 사용하지 않으므로 제거
 import { Inter } from "next/font/google"
+import { usePathname } from "next/navigation"
 import "@/styles/reset.css"
 import "./globals.css"
 
@@ -26,12 +27,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const pathname = usePathname()
+  const isAdminPage = pathname?.startsWith("/admin")
+
   return (
     <html lang="ko" className={inter.variable}>
       <body>
         <QueryProvider>
           {children}
-          <NoticeModal />
+          {!isAdminPage && <NoticeModal />}
           <FloatingCallButton />
         </QueryProvider>
       </body>

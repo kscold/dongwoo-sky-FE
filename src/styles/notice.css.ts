@@ -222,9 +222,9 @@ export const modalOverlay = style({
 export const modalContent = style({
   backgroundColor: "#ffffff",
   borderRadius: "20px",
-  maxWidth: "520px",
+  maxWidth: "600px",
   width: "100%",
-  maxHeight: "85vh",
+  maxHeight: "90vh",
   display: "flex",
   flexDirection: "column",
   boxShadow:
@@ -303,19 +303,61 @@ export const closeButton = style({
   },
 })
 export const modalBody = style({
-  padding: "24px",
+  padding: "0 24px 24px 24px",
   overflow: "auto",
   flex: 1,
   backgroundColor: "#ffffff",
+  scrollbarWidth: "thin",
+  scrollbarColor: "rgba(0, 0, 0, 0.2) transparent",
+  "::-webkit-scrollbar": {
+    width: "6px",
+  },
+  "::-webkit-scrollbar-track": {
+    background: "transparent",
+  },
+  "::-webkit-scrollbar-thumb": {
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    borderRadius: "3px",
+  },
 })
 
 export const noticeContent = style({
   fontSize: "16px",
-  lineHeight: "1.5",
+  lineHeight: "1.6",
   color: "#1D1D1F",
   whiteSpace: "pre-wrap",
   fontWeight: "400",
   letterSpacing: "-0.01em",
+  marginBottom: "8px",
+})
+
+// 이미지 컨테이너 스타일
+export const imageContainer = style({
+  marginTop: "16px",
+  borderTop: "1px solid rgba(0, 0, 0, 0.08)",
+  paddingTop: "20px",
+})
+
+export const imageWrapper = style({
+  marginBottom: "12px",
+  borderRadius: "12px",
+  overflow: "hidden",
+  backgroundColor: "#FAFAFA",
+  border: "1px solid rgba(0, 0, 0, 0.08)",
+  boxShadow: "0 1px 4px rgba(0, 0, 0, 0.08)",
+  transition: "transform 0.2s ease, box-shadow 0.2s ease",
+  ":hover": {
+    transform: "translateY(-1px)",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.12)",
+  },
+})
+
+export const noticeImage = style({
+  width: "100%",
+  height: "auto",
+  maxHeight: "320px",
+  objectFit: "cover",
+  display: "block",
 })
 
 export const modalFooter = style({
