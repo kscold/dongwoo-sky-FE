@@ -101,17 +101,14 @@ export const getAddressFromCoords = async (
 ): Promise<LocationInfo | null> => {
   try {
     console.log("🌍 위치 좌표:", { latitude, longitude })
+    console.log(
+      "🔑 카카오 API 키 확인:",
+      process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY ? "✅ 존재" : "❌ 없음"
+    )
 
-    // Kakao Map API의 좌표 -> 주소 변환 서비스 사용
+    // Next.js API 라우트를 통해 카카오 API 호출
     const response = await fetch(
-      `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`,
-      {
-        headers: {
-          Authorization: `KakaoAK ${
-            process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY || "YOUR_KAKAO_API_KEY"
-          }`,
-        },
-      }
+      `/api/kakao/geocode?x=${longitude}&y=${latitude}`
     )
 
     console.log("📡 Kakao API 응답 상태:", response.status)
