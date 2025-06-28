@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useAdmin } from "@/context/AdminContext"
+import { useAdmin } from "@/common/context/AdminContext"
 
 export default function AdminRedirectPage() {
   const { isAuthenticated } = useAdmin()

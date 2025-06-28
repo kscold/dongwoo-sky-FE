@@ -3,13 +3,13 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { useAdmin } from "@/context/AdminContext"
+import { useAdmin } from "@/common/context/AdminContext"
 import { vehicleTypeApi } from "@/api/vehicle-type"
 import {
   VehicleType,
   CreateVehicleTypeDto,
   UpdateVehicleTypeDto,
-} from "@/types/vehicle-type"
+} from "@/common/types/vehicle-type"
 import {
   adminContainer,
   adminHeader,

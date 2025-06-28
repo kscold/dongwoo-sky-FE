@@ -3,9 +3,10 @@
 import { useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useAdmin } from "@/context/AdminContext"
-import ProtectedRoute from "@/components/auth/ProtectedRoute"
-import * as styles from "../../../styles/dashboard.css"
+import { useAdmin } from "@/common/context/AdminContext"
+import ProtectedRoute from "@/common/auth/ProtectedRoute"
+
+import * as styles from "../../../styles/admin/dashboard.css"
 
 function AdminDashboardContent() {
   const { user, logout, isLoading } = useAdmin()

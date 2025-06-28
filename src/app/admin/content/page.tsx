@@ -10,9 +10,9 @@ import {
   useTopCustomerReviews,
   useWorkShowcases,
   useCustomerReviews,
-} from "@/hooks/useContent"
-import type { WorkShowcase, CustomerReview } from "@/types/content"
-import * as styles from "../../../styles/admin/content-admin.css"
+} from "@/common/hooks/useContent"
+import type { WorkShowcase, CustomerReview } from "@/common/types/content"
+import * as styles from "../../../styles/admin/admin-content.css"
 
 export default function ContentAdminPage() {
   const [activeTab, setActiveTab] = useState<"work" | "review">("work")

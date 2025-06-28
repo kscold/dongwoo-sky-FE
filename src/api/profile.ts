@@ -1,4 +1,8 @@
-import { Profile, CreateProfileDto, UpdateProfileDto } from "@/types/profile"
+import {
+  Profile,
+  CreateProfileDto,
+  UpdateProfileDto,
+} from "@/common/types/profile"
 import { apiClient } from "./client"
 
 export const profileApi = {

@@ -2,7 +2,7 @@ import {
   Equipment,
   CreateEquipmentDto,
   UpdateEquipmentDto,
-} from "@/types/equipment"
+} from "@/common/types/equipment"
 import { apiClient } from "./client"
 
 export const equipmentApi = {

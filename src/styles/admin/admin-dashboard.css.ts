@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css"
-import { vars } from "../theme.css"
+import { vars } from "../common/theme.css"
 
 export const dashboardContainer = style({
   minHeight: "100vh",

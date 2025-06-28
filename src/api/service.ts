@@ -1,4 +1,8 @@
-import { Service, CreateServiceDto, UpdateServiceDto } from "@/types/service"
+import {
+  Service,
+  CreateServiceDto,
+  UpdateServiceDto,
+} from "@/common/types/service"
 import { apiClient } from "./client"
 
 export const serviceApi = {

@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react"
 import Image from "next/image"
-import { useAdmin } from "@/context/AdminContext"
-import { Equipment, CreateEquipmentDto } from "@/types/equipment"
+import { useAdmin } from "@/common/context/AdminContext"
+import { Equipment, CreateEquipmentDto } from "@/common/types/equipment"
 import { equipmentApi } from "@/api/equipment"
 import * as styles from "../../../styles/admin/admin-equipment.css"
 import {

@@ -5,10 +5,10 @@ import {
   useLandingPageData,
   useUpdateLandingPage,
   useUploadHeroImage,
-} from "@/hooks/useLandingPage"
-import type { LandingPageData } from "@/types/landing-page"
-import ProtectedRoute from "@/components/auth/ProtectedRoute"
-import * as styles from "../../../styles/admin/landing-page-admin.css"
+} from "@/common/hooks/useLandingPage"
+import type { LandingPageData } from "@/common/types/landing-page"
+import ProtectedRoute from "@/common/auth/ProtectedRoute"
+import * as styles from "../../../styles/admin/admin-landing-page.css"
 
 function LandingPageAdminContent() {
   const { data, isLoading, error } = useLandingPageData()

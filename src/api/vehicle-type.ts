@@ -3,7 +3,7 @@ import {
   VehicleType,
   CreateVehicleTypeDto,
   UpdateVehicleTypeDto,
-} from "@/types/vehicle-type"
+} from "@/common/types/vehicle-type"
 
 export const vehicleTypeApi = {
   // 활성화된 차량 타입 목록 조회 (공개)

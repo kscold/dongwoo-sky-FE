@@ -5,7 +5,7 @@ import {
   UpdateNoticeDto,
   FileUploadResponse,
   NoticeStats,
-} from "@/types/notice"
+} from "@/common/types/notice"
 
 interface ApiResponse<T> {
   success: boolean

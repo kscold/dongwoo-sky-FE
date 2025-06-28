@@ -2,8 +2,12 @@
 
 import React, { useState, useEffect } from "react"
 import { serviceApi } from "@/api/service"
-import { Service, CreateServiceDto, UpdateServiceDto } from "@/types/service"
-import { useAdmin } from "@/context/AdminContext"
+import {
+  Service,
+  CreateServiceDto,
+  UpdateServiceDto,
+} from "@/common/types/service"
+import { useAdmin } from "@/common/context/AdminContext"
 import * as styles from "@/styles/admin/admin-common.css"
 
 export default function AdminServicePage() {

@@ -50,6 +50,10 @@
     ],
     "rewrites": [
         {
+            "source": "/api/kakao/v2/local/geo/coord2address.json",
+            "destination": "https://dapi.kakao.com/v2/local/geo/coord2address.json"
+        },
+        {
             "source": "/api/:path*",
             "destination": "https://ru5diuqn9d.execute-api.ap-northeast-2.amazonaws.com/dev/api/:path*"
         }

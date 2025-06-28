@@ -2,35 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useAdmin } from "@/context/AdminContext"
-import { profileApi } from "@/api/profile"
-import { Profile, CreateProfileDto, UpdateProfileDto } from "@/types/profile"
+import { useAdmin } from "../../../common/context/AdminContext"
+import { profileApi } from "../../../api/profile"
 import {
-  adminContainer,
-  adminHeader,
-  adminTitle,
-  adminContent,
-  adminTable,
-  adminTableHeader,
-  adminTableRow,
-  adminTableCell,
-  adminButton,
-  adminButtonPrimary,
-  adminButtonSecondary,
-  adminButtonDanger,
-  adminModal,
-  adminModalContent,
-  adminForm,
-  adminFormGroup,
-  adminLabel,
-  adminInput,
-  adminTextarea,
-  adminCheckbox,
-  adminButtonGroup,
-  adminLoadingSpinner,
-  adminError,
-  adminSuccess,
-} from "@/styles/admin/admin-common.css"
+  Profile,
+  CreateProfileDto,
+  UpdateProfileDto,
+} from "@/common/types/profile"
+import * as AdminCommon from "../../../styles/admin/admin-common.css"
 
 export default function AdminProfilePage() {
   const router = useRouter()
@@ -183,18 +162,18 @@ export default function AdminProfilePage() {
   }
 
   return (
-    <div className={adminContainer}>
-      <div className={adminHeader}>
-        <h1 className={adminTitle}>프로필 관리</h1>
-        <div className={adminButtonGroup}>
+    <div className={AdminCommon.adminContainer}>
+      <div className={AdminCommon.adminHeader}>
+        <h1 className={AdminCommon.adminTitle}>프로필 관리</h1>
+        <div className={AdminCommon.adminButtonGroup}>
           <button
-            className={`${adminButton} ${adminButtonPrimary}`}
+            className={`${AdminCommon.adminButton} ${AdminCommon.adminButtonPrimary}`}
             onClick={() => openModal()}
           >
             프로필 추가
           </button>
           <button
-            className={`${adminButton} ${adminButtonSecondary}`}
+            className={`${AdminCommon.adminButton} ${AdminCommon.adminButtonSecondary}`}
             onClick={logout}
           >
             로그아웃
@@ -202,48 +181,52 @@ export default function AdminProfilePage() {
         </div>
       </div>
 
-      <div className={adminContent}>
-        {error && <div className={adminError}>{error}</div>}
-        {success && <div className={adminSuccess}>{success}</div>}
+      <div className={AdminCommon.adminContent}>
+        {error && <div className={AdminCommon.adminError}>{error}</div>}
+        {success && <div className={AdminCommon.adminSuccess}>{success}</div>}
 
         {loading ? (
-          <div className={adminLoadingSpinner}>로딩 중...</div>
+          <div className={AdminCommon.adminLoadingSpinner}>로딩 중...</div>
         ) : (
-          <table className={adminTable}>
+          <table className={AdminCommon.adminTable}>
             <thead>
-              <tr className={adminTableHeader}>
-                <th className={adminTableCell}>이름</th>
-                <th className={adminTableCell}>직책</th>
-                <th className={adminTableCell}>소개</th>
-                <th className={adminTableCell}>상태</th>
-                <th className={adminTableCell}>정렬순서</th>
-                <th className={adminTableCell}>작업</th>
+              <tr className={AdminCommon.adminTableHeader}>
+                <th className={AdminCommon.adminTableCell}>이름</th>
+                <th className={AdminCommon.adminTableCell}>직책</th>
+                <th className={AdminCommon.adminTableCell}>소개</th>
+                <th className={AdminCommon.adminTableCell}>상태</th>
+                <th className={AdminCommon.adminTableCell}>정렬순서</th>
+                <th className={AdminCommon.adminTableCell}>작업</th>
               </tr>
             </thead>
             <tbody>
               {profiles.map((profile) => (
-                <tr key={profile._id} className={adminTableRow}>
-                  <td className={adminTableCell}>{profile.name}</td>
-                  <td className={adminTableCell}>{profile.title}</td>
-                  <td className={adminTableCell}>
+                <tr key={profile._id} className={AdminCommon.adminTableRow}>
+                  <td className={AdminCommon.adminTableCell}>{profile.name}</td>
+                  <td className={AdminCommon.adminTableCell}>
+                    {profile.title}
+                  </td>
+                  <td className={AdminCommon.adminTableCell}>
                     {profile.introduction.length > 50
                       ? `${profile.introduction.substring(0, 50)}...`
                       : profile.introduction}
                   </td>
-                  <td className={adminTableCell}>
+                  <td className={AdminCommon.adminTableCell}>
                     {profile.isActive ? "활성" : "비활성"}
                   </td>
-                  <td className={adminTableCell}>{profile.sortOrder}</td>
-                  <td className={adminTableCell}>
-                    <div className={adminButtonGroup}>
+                  <td className={AdminCommon.adminTableCell}>
+                    {profile.sortOrder}
+                  </td>
+                  <td className={AdminCommon.adminTableCell}>
+                    <div className={AdminCommon.adminButtonGroup}>
                       <button
-                        className={`${adminButton} ${adminButtonSecondary}`}
+                        className={`${AdminCommon.adminButton} ${AdminCommon.adminButtonSecondary}`}
                         onClick={() => openModal(profile)}
                       >
                         수정
                       </button>
                       <button
-                        className={`${adminButton} ${adminButtonDanger}`}
+                        className={`${AdminCommon.adminButton} ${AdminCommon.adminButtonDanger}`}
                         onClick={() => handleDelete(profile._id)}
                       >
                         삭제
@@ -259,19 +242,19 @@ export default function AdminProfilePage() {
 
       {/* 모달 */}
       {isModalOpen && (
-        <div className={adminModal}>
-          <div className={adminModalContent}>
+        <div className={AdminCommon.adminModal}>
+          <div className={AdminCommon.adminModalContent}>
             <h2>{editingProfile ? "프로필 수정" : "프로필 추가"}</h2>
 
-            <form onSubmit={handleSave} className={adminForm}>
-              <div className={adminFormGroup}>
-                <label htmlFor="name" className={adminLabel}>
+            <form onSubmit={handleSave} className={AdminCommon.adminForm}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label htmlFor="name" className={AdminCommon.adminLabel}>
                   이름 *
                 </label>
                 <input
                   type="text"
                   id="name"
-                  className={adminInput}
+                  className={AdminCommon.adminInput}
                   value={formData.name}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, name: e.target.value }))
@@ -280,14 +263,14 @@ export default function AdminProfilePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label htmlFor="title" className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label htmlFor="title" className={AdminCommon.adminLabel}>
                   직책 *
                 </label>
                 <input
                   type="text"
                   id="title"
-                  className={adminInput}
+                  className={AdminCommon.adminInput}
                   value={formData.title}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, title: e.target.value }))
@@ -296,13 +279,16 @@ export default function AdminProfilePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label htmlFor="introduction" className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label
+                  htmlFor="introduction"
+                  className={AdminCommon.adminLabel}
+                >
                   소개 *
                 </label>
                 <textarea
                   id="introduction"
-                  className={adminTextarea}
+                  className={AdminCommon.adminTextarea}
                   value={formData.introduction}
                   onChange={(e) =>
                     setFormData((prev) => ({
@@ -315,14 +301,17 @@ export default function AdminProfilePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label htmlFor="profileImage" className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label
+                  htmlFor="profileImage"
+                  className={AdminCommon.adminLabel}
+                >
                   프로필 이미지 URL
                 </label>
                 <input
                   type="url"
                   id="profileImage"
-                  className={adminInput}
+                  className={AdminCommon.adminInput}
                   value={formData.profileImage}
                   onChange={(e) =>
                     setFormData((prev) => ({
@@ -333,13 +322,13 @@ export default function AdminProfilePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label htmlFor="skills" className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label htmlFor="skills" className={AdminCommon.adminLabel}>
                   기술 스택 (한 줄에 하나씩)
                 </label>
                 <textarea
                   id="skills"
-                  className={adminTextarea}
+                  className={AdminCommon.adminTextarea}
                   value={formData.skills.join("\n")}
                   onChange={(e) => updateArrayField("skills", e.target.value)}
                   rows={4}
@@ -347,13 +336,13 @@ export default function AdminProfilePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label htmlFor="careers" className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label htmlFor="careers" className={AdminCommon.adminLabel}>
                   경력사항 (한 줄에 하나씩)
                 </label>
                 <textarea
                   id="careers"
-                  className={adminTextarea}
+                  className={AdminCommon.adminTextarea}
                   value={formData.careers.join("\n")}
                   onChange={(e) => updateArrayField("careers", e.target.value)}
                   rows={4}
@@ -361,14 +350,14 @@ export default function AdminProfilePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label htmlFor="sortOrder" className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label htmlFor="sortOrder" className={AdminCommon.adminLabel}>
                   정렬 순서
                 </label>
                 <input
                   type="number"
                   id="sortOrder"
-                  className={adminInput}
+                  className={AdminCommon.adminInput}
                   value={formData.sortOrder}
                   onChange={(e) =>
                     setFormData((prev) => ({
@@ -380,11 +369,11 @@ export default function AdminProfilePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label className={AdminCommon.adminLabel}>
                   <input
                     type="checkbox"
-                    className={adminCheckbox}
+                    className={AdminCommon.adminCheckbox}
                     checked={formData.isActive}
                     onChange={(e) =>
                       setFormData((prev) => ({
@@ -397,19 +386,21 @@ export default function AdminProfilePage() {
                 </label>
               </div>
 
-              {error && <div className={adminError}>{error}</div>}
-              {success && <div className={adminSuccess}>{success}</div>}
+              {error && <div className={AdminCommon.adminError}>{error}</div>}
+              {success && (
+                <div className={AdminCommon.adminSuccess}>{success}</div>
+              )}
 
-              <div className={adminButtonGroup}>
+              <div className={AdminCommon.adminButtonGroup}>
                 <button
                   type="submit"
-                  className={`${adminButton} ${adminButtonPrimary}`}
+                  className={`${AdminCommon.adminButton} ${AdminCommon.adminButtonPrimary}`}
                 >
                   {editingProfile ? "수정" : "생성"}
                 </button>
                 <button
                   type="button"
-                  className={`${adminButton} ${adminButtonSecondary}`}
+                  className={`${AdminCommon.adminButton} ${AdminCommon.adminButtonSecondary}`}
                   onClick={closeModal}
                 >
                   취소
