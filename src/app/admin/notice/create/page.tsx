@@ -41,13 +41,31 @@ export default function CreateNoticePage() {
       let attachments: { url: string; key: string; name: string }[] = []
       if (files.length > 0) {
         try {
+          console.log(
+            "파일 업로드 시작:",
+            files.map((f) => f.name)
+          )
           const uploadResult = await uploadImagesMutation.mutateAsync(files)
-          if (uploadResult && uploadResult.urls) {
-            attachments = uploadResult.urls.map((url, index) => ({
-              url,
-              key: `upload_${Date.now()}_${index}`,
-              name: files[index]?.name || `file_${index}`,
-            }))
+          console.log("파일 업로드 결과:", uploadResult)
+
+          if (uploadResult) {
+            // 백엔드에서 AttachmentDto[] 배열을 직접 반환하는 경우
+            if (
+              uploadResult.attachments &&
+              Array.isArray(uploadResult.attachments)
+            ) {
+              attachments = uploadResult.attachments
+              console.log("첨부파일 처리 완료 (attachments):", attachments)
+            }
+            // 기존 방식 (urls 배열)
+            else if (uploadResult.urls && Array.isArray(uploadResult.urls)) {
+              attachments = uploadResult.urls.map((url, index) => ({
+                url,
+                key: `upload_${Date.now()}_${index}`,
+                name: files[index]?.name || `file_${index}`,
+              }))
+              console.log("첨부파일 처리 완료 (urls):", attachments)
+            }
           }
         } catch (err) {
           console.error("파일 업로드 오류:", err)
@@ -108,14 +126,6 @@ export default function CreateNoticePage() {
       const fileList = Array.from(e.target.files)
       setFiles(fileList)
     }
-  }
-
-  // 로그인 상태가 아니면 아무것도 표시하지 않음
-  if (!isAuthenticated) {
-    if (typeof window !== "undefined") {
-      router.push("/admin/login")
-    }
-    return null
   }
 
   return (

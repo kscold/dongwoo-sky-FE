@@ -5,7 +5,12 @@ export const fileUploadApi = {
   uploadFiles: async (
     endpoint: string,
     files: File[]
-  ): Promise<{ imageUrls?: string[]; url?: string; urls?: string[] }> => {
+  ): Promise<{
+    imageUrls?: string[]
+    url?: string
+    urls?: string[]
+    attachments?: any[]
+  }> => {
     const formData = new FormData()
     files.forEach((file) => {
       formData.append("files", file)
@@ -28,6 +33,15 @@ export const fileUploadApi = {
     }
 
     const data = await response.json()
+    console.log("파일 업로드 API 응답:", data)
+
+    // 백엔드에서 AttachmentDto[] 배열을 직접 반환하는 경우 처리
+    if (Array.isArray(data)) {
+      const urls = data.map((item) => item.url)
+      console.log("추출된 URLs:", urls)
+      return { urls, attachments: data }
+    }
+
     return data.data || data
   },
 
@@ -35,7 +49,7 @@ export const fileUploadApi = {
   uploadFile: async (
     endpoint: string,
     file: File
-  ): Promise<{ imageUrl?: string; url?: string }> => {
+  ): Promise<{ imageUrl?: string; url?: string; attachment?: any }> => {
     const formData = new FormData()
     formData.append("file", file)
 
@@ -56,6 +70,13 @@ export const fileUploadApi = {
     }
 
     const data = await response.json()
+    console.log("단일 파일 업로드 API 응답:", data)
+
+    // 백엔드에서 AttachmentDto 객체를 직접 반환하는 경우 처리
+    if (data && data.url) {
+      return { url: data.url, attachment: data }
+    }
+
     return data.data || data
   },
 }

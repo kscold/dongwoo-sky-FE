@@ -34,13 +34,6 @@ export default function AdminProfilePage() {
     sortOrder: 0,
   })
 
-  // 로그인 확인
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/admin/login")
-    }
-  }, [isAuthenticated, router])
-
   // 프로필 목록 조회
   const fetchProfiles = async () => {
     try {
@@ -155,10 +148,6 @@ export default function AdminProfilePage() {
   const updateArrayField = (field: "skills" | "careers", value: string) => {
     const items = value.split("\n").filter((item) => item.trim() !== "")
     setFormData((prev) => ({ ...prev, [field]: items }))
-  }
-
-  if (!isAuthenticated) {
-    return <div>로그인이 필요합니다.</div>
   }
 
   return (

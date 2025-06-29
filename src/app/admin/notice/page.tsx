@@ -1,30 +1,19 @@
 "use client"
 
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { useAdmin } from "@/common/context/AdminContext"
-import { Notice } from "@/common/types/notice"
+import Link from "next/link"
+
+import { Notice } from "../../../common/types/notice"
 import {
   useNotices,
   useDeleteNotice,
   useUpdateNotice,
-} from "@/common/hooks/useNotices"
-import Link from "next/link"
-import * as styles from "@/styles/admin/admin-notice.css"
+} from "../../../common/hooks/useNotices"
+import * as styles from "../../../styles/admin/admin-notice.css"
 
 export default function AdminNoticesPage() {
-  const { isAuthenticated } = useAdmin()
-  const router = useRouter()
   const { data: notices, isLoading, error } = useNotices()
   const deleteNoticeMutation = useDeleteNotice()
   const updateNoticeMutation = useUpdateNotice()
-
-  // 로그인 상태가 아니면 로그인 페이지로 리다이렉트
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/admin/login")
-    }
-  }, [isAuthenticated, router])
 
   // 공지사항 삭제 핸들러
   const handleDelete = async (id: string) => {
@@ -75,10 +64,6 @@ export default function AdminNoticesPage() {
       2,
       "0"
     )}-${String(date.getDate()).padStart(2, "0")}`
-  }
-
-  if (!isAuthenticated) {
-    return null // 로그인 체크 중에는 아무것도 표시하지 않음
   }
 
   return (
@@ -152,7 +137,7 @@ export default function AdminNoticesPage() {
                   </td>
                   <td className={`${styles.tableCell} ${styles.actions}`}>
                     <Link
-                      href={`/admin/notice/edit/${notice._id}`}
+                      href={`/admin/notice/${notice._id}`}
                       className={styles.editButton}
                     >
                       수정

@@ -1,15 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { useParams } from "next/navigation"
-import { useNotice, useUpdateNotice } from "@/common/hooks/useNotices"
-import { useNoticeImagesUpload } from "@/common/hooks/useFileUpload"
-import { UpdateNoticeDto } from "@/common/types/notice"
+import { useRouter, useParams } from "next/navigation"
 import Link from "next/link"
-import * as notice from "../../../../styles/admin/admin-notice.css"
 
-import { useAdmin } from "@/common/context/AdminContext"
+import { useNotice, useUpdateNotice } from "../../../../common/hooks/useNotices"
+import { useNoticeImagesUpload } from "../../../../common/hooks/useFileUpload"
+import { UpdateNoticeDto } from "../../../../common/types/notice"
+import { useAdmin } from "../../../../common/context/AdminContext"
+
+import * as notice from "../../../../styles/admin/admin-notice.css"
 
 export default function EditNoticePage() {
   const { isAuthenticated } = useAdmin()
@@ -61,13 +61,35 @@ export default function EditNoticePage() {
       let attachments = formData.attachments || []
       if (files.length > 0) {
         try {
+          console.log(
+            "파일 업로드 시작:",
+            files.map((f) => f.name)
+          )
           const uploadResult = await uploadImagesMutation.mutateAsync(files)
-          if (uploadResult && uploadResult.urls) {
-            const newAttachments = uploadResult.urls.map((url, index) => ({
-              url,
-              key: `upload_${Date.now()}_${index}`,
-              name: files[index]?.name || `file_${index}`,
-            }))
+          console.log("파일 업로드 결과:", uploadResult)
+
+          if (uploadResult) {
+            let newAttachments: { url: string; key: string; name: string }[] =
+              []
+
+            // 백엔드에서 AttachmentDto[] 배열을 직접 반환하는 경우
+            if (
+              uploadResult.attachments &&
+              Array.isArray(uploadResult.attachments)
+            ) {
+              newAttachments = uploadResult.attachments
+              console.log("첨부파일 처리 완료 (attachments):", newAttachments)
+            }
+            // 기존 방식 (urls 배열)
+            else if (uploadResult.urls && Array.isArray(uploadResult.urls)) {
+              newAttachments = uploadResult.urls.map((url, index) => ({
+                url,
+                key: `upload_${Date.now()}_${index}`,
+                name: files[index]?.name || `file_${index}`,
+              }))
+              console.log("첨부파일 처리 완료 (urls):", newAttachments)
+            }
+
             attachments = [...attachments, ...newAttachments]
           }
         } catch (err) {
@@ -140,14 +162,6 @@ export default function EditNoticePage() {
       ...prev,
       attachments: prev.attachments?.filter((_, i) => i !== index),
     }))
-  }
-
-  // 로그인 상태가 아니면 아무것도 표시하지 않음
-  if (!isAuthenticated) {
-    if (typeof window !== "undefined") {
-      router.push("/admin/login")
-    }
-    return null
   }
 
   if (isLoadingNotice) {

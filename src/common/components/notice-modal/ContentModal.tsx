@@ -34,6 +34,8 @@ export const ContentModal: React.FC<ContentModalProps> = ({
   const [imageLoaded, setImageLoaded] = useState(false)
   const [imageError, setImageError] = useState(false)
 
+  console.log("ContentModal - isOpen:", isOpen, "title:", title)
+
   if (!isOpen) return null
 
   // 이미지만 추출

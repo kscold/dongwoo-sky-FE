@@ -1,14 +1,12 @@
 "use client"
 
-import { useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useAdmin } from "@/common/context/AdminContext"
-import ProtectedRoute from "@/common/auth/ProtectedRoute"
 
-import * as styles from "../../../styles/admin/dashboard.css"
+import * as styles from "../../../styles/admin/admin-dashboard.css"
 
-function AdminDashboardContent() {
+export default function AdminDashboardPage() {
   const { user, logout, isLoading } = useAdmin()
   const router = useRouter()
 
@@ -68,7 +66,7 @@ function AdminDashboardContent() {
           </div>
 
           <div className={styles.quickActionsGrid}>
-            <Link href="/admin/notices" className={styles.actionCard}>
+            <Link href="/admin/notice" className={styles.actionCard}>
               <div className={styles.actionIcon}>📢</div>
               <h3 className={styles.actionTitle}>공지사항 관리</h3>
               <p className={styles.actionDescription}>
@@ -100,6 +98,14 @@ function AdminDashboardContent() {
               </p>
             </Link>
 
+            <Link href="/admin/hero-settings" className={styles.actionCard}>
+              <div className={styles.actionIcon}>🏞️</div>
+              <h3 className={styles.actionTitle}>히어로 섹션 관리</h3>
+              <p className={styles.actionDescription}>
+                메인 페이지 상단 히어로 섹션을 관리할 수 있습니다.
+              </p>
+            </Link>
+
             <Link href="/admin/service" className={styles.actionCard}>
               <div className={styles.actionIcon}>⚙️</div>
               <h3 className={styles.actionTitle}>서비스 관리</h3>
@@ -119,13 +125,5 @@ function AdminDashboardContent() {
         </div>
       </div>
     </div>
-  )
-}
-
-export default function AdminDashboardPage() {
-  return (
-    <ProtectedRoute>
-      <AdminDashboardContent />
-    </ProtectedRoute>
   )
 }

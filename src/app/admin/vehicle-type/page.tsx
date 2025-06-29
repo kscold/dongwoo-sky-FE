@@ -1,45 +1,19 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { useAdmin } from "@/common/context/AdminContext"
-import { vehicleTypeApi } from "@/api/vehicle-type"
+
+import { useAdmin } from "../../../common/context/AdminContext"
+import { vehicleTypeApi } from "../../../api/vehicle-type"
 import {
   VehicleType,
   CreateVehicleTypeDto,
   UpdateVehicleTypeDto,
-} from "@/common/types/vehicle-type"
-import {
-  adminContainer,
-  adminHeader,
-  adminTitle,
-  adminContent,
-  adminTable,
-  adminTableHeader,
-  adminTableRow,
-  adminTableCell,
-  adminButton,
-  adminButtonPrimary,
-  adminButtonSecondary,
-  adminButtonDanger,
-  adminModal,
-  adminModalContent,
-  adminForm,
-  adminFormGroup,
-  adminLabel,
-  adminInput,
-  adminTextarea,
-  adminCheckbox,
-  adminButtonGroup,
-  adminLoadingSpinner,
-  adminError,
-  adminSuccess,
-} from "@/styles/admin/admin-common.css"
+} from "../../../common/types/vehicle-type"
+import * as AdminCommon from "../../../styles/admin/admin-common.css"
 
 export default function AdminVehicleTypePage() {
-  const router = useRouter()
-  const { isAuthenticated, logout } = useAdmin()
+  const { logout } = useAdmin()
 
   const [vehicleTypes, setVehicleTypes] = useState<VehicleType[]>([])
   const [loading, setLoading] = useState(true)
@@ -61,13 +35,6 @@ export default function AdminVehicleTypePage() {
     specifications: "",
   })
 
-  // 로그인 확인
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/admin/login")
-    }
-  }, [isAuthenticated, router])
-
   // 차량 타입 목록 조회
   const fetchVehicleTypes = async () => {
     try {
@@ -84,10 +51,8 @@ export default function AdminVehicleTypePage() {
   }
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchVehicleTypes()
-    }
-  }, [isAuthenticated])
+    fetchVehicleTypes()
+  }, [])
 
   // 폼 리셋
   const resetForm = () => {
@@ -184,23 +149,19 @@ export default function AdminVehicleTypePage() {
     setFormData((prev) => ({ ...prev, [field]: items }))
   }
 
-  if (!isAuthenticated) {
-    return <div>로그인이 필요합니다.</div>
-  }
-
   return (
-    <div className={adminContainer}>
-      <div className={adminHeader}>
-        <h1 className={adminTitle}>차량 타입 관리</h1>
-        <div className={adminButtonGroup}>
+    <div className={AdminCommon.adminContainer}>
+      <div className={AdminCommon.adminHeader}>
+        <h1 className={AdminCommon.adminTitle}>차량 타입 관리</h1>
+        <div className={AdminCommon.adminButtonGroup}>
           <button
-            className={`${adminButton} ${adminButtonPrimary}`}
+            className={`${AdminCommon.adminButton} ${AdminCommon.adminButtonPrimary}`}
             onClick={() => openModal()}
           >
             차량 타입 추가
           </button>
           <button
-            className={`${adminButton} ${adminButtonSecondary}`}
+            className={`${AdminCommon.adminButton} ${AdminCommon.adminButtonSecondary}`}
             onClick={logout}
           >
             로그아웃
@@ -208,41 +169,43 @@ export default function AdminVehicleTypePage() {
         </div>
       </div>
 
-      <div className={adminContent}>
-        {error && <div className={adminError}>{error}</div>}
-        {success && <div className={adminSuccess}>{success}</div>}
+      <div className={AdminCommon.adminContent}>
+        {error && <div className={AdminCommon.adminError}>{error}</div>}
+        {success && <div className={AdminCommon.adminSuccess}>{success}</div>}
 
         {loading ? (
-          <div className={adminLoadingSpinner}>로딩 중...</div>
+          <div className={AdminCommon.adminLoadingSpinner}>로딩 중...</div>
         ) : (
-          <table className={adminTable}>
+          <table className={AdminCommon.adminTable}>
             <thead>
-              <tr className={adminTableHeader}>
-                <th className={adminTableCell}>이름</th>
-                <th className={adminTableCell}>타입</th>
-                <th className={adminTableCell}>설명</th>
-                <th className={adminTableCell}>아이콘</th>
-                <th className={adminTableCell}>상태</th>
-                <th className={adminTableCell}>정렬순서</th>
-                <th className={adminTableCell}>작업</th>
+              <tr className={AdminCommon.adminTableHeader}>
+                <th className={AdminCommon.adminTableCell}>이름</th>
+                <th className={AdminCommon.adminTableCell}>타입</th>
+                <th className={AdminCommon.adminTableCell}>설명</th>
+                <th className={AdminCommon.adminTableCell}>아이콘</th>
+                <th className={AdminCommon.adminTableCell}>상태</th>
+                <th className={AdminCommon.adminTableCell}>정렬순서</th>
+                <th className={AdminCommon.adminTableCell}>작업</th>
               </tr>
             </thead>
             <tbody>
               {vehicleTypes.map((vehicleType) => (
-                <tr key={vehicleType._id} className={adminTableRow}>
-                  <td className={adminTableCell}>{vehicleType.name}</td>
-                  <td className={adminTableCell}>
+                <tr key={vehicleType._id} className={AdminCommon.adminTableRow}>
+                  <td className={AdminCommon.adminTableCell}>
+                    {vehicleType.name}
+                  </td>
+                  <td className={AdminCommon.adminTableCell}>
                     {vehicleType.type === "ladder"
                       ? "일반 사다리차"
                       : "스카이 사다리차"}
                   </td>
-                  <td className={adminTableCell}>
+                  <td className={AdminCommon.adminTableCell}>
                     {vehicleType.description &&
                     vehicleType.description.length > 30
                       ? `${vehicleType.description.substring(0, 30)}...`
                       : vehicleType.description || "-"}
                   </td>
-                  <td className={adminTableCell}>
+                  <td className={AdminCommon.adminTableCell}>
                     {vehicleType.iconUrl ? (
                       <Image
                         src={vehicleType.iconUrl}
@@ -257,20 +220,22 @@ export default function AdminVehicleTypePage() {
                       "-"
                     )}
                   </td>
-                  <td className={adminTableCell}>
+                  <td className={AdminCommon.adminTableCell}>
                     {vehicleType.isActive ? "활성" : "비활성"}
                   </td>
-                  <td className={adminTableCell}>{vehicleType.sortOrder}</td>
-                  <td className={adminTableCell}>
-                    <div className={adminButtonGroup}>
+                  <td className={AdminCommon.adminTableCell}>
+                    {vehicleType.sortOrder}
+                  </td>
+                  <td className={AdminCommon.adminTableCell}>
+                    <div className={AdminCommon.adminButtonGroup}>
                       <button
-                        className={`${adminButton} ${adminButtonSecondary}`}
+                        className={`${AdminCommon.adminButton} ${AdminCommon.adminButtonSecondary}`}
                         onClick={() => openModal(vehicleType)}
                       >
                         수정
                       </button>
                       <button
-                        className={`${adminButton} ${adminButtonDanger}`}
+                        className={`${AdminCommon.adminButton} ${AdminCommon.adminButtonDanger}`}
                         onClick={() => handleDelete(vehicleType._id)}
                       >
                         삭제
@@ -286,19 +251,19 @@ export default function AdminVehicleTypePage() {
 
       {/* 모달 */}
       {isModalOpen && (
-        <div className={adminModal}>
-          <div className={adminModalContent}>
+        <div className={AdminCommon.adminModal}>
+          <div className={AdminCommon.adminModalContent}>
             <h2>{editingVehicleType ? "차량 타입 수정" : "차량 타입 추가"}</h2>
 
-            <form onSubmit={handleSave} className={adminForm}>
-              <div className={adminFormGroup}>
-                <label htmlFor="name" className={adminLabel}>
+            <form onSubmit={handleSave} className={AdminCommon.adminForm}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label htmlFor="name" className={AdminCommon.adminLabel}>
                   차량 이름 *
                 </label>
                 <input
                   type="text"
                   id="name"
-                  className={adminInput}
+                  className={AdminCommon.adminInput}
                   value={formData.name}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, name: e.target.value }))
@@ -307,13 +272,13 @@ export default function AdminVehicleTypePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label htmlFor="type" className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label htmlFor="type" className={AdminCommon.adminLabel}>
                   차량 타입 *
                 </label>
                 <select
                   id="type"
-                  className={adminInput}
+                  className={AdminCommon.adminInput}
                   value={formData.type}
                   onChange={(e) =>
                     setFormData((prev) => ({
@@ -328,13 +293,13 @@ export default function AdminVehicleTypePage() {
                 </select>
               </div>
 
-              <div className={adminFormGroup}>
-                <label htmlFor="description" className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label htmlFor="description" className={AdminCommon.adminLabel}>
                   설명
                 </label>
                 <textarea
                   id="description"
-                  className={adminTextarea}
+                  className={AdminCommon.adminTextarea}
                   value={formData.description}
                   onChange={(e) =>
                     setFormData((prev) => ({
@@ -346,14 +311,14 @@ export default function AdminVehicleTypePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label htmlFor="iconUrl" className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label htmlFor="iconUrl" className={AdminCommon.adminLabel}>
                   아이콘 URL
                 </label>
                 <input
                   type="url"
                   id="iconUrl"
-                  className={adminInput}
+                  className={AdminCommon.adminInput}
                   value={formData.iconUrl}
                   onChange={(e) =>
                     setFormData((prev) => ({
@@ -364,13 +329,16 @@ export default function AdminVehicleTypePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label htmlFor="specifications" className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label
+                  htmlFor="specifications"
+                  className={AdminCommon.adminLabel}
+                >
                   사양 정보
                 </label>
                 <textarea
                   id="specifications"
-                  className={adminTextarea}
+                  className={AdminCommon.adminTextarea}
                   value={formData.specifications}
                   onChange={(e) =>
                     setFormData((prev) => ({
@@ -383,13 +351,13 @@ export default function AdminVehicleTypePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label htmlFor="priceRanges" className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label htmlFor="priceRanges" className={AdminCommon.adminLabel}>
                   가격대 정보 (한 줄에 하나씩)
                 </label>
                 <textarea
                   id="priceRanges"
-                  className={adminTextarea}
+                  className={AdminCommon.adminTextarea}
                   value={formData.priceRanges?.join("\n") || ""}
                   onChange={(e) =>
                     updateArrayField("priceRanges", e.target.value)
@@ -399,14 +367,14 @@ export default function AdminVehicleTypePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label htmlFor="sortOrder" className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label htmlFor="sortOrder" className={AdminCommon.adminLabel}>
                   정렬 순서
                 </label>
                 <input
                   type="number"
                   id="sortOrder"
-                  className={adminInput}
+                  className={AdminCommon.adminInput}
                   value={formData.sortOrder}
                   onChange={(e) =>
                     setFormData((prev) => ({
@@ -418,11 +386,11 @@ export default function AdminVehicleTypePage() {
                 />
               </div>
 
-              <div className={adminFormGroup}>
-                <label className={adminLabel}>
+              <div className={AdminCommon.adminFormGroup}>
+                <label className={AdminCommon.adminLabel}>
                   <input
                     type="checkbox"
-                    className={adminCheckbox}
+                    className={AdminCommon.adminCheckbox}
                     checked={formData.isActive}
                     onChange={(e) =>
                       setFormData((prev) => ({
@@ -435,19 +403,21 @@ export default function AdminVehicleTypePage() {
                 </label>
               </div>
 
-              {error && <div className={adminError}>{error}</div>}
-              {success && <div className={adminSuccess}>{success}</div>}
+              {error && <div className={AdminCommon.adminError}>{error}</div>}
+              {success && (
+                <div className={AdminCommon.adminSuccess}>{success}</div>
+              )}
 
-              <div className={adminButtonGroup}>
+              <div className={AdminCommon.adminButtonGroup}>
                 <button
                   type="submit"
-                  className={`${adminButton} ${adminButtonPrimary}`}
+                  className={`${AdminCommon.adminButton} ${AdminCommon.adminButtonPrimary}`}
                 >
                   {editingVehicleType ? "수정" : "생성"}
                 </button>
                 <button
                   type="button"
-                  className={`${adminButton} ${adminButtonSecondary}`}
+                  className={`${AdminCommon.adminButton} ${AdminCommon.adminButtonSecondary}`}
                   onClick={closeModal}
                 >
                   취소
