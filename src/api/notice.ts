@@ -43,12 +43,9 @@ export const noticeApi = {
       console.log("API 응답:", response.data)
 
       if (response.data.success && response.data.data) {
-        // isModal이 false인 공지사항만 필터링
-        const filteredNotices = response.data.data.filter(
-          (notice) => notice.isModal !== true
-        )
-        console.log("필터링된 공지사항:", filteredNotices)
-        return filteredNotices
+        // 모든 공개된 공지사항을 반환 (클라이언트에서 필터링)
+        console.log("공개된 공지사항:", response.data.data)
+        return response.data.data
       }
       throw new Error(response.data.message || "공지사항 조회에 실패했습니다.")
     } catch (error: unknown) {

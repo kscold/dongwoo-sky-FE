@@ -1,7 +1,7 @@
 import { apiClient } from "./client"
 import { LandingPageData } from "@/common/types/landing-page"
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081/api"
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api"
 
 export const landingPageApi = {
   // 현재 활성화된 랜딩 페이지 데이터 가져오기

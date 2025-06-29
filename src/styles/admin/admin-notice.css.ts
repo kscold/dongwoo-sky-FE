@@ -333,3 +333,123 @@ export const cancelButton = style({
     backgroundColor: vars.colors.backgroundLight,
   },
 })
+
+// 첨부파일 관련 스타일
+export const attachmentList = style({
+  listStyle: "none",
+  padding: 0,
+  margin: 0,
+})
+
+export const attachmentItem = style({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: vars.space.md,
+  backgroundColor: vars.colors.backgroundLight,
+  borderRadius: vars.radii.md,
+  border: `1px solid ${vars.colors.border}`,
+  marginBottom: vars.space.sm,
+})
+
+export const attachmentName = style({
+  fontSize: vars.fontSizes.sm,
+  color: vars.colors.text,
+  flex: 1,
+})
+
+export const removeButton = style({
+  padding: `${vars.space.xs} ${vars.space.sm}`,
+  backgroundColor: "#DC2626",
+  color: vars.colors.white,
+  border: "none",
+  borderRadius: vars.radii.sm,
+  fontSize: vars.fontSizes.xs,
+  cursor: "pointer",
+  ":hover": {
+    backgroundColor: "#B91C1C",
+  },
+})
+
+// 공지사항 상세 페이지 스타일
+export const noticeHeader = style({
+  marginBottom: vars.space.lg,
+  paddingBottom: vars.space.md,
+  borderBottom: `1px solid ${vars.colors.border}`,
+})
+
+export const noticeDetail = style({
+  backgroundColor: vars.colors.white,
+  padding: vars.space.xl,
+  borderRadius: vars.radii.lg,
+  border: `1px solid ${vars.colors.border}`,
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
+})
+
+export const detailTitle = style({
+  fontSize: vars.fontSizes.xxl,
+  fontWeight: vars.fontWeights.bold,
+  color: vars.colors.textStrong,
+  marginBottom: vars.space.md,
+  lineHeight: "1.3",
+})
+
+export const detailInfo = style({
+  marginBottom: vars.space.lg,
+  paddingBottom: vars.space.md,
+  borderBottom: `1px solid ${vars.colors.border}`,
+})
+
+export const detailDate = style({
+  fontSize: vars.fontSizes.sm,
+  color: vars.colors.textLight,
+})
+
+export const detailContent = style({
+  fontSize: vars.fontSizes.md,
+  lineHeight: "1.8",
+  color: vars.colors.text,
+  marginBottom: vars.space.xl,
+  whiteSpace: "pre-wrap",
+})
+
+export const detailAttachments = style({
+  marginTop: vars.space.xl,
+  padding: vars.space.lg,
+  backgroundColor: vars.colors.backgroundLight,
+  borderRadius: vars.radii.lg,
+})
+
+export const attachmentsTitle = style({
+  fontSize: vars.fontSizes.lg,
+  fontWeight: vars.fontWeights.semibold,
+  color: vars.colors.textStrong,
+  marginBottom: vars.space.md,
+})
+
+export const attachmentsList = style({
+  listStyle: "none",
+  padding: 0,
+  margin: 0,
+})
+
+export const imageAttachment = style({
+  textAlign: "center",
+  marginBottom: vars.space.md,
+})
+
+export const attachmentImage = style({
+  maxWidth: "100%",
+  height: "auto",
+  borderRadius: vars.radii.md,
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+})
+
+export const attachmentLink = style({
+  color: vars.colors.primary,
+  textDecoration: "none",
+  fontSize: vars.fontSizes.sm,
+  ":hover": {
+    textDecoration: "underline",
+  },
+})

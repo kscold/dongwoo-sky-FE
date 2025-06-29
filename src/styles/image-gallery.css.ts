@@ -38,17 +38,8 @@ export const singleImageWrapper = style({
 // 단일 이미지 - 원본 비율 유지하면서 예쁘게
 export const singleImage = style({
   width: "100%",
-  // height: "auto",
-  // maxHeight: "300px",
   objectFit: "contain",
   backgroundColor: "#fff",
-  // display: "block",
-
-  // "@media": {
-  //   "(max-width: 480px)": {
-  //     maxHeight: "250px",
-  //   },
-  // },
 })
 
 // 다중 이미지 그리드 - 깔끔한 정사각형 그리드

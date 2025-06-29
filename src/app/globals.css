@@ -5,7 +5,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -17,13 +18,42 @@ body {
   line-height: 1.6;
   color: #333;
   background-color: #fff;
+  overflow-x: hidden;
+  /* 가로 스크롤 방지 */
 }
 
-/* 
-  기본 배경색과 글자색은 Tailwind CSS의 기본값 또는
-  Vanilla Extract의 theme.css.ts 및 reset.css.ts에서 관리합니다.
-  필요에 따라 여기에 최소한의 전역 스타일을 추가할 수 있습니다.
-*/
+
+/* 기본 요소들의 스타일 리셋 */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 
 /* 모달 애니메이션 키프레임 */
 @keyframes fadeIn {

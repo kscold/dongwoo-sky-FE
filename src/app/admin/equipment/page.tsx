@@ -40,10 +40,8 @@ export default function AdminEquipmentPage() {
   const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchEquipment()
-    }
-  }, [isAuthenticated])
+    fetchEquipment()
+  }, [])
 
   const fetchEquipment = async () => {
     try {
@@ -174,14 +172,6 @@ export default function AdminEquipmentPage() {
     const newCapabilities = [...(formData.capabilities || [])]
     newCapabilities.splice(index, 1)
     setFormData({ ...formData, capabilities: newCapabilities })
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.unauthorized}>관리자 권한이 필요합니다.</div>
-      </div>
-    )
   }
 
   return (

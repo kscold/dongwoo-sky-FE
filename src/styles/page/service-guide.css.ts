@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css"
-import { vars } from "./theme.css"
+import { vars } from "../common/theme.css"
 
 // 페이지 전체 래퍼 (contact.css.ts와 유사)
 export const pageWrapper = style({
