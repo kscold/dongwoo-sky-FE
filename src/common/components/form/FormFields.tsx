@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import * as styles from "@/styles/components/form-fields.css"
+import * as styles from "@/styles/service/components/form-fields.css"
 
 interface FormFieldProps {
   label: string
@@ -39,9 +39,8 @@ export const Input: React.FC<InputProps> = ({
   return (
     <>
       <input
-        className={`${styles.input} ${
-          error ? styles.inputError : ""
-        } ${className}`}
+        className={`${styles.input} ${error ? styles.inputError : ""
+          } ${className}`}
         {...props}
       />
       {error && <span className={styles.errorText}>{error}</span>}
@@ -62,9 +61,8 @@ export const Textarea: React.FC<TextareaProps> = ({
   return (
     <>
       <textarea
-        className={`${styles.textarea} ${
-          error ? styles.inputError : ""
-        } ${className}`}
+        className={`${styles.textarea} ${error ? styles.inputError : ""
+          } ${className}`}
         {...props}
       />
       {error && <span className={styles.errorText}>{error}</span>}

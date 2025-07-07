@@ -28,6 +28,12 @@ export const vars = createGlobalTheme(":root", {
       100: "#F1F5F9",
       200: "#E2E8F0",
       300: "#CBD5E1",
+      400: "#9CA3AF",
+      500: "#6B7280",
+      600: "#4B5563",
+      700: "#374151",
+      800: "#1F2937",
+      900: "#111827",
     },
     gradientFrom: "#E0F2FE", // 더 세련된 그라데이션 시작색
     gradientTo: "#BFDBFE", // 더 세련된 그라데이션 끝색
@@ -37,6 +43,8 @@ export const vars = createGlobalTheme(":root", {
     overlayDark: "rgba(0, 0, 0, 0.7)", // 오버레이용 어두운 색
     overlayLight: "rgba(255, 255, 255, 0.92)", // 오버레이용 밝은 색
     accentTertiary: "#F59E0B", // 강조용 악센트 색상 (중장비 테마와 어울리는 주황색)
+    dangerDark: "#dc2626",
+    disabled: "#d1d5db",
   },
   fonts: {
     heading: "Pretendard, Inter, Noto Sans KR, sans-serif",

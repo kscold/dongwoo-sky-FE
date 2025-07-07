@@ -3,16 +3,15 @@ export interface Notice {
   _id: string
   title: string
   content: string
+  author: string
+  tags: string[]
   isPublished: boolean
+  isPinned: boolean
   isModal: boolean
-  publishedAt?: string
+  publishedAt: string
   createdAt: string
   updatedAt: string
-  attachments?: Array<{
-    url: string
-    key: string
-    name: string
-  }>
+  attachments?: Attachment[]
 }
 
 // 공지사항 생성 타입
@@ -21,6 +20,9 @@ export interface CreateNoticeDto {
   content: string
   isPublished?: boolean
   isModal?: boolean
+  modalEndDate?: string
+  author?: string
+  tags?: string[]
   attachments?: Array<{
     url: string
     key: string
@@ -29,17 +31,7 @@ export interface CreateNoticeDto {
 }
 
 // 공지사항 수정 타입
-export interface UpdateNoticeDto {
-  title?: string
-  content?: string
-  isPublished?: boolean
-  isModal?: boolean
-  attachments?: Array<{
-    url: string
-    key: string
-    name: string
-  }>
-}
+export type UpdateNoticeDto = Partial<CreateNoticeDto>
 
 // 파일 업로드 응답 타입
 export interface FileUploadResponse {
@@ -54,4 +46,25 @@ export interface NoticeStats {
   publishedNotices: number
   modalNotices: number
   recentNotices: number
+}
+
+// 페이지네이션된 공지사항 응답 타입
+export interface PaginatedNoticesResponse {
+  data: Notice[]
+  total: number
+  page: number
+  limit: number
+}
+
+export interface PaginatedNotices {
+  data: Notice[]
+  total: number
+  page: number
+  totalPages: number
+}
+
+export interface Attachment {
+  name: string
+  url: string
+  key: string
 }

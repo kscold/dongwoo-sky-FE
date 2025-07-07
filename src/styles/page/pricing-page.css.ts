@@ -1,622 +1,678 @@
-import { style } from "@vanilla-extract/css"
+import { style, keyframes } from "@vanilla-extract/css"
 import { vars } from "../common/theme.css"
 
-export const pageWrapper = style({
-  backgroundColor: vars.colors.gradientUtil,
-  minHeight: "100vh",
-  paddingTop: vars.space.xxxl,
-  paddingBottom: vars.space.xxxl,
-  paddingLeft: vars.space.lg,
-  paddingRight: vars.space.lg,
-  fontFamily: vars.fonts.body,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
+// 애니메이션 정의
+const fadeInUp = keyframes({
+    "0%": {
+        opacity: 0,
+        transform: "translateY(30px)",
+    },
+    "100%": {
+        opacity: 1,
+        transform: "translateY(0)",
+    },
 })
 
+const slideInRight = keyframes({
+    "0%": {
+        opacity: 0,
+        transform: "translateX(50px)",
+    },
+    "100%": {
+        opacity: 1,
+        transform: "translateX(0)",
+    },
+})
+
+const pulse = keyframes({
+    "0%, 100%": {
+        transform: "scale(1)",
+    },
+    "50%": {
+        transform: "scale(1.05)",
+    },
+})
+
+const spin = keyframes({
+    "0%": {
+        transform: "rotate(0deg)",
+    },
+    "100%": {
+        transform: "rotate(360deg)",
+    },
+})
+
+// 컨테이너 및 레이아웃
 export const container = style({
-  width: "100%",
-  maxWidth: vars.breakpoints.md,
-  margin: "0 auto",
+    maxWidth: "1200px",
+    margin: "0 auto",
+    padding: `0 ${vars.space.lg}`,
+    minHeight: "100vh",
 })
 
-export const header = style({
-  textAlign: "center",
-  marginBottom: vars.space.xxxxl,
+export const heroSection = style({
+    textAlign: "center",
+    padding: `${vars.space.xl} 0`,
+    marginBottom: vars.space.lg,
+    "@media": {
+        "screen and (max-width: 768px)": {
+            padding: `${vars.space.lg} 0`,
+            marginBottom: vars.space.md,
+        },
+    },
+})
+
+export const heroContent = style({
+    maxWidth: "800px",
+    margin: "0 auto",
+    animation: `${fadeInUp} 0.8s ease-out`,
 })
 
 export const mainTitle = style({
-  fontSize: vars.fontSizes.xxxxl,
-  fontWeight: vars.fontWeights.extrabold,
-  color: vars.colors.primary,
-  marginBottom: vars.space.md,
-  lineHeight: "1.2",
-  "@media": {
-    "(min-width: 768px)": {
-      fontSize: vars.fontSizes.xxxxxl,
+    fontSize: "3.5rem",
+    fontWeight: "800",
+    background: `linear-gradient(135deg, ${vars.colors.primary} 0%, ${vars.colors.secondary} 100%)`,
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+    marginBottom: vars.space.lg,
+    lineHeight: 1.2,
+    "@media": {
+        "screen and (max-width: 768px)": {
+            fontSize: "2rem",
+            marginBottom: vars.space.md,
+        },
     },
-  },
 })
 
-export const subTitle = style({
-  fontSize: vars.fontSizes.lg,
-  color: vars.colors.text,
-  maxWidth: "600px",
-  margin: "0 auto",
-  lineHeight: vars.lineHeights.relaxed,
-  "@media": {
-    "(min-width: 768px)": {
-      fontSize: vars.fontSizes.xl,
+export const mainSubtitle = style({
+    fontSize: "1.25rem",
+    color: vars.colors.textLight,
+    lineHeight: 1.6,
+    marginBottom: vars.space.xl,
+    "@media": {
+        "screen and (max-width: 768px)": {
+            fontSize: "1rem",
+            marginBottom: vars.space.lg,
+        },
     },
-  },
 })
 
-export const card = style({
-  backgroundColor: vars.colors.white,
-  borderRadius: vars.radii.xl,
-  padding: vars.space.xl,
-  boxShadow: vars.shadows.xl,
-  marginBottom: vars.space.xxxl,
-  border: `1px solid ${vars.colors.border}`,
-  "@media": {
-    "(min-width: 768px)": {
-      padding: vars.space.xxl,
-    },
-  },
-})
-
-export const cardTitle = style({
-  fontSize: vars.fontSizes.xxl,
-  fontWeight: vars.fontWeights.bold,
-  color: vars.colors.textStrong,
-  marginBottom: vars.space.xl,
-  textAlign: "center",
-  letterSpacing: "-0.02em",
-  borderBottom: `2px solid ${vars.colors.accent}`,
-  paddingBottom: vars.space.md,
-  "@media": {
-    "(min-width: 768px)": {
-      fontSize: vars.fontSizes.xxxl,
-    },
-  },
-})
-
-// --- 상세 옵션 카드 내부 ---
-export const optionHeaderContainer = style([
-  {
+export const discountBanner = style({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: vars.space.xxl,
-    fontSize: vars.fontSizes.xxl,
-    fontWeight: vars.fontWeights.bold,
-    color: vars.colors.textStrong,
-    textAlign: "center",
-    letterSpacing: "-0.02em",
+    gap: vars.space.md,
+    background: `linear-gradient(135deg, ${vars.colors.primaryLight} 0%, ${vars.colors.primaryLight} 100%)`,
+    padding: `${vars.space.lg} ${vars.space.xl}`,
+    borderRadius: vars.radii.xl,
+    border: `2px solid ${vars.colors.primary}`,
+    animation: `${pulse} 3s ease-in-out infinite`,
     "@media": {
-      "(min-width: 768px)": {
-        fontSize: vars.fontSizes.xxxl,
-      },
+        "screen and (max-width: 768px)": {
+            flexDirection: "column",
+            gap: vars.space.sm,
+            padding: vars.space.lg,
+            textAlign: "center",
+        },
     },
-  },
-])
+})
 
-export const optionHeaderIcon = style({
-  width: vars.fontSizes.xxxl,
-  height: vars.fontSizes.xxxl,
-  marginRight: vars.space.md,
-  color: vars.colors.primary,
-  flexShrink: 0,
-  "@media": {
-    "(min-width: 640px)": {
-      width: vars.fontSizes.xxxxl,
-      height: vars.fontSizes.xxxxl,
+export const discountIcon = style({
+    fontSize: "2rem",
+})
+
+export const discountText = style({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: vars.space.xs,
+})
+
+export const discountText_strong = style({
+    fontSize: "1.125rem",
+    fontWeight: "700",
+    color: vars.colors.primary,
+})
+
+export const discountText_span = style({
+    fontSize: "0.875rem",
+    color: vars.colors.textLight,
+})
+
+// 섹션 스타일
+export const sectionWrapper = style({
+    marginBottom: vars.space.xxl,
+    animation: `${fadeInUp} 0.6s ease-out`,
+    "@media": {
+        "screen and (max-width: 768px)": {
+            marginBottom: vars.space.lg,
+        },
     },
-  },
 })
 
-export const optionsSectionContainer = style({
-  maxWidth: vars.breakpoints.sm,
-  margin: "0 auto",
-  display: "flex",
-  flexDirection: "column",
-  gap: vars.space.xxl,
-})
-
-export const optionItem = style({
-  borderBottom: `1px solid ${vars.colors.border}`,
-  paddingBottom: vars.space.xl,
-  selectors: {
-    "&:last-child": {
-      borderBottom: "none",
-      paddingBottom: 0,
+export const sectionHeader = style({
+    textAlign: "center",
+    marginBottom: vars.space.xl,
+    "@media": {
+        "screen and (max-width: 768px)": {
+            marginBottom: vars.space.lg,
+        },
     },
-  },
 })
 
-export const optionLabel = style({
-  display: "block",
-  fontSize: vars.fontSizes.lg,
-  fontWeight: vars.fontWeights.semibold,
-  color: vars.colors.textStrong,
-  marginBottom: vars.space.lg,
-  textAlign: "left",
-  borderBottom: `1px dashed ${vars.colors.borderLight}`,
-  paddingBottom: vars.space.sm,
-  "@media": {
-    "(min-width: 640px)": {
-      fontSize: vars.fontSizes.xl,
+export const sectionTitle = style({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: vars.space.md,
+    fontSize: "2rem",
+    fontWeight: "700",
+    color: vars.colors.text,
+    marginBottom: vars.space.sm,
+    "@media": {
+        "screen and (max-width: 768px)": {
+            fontSize: "1.5rem",
+            gap: vars.space.sm,
+        },
     },
-  },
 })
 
-// 슬라이더 스타일
-export const sliderContainer = style({
-  display: "flex",
-  flexDirection: "column",
-  gap: vars.space.md,
-  padding: vars.space.lg,
-  backgroundColor: vars.colors.backgroundLight,
-  borderRadius: vars.radii.lg,
-  border: `1px solid ${vars.colors.border}`,
+export const stepNumber = style({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "40px",
+    height: "40px",
+    borderRadius: "50%",
+    background: `linear-gradient(135deg, ${vars.colors.primary} 0%, ${vars.colors.primaryDark} 100%)`,
+    color: "white",
+    fontSize: "1.25rem",
+    fontWeight: "700",
+    "@media": {
+        "screen and (max-width: 768px)": {
+            width: "32px",
+            height: "32px",
+            fontSize: "1rem",
+        },
+    },
 })
 
-export const sliderHeader = style({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: vars.space.sm,
+export const sectionDescription = style({
+    fontSize: "1rem",
+    color: vars.colors.textLight,
 })
 
-export const sliderLabel = style({
-  fontSize: vars.fontSizes.md,
-  fontWeight: vars.fontWeights.medium,
-  color: vars.colors.textStrong,
+// 장비 선택기
+export const equipmentSelector = style({
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    gap: vars.space.md,
+    marginBottom: vars.space.lg,
 })
 
-export const sliderValue = style({
-  fontSize: vars.fontSizes.lg,
-  fontWeight: vars.fontWeights.bold,
-  color: vars.colors.primary,
-  backgroundColor: vars.colors.accent,
-  padding: `${vars.space.xs} ${vars.space.sm}`,
-  borderRadius: vars.radii.md,
+export const scrollButton = style({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "50px",
+    height: "50px",
+    borderRadius: "50%",
+    border: "none",
+    background: "white",
+    boxShadow: vars.shadows.md,
+    cursor: "pointer",
+    fontSize: "1.5rem",
+    color: vars.colors.primary,
+    transition: "all 0.2s ease",
+    zIndex: 2,
+    ":hover": {
+        transform: "scale(1.1)",
+        boxShadow: vars.shadows.lg,
+    },
+})
+
+export const equipmentScrollContainer = style({
+    flex: 1,
+    overflow: "hidden",
+    borderRadius: vars.radii.lg,
+})
+
+export const equipmentList = style({
+    display: "flex",
+    gap: vars.space.lg,
+    overflowX: "auto",
+    padding: vars.space.md,
+    scrollBehavior: "smooth",
+    "::-webkit-scrollbar": {
+        display: "none",
+    },
+    scrollbarWidth: "none",
+})
+
+export const equipmentCard = style({
+    flexShrink: 0,
+    width: "200px",
+    background: "white",
+    borderRadius: vars.radii.lg,
+    padding: vars.space.lg,
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    border: "2px solid transparent",
+    boxShadow: vars.shadows.sm,
+    ":hover": {
+        transform: "translateY(-5px)",
+        boxShadow: vars.shadows.lg,
+        borderColor: vars.colors.primaryLight,
+    },
+    "@media": {
+        "screen and (max-width: 768px)": {
+            width: "160px",
+            padding: vars.space.md,
+        },
+    },
+})
+
+export const equipmentCardActive = style({
+    borderColor: vars.colors.primary,
+    background: `linear-gradient(135deg, ${vars.colors.primaryLight} 0%, white 100%)`,
+    transform: "translateY(-5px)",
+    boxShadow: vars.shadows.lg,
+})
+
+export const equipmentImageWrapper = style({
+    width: "100%",
+    height: "120px",
+    borderRadius: vars.radii.md,
+    overflow: "hidden",
+    marginBottom: vars.space.md,
+    backgroundColor: vars.colors.gray[100],
+    "@media": {
+        "screen and (max-width: 768px)": {
+            height: "100px",
+            marginBottom: vars.space.sm,
+        },
+    },
+})
+
+export const equipmentImage = style({
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+})
+
+export const equipmentImagePlaceholder = style({
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "2rem",
+    color: vars.colors.textLight,
+})
+
+export const equipmentInfo = style({
+    textAlign: "center",
+})
+
+export const equipmentName = style({
+    fontSize: "1rem",
+    fontWeight: "600",
+    color: vars.colors.text,
+    marginBottom: vars.space.xs,
+    lineHeight: 1.4,
+})
+
+export const equipmentPrice = style({
+    fontSize: "0.875rem",
+    fontWeight: "500",
+    color: vars.colors.primary,
+})
+
+// 스크롤 인디케이터
+export const scrollIndicator = style({
+    display: "flex",
+    justifyContent: "center",
+    gap: vars.space.xs,
+})
+
+export const indicatorDot = style({
+    width: "8px",
+    height: "8px",
+    borderRadius: "50%",
+    backgroundColor: vars.colors.gray[300],
+    transition: "all 0.2s ease",
+})
+
+export const indicatorDotActive = style({
+    backgroundColor: vars.colors.primary,
+    transform: "scale(1.2)",
+})
+
+// 시간 선택기
+export const timeSelector = style({
+    maxWidth: "600px",
+    margin: "0 auto",
+    background: "white",
+    padding: vars.space.xl,
+    borderRadius: vars.radii.xl,
+    boxShadow: vars.shadows.md,
+    "@media": {
+        "screen and (max-width: 768px)": {
+            padding: vars.space.lg,
+            margin: `0 ${vars.space.md}`,
+        },
+    },
+})
+
+export const timeDisplay = style({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: vars.space.lg,
+})
+
+export const timeLabel = style({
+    fontSize: "1rem",
+    color: vars.colors.text,
+    fontWeight: "500",
+})
+
+export const timeValue = style({
+    fontSize: "1.5rem",
+    fontWeight: "700",
+    color: vars.colors.primary,
+})
+
+export const timeSlider = style({
+    display: "flex",
+    flexDirection: "column",
+    gap: vars.space.sm,
 })
 
 export const slider = style({
-  width: "100%",
-  height: "8px",
-  appearance: "none",
-  background: `linear-gradient(to right, ${vars.colors.primary} 0%, ${vars.colors.primary} 50%, ${vars.colors.border} 50%, ${vars.colors.border} 100%)`,
-  borderRadius: vars.radii.full,
-  outline: "none",
-  opacity: 0.8,
-  transition: "opacity 0.2s",
-  ":hover": {
-    opacity: 1,
-  },
-  "::-webkit-slider-thumb": {
-    appearance: "none",
-    width: "20px",
-    height: "20px",
-    borderRadius: "50%",
-    background: vars.colors.primary,
-    cursor: "pointer",
-    border: `2px solid ${vars.colors.background}`,
-    boxShadow: `0 2px 4px rgba(0, 0, 0, 0.2)`,
-  },
-  "::-moz-range-thumb": {
-    width: "20px",
-    height: "20px",
-    borderRadius: "50%",
-    background: vars.colors.primary,
-    cursor: "pointer",
-    border: `2px solid ${vars.colors.background}`,
-    boxShadow: `0 2px 4px rgba(0, 0, 0, 0.2)`,
-  },
-})
-
-export const sliderTicks = style({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginTop: vars.space.xs,
-  fontSize: vars.fontSizes.xs,
-  color: vars.colors.textLight,
-})
-
-// 가격 분해 표시 스타일
-export const priceBreakdown = style({
-  marginTop: vars.space.md,
-  padding: vars.space.md,
-  backgroundColor: vars.colors.backgroundLight,
-  borderRadius: vars.radii.md,
-  border: `1px dashed ${vars.colors.border}`,
-})
-
-export const priceBreakdownItem = style({
-  fontSize: vars.fontSizes.sm,
-  color: vars.colors.textLight,
-  margin: `${vars.space.xs} 0`,
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-})
-
-// Select (드롭다운) 스타일
-export const selectContainer = style({
-  position: "relative",
-})
-
-export const selectInput = style({
-  width: "100%",
-  padding: vars.space.lg,
-  border: `1px solid ${vars.colors.border}`,
-  borderRadius: vars.radii.lg,
-  boxShadow: vars.shadows.sm,
-  fontSize: vars.fontSizes.md,
-  appearance: "none",
-  backgroundColor: vars.colors.white,
-  color: vars.colors.text,
-  cursor: "pointer",
-  selectors: {
-    "&:focus": {
-      outline: "none",
-      borderColor: vars.colors.primary,
-      boxShadow: `0 0 0 2px ${vars.colors.primaryTransparent}`,
+    width: "100%",
+    height: "8px",
+    borderRadius: "4px",
+    background: vars.colors.gray[200],
+    outline: "none",
+    "::-webkit-slider-thumb": {
+        appearance: "none",
+        width: "24px",
+        height: "24px",
+        borderRadius: "50%",
+        background: `linear-gradient(135deg, ${vars.colors.primary} 0%, ${vars.colors.primaryDark} 100%)`,
+        cursor: "pointer",
+        boxShadow: vars.shadows.md,
     },
-  },
-  "@media": {
-    "(min-width: 640px)": {
-      fontSize: vars.fontSizes.lg,
-    },
-  },
 })
 
-export const selectIcon = style({
-  position: "absolute",
-  right: vars.space.lg,
-  top: "50%",
-  transform: "translateY(-50%)",
-  width: vars.fontSizes.lg,
-  height: vars.fontSizes.lg,
-  color: vars.colors.textLight,
-  pointerEvents: "none",
+export const sliderLabels = style({
+    display: "flex",
+    justifyContent: "space-between",
+    fontSize: "0.875rem",
+    color: vars.colors.textLight,
 })
 
-// 라디오 버튼 그룹 스타일
-export const radioGroup = style({
-  display: "flex",
-  flexWrap: "wrap",
-  justifyContent: "center",
-  gap: vars.space.md,
-  "@media": {
-    "(min-width: 640px)": {
-      gap: vars.space.lg,
+// 결과 섹션
+export const resultSection = style({
+    display: "grid",
+    gridTemplateColumns: "2fr 1fr",
+    gap: vars.space.xl,
+    "@media": {
+        "screen and (max-width: 768px)": {
+            gridTemplateColumns: "1fr",
+            gap: vars.space.lg,
+        },
     },
-  },
 })
 
-export const radioButtonBase = style({
-  flex: "1 1 auto",
-  minWidth: "120px",
-  padding: vars.space.md,
-  borderRadius: vars.radii.lg,
-  border: `2px solid ${vars.colors.border}`,
-  fontWeight: vars.fontWeights.semibold,
-  fontSize: vars.fontSizes.md,
-  transition: "all 0.2s ease-in-out",
-  cursor: "pointer",
-  textAlign: "center",
-  outline: "none",
-  selectors: {
-    "&:focus-visible": {
-      boxShadow: `0 0 0 2px ${vars.colors.primaryTransparent}`,
-    },
-  },
-  "@media": {
-    "(min-width: 640px)": {
-      flexBasis: "auto",
-      paddingTop: vars.space.lg,
-      paddingBottom: vars.space.lg,
-      paddingLeft: vars.space.lg,
-      paddingRight: vars.space.lg,
-      fontSize: vars.fontSizes.lg,
-    },
-  },
-})
-
-export const radioButtonSelected = style([
-  radioButtonBase,
-  {
-    backgroundColor: vars.colors.primary,
-    color: vars.colors.white,
-    borderColor: vars.colors.primaryDark,
-    boxShadow: vars.shadows.md,
-  },
-])
-
-export const radioButtonDefault = style([
-  radioButtonBase,
-  {
-    backgroundColor: vars.colors.gray[100],
-    color: vars.colors.text,
-    selectors: {
-      "&:hover": {
-        borderColor: vars.colors.primary,
-        backgroundColor: vars.colors.primaryLight,
-      },
-    },
-  },
-])
-
-// 가격 표시부 스타일
-export const priceDisplaySection = style({
-  marginTop: vars.space.xxxl,
-  paddingTop: vars.space.xxl,
-  borderTop: `2px dashed ${vars.colors.borderLight}`,
-})
-
-export const priceDisplayCard = style({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  backgroundColor: vars.colors.gray[50],
-  paddingTop: vars.space.xl,
-  paddingBottom: vars.space.xl,
-  paddingLeft: vars.space.lg,
-  paddingRight: vars.space.lg,
-  borderRadius: vars.radii.xl,
-  boxShadow: vars.shadows.inner,
-  border: `1px solid ${vars.colors.border}`,
-  textAlign: "center",
-  "@media": {
-    "(min-width: 640px)": {
-      padding: vars.space.xxl,
-    },
-  },
-})
-
-export const priceIcon = style({
-  width: vars.fontSizes.xxxxxl,
-  height: vars.fontSizes.xxxxxl,
-  color: vars.colors.primary,
-  marginBottom: vars.space.lg,
-  "@media": {
-    "(min-width: 640px)": {
-      width: vars.fontSizes.xxxxxxl,
-      height: vars.fontSizes.xxxxxxl,
-    },
-  },
-})
-
-export const priceLabel = style({
-  fontSize: vars.fontSizes.xl,
-  color: vars.colors.textStrong,
-  fontWeight: vars.fontWeights.semibold,
-  marginBottom: vars.space.sm,
-  "@media": {
-    "(min-width: 640px)": {
-      fontSize: vars.fontSizes.xxl,
-    },
-  },
-})
-
-export const priceValue = style({
-  fontSize: vars.fontSizes.xxxxl,
-  fontWeight: vars.fontWeights.extrabold,
-  color: vars.colors.primary,
-  paddingTop: vars.space.xs,
-  paddingBottom: vars.space.xs,
-  lineHeight: "1.1",
-  "@media": {
-    "(min-width: 640px)": {
-      fontSize: vars.fontSizes.xxxxxxl,
-    },
-  },
-})
-
-export const priceInfoText = style({
-  fontSize: vars.fontSizes.sm,
-  color: vars.colors.textLight,
-  marginTop: vars.space.lg,
-  display: "flex",
-  alignItems: "center",
-  textAlign: "center",
-  maxWidth: "450px",
-  "@media": {
-    "(min-width: 640px)": {
-      fontSize: vars.fontSizes.md,
-    },
-  },
-})
-
-export const infoIcon = style({
-  marginRight: vars.space.sm,
-  flexShrink: 0,
-  width: vars.fontSizes.md,
-  height: vars.fontSizes.md,
-})
-
-// 견적 문의 버튼 스타일
-export const inquiryButtonContainer = style({
-  marginTop: vars.space.xxxl,
-  textAlign: "center",
-})
-
-export const inquiryButton = style({
-  width: "100%",
-  paddingTop: vars.space.lg,
-  paddingBottom: vars.space.lg,
-  paddingLeft: vars.space.xl,
-  paddingRight: vars.space.xl,
-  fontSize: vars.fontSizes.lg,
-  fontWeight: vars.fontWeights.bold,
-  borderRadius: vars.radii.xl,
-  backgroundColor: vars.colors.primary,
-  color: vars.colors.white,
-  transition: "all 0.3s ease-in-out",
-  boxShadow: vars.shadows.lg,
-  border: "none",
-  cursor: "pointer",
-  outline: "none",
-  selectors: {
-    "&:hover:not(:disabled)": {
-      transform: "scale(1.05)",
-      opacity: 0.9,
-    },
-    "&:focus-visible": {
-      boxShadow: `0 0 0 4px ${vars.colors.primaryTransparent}`,
-    },
-    "&:disabled": {
-      opacity: 0.6,
-      cursor: "not-allowed",
-      transform: "scale(1)",
-      boxShadow: vars.shadows.md,
-    },
-  },
-  "@media": {
-    "(min-width: 640px)": {
-      width: "auto",
-      padding: `${vars.space.lg} ${vars.space.xxxl}`,
-      fontSize: vars.fontSizes.xl,
-    },
-  },
-})
-
-export const truckSelectorGrid = style({
-  display: "grid",
-  gridTemplateColumns: "1fr",
-  gap: vars.space.lg,
-  "@media": {
-    "(min-width: 640px)": {
-      gridTemplateColumns: "repeat(2, 1fr)",
-      gap: vars.space.xl,
-    },
-  },
-})
-
-export const truckButtonBase = style({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: vars.space.lg,
-  borderRadius: vars.radii.lg,
-  border: `2px solid ${vars.colors.border}`,
-  transition: "all 0.3s ease-in-out",
-  cursor: "pointer",
-  "@media": {
-    "(min-width: 640px)": {
-      padding: vars.space.xl,
-    },
-  },
-})
-
-export const truckButtonSelected = style([
-  truckButtonBase,
-  {
-    borderColor: vars.colors.primary,
-    backgroundColor: vars.colors.primary,
-    color: vars.colors.white,
+export const priceCard = style({
+    background: "white",
+    borderRadius: vars.radii.xl,
+    padding: vars.space.xl,
     boxShadow: vars.shadows.lg,
-  },
-])
+    border: `1px solid ${vars.colors.border}`,
+    animation: `${slideInRight} 0.6s ease-out`,
+    "@media": {
+        "screen and (max-width: 768px)": {
+            padding: vars.space.lg,
+        },
+    },
+})
 
-export const truckButtonDefault = style([
-  truckButtonBase,
-  {
-    backgroundColor: vars.colors.gray[50],
+export const priceHeader = style({
+    marginBottom: vars.space.lg,
+})
+
+export const priceTitle = style({
+    fontSize: "1.5rem",
+    fontWeight: "700",
     color: vars.colors.text,
-    selectors: {
-      "&:hover": {
-        borderColor: vars.colors.secondary,
-        backgroundColor: vars.colors.background,
-      },
+    marginBottom: vars.space.lg,
+    textAlign: "center",
+})
+
+export const priceComparison = style({
+    display: "flex",
+    justifyContent: "space-between",
+    gap: vars.space.lg,
+    "@media": {
+        "screen and (max-width: 768px)": {
+            flexDirection: "column",
+        },
     },
-  },
-])
+})
 
-export const truckIcon = style({
-  width: vars.fontSizes.xxxxl,
-  height: vars.fontSizes.xxxxl,
-  marginBottom: vars.space.md,
-  transition: "transform 0.3s ease-in-out",
-  selectors: {
-    [`${truckButtonBase}:hover &`]: {
-      transform: "scale(1.1)",
+export const originalPrice = style({
+    textAlign: "center",
+    padding: vars.space.lg,
+    borderRadius: vars.radii.lg,
+    backgroundColor: vars.colors.gray[50],
+    border: `1px solid ${vars.colors.gray[200]}`,
+})
+
+export const originalPriceLabel = style({
+    display: "block",
+    fontSize: "0.875rem",
+    color: vars.colors.textLight,
+    marginBottom: vars.space.xs,
+})
+
+export const originalPriceValue = style({
+    display: "block",
+    fontSize: "1.5rem",
+    fontWeight: "600",
+    color: vars.colors.text,
+    textDecoration: "line-through",
+})
+
+export const discountPrice = style({
+    textAlign: "center",
+    padding: vars.space.lg,
+    borderRadius: vars.radii.lg,
+    background: `linear-gradient(135deg, ${vars.colors.primaryLight} 0%, ${vars.colors.primaryLight} 100%)`,
+    border: `2px solid ${vars.colors.primary}`,
+    position: "relative",
+})
+
+export const discountPriceLabel = style({
+    display: "block",
+    fontSize: "0.875rem",
+    color: vars.colors.primary,
+    fontWeight: "600",
+    marginBottom: vars.space.xs,
+})
+
+export const discountPriceValue = style({
+    display: "block",
+    fontSize: "2rem",
+    fontWeight: "800",
+    color: vars.colors.primary,
+})
+
+export const savings = style({
+    display: "block",
+    fontSize: "0.875rem",
+    fontWeight: "600",
+    color: vars.colors.secondary,
+    marginTop: vars.space.xs,
+})
+
+export const priceBreakdown = style({
+    marginBottom: vars.space.lg,
+    padding: vars.space.lg,
+    backgroundColor: vars.colors.gray[50],
+    borderRadius: vars.radii.lg,
+})
+
+export const breakdownItem = style({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: `${vars.space.sm} 0`,
+    borderBottom: `1px solid ${vars.colors.gray[200]}`,
+    fontSize: "0.875rem",
+    ":last-child": {
+        borderBottom: "none",
     },
-  },
-  "@media": {
-    "(min-width: 640px)": {
-      width: vars.fontSizes.xxxxxl,
-      height: vars.fontSizes.xxxxxl,
+})
+
+export const priceNote = style({
+    display: "flex",
+    gap: vars.space.md,
+    padding: vars.space.lg,
+    backgroundColor: vars.colors.gray[50],
+    borderRadius: vars.radii.lg,
+    marginBottom: vars.space.lg,
+})
+
+export const noteIcon = style({
+    fontSize: "1.25rem",
+})
+
+export const noteText = style({
+    fontSize: "0.875rem",
+    color: vars.colors.textLight,
+    lineHeight: 1.5,
+})
+
+export const ctaSection = style({
+    textAlign: "center",
+})
+
+export const ctaButton = style({
+    width: "100%",
+    padding: `${vars.space.lg} ${vars.space.xl}`,
+    background: `linear-gradient(135deg, ${vars.colors.primary} 0%, ${vars.colors.primaryDark} 100%)`,
+    color: "white",
+    border: "none",
+    borderRadius: vars.radii.lg,
+    fontSize: "1.125rem",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    marginBottom: vars.space.md,
+    ":hover": {
+        transform: "translateY(-2px)",
+        boxShadow: vars.shadows.lg,
     },
-  },
 })
 
-export const truckIconSelected = style({
-  color: vars.colors.white,
+export const ctaSubtext = style({
+    fontSize: "0.875rem",
+    color: vars.colors.textLight,
+    margin: 0,
 })
 
-export const truckIconDefault = style({
-  color: vars.colors.primary,
+// 장비 상세 정보 카드
+export const equipmentDetailCard = style({
+    background: "white",
+    borderRadius: vars.radii.xl,
+    padding: vars.space.xl,
+    boxShadow: vars.shadows.md,
+    border: `1px solid ${vars.colors.border}`,
 })
 
-export const truckButtonText = style({
-  fontSize: vars.fontSizes.lg,
-  fontWeight: vars.fontWeights.semibold,
-  "@media": {
-    "(min-width: 640px)": {
-      fontSize: vars.fontSizes.xl,
-    },
-  },
+export const detailTitle = style({
+    fontSize: "1.25rem",
+    fontWeight: "600",
+    color: vars.colors.text,
+    marginBottom: vars.space.lg,
+    textAlign: "center",
 })
 
-// 차량 아이콘 관련 스타일
-export const vehicleIconContainer = style({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  width: "32px",
-  height: "32px",
-  borderRadius: "50%",
-  overflow: "hidden",
+export const detailContent = style({
+    display: "flex",
+    flexDirection: "column",
+    gap: vars.space.lg,
 })
 
-export const vehicleIconImage = style({
-  width: "100%",
-  height: "100%",
-  objectFit: "cover",
+export const detailImageWrapper = style({
+    width: "100%",
+    height: "200px",
+    borderRadius: vars.radii.lg,
+    overflow: "hidden",
+    backgroundColor: vars.colors.gray[100],
 })
 
-// 옵션 설명 스타일
-export const optionDescription = style({
-  color: vars.colors.text,
-  fontSize: vars.fontSizes.md,
-  lineHeight: vars.lineHeights.relaxed,
-  margin: "0",
-  padding: vars.space.sm,
-  backgroundColor: vars.colors.backgroundLight,
-  borderRadius: vars.radii.md,
-  border: `1px solid ${vars.colors.border}`,
+export const detailImage = style({
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
 })
 
-// 가격대 목록 스타일
-export const priceRangeList = style({
-  display: "flex",
-  flexDirection: "column",
-  gap: vars.space.sm,
+export const detailImagePlaceholder = style({
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "3rem",
+    color: vars.colors.textLight,
 })
 
-export const priceRangeItem = style({
-  padding: vars.space.sm,
-  backgroundColor: vars.colors.accent,
-  color: vars.colors.text,
-  borderRadius: vars.radii.md,
-  fontSize: vars.fontSizes.sm,
-  fontWeight: vars.fontWeights.medium,
-  textAlign: "center",
-  border: `1px solid ${vars.colors.border}`,
+export const detailInfo = style({
+    textAlign: "center",
 })
+
+export const detailName = style({
+    fontSize: "1.25rem",
+    fontWeight: "600",
+    color: vars.colors.text,
+    marginBottom: vars.space.md,
+})
+
+export const detailDescription = style({
+    fontSize: "0.875rem",
+    color: vars.colors.textLight,
+    lineHeight: 1.6,
+    marginBottom: vars.space.lg,
+})
+
+export const detailSpecs = style({
+    textAlign: "left",
+    padding: vars.space.lg,
+    backgroundColor: vars.colors.gray[50],
+    borderRadius: vars.radii.lg,
+})
+
+// 로딩 상태
+export const loadingState = style({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: "400px",
+    gap: vars.space.lg,
+})
+
+export const spinner = style({
+    width: "40px",
+    height: "40px",
+    border: `4px solid ${vars.colors.gray[200]}`,
+    borderTop: `4px solid ${vars.colors.primary}`,
+    borderRadius: "50%",
+    animation: `${spin} 1s linear infinite`,
+}) 

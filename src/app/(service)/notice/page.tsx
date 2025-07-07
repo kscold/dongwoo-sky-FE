@@ -1,17 +1,20 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import Link from "next/link"
 import { format } from "date-fns"
 import { ko } from "date-fns/locale"
-import { usePublishedNotices } from "@/common/hooks/useNotices"
-import * as styles from "../../../styles/components/notice-section.css"
+import { useNotices } from "@/common/hooks/useNotices"
+import * as styles from "@/styles/service/page/service-page-common.css"
 
 export default function NoticePage() {
-  const { data: allNotices, isLoading, error } = usePublishedNotices()
+  const [page, setPage] = useState(1)
+  const limit = 10
 
-  // isModal이 false인 공지사항만 필터링 (일반 공지사항 목록에서만 표시)
-  const notices = allNotices?.filter((notice) => notice.isModal !== true) || []
+  const { data: noticesData, isLoading, error } = useNotices(page, limit)
+
+  // 공지사항 목록 필터링 (isModal이 false인 것만)
+  const notices = noticesData?.data?.filter((notice: any) => notice.isModal !== true) || []
 
   // 날짜 포맷 함수
   const formatDate = (dateString: string) => {

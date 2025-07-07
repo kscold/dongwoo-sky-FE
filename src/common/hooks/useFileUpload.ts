@@ -1,15 +1,28 @@
 import { useMutation } from "@tanstack/react-query"
 import { fileUploadApi } from "@/api/fileUpload"
+import { Attachment } from "@/common/types/notice"
 
 // 범용 파일 업로드 훅
-export function useFileUpload() {
-  return useMutation({
-    mutationFn: ({ endpoint, files }: { endpoint: string; files: File[] }) =>
-      fileUploadApi.uploadFiles(endpoint, files),
-    onError: (error) => {
-      console.error("파일 업로드 실패:", error)
-    },
+export function useFileUpload(endpoint: string) {
+  const mutation = useMutation({
+    mutationFn: (files: File[]) => fileUploadApi.uploadFiles(endpoint, files),
   })
+
+  const uploadFiles = async (files: File[]): Promise<Attachment[]> => {
+    try {
+      const result = await mutation.mutateAsync(files)
+      // 백엔드 응답 형식에 따라 달라질 수 있음
+      return result.attachments || []
+    } catch (error) {
+      console.error("File upload failed:", error)
+      throw error
+    }
+  }
+
+  return {
+    uploadFiles,
+    isLoading: mutation.isPending,
+  }
 }
 
 // 단일 파일 업로드 훅

@@ -6,9 +6,9 @@ import Link from "next/link"
 
 import Header from "../../../common/components/layout/Header.tsx"
 import Footer from "../../..//common/components/layout/Footer.tsx"
-import { useCustomerReviews } from "../../..//common/hooks/useContent.ts"
+import { useCustomerReviews } from "../../../common/hooks/useWorkShowcase.ts"
 
-import * as styles from "../../../styles/page/customer-reviews-page.css.ts"
+import * as styles from "@/styles/service/page/customer-reviews-page.css.ts"
 
 const CustomerReviewsPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -184,9 +184,8 @@ const CustomerReviewsPage = () => {
                         <button
                           key={page}
                           onClick={() => setCurrentPage(page)}
-                          className={`${styles.pageNumber} ${
-                            currentPage === page ? styles.active : ""
-                          }`}
+                          className={`${styles.pageNumber} ${currentPage === page ? styles.active : ""
+                            }`}
                         >
                           {page}
                         </button>

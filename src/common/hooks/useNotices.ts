@@ -1,115 +1,73 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { noticeApi } from "@/api/notice"
+
+import { noticeApi } from "../../api/notice"
 import type {
   Notice,
   CreateNoticeDto,
   UpdateNoticeDto,
-} from "@/common/types/notice"
+} from "../../common/types/notice"
 
-// Query Keys
-export const NOTICE_QUERY_KEYS = {
+const noticeQueryKeys = {
   all: ["notices"] as const,
-  list: ["notices", "list"] as const,
-  published: ["notices", "published"] as const,
-  modal: ["notices", "modal"] as const,
-  stats: ["notices", "stats"] as const,
-  detail: (id: string) => ["notices", "detail", id] as const,
-} as const
+  lists: () => [...noticeQueryKeys.all, "list"] as const,
+  list: (page: number, limit: number) =>
+    [...noticeQueryKeys.lists(), { page, limit }] as const,
+  details: () => [...noticeQueryKeys.all, "detail"] as const,
+  detail: (id: string) => [...noticeQueryKeys.details(), id] as const,
+  published: () => [...noticeQueryKeys.all, "published"] as const,
+}
 
-// 모든 공지사항 조회 (관리자용)
-export function useNotices() {
+
+/** 공지사항 목록 조회 (페이지네이션) */
+export const useNotices = (page: number, limit: number) => {
   return useQuery({
-    queryKey: NOTICE_QUERY_KEYS.list,
-    queryFn: noticeApi.getAll,
-    staleTime: 2 * 60 * 1000, // 2분
-    retry: 1,
+    queryKey: noticeQueryKeys.list(page, limit),
+    queryFn: () => noticeApi.getAllAdmin(page, limit),
+    placeholderData: (previousData) => previousData,
   })
 }
 
-// 공개된 공지사항 조회
-export function usePublishedNotices() {
+// 단일 공지사항을 가져오는 훅
+export const useNotice = (id: string) => {
   return useQuery({
-    queryKey: NOTICE_QUERY_KEYS.published,
-    queryFn: noticeApi.getPublished,
-    staleTime: 5 * 60 * 1000, // 5분
-    retry: 1,
-  })
-}
-
-// 모달용 공지사항 조회
-export function useModalNotices() {
-  return useQuery({
-    queryKey: NOTICE_QUERY_KEYS.modal,
-    queryFn: noticeApi.getModal,
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
-  })
-}
-
-// 공지사항 통계 조회
-export function useNoticeStats() {
-  return useQuery({
-    queryKey: NOTICE_QUERY_KEYS.stats,
-    queryFn: noticeApi.getStats,
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
-  })
-}
-
-// 단일 공지사항 조회
-export function useNotice(id: string) {
-  return useQuery({
-    queryKey: NOTICE_QUERY_KEYS.detail(id),
+    queryKey: noticeQueryKeys.detail(id),
     queryFn: () => noticeApi.getById(id),
-    enabled: !!id,
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
+    enabled: !!id, // id가 있을 때만 쿼리 실행
   })
 }
 
-// 공지사항 생성
-export function useCreateNotice() {
+/** 공지사항 생성 */
+export const useCreateNotice = () => {
   const queryClient = useQueryClient()
-
   return useMutation({
-    mutationFn: (data: CreateNoticeDto) => noticeApi.create(data),
+    mutationFn: (data: Omit<Notice, "_id" | "createdAt" | "updatedAt">) =>
+      noticeApi.create(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: NOTICE_QUERY_KEYS.all })
-    },
-    onError: (error) => {
-      console.error("공지사항 생성 실패:", error)
+      queryClient.invalidateQueries({ queryKey: noticeQueryKeys.lists() })
     },
   })
 }
 
-// 공지사항 수정
-export function useUpdateNotice() {
+/** 공지사항 수정 */
+export const useUpdateNotice = () => {
   const queryClient = useQueryClient()
-
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateNoticeDto }) =>
       noticeApi.update(id, data),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: NOTICE_QUERY_KEYS.all })
-      queryClient.invalidateQueries({ queryKey: NOTICE_QUERY_KEYS.detail(id) })
-    },
-    onError: (error) => {
-      console.error("공지사항 수정 실패:", error)
+    onSuccess: (_data, { id }) => {
+      queryClient.invalidateQueries({ queryKey: noticeQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: noticeQueryKeys.detail(id) })
     },
   })
 }
 
-// 공지사항 삭제
-export function useDeleteNotice() {
+/** 공지사항 삭제 */
+export const useDeleteNotice = () => {
   const queryClient = useQueryClient()
-
   return useMutation({
     mutationFn: (id: string) => noticeApi.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: NOTICE_QUERY_KEYS.all })
-    },
-    onError: (error) => {
-      console.error("공지사항 삭제 실패:", error)
+      queryClient.invalidateQueries({ queryKey: noticeQueryKeys.lists() })
     },
   })
 }

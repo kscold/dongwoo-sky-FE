@@ -4,10 +4,10 @@ import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { GiHamburgerMenu } from "react-icons/gi"
-import { IoClose } from "react-icons/io5"
+import { IoMenu, IoClose } from "react-icons/io5"
 import { FaPhoneAlt } from "react-icons/fa"
-import * as styles from "../../../styles/layout/header.css"
-import * as mobileStyles from "../../../styles/components/mobile-menu.css"
+import * as styles from "../../../styles/service/layout/header.css"
+import * as mobileStyles from "../../../styles/service/layout/mobile-menu.css"
 
 const navItems = [
   { href: "/service-guide", label: "서비스 안내", icon: "🛠️" },
@@ -119,9 +119,8 @@ const Header = () => {
             <Link
               key={item.href}
               href={item.href}
-              className={`${styles.navLink} ${
-                isActive(item.href) ? styles.activeLink : ""
-              }`}
+              className={`${styles.navLink} ${isActive(item.href) ? styles.activeLink : ""
+                }`}
             >
               {item.label}
             </Link>
@@ -154,9 +153,8 @@ const Header = () => {
 
       {/* 모바일 사이드바 오버레이 */}
       <div
-        className={`${mobileStyles.mobileNavOverlay} ${
-          isMobileMenuOpen ? mobileStyles.mobileNavOverlayOpen : ""
-        }`}
+        className={`${mobileStyles.mobileNavOverlay} ${isMobileMenuOpen ? mobileStyles.mobileNavOverlayOpen : ""
+          }`}
         onClick={closeMobileMenu}
         data-testid="mobile-overlay"
         style={{
@@ -171,9 +169,8 @@ const Header = () => {
 
       {/* 모바일 사이드바 */}
       <div
-        className={`${mobileStyles.mobileNav} ${
-          isMobileMenuOpen ? mobileStyles.mobileNavOpen : ""
-        }`}
+        className={`${mobileStyles.mobileNav} ${isMobileMenuOpen ? mobileStyles.mobileNavOpen : ""
+          }`}
         data-testid="mobile-sidebar"
         style={{
           // 디버깅을 위한 강제 스타일
@@ -207,9 +204,8 @@ const Header = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`${mobileStyles.sidebarNavLink} ${
-                  isActive(item.href) ? mobileStyles.sidebarNavLinkActive : ""
-                }`}
+                className={`${mobileStyles.sidebarNavLink} ${isActive(item.href) ? mobileStyles.sidebarNavLinkActive : ""
+                  }`}
                 onClick={handleLinkClick}
               >
                 {item.label}

@@ -8,7 +8,7 @@ import {
   UpdateServiceDto,
 } from "@/common/types/service"
 import { useAdmin } from "@/common/context/AdminContext"
-import * as styles from "@/styles/admin/admin-common.css"
+import * as styles from "@/styles/common/admin-common.css"
 
 export default function AdminServicePage() {
   const { isAuthenticated } = useAdmin()

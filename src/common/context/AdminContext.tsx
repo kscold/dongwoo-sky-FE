@@ -1,130 +1,105 @@
 "use client"
 
-import React, { createContext, useContext, useState, useEffect } from "react"
-import { User } from "../../common/types/auth"
-import { authApi } from "../../api/auth"
+import { create } from "zustand"
+import { usePathname } from "next/navigation"
+import { useEffect } from "react"
+import { User } from "@/common/types/auth"
+import { authApi } from "@/api/auth"
 
-interface AdminContextType {
+interface AdminState {
   user: User | null
   isLoading: boolean
   isAuthenticated: boolean
+}
+
+interface AdminActions {
   login: (email: string, password: string) => Promise<boolean>
   logout: () => void
-  checkAuth: () => Promise<boolean>
+  checkAuth: () => Promise<void>
+  setLoading: (isLoading: boolean) => void
 }
 
-const AdminContext = createContext<AdminContextType | undefined>(undefined)
+const useAdminStore = create<AdminState & AdminActions>((set) => ({
+  user: null,
+  isLoading: true,
+  isAuthenticated: false,
 
-export function AdminProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  setLoading: (isLoading) => set({ isLoading }),
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  login: async (email, password) => {
+    set({ isLoading: true })
     try {
-      setIsLoading(true)
       const response = await authApi.login({ email, password })
-
-      if (response.success && response.user && response.user.role === "admin") {
-        setUser(response.user)
-
-        // JWT 토큰 저장
-        if (response.access_token && typeof window !== "undefined") {
-          localStorage.setItem("auth_token", response.access_token)
-        }
-
+      if (
+        response.success &&
+        response.user?.role === "admin" &&
+        response.access_token
+      ) {
+        localStorage.setItem("auth_token", response.access_token)
+        set({ user: response.user, isAuthenticated: true, isLoading: false })
         return true
-      } else {
-        console.error("로그인 실패:", response.message)
-        setUser(null)
-        return false
       }
-    } catch (error: any) {
-      console.error("로그인 실패:", error)
-      const errorMessage =
-        error.response?.data?.message || "로그인에 실패했습니다."
-      setUser(null)
-      return false
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const logout = () => {
-    authApi.logout()
-    setUser(null)
-
-    // 로그인 페이지로 리다이렉트
-    if (typeof window !== "undefined") {
+      throw new Error(response.message || "Login failed")
+    } catch (error) {
+      console.error("Login failed:", error)
       localStorage.removeItem("auth_token")
-      localStorage.removeItem("user_data")
-      window.location.href = "/admin/login"
+      set({ user: null, isAuthenticated: false, isLoading: false })
+      return false
     }
-  }
+  },
 
-  const checkAuth = async (): Promise<boolean> => {
+  logout: () => {
+    localStorage.removeItem("auth_token")
+    set({ user: null, isAuthenticated: false, isLoading: false })
+    // 페이지 이동은 이 함수를 호출하는 UI 컴포넌트(e.g., Header)에서 담당하는 것이
+    // 상태 관리와 UI 로직을 분리하는 더 좋은 패턴입니다.
+    // 예: const handleLogout = () => { logout(); router.push('/admin/login'); }
+  },
+
+  checkAuth: async () => {
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("auth_token") : null
+
+    if (!token) {
+      set({ isLoading: false, user: null, isAuthenticated: false })
+      return
+    }
+
     try {
-      setIsLoading(true)
-
-      // 토큰이 없으면 바로 false 반환
-      if (typeof window !== "undefined") {
-        const token = localStorage.getItem("auth_token")
-        if (!token) {
-          setUser(null)
-          return false
-        }
-      }
-
       const currentUser = await authApi.getCurrentUser()
-
-      if (currentUser && currentUser.role === "admin") {
-        setUser(currentUser)
-        return true
+      if (currentUser?.role === "admin") {
+        set({ user: currentUser, isAuthenticated: true, isLoading: false })
       } else {
-        setUser(null)
-        return false
+        throw new Error("User is not an admin.")
       }
     } catch (error) {
-      console.error("인증 확인 실패:", error)
-      setUser(null)
-      // 인증 실패 시 토큰 제거
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("auth_token")
-        localStorage.removeItem("user_data")
-      }
-      return false
-    } finally {
-      setIsLoading(false)
+      console.error("Auth check failed:", error)
+      localStorage.removeItem("auth_token")
+      set({ user: null, isAuthenticated: false, isLoading: false })
     }
-  }
+  },
+}))
+
+/**
+ * 앱이 로드될 때나 페이지 이동 시 인증 상태를 초기화하고 확인하는 역할을 합니다.
+ * 이 Provider는 Admin 관련 레이아웃의 최상위에서 사용되어야 합니다.
+ */
+export function AdminProvider({ children }: { children: React.ReactNode }) {
+  const { checkAuth, setLoading } = useAdminStore()
+  const pathname = usePathname()
 
   useEffect(() => {
-    // 브라우저 환경에서만 실행하고, 로그인 페이지가 아닐 때만 checkAuth 실행
-    if (typeof window !== "undefined") {
-      const isLoginPage = window.location.pathname === "/admin/login"
-      if (!isLoginPage) {
-        checkAuth()
-      } else {
-        setIsLoading(false)
-      }
+    if (pathname === "/admin/login") {
+      setLoading(false)
+    } else {
+      checkAuth()
     }
-  }, [])
+  }, [pathname, checkAuth, setLoading])
 
-  const value: AdminContextType = {
-    user,
-    isLoading,
-    isAuthenticated: !!user && user.role === "admin",
-    login,
-    logout,
-    checkAuth,
-  }
-
-  return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
+  return <>{children}</>
 }
 
-export function useAdmin() {
-  const context = useContext(AdminContext)
-  if (context === undefined) {
-    throw new Error("useAdmin must be used within an AdminProvider")
-  }
-  return context
-}
+/**
+ * 관리자 인증 상태 및 액션을 컴포넌트에서 사용하기 위한 훅입니다.
+ */
+export const useAdmin = useAdminStore

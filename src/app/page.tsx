@@ -1,17 +1,67 @@
 "use client"
 
-import ContentSection from "../common/components/home/ContentSection"
-import HeroSection from "../common/components/home/HeroSection"
-import NoticeSection from "../common/components/home/NoticeSection"
-import NoticeModalManager from "../common/components/notice-modal/NoticeModalManager"
+import React from "react"
 
-export default function HomePage() {
+import { useHomePageData } from "../common/hooks/useHome"
+import HeroSection from "../common/components/home/HeroSection"
+import ContentSection from "../common/components/home/ContentSection"
+import NoticeSection from "../common/components/home/NoticeSection"
+import FloatingCallButton from "../common/components/button/FloatingCallButton"
+import LoadingComponent from "../common/components/loading/LoadingComponent"
+import ErrorComponent from "../common/components/error/ErrorComponent"
+import * as contentStyles from "../styles/service/components/home/content-section.css"
+
+export default function Home() {
+  const { data: homePageData, isLoading, isError, error, refetch } = useHomePageData()
+
+  if (isLoading) {
+    return <LoadingComponent />
+  }
+
+  if (isError || !homePageData) {
+    return <ErrorComponent error={error || new Error("Failed to load data")} reset={refetch} />
+  }
+
+  const workShowcaseSection = homePageData.home.contentSettings.find(
+    (s: any) => s.key === "section-1",
+  )
+  const customerReviewSection = homePageData.home.contentSettings.find(
+    (s: any) => s.key === "section-2",
+  )
+
   return (
-    <>
-      <HeroSection />
-      <ContentSection />
-      <NoticeSection />
-      <NoticeModalManager />
-    </>
+    <main>
+      {homePageData?.home && (
+        <HeroSection home={homePageData.home} />
+      )}
+
+      <div className={contentStyles.newsContainer}>
+        {workShowcaseSection?.isActive && homePageData?.workShowcases && (
+          <ContentSection
+            title={workShowcaseSection.title}
+            description={workShowcaseSection.description}
+            items={homePageData.workShowcases}
+            type="work"
+            link="/work-showcases"
+          />
+        )}
+
+        {customerReviewSection?.isActive && homePageData?.customerReviews && (
+          <ContentSection
+            title={customerReviewSection.title}
+            description={customerReviewSection.description}
+            items={homePageData.customerReviews}
+            type="review"
+            link="/customer-reviews"
+          />
+        )}
+      </div>
+
+      {homePageData?.notices && (
+        <NoticeSection notices={homePageData.notices} />
+      )}
+
+      <FloatingCallButton />
+    </main>
   )
 }

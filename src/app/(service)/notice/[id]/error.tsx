@@ -1,6 +1,6 @@
 "use client"
 
-import ErrorComponent from "../../../../common/components/layout/ErrorComponent"
+import ErrorComponent from "../../../../common/components/error/ErrorComponent"
 
 interface ErrorProps {
   error: Error & { digest?: string }

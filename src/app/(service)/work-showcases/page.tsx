@@ -5,9 +5,9 @@ import Image from "next/image"
 import Link from "next/link"
 import Header from "@/common/components/layout/Header"
 import Footer from "@/common/components/layout/Footer"
-import { useWorkShowcases } from "@/common/hooks/useContent"
-import type { WorkShowcase } from "@/api/content"
-import * as styles from "../../../styles/page/work-showcases-page.css"
+import { usePublishedWorkShowcases } from "../../../common/hooks/useWorkShowcase"
+import type { WorkShowcase } from "../../../common/types/work-showcase"
+import * as styles from "../../../styles/service/page/work-showcases-page.css"
 
 const WorkShowcasesPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -17,7 +17,7 @@ const WorkShowcasesPage = () => {
     data: workShowcasesData,
     isLoading,
     error,
-  } = useWorkShowcases(currentPage, limit)
+  } = usePublishedWorkShowcases()
 
   const stripHtml = (html: string) => {
     if (typeof window !== "undefined") {
@@ -69,8 +69,8 @@ const WorkShowcasesPage = () => {
     )
   }
 
-  const workShowcases = workShowcasesData?.items || []
-  const totalPages = workShowcasesData?.totalPages || 1
+  const workShowcases = workShowcasesData || []
+  const totalPages = 1
 
   return (
     <>
@@ -167,9 +167,8 @@ const WorkShowcasesPage = () => {
                         <button
                           key={page}
                           onClick={() => setCurrentPage(page)}
-                          className={`${styles.pageNumber} ${
-                            currentPage === page ? styles.active : ""
-                          }`}
+                          className={`${styles.pageNumber} ${currentPage === page ? styles.active : ""
+                            }`}
                         >
                           {page}
                         </button>

@@ -4,22 +4,32 @@ import React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { useWorkShowcase } from "@/common/hooks/useContent.ts"
-import * as styles from "../../../../styles/page/work-showcase-page.css.ts"
+import { useWorkShowcase, useLikeWorkShowcase } from "@/common/hooks/useWorkShowcase"
+import * as styles from "@/styles/service/page/work-showcase-page.css"
 
 const WorkShowcaseDetailPage = () => {
   const params = useParams()
   const id = params.id as string
 
   const { data: showcase, isLoading, error } = useWorkShowcase(id)
+  const likeMutation = useLikeWorkShowcase()
 
-  const formatDate = (dateString: string | Date) => {
+  const formatDate = (dateString: string | Date | null | undefined) => {
+    if (!dateString) return "날짜 정보 없음"
     const date = new Date(dateString)
     return date.toLocaleDateString("ko-KR", {
       year: "numeric",
       month: "long",
       day: "numeric",
     })
+  }
+
+  const handleLike = async () => {
+    try {
+      await likeMutation.mutateAsync(id)
+    } catch (error) {
+      console.error("좋아요 실패:", error)
+    }
   }
 
   if (isLoading) {
@@ -121,7 +131,11 @@ const WorkShowcaseDetailPage = () => {
 
       {/* 액션 버튼 */}
       <div className={styles.actions}>
-        <button className={styles.likeButton}>
+        <button
+          className={styles.likeButton}
+          onClick={handleLike}
+          disabled={likeMutation.isPending}
+        >
           ❤️ 좋아요 ({showcase.likeCount})
         </button>
         <Link href="/work-showcases" className={styles.backToListButton}>

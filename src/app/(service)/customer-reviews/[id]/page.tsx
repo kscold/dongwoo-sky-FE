@@ -5,8 +5,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 
-import { useCustomerReview } from "../../../../common/hooks/useContent.ts"
-import * as styles from "../../../../styles/page/customer-review-page.css.ts"
+import { useCustomerReview } from "../../../../common/hooks/useWorkShowcase.ts"
+import * as styles from "@/styles/service/page/customer-review-page.css.ts"
 
 const CustomerReviewDetailPage = () => {
   const params = useParams()
