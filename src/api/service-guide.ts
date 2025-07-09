@@ -19,10 +19,8 @@ interface ApiResponse<T> {
 export const getServiceGuideData = async (): Promise<ServiceGuideData> => {
     try {
         const response = await apiClient.get<ApiResponse<ServiceGuideData>>("/service/service-guide")
-        console.log(`[getServiceGuideData] 서비스 가이드 데이터:`, response.data)
         return response.data.data
     } catch (error) {
-        console.error(`[getServiceGuideData] 서비스 가이드 조회 실패:`, error)
         throw error
     }
 }
@@ -37,10 +35,8 @@ export const getServiceGuideData = async (): Promise<ServiceGuideData> => {
 export const getAdminServiceGuide = async (): Promise<AdminServiceGuide> => {
     try {
         const response = await apiClient.get<ApiResponse<AdminServiceGuide>>("/admin/service-guide")
-        console.log(`[getAdminServiceGuide] 관리자 서비스 가이드:`, response.data)
         return response.data.data
     } catch (error) {
-        console.error(`[getAdminServiceGuide] 관리자 서비스 가이드 조회 실패:`, error)
         throw error
     }
 }
@@ -56,10 +52,8 @@ export const updateAdminServiceGuide = async (
             "/admin/service-guide",
             data
         )
-        console.log(`[updateAdminServiceGuide] 서비스 가이드 업데이트 성공:`, response.data)
         return response.data.data
     } catch (error) {
-        console.error(`[updateAdminServiceGuide] 서비스 가이드 업데이트 실패:`, error)
         throw error
     }
 }
@@ -82,7 +76,6 @@ export const uploadServiceGuideImages = async (
         )
         return response.data
     } catch (error) {
-        console.error(`[uploadServiceGuideImages] 서비스 가이드 이미지 업로드 실패:`, error)
         throw error
     }
 } 

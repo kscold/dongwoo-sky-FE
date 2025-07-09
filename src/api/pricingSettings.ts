@@ -49,7 +49,16 @@ export interface UpdatePricingSettingDto {
     isActive?: boolean
 }
 
-export const pricingSettingsApi = {
+// 서비스용 API (인증 불필요)
+export const servicePricingApi = {
+    getPricingSettings: async (): Promise<PricingSetting> => {
+        const response = await apiClient.get<PricingSetting>("service/pricing/settings")
+        return response.data
+    },
+}
+
+// 어드민용 API (인증 필요)
+export const adminPricingSettingsApi = {
     getPricingSetting: async (): Promise<PricingSetting> => {
         const response = await apiClient.get<PricingSetting>("admin/pricing-setting")
         return response.data
@@ -59,4 +68,7 @@ export const pricingSettingsApi = {
         const response = await apiClient.put<PricingSetting>("admin/pricing-setting", data)
         return response.data
     },
-} 
+}
+
+// 기존 API는 어드민 API로 연결 (하위 호환성)
+export const pricingSettingsApi = adminPricingSettingsApi 
