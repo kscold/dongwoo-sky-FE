@@ -30,7 +30,6 @@ export const authApi = {
 
   logout: async () => {
     // 백엔드에 로그아웃 요청이 필요하다면 여기에 추가
-    console.log("Logged out")
   },
 
   getCurrentUser: async (): Promise<User | null> => {
@@ -38,7 +37,6 @@ export const authApi = {
       const response = await apiClient.get<{ user: User }>("/admin/user/me")
       return response.data.user
     } catch (error) {
-      console.error("사용자 정보 가져오기 실패:", error)
       return null
     }
   },

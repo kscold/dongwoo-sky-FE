@@ -31,11 +31,9 @@ apiClient.interceptors.request.use(
 // 응답 인터셉터 - 401 에러 시 로그아웃 처리
 apiClient.interceptors.response.use(
   (response) => {
-    console.log(`Response from ${response.config.url}:`, response.data)
     return response
   },
   (error) => {
-    console.error("Response error:", error)
     if (error.response?.status === 401 && typeof window !== "undefined") {
       // 로그인 페이지가 아닐 때만 리다이렉트
       const isLoginPage = window.location.pathname === "/admin/login"
