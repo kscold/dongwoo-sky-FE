@@ -270,3 +270,28 @@ export const noticeLink = style({
   color: "inherit",
   display: "block",
 })
+
+// NoticeSection 컴포넌트에서 사용되는 스타일들
+export const header = style({
+  textAlign: "center",
+  marginBottom: vars.space.xxxl,
+})
+
+export const title = style({
+  fontSize: vars.fontSizes.xxxl,
+  fontWeight: vars.fontWeights.bold,
+  color: vars.colors.textStrong,
+  marginBottom: vars.space.md,
+  
+  "@media": {
+    "(max-width: 768px)": {
+      fontSize: vars.fontSizes.xxl,
+    },
+  },
+})
+
+export const description = style({
+  fontSize: vars.fontSizes.lg,
+  color: vars.colors.textLight,
+  lineHeight: vars.lineHeights.relaxed,
+})

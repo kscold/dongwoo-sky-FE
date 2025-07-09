@@ -118,4 +118,85 @@ export const notFoundSubtext = style({
     fontSize: "14px",
     opacity: 0.7,
     marginBottom: "24px",
+})
+
+// 빌드 오류 해결을 위한 추가 스타일들
+export const noticeHeader = style({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: vars.space.xl,
+    paddingBottom: vars.space.lg,
+    borderBottom: `2px solid ${vars.colors.border}`,
+})
+
+export const noticeDetail = style({
+    backgroundColor: vars.colors.white,
+    borderRadius: vars.radii.lg,
+    padding: vars.space.xl,
+    boxShadow: vars.shadows.sm,
+    border: `1px solid ${vars.colors.border}`,
+})
+
+export const detailTitle = style({
+    fontSize: vars.fontSizes.xxxl,
+    fontWeight: vars.fontWeights.bold,
+    color: vars.colors.textStrong,
+    marginBottom: vars.space.md,
+    lineHeight: vars.lineHeights.heading,
+})
+
+export const detailInfo = style({
+    display: "flex",
+    gap: vars.space.lg,
+    marginBottom: vars.space.xl,
+    fontSize: vars.fontSizes.sm,
+    color: vars.colors.textLight,
+})
+
+export const detailContent = style({
+    fontSize: vars.fontSizes.md,
+    lineHeight: vars.lineHeights.relaxed,
+    color: vars.colors.text,
+    marginBottom: vars.space.xl,
+})
+
+export const attachmentsSection = style({
+    marginTop: vars.space.xl,
+    paddingTop: vars.space.xl,
+    borderTop: `1px solid ${vars.colors.borderLight}`,
+})
+
+export const attachmentsTitle = style({
+    fontSize: vars.fontSizes.lg,
+    fontWeight: vars.fontWeights.semibold,
+    color: vars.colors.textStrong,
+    marginBottom: vars.space.md,
+})
+
+export const attachmentsList = style({
+    display: "flex",
+    flexDirection: "column",
+    gap: vars.space.sm,
+})
+
+export const attachmentItem = style({
+    display: "flex",
+    alignItems: "center",
+    gap: vars.space.sm,
+    padding: vars.space.sm,
+    backgroundColor: vars.colors.backgroundLight,
+    borderRadius: vars.radii.md,
+    border: `1px solid ${vars.colors.borderLight}`,
+})
+
+export const attachmentLink = style({
+    color: vars.colors.primary,
+    textDecoration: "none",
+    fontSize: vars.fontSizes.sm,
+    fontWeight: vars.fontWeights.medium,
+    
+    ":hover": {
+        textDecoration: "underline",
+    },
 }) 

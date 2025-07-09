@@ -7,6 +7,15 @@ export const container = style({
     padding: vars.space.xl,
 })
 
+export const header = style({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: vars.space.xl,
+    paddingBottom: vars.space.lg,
+    borderBottom: `2px solid ${vars.colors.border}`,
+})
+
 export const loadingState = style({
     textAlign: "center",
     padding: vars.space.xl,

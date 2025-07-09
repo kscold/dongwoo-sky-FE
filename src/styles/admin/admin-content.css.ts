@@ -309,4 +309,116 @@ export const errorState = style({
     backgroundColor: vars.colors.primaryLight,
     borderRadius: "8px",
     border: `1px solid ${vars.colors.border}`,
+})
+
+// Additional styles needed for customer review page
+export const cardImage = style({
+    width: "100%",
+    height: "200px",
+    position: "relative",
+    overflow: "hidden",
+})
+
+export const cardImageElement = style({
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+})
+
+export const cardContent = style({
+    padding: "16px",
+})
+
+export const cardTitle = style({
+    fontSize: "18px",
+    fontWeight: "600",
+    color: vars.colors.text,
+    marginBottom: "8px",
+    lineHeight: 1.4,
+})
+
+export const cardMeta = style({
+    fontSize: "14px",
+    color: vars.colors.textLight,
+    marginBottom: "8px",
+})
+
+export const cardDescription = style({
+    fontSize: "14px",
+    color: vars.colors.text,
+    lineHeight: 1.5,
+    marginBottom: "12px",
+})
+
+export const cardStats = style({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    fontSize: "12px",
+    color: vars.colors.textLight,
+    fontWeight: "500",
+    marginBottom: "12px",
+})
+
+export const cardActions = style({
+    display: "flex",
+    gap: "8px",
+})
+
+export const actionButton = style({
+    padding: "6px 12px",
+    fontSize: "12px",
+    fontWeight: "500",
+    color: vars.colors.primary,
+    backgroundColor: "transparent",
+    border: `1px solid ${vars.colors.primary}`,
+    borderRadius: "4px",
+    textDecoration: "none",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    ":hover": {
+        backgroundColor: vars.colors.primary,
+        color: "white",
+    },
+})
+
+export const actionButtonDanger = style({
+    padding: "6px 12px",
+    fontSize: "12px",
+    fontWeight: "500",
+    color: vars.colors.danger,
+    backgroundColor: "transparent",
+    border: `1px solid ${vars.colors.danger}`,
+    borderRadius: "4px",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    ":hover": {
+        backgroundColor: vars.colors.danger,
+        color: "white",
+    },
+})
+
+export const emptyContent = style({
+    textAlign: "center",
+    padding: "64px 32px",
+    color: vars.colors.textLight,
+})
+
+export const createFirstButton = style({
+    padding: "12px 24px",
+    fontSize: "14px",
+    fontWeight: "600",
+    color: "white",
+    backgroundColor: vars.colors.primary,
+    border: "none",
+    borderRadius: "8px",
+    textDecoration: "none",
+    cursor: "pointer",
+    marginTop: "16px",
+    display: "inline-block",
+    transition: "all 0.2s ease",
+    ":hover": {
+        backgroundColor: vars.colors.primaryDark,
+        transform: "translateY(-2px)",
+    },
 }) 

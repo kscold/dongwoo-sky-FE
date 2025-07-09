@@ -5,6 +5,14 @@ export const container = style({
     maxWidth: "1200px",
     margin: "0 auto",
     padding: vars.space.xl,
+    "@media": {
+        "(max-width: 768px)": {
+            padding: vars.space.lg,
+        },
+        "(max-width: 480px)": {
+            padding: vars.space.md,
+        },
+    },
 })
 
 export const loadingState = style({
@@ -27,6 +35,14 @@ export const title = style({
     fontSize: vars.fontSizes.xxxl,
     fontWeight: vars.fontWeights.bold,
     marginBottom: vars.space.lg,
+    "@media": {
+        "(max-width: 768px)": {
+            fontSize: vars.fontSizes.xxl,
+        },
+        "(max-width: 480px)": {
+            fontSize: vars.fontSizes.xl,
+        },
+    },
 })
 
 export const subtitle = style({
@@ -44,6 +60,16 @@ export const grid = style({
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
     gap: vars.space.lg,
+    "@media": {
+        "(max-width: 768px)": {
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gap: vars.space.md,
+        },
+        "(max-width: 480px)": {
+            gridTemplateColumns: "1fr",
+            gap: vars.space.sm,
+        },
+    },
 })
 
 export const card = style({
@@ -175,4 +201,14 @@ export const active = style({
     backgroundColor: vars.colors.primary,
     color: vars.colors.white,
     borderColor: vars.colors.primary,
+})
+
+export const emptyState = style({
+    textAlign: "center",
+    padding: vars.space.xxxl,
+    backgroundColor: vars.colors.backgroundLight,
+    borderRadius: vars.radii.lg,
+    border: `2px dashed ${vars.colors.border}`,
+    color: vars.colors.textLight,
+    fontSize: vars.fontSizes.lg,
 }) 

@@ -276,4 +276,218 @@ export const cancelButton = style({
     ":hover": {
         backgroundColor: vars.colors.text,
     },
+})
+
+// 빌드 오류 해결을 위한 누락된 스타일들 추가
+export const backButton = style({
+    color: vars.colors.primary,
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: vars.space.sm,
+    fontSize: vars.fontSizes.md,
+    fontWeight: vars.fontWeights.medium,
+    marginBottom: vars.space.lg,
+    padding: `${vars.space.sm} ${vars.space.md}`,
+    borderRadius: vars.radii.md,
+    border: `1px solid ${vars.colors.primary}`,
+    transition: "all 0.2s ease",
+    
+    ":hover": {
+        backgroundColor: vars.colors.primary,
+        color: vars.colors.white,
+    },
+})
+
+export const formRow = style({
+    display: "flex",
+    gap: vars.space.md,
+    marginBottom: vars.space.lg,
+    
+    "@media": {
+        "(max-width: 768px)": {
+            flexDirection: "column",
+            gap: vars.space.sm,
+        },
+    },
+})
+
+export const checkboxGroup = style({
+    display: "flex",
+    alignItems: "center",
+    gap: vars.space.sm,
+})
+
+export const checkboxLabel = style({
+    fontSize: vars.fontSizes.md,
+    fontWeight: vars.fontWeights.medium,
+    color: vars.colors.text,
+    cursor: "pointer",
+})
+
+export const attachmentList = style({
+    display: "flex",
+    flexDirection: "column",
+    gap: vars.space.sm,
+    marginTop: vars.space.sm,
+})
+
+export const attachmentItem = style({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: vars.space.sm,
+    backgroundColor: vars.colors.backgroundLight,
+    borderRadius: vars.radii.md,
+    border: `1px solid ${vars.colors.border}`,
+})
+
+export const attachmentName = style({
+    fontSize: vars.fontSizes.sm,
+    color: vars.colors.text,
+    fontWeight: vars.fontWeights.medium,
+})
+
+export const removeButton = style({
+    padding: `${vars.space.xs} ${vars.space.sm}`,
+    fontSize: vars.fontSizes.xs,
+    fontWeight: vars.fontWeights.medium,
+    color: vars.colors.danger,
+    backgroundColor: "transparent",
+    border: `1px solid ${vars.colors.danger}`,
+    borderRadius: vars.radii.sm,
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    
+    ":hover": {
+        backgroundColor: vars.colors.danger,
+        color: vars.colors.white,
+    },
+})
+
+export const fileInput = style({
+    width: "100%",
+    padding: vars.space.sm,
+    border: `1px solid ${vars.colors.border}`,
+    borderRadius: vars.radii.md,
+    fontSize: vars.fontSizes.sm,
+    
+    ":focus": {
+        outline: "none",
+        borderColor: vars.colors.primary,
+        boxShadow: `0 0 0 3px ${vars.colors.primaryTransparent}`,
+    },
+})
+
+export const helpText = style({
+    fontSize: vars.fontSizes.xs,
+    color: vars.colors.textLight,
+    marginTop: vars.space.xs,
+})
+
+export const formActions = style({
+    display: "flex",
+    gap: vars.space.md,
+    justifyContent: "flex-end",
+    marginTop: vars.space.xl,
+    paddingTop: vars.space.lg,
+    borderTop: `1px solid ${vars.colors.border}`,
+})
+
+export const submitButton = style({
+    backgroundColor: vars.colors.primary,
+    color: vars.colors.white,
+    padding: `${vars.space.md} ${vars.space.xl}`,
+    borderRadius: vars.radii.md,
+    border: "none",
+    fontSize: vars.fontSizes.md,
+    fontWeight: vars.fontWeights.medium,
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    
+    ":hover": {
+        backgroundColor: vars.colors.primaryDark,
+        transform: "translateY(-1px)",
+    },
+    
+    ":disabled": {
+        opacity: 0.5,
+        cursor: "not-allowed",
+        transform: "none",
+    },
+})
+
+// 테이블 관련 스타일들
+export const table = style({
+    width: "100%",
+    borderCollapse: "collapse",
+    backgroundColor: vars.colors.white,
+    borderRadius: vars.radii.lg,
+    overflow: "hidden",
+    boxShadow: vars.shadows.sm,
+})
+
+export const tableHeader = style({
+    backgroundColor: vars.colors.backgroundLight,
+    fontSize: vars.fontSizes.sm,
+    fontWeight: vars.fontWeights.semibold,
+    color: vars.colors.textStrong,
+})
+
+export const tableCell = style({
+    padding: vars.space.md,
+    textAlign: "left",
+    borderBottom: `1px solid ${vars.colors.border}`,
+    verticalAlign: "top",
+})
+
+export const link = style({
+    color: vars.colors.primary,
+    textDecoration: "none",
+    fontWeight: vars.fontWeights.medium,
+    
+    ":hover": {
+        textDecoration: "underline",
+    },
+})
+
+export const modalActions = style({
+    display: "flex",
+    gap: vars.space.md,
+    justifyContent: "flex-end",
+    marginTop: vars.space.lg,
+    paddingTop: vars.space.lg,
+    borderTop: `1px solid ${vars.colors.border}`,
+})
+
+export const skeleton = style({
+    backgroundColor: vars.colors.backgroundLight,
+    borderRadius: vars.radii.md,
+    animation: "pulse 1.5s ease-in-out infinite",
+    
+    "@keyframes": {
+        pulse: {
+            "0%": { opacity: 1 },
+            "50%": { opacity: 0.5 },
+            "100%": { opacity: 1 },
+        },
+    },
+})
+
+export const actionButton = style({
+    padding: `${vars.space.sm} ${vars.space.md}`,
+    fontSize: vars.fontSizes.sm,
+    fontWeight: vars.fontWeights.medium,
+    borderRadius: vars.radii.md,
+    border: "none",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: vars.space.xs,
+    
+    ":hover": {
+        transform: "translateY(-1px)",
+    },
 }) 

@@ -170,4 +170,198 @@ export const quickActionIcon = style({
 export const quickActionText = style({
     fontSize: "14px",
     fontWeight: "500",
-}) 
+})
+
+// Admin Dashboard 컴포넌트에서 사용되는 스타일들
+export const dashboardContainer = style({
+    minHeight: "100vh",
+    backgroundColor: vars.colors.backgroundLight,
+    padding: vars.space.lg,
+    
+    "@media": {
+        "(max-width: 768px)": {
+            padding: vars.space.md,
+        },
+    },
+})
+
+export const dashboardWrapper = style({
+    maxWidth: "1400px",
+    margin: "0 auto",
+})
+
+export const dashboardHeader = style({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: vars.space.xxxl,
+    backgroundColor: vars.colors.white,
+    padding: vars.space.xl,
+    borderRadius: vars.radii.lg,
+    boxShadow: vars.shadows.sm,
+    
+    "@media": {
+        "(max-width: 768px)": {
+            flexDirection: "column",
+            gap: vars.space.lg,
+            padding: vars.space.lg,
+        },
+    },
+})
+
+export const headerContent = style({
+    display: "flex",
+    flexDirection: "column",
+    gap: vars.space.sm,
+})
+
+export const dashboardTitle = style({
+    fontSize: vars.fontSizes.xxxxl,
+    fontWeight: vars.fontWeights.bold,
+    color: vars.colors.textStrong,
+    margin: 0,
+    
+    "@media": {
+        "(max-width: 768px)": {
+            fontSize: vars.fontSizes.xxxl,
+        },
+    },
+})
+
+export const dashboardSubtitle = style({
+    fontSize: vars.fontSizes.lg,
+    color: vars.colors.textLight,
+    margin: 0,
+})
+
+export const headerActions = style({
+    display: "flex",
+    gap: vars.space.md,
+    alignItems: "center",
+    
+    "@media": {
+        "(max-width: 768px)": {
+            width: "100%",
+            justifyContent: "center",
+        },
+    },
+})
+
+export const viewSiteButton = style({
+    backgroundColor: vars.colors.secondary,
+    color: vars.colors.white,
+    padding: `${vars.space.sm} ${vars.space.lg}`,
+    borderRadius: vars.radii.md,
+    textDecoration: "none",
+    fontWeight: vars.fontWeights.medium,
+    fontSize: vars.fontSizes.sm,
+    transition: "all 0.2s ease",
+    
+    ":hover": {
+        backgroundColor: vars.colors.primary,
+        transform: "translateY(-2px)",
+    },
+})
+
+export const logoutButton = style({
+    backgroundColor: vars.colors.danger,
+    color: vars.colors.white,
+    padding: `${vars.space.sm} ${vars.space.lg}`,
+    borderRadius: vars.radii.md,
+    border: "none",
+    fontWeight: vars.fontWeights.medium,
+    fontSize: vars.fontSizes.sm,
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    
+    ":hover": {
+        backgroundColor: vars.colors.dangerDark,
+        transform: "translateY(-2px)",
+    },
+})
+
+export const dashboardContent = style({
+    display: "flex",
+    flexDirection: "column",
+    gap: vars.space.xl,
+})
+
+export const dashboardStatsGrid = style({
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+    gap: vars.space.lg,
+    marginBottom: vars.space.xl,
+})
+
+export const dashboardStatCard = style({
+    backgroundColor: vars.colors.white,
+    padding: vars.space.xl,
+    borderRadius: vars.radii.lg,
+    boxShadow: vars.shadows.sm,
+    textAlign: "center",
+    border: `1px solid ${vars.colors.border}`,
+    transition: "all 0.2s ease",
+    
+    ":hover": {
+        boxShadow: vars.shadows.md,
+        transform: "translateY(-2px)",
+    },
+})
+
+export const statIcon = style({
+    fontSize: vars.fontSizes.xxxxl,
+    marginBottom: vars.space.md,
+    display: "block",
+})
+
+export const statNumber = style({
+    fontSize: vars.fontSizes.xxxl,
+    fontWeight: vars.fontWeights.bold,
+    color: vars.colors.primary,
+    marginBottom: vars.space.sm,
+})
+
+export const quickActionsGrid = style({
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+    gap: vars.space.lg,
+})
+
+export const actionCard = style({
+    backgroundColor: vars.colors.white,
+    padding: vars.space.xl,
+    borderRadius: vars.radii.lg,
+    boxShadow: vars.shadows.sm,
+    textDecoration: "none",
+    color: "inherit",
+    transition: "all 0.2s ease",
+    border: `1px solid ${vars.colors.border}`,
+    display: "block",
+    
+    ":hover": {
+        boxShadow: vars.shadows.md,
+        transform: "translateY(-4px)",
+        borderColor: vars.colors.primary,
+    },
+})
+
+export const actionIcon = style({
+    fontSize: vars.fontSizes.xxxl,
+    marginBottom: vars.space.md,
+    display: "block",
+})
+
+export const actionTitle = style({
+    fontSize: vars.fontSizes.xl,
+    fontWeight: vars.fontWeights.semibold,
+    color: vars.colors.textStrong,
+    marginBottom: vars.space.sm,
+    margin: 0,
+})
+
+export const actionDescription = style({
+    fontSize: vars.fontSizes.md,
+    color: vars.colors.textLight,
+    lineHeight: vars.lineHeights.relaxed,
+    margin: 0,
+})
