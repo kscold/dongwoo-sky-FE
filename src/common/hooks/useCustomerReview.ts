@@ -56,7 +56,7 @@ export const useMarkReviewHelpful = () => {
       queryClient.invalidateQueries({ queryKey: customerReviewKeys.public() })
     },
     onError: (error) => {
-      console.error("고객 후기 도움됨 표시 실패:", error)
+      // Error handling can be added here if needed
     },
   })
 }
@@ -91,7 +91,7 @@ export const useCreateCustomerReview = () => {
       queryClient.invalidateQueries({ queryKey: customerReviewKeys.public() })
     },
     onError: (error) => {
-      console.error("고객 후기 생성 실패:", error)
+      // Error handling can be added here if needed
     },
   })
 }
@@ -114,7 +114,7 @@ export const useUpdateCustomerReview = () => {
       queryClient.invalidateQueries({ queryKey: customerReviewKeys.adminDetail(id) })
     },
     onError: (error) => {
-      console.error("고객 후기 수정 실패:", error)
+      // Error handling can be added here if needed
     },
   })
 }
@@ -129,7 +129,7 @@ export const useDeleteCustomerReview = () => {
       queryClient.invalidateQueries({ queryKey: customerReviewKeys.public() })
     },
     onError: (error) => {
-      console.error("고객 후기 삭제 실패:", error)
+      // Error handling can be added here if needed
     },
   })
 }
@@ -138,7 +138,7 @@ export const useUploadCustomerReviewImages = () => {
   return useMutation({
     mutationFn: uploadCustomerReviewImages,
     onError: (error) => {
-      console.error("고객 후기 이미지 업로드 실패:", error)
+      // Error handling can be added here if needed
     },
   })
 }

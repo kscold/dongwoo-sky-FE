@@ -14,7 +14,6 @@ export function useFileUpload(endpoint: string) {
       // 백엔드 응답 형식에 따라 달라질 수 있음
       return result.attachments || []
     } catch (error) {
-      console.error("File upload failed:", error)
       throw error
     }
   }
@@ -31,7 +30,7 @@ export function useSingleFileUpload() {
     mutationFn: ({ endpoint, file }: { endpoint: string; file: File }) =>
       fileUploadApi.uploadFile(endpoint, file),
     onError: (error) => {
-      console.error("단일 파일 업로드 실패:", error)
+      // Error handling can be added here if needed
     },
   })
 }
@@ -42,7 +41,7 @@ export function useNoticeImageUpload() {
     mutationFn: (file: File) =>
       fileUploadApi.uploadFile("/files/notice/upload", file),
     onError: (error) => {
-      console.error("공지사항 이미지 업로드 실패:", error)
+      // Error handling can be added here if needed
     },
   })
 }
@@ -53,7 +52,7 @@ export function useNoticeImagesUpload() {
     mutationFn: (files: File[]) =>
       fileUploadApi.uploadFiles("/files/notice/uploads", files),
     onError: (error) => {
-      console.error("공지사항 다중 이미지 업로드 실패:", error)
+      // Error handling can be added here if needed
     },
   })
 }

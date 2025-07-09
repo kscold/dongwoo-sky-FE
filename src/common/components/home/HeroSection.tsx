@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo, useCallback } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 
@@ -24,26 +24,20 @@ export default function HeroSection({ home }: HeroSectionProps) {
   const [location, setLocation] = useState<LocationInfo>({ isLoading: true })
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
-  if (!home || !home.heroSection) return null
+  // Memoize computed values for better performance
+  const heroSection = useMemo(() => home?.heroSection, [home?.heroSection])
+  
+  const backgroundImages = useMemo(() => {
+    return heroSection?.backgroundImageUrls && heroSection.backgroundImageUrls.length > 0
+      ? heroSection.backgroundImageUrls.filter(img => img.isActive !== false)
+      : []
+  }, [heroSection?.backgroundImageUrls])
 
-  const { heroSection } = home
-
-  console.log('[HeroSection] 전체 home 데이터:', home)
-  console.log('[HeroSection] heroSection 데이터:', heroSection)
-  console.log('[HeroSection] backgroundImageUrls:', heroSection.backgroundImageUrls)
-
-  // 배경 이미지 배열
-  const backgroundImages = heroSection.backgroundImageUrls && heroSection.backgroundImageUrls.length > 0
-    ? heroSection.backgroundImageUrls.filter(img => img.isActive !== false)
-    : []
-
-  const currentBgImageUrl = backgroundImages.length > 0
-    ? backgroundImages[currentImageIndex]?.url
-    : "/assets/images/hero-background.jpg"
-
-  console.log('[HeroSection] 배경 이미지 배열:', backgroundImages)
-  console.log('[HeroSection] 현재 이미지 인덱스:', currentImageIndex)
-  console.log('[HeroSection] 현재 배경 이미지 URL:', currentBgImageUrl)
+  const currentBgImageUrl = useMemo(() => {
+    return backgroundImages.length > 0
+      ? backgroundImages[currentImageIndex]?.url
+      : "/assets/images/hero-background.jpg"
+  }, [backgroundImages, currentImageIndex])
 
   // 배경 이미지 자동 전환 (5초마다)
   useEffect(() => {
@@ -60,16 +54,18 @@ export default function HeroSection({ home }: HeroSectionProps) {
 
   // 이미지 프리로드
   useEffect(() => {
-    const img = new Image()
-    img.onload = () => {
-      setImageLoaded(true)
-      setImageError(false)
+    if (currentBgImageUrl) {
+      const img = new Image()
+      img.onload = () => {
+        setImageLoaded(true)
+        setImageError(false)
+      }
+      img.onerror = () => {
+        setImageError(true)
+        setImageLoaded(false)
+      }
+      img.src = currentBgImageUrl
     }
-    img.onerror = () => {
-      setImageError(true)
-      setImageLoaded(false)
-    }
-    img.src = currentBgImageUrl
   }, [currentBgImageUrl])
 
   // 위치 정보 가져오기
@@ -142,6 +138,16 @@ export default function HeroSection({ home }: HeroSectionProps) {
 
     getLocation()
   }, [])
+
+  // early return을 모든 useEffect 이후에 배치
+  if (!home || !heroSection) return null
+
+  console.log('[HeroSection] 전체 home 데이터:', home)
+  console.log('[HeroSection] heroSection 데이터:', heroSection)
+  console.log('[HeroSection] backgroundImageUrls:', heroSection.backgroundImageUrls)
+  console.log('[HeroSection] 배경 이미지 배열:', backgroundImages)
+  console.log('[HeroSection] 현재 이미지 인덱스:', currentImageIndex)
+  console.log('[HeroSection] 현재 배경 이미지 URL:', currentBgImageUrl)
 
   const handleScrollDown = () => {
     window.scrollTo({

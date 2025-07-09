@@ -52,7 +52,7 @@ export const useUpdateAdminServiceGuide = () => {
             queryClient.invalidateQueries({ queryKey: serviceGuideKeys.public() })
         },
         onError: (error) => {
-            console.error("서비스 가이드 업데이트 실패:", error)
+            // Error handling can be added here if needed
         },
     })
 }
@@ -61,7 +61,7 @@ export const useUploadServiceGuideImages = () => {
     return useMutation({
         mutationFn: uploadServiceGuideImages,
         onError: (error) => {
-            console.error("서비스 가이드 이미지 업로드 실패:", error)
+            // Error handling can be added here if needed
         },
     })
 }

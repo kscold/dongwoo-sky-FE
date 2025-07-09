@@ -36,7 +36,6 @@ export const useUpdateHeroSettings = () => {
       alert("히어로 설정이 성공적으로 저장되었습니다.")
     },
     onError: (error) => {
-      console.error("히어로 설정 업데이트 실패:", error)
       alert(`오류가 발생했습니다: ${error.message}`)
     },
   })
@@ -52,7 +51,7 @@ export function useUploadHeroImage() {
       queryClient.invalidateQueries({ queryKey: ["heroSettings"] })
     },
     onError: (error) => {
-      console.error("히어로 이미지 업로드 실패:", error)
+      // Error handling can be added here if needed
     },
   })
 }
@@ -67,7 +66,7 @@ export function useDeleteHeroImage() {
       queryClient.invalidateQueries({ queryKey: ["heroSettings"] })
     },
     onError: (error) => {
-      console.error("히어로 이미지 삭제 실패:", error)
+      // Error handling can be added here if needed
     },
   })
 }
@@ -82,7 +81,7 @@ export function useUpdateHeroImagesOrder() {
       queryClient.invalidateQueries({ queryKey: ["heroSettings"] })
     },
     onError: (error) => {
-      console.error("히어로 이미지 순서 변경 실패:", error)
+      // Error handling can be added here if needed
     },
   })
 }
@@ -98,7 +97,7 @@ export function useToggleHeroImageStatus() {
       queryClient.invalidateQueries({ queryKey: ["heroSettings"] })
     },
     onError: (error) => {
-      console.error("히어로 이미지 상태 변경 실패:", error)
+      // Error handling can be added here if needed
     },
   })
 }

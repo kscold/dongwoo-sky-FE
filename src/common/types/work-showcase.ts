@@ -13,6 +13,11 @@ export interface WorkShowcase {
     publishedAt?: Date | null
     createdAt: Date
     updatedAt: Date
+    rating?: number // 고객 리뷰에서 사용하는 평점 (1-5)
+    customerName?: string // 고객 이름
+    customerCompany?: string // 고객 회사
+    serviceType?: string // 서비스 타입
+    helpfulCount?: number // 도움이 된 개수
 }
 
 export interface CreateWorkShowcaseDto {
@@ -24,6 +29,10 @@ export interface CreateWorkShowcaseDto {
     equipmentUsed?: string
     imageUrls?: string[]
     isPublished?: boolean
+    rating?: number
+    customerName?: string
+    customerCompany?: string
+    serviceType?: string
 }
 
 export interface UpdateWorkShowcaseDto {
@@ -35,6 +44,10 @@ export interface UpdateWorkShowcaseDto {
     equipmentUsed?: string
     imageUrls?: string[]
     isPublished?: boolean
+    rating?: number
+    customerName?: string
+    customerCompany?: string
+    serviceType?: string
 }
 
 export interface PaginatedWorkShowcases {

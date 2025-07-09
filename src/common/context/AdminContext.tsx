@@ -41,7 +41,6 @@ const useAdminStore = create<AdminState & AdminActions>((set) => ({
       }
       throw new Error(response.message || "Login failed")
     } catch (error) {
-      console.error("Login failed:", error)
       localStorage.removeItem("auth_token")
       set({ user: null, isAuthenticated: false, isLoading: false })
       return false
@@ -73,7 +72,6 @@ const useAdminStore = create<AdminState & AdminActions>((set) => ({
         throw new Error("User is not an admin.")
       }
     } catch (error) {
-      console.error("Auth check failed:", error)
       localStorage.removeItem("auth_token")
       set({ user: null, isAuthenticated: false, isLoading: false })
     }

@@ -32,10 +32,8 @@ const Header = () => {
   const toggleMobileMenu = (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    console.log("햄버거 버튼 클릭됨! 현재 상태:", isMobileMenuOpen)
     const newState = !isMobileMenuOpen
     setIsMobileMenuOpen(newState)
-    console.log("새로운 상태:", newState)
   }
 
   // 모바일 메뉴 닫기 함수
@@ -44,7 +42,6 @@ const Header = () => {
       e.preventDefault()
       e.stopPropagation()
     }
-    console.log("모바일 메뉴 닫기")
     setIsMobileMenuOpen(false)
   }
 
