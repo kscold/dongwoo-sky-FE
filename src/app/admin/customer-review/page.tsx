@@ -12,6 +12,7 @@ import {
   useCustomerReviews,
 } from "@/common/hooks/useWorkShowcase"
 import type { WorkShowcase, CustomerReview } from "@/common/types/content"
+import * as styles from "@/styles/admin/admin-content.css"
 
 
 export default function ContentAdminPage() {
@@ -26,7 +27,8 @@ export default function ContentAdminPage() {
   const workShowcaseItems = topWorkShowcases as WorkShowcase[] | undefined
   const customerReviewItems = topCustomerReviews as CustomerReview[] | undefined
 
-  const formatDate = (date: string | Date) => {
+  const formatDate = (date: string | Date | null | undefined) => {
+    if (!date) return "날짜 미정"
     return format(new Date(date), "yyyy년 MM월 dd일", { locale: ko })
   }
 

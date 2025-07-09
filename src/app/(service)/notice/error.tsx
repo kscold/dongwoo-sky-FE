@@ -12,10 +12,9 @@ export default function NoticeError({ error, reset }: ErrorProps) {
     <ErrorComponent
       error={error}
       reset={reset}
-      title="공지사항을 불러오는데 실패했습니다"
+      message="공지사항을 불러오는데 실패했습니다"
       icon="📢"
       type="service"
-      homeLink="/notice"
     />
   )
 }

@@ -5,7 +5,7 @@ import Image from "next/image"
 import Head from "next/head"
 
 import { usePricingEquipments } from "@/common/hooks/usePricing"
-import { usePricingSetting } from "@/common/hooks/usePricingSettings"
+import { useServicePricingSettings } from "@/common/hooks/usePricingSettings"
 import ErrorComponent from "@/common/components/error/ErrorComponent"
 import * as styles from "@/styles/page/pricing-page.css"
 import { Equipment } from "@/common/types/equipment"
@@ -23,7 +23,7 @@ export default function PricingPage() {
     data: pricingSetting,
     isLoading: settingsLoading,
     isError: settingsError,
-  } = usePricingSetting()
+  } = useServicePricingSettings()
 
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [workingHours, setWorkingHours] = useState<number>(4)

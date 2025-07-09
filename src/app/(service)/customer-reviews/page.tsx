@@ -7,6 +7,7 @@ import Link from "next/link"
 import Header from "../../../common/components/layout/Header.tsx"
 import Footer from "../../..//common/components/layout/Footer.tsx"
 import { useCustomerReviews } from "../../../common/hooks/useWorkShowcase.ts"
+import { WorkShowcase } from "../../../common/types/work-showcase"
 
 import * as styles from "@/styles/service/page/customer-reviews-page.css.ts"
 
@@ -29,11 +30,13 @@ const CustomerReviewsPage = () => {
     return html.replace(/<[^>]*>/g, "")
   }
 
-  const renderStars = (rating: number) => {
-    return "★".repeat(rating) + "☆".repeat(5 - rating)
+  const renderStars = (rating: number | undefined) => {
+    const validRating = rating || 0
+    return "★".repeat(validRating) + "☆".repeat(5 - validRating)
   }
 
-  const formatDate = (dateString: string | Date) => {
+  const formatDate = (dateString: string | Date | null | undefined) => {
+    if (!dateString) return "날짜 미정"
     const date = new Date(dateString)
     return date.toLocaleDateString("ko-KR", {
       year: "numeric",
@@ -74,7 +77,7 @@ const CustomerReviewsPage = () => {
     )
   }
 
-  const customerReviews = customerReviewsData?.data || []
+  const customerReviews = customerReviewsData?.items || []
   const totalPages = customerReviewsData?.totalPages || 1
 
   return (
@@ -96,7 +99,7 @@ const CustomerReviewsPage = () => {
           {customerReviews.length > 0 ? (
             <>
               <div className={styles.grid}>
-                {customerReviews.map((review: any) => (
+                {customerReviews.map((review: WorkShowcase) => (
                   <Link
                     key={review._id}
                     href={`/customer-reviews/${review._id}`}

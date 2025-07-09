@@ -9,7 +9,7 @@ import { useNoticeImagesUpload } from "../../../../common/hooks/useFileUpload"
 import { UpdateNoticeDto } from "../../../../common/types/notice"
 import { useAdmin } from "../../../../common/context/AdminContext"
 
-import * as notice from "../../../../styles/old/admin-notice.css"
+import * as notice from "../../../../styles/admin/admin-notice.css"
 
 export default function EditNoticePage() {
   const { isAuthenticated } = useAdmin()

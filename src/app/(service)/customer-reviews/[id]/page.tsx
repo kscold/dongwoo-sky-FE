@@ -61,8 +61,8 @@ const CustomerReviewDetailPage = () => {
 
         {/* 평점 */}
         <div className={styles.ratingSection}>
-          <div className={styles.stars}>{renderStars(review.rating)}</div>
-          <span className={styles.ratingText}>({review.rating}/5)</span>
+          <div className={styles.stars}>{renderStars(review.rating || 0)}</div>
+          <span className={styles.ratingText}>({review.rating || 0}/5)</span>
         </div>
 
         {/* 메타 정보 */}
@@ -85,7 +85,7 @@ const CustomerReviewDetailPage = () => {
             <span className={styles.stat}>👀 조회수 {review.viewCount}</span>
             <span className={styles.stat}>👍 도움됨 {review.helpfulCount}</span>
             <span className={styles.date}>
-              {formatDate(review.publishedAt)}
+              {review.publishedAt ? formatDate(review.publishedAt) : formatDate(review.createdAt)}
             </span>
           </div>
         </div>

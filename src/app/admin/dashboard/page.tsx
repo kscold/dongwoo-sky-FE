@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useAdmin } from "@/common/context/AdminContext"
 
-import * as styles from "../../../styles/old/admin-dashboard.css"
+import * as styles from "../../../styles/admin/admin-dashboard.css"
 
 export default function AdminDashboardPage() {
   const { user, logout, isLoading } = useAdmin()
@@ -42,23 +42,23 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className={styles.dashboardContent}>
-          <div className={styles.statsGrid}>
-            <div className={styles.statCard}>
+          <div className={styles.dashboardStatsGrid}>
+            <div className={styles.dashboardStatCard}>
               <div className={styles.statIcon}>📄</div>
               <div className={styles.statNumber}>-</div>
               <div className={styles.statLabel}>총 공지사항</div>
             </div>
-            <div className={styles.statCard}>
+            <div className={styles.dashboardStatCard}>
               <div className={styles.statIcon}>✅</div>
               <div className={styles.statNumber}>-</div>
               <div className={styles.statLabel}>공개 공지사항</div>
             </div>
-            <div className={styles.statCard}>
+            <div className={styles.dashboardStatCard}>
               <div className={styles.statIcon}>🏗️</div>
               <div className={styles.statNumber}>-</div>
               <div className={styles.statLabel}>등록된 장비</div>
             </div>
-            <div className={styles.statCard}>
+            <div className={styles.dashboardStatCard}>
               <div className={styles.statIcon}>🔧</div>
               <div className={styles.statNumber}>-</div>
               <div className={styles.statLabel}>제공 서비스</div>
