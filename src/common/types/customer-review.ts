@@ -10,10 +10,10 @@ export interface CustomerReview {
     imageUrls?: string[]
     viewCount: number
     helpfulCount: number
-    isPublished: boolean
-    publishedAt?: string
-    createdAt: string
-    updatedAt: string
+    isActive: boolean
+    publishedAt?: Date
+    createdAt: Date
+    updatedAt: Date
 }
 
 export interface CreateCustomerReviewDto {
@@ -25,7 +25,7 @@ export interface CreateCustomerReviewDto {
     projectLocation?: string
     rating: number
     imageUrls?: string[]
-    isPublished?: boolean
+    isActive?: boolean
 }
 
 export interface UpdateCustomerReviewDto {
@@ -37,12 +37,13 @@ export interface UpdateCustomerReviewDto {
     projectLocation?: string
     rating?: number
     imageUrls?: string[]
-    isPublished?: boolean
+    isActive?: boolean
 }
 
 export interface PaginatedCustomerReviews {
-    items: CustomerReview[]
+    data: CustomerReview[]
+    total: number
+    page: number
+    limit: number
     totalPages: number
-    currentPage: number
-    totalItems: number
 } 

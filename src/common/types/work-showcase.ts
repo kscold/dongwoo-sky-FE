@@ -51,8 +51,9 @@ export interface UpdateWorkShowcaseDto {
 }
 
 export interface PaginatedWorkShowcases {
-    items: WorkShowcase[]
+    data: WorkShowcase[]
+    total: number
+    page: number
+    limit: number
     totalPages: number
-    currentPage: number
-    totalItems: number
 } 

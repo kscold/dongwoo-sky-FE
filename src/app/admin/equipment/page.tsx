@@ -24,6 +24,7 @@ import { Equipment } from "../../../common/types/equipment"
 import SortableEquipmentItem from "./components/SortableEquipmentItem"
 import EquipmentFormModal from "./components/EquipmentFormModal"
 import ProtectedRoute from "../../../common/auth/ProtectedRoute"
+import PageSkeleton from "../../../common/components/ui/PageSkeleton"
 import * as styles from "../../../styles/admin/admin-equipment.css"
 
 function EquipmentAdminContent() {
@@ -90,14 +91,7 @@ function EquipmentAdminContent() {
   }
 
   if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>장비 관리</h1>
-          <p className={styles.subtitle}>로딩 중...</p>
-        </div>
-      </div>
-    )
+    return <PageSkeleton variant="default" />
   }
 
   if (error) {

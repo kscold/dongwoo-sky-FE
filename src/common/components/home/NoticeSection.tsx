@@ -21,7 +21,7 @@ export default function NoticeSection({ notices }: NoticeSectionProps) {
   return (
     <section className={styles.noticeSection}>
       <div className={styles.header}>
-        <h2 className={styles.title}>📢 어울림 스카이 소식</h2>
+        <h2 className={styles.title}>어울림 스카이 소식</h2>
         <p className={styles.description}>
           최신 공지사항과 중요한 업데이트를 확인하세요
         </p>

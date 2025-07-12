@@ -7,15 +7,14 @@ import HeroSection from "../common/components/home/HeroSection"
 import ContentSection from "../common/components/home/ContentSection"
 import NoticeSection from "../common/components/home/NoticeSection"
 import FloatingCallButton from "../common/components/button/FloatingCallButton"
-import LoadingComponent from "../common/components/loading/LoadingComponent"
+import PageSkeleton from "../common/components/ui/PageSkeleton"
 import ErrorComponent from "../common/components/error/ErrorComponent"
-import * as contentStyles from "../styles/service/components/home/content-section.css"
 
 export default function Home() {
   const { data: homePageData, isLoading, isError, error, refetch } = useHomePageData()
 
   if (isLoading) {
-    return <LoadingComponent />
+    return <PageSkeleton variant="default" />
   }
 
   if (isError || !homePageData) {
@@ -35,27 +34,27 @@ export default function Home() {
         <HeroSection home={homePageData.home} />
       )}
 
-      <div className={contentStyles.newsContainer}>
-        {workShowcaseSection?.isActive && homePageData?.workShowcases && (
-          <ContentSection
-            title={workShowcaseSection.title}
-            description={workShowcaseSection.description}
-            items={homePageData.workShowcases}
-            type="work"
-            link="/work-showcases"
-          />
-        )}
+      {/* 작업자 자랑거리 섹션 */}
+      {workShowcaseSection?.isActive && homePageData?.workShowcases && (
+        <ContentSection
+          title={workShowcaseSection.title}
+          description={workShowcaseSection.description}
+          items={homePageData.workShowcases}
+          type="work"
+          link="/work-showcases"
+        />
+      )}
 
-        {customerReviewSection?.isActive && homePageData?.customerReviews && (
-          <ContentSection
-            title={customerReviewSection.title}
-            description={customerReviewSection.description}
-            items={homePageData.customerReviews}
-            type="review"
-            link="/customer-reviews"
-          />
-        )}
-      </div>
+      {/* 고객 리뷰 섹션 */}
+      {customerReviewSection?.isActive && homePageData?.customerReviews && (
+        <ContentSection
+          title={customerReviewSection.title}
+          description={customerReviewSection.description}
+          items={homePageData.customerReviews}
+          type="review"
+          link="/customer-reviews"
+        />
+      )}
 
       {homePageData?.notices && (
         <NoticeSection notices={homePageData.notices} />

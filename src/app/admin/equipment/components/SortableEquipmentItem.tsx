@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
+import Image from "next/image"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 
@@ -68,10 +69,13 @@ const SortableEquipmentItem: React.FC<SortableEquipmentItemProps> = ({
 
       <div className={styles.equipmentImageContainer}>
         {shouldShowImage ? (
-          <img
+          <Image
             src={equipment.imageUrl}
             alt={equipment.name}
             className={styles.equipmentImage}
+            width={80}
+            height={60}
+            style={{ objectFit: "cover" }}
             onError={() => setImageError(true)}
             onLoad={() => setImageError(false)}
           />

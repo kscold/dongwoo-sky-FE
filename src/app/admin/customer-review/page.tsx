@@ -1,293 +1,180 @@
 "use client"
 
 import React, { useState } from "react"
-import Image from "next/image"
+import { 
+  useCustomerReviews, 
+  useDeleteCustomerReview, 
+  useToggleCustomerReviewPublished 
+} from "../../../common/hooks/useCustomerReviews"
+import * as commonStyles from "../../../styles/admin/admin-notice.css"
 import Link from "next/link"
-import { format } from "date-fns"
-import { ko } from "date-fns/locale"
-import {
-  useTopWorkShowcases,
-  useTopCustomerReviews,
-  useWorkShowcases,
-  useCustomerReviews,
-} from "@/common/hooks/useWorkShowcase"
-import type { WorkShowcase, CustomerReview } from "@/common/types/content"
-import * as styles from "@/styles/admin/admin-content.css"
+import { PlusIcon, TrashIcon, StarIcon } from "lucide-react"
 
+const ITEMS_PER_PAGE = 10
 
-export default function ContentAdminPage() {
-  const [activeTab, setActiveTab] = useState<"work" | "review">("work")
+const AdminCustomerReviewPage: React.FC = () => {
+  const [page, setPage] = useState(1)
 
-  const { data: topWorkShowcases } = useTopWorkShowcases()
-  const { data: topCustomerReviews } = useTopCustomerReviews()
-  const { data: workShowcases } = useWorkShowcases(1, 10)
-  const { data: customerReviews } = useCustomerReviews(1, 10)
+  const { data: customerReviewsData, isLoading } = useCustomerReviews(page, ITEMS_PER_PAGE)
+  const deleteCustomerReviewMutation = useDeleteCustomerReview()
+  const togglePublishedMutation = useToggleCustomerReviewPublished()
 
-  // 타입 안전성을 위한 타입 가드
-  const workShowcaseItems = topWorkShowcases as WorkShowcase[] | undefined
-  const customerReviewItems = topCustomerReviews as CustomerReview[] | undefined
-
-  const formatDate = (date: string | Date | null | undefined) => {
-    if (!date) return "날짜 미정"
-    return format(new Date(date), "yyyy년 MM월 dd일", { locale: ko })
+  const handleDelete = (id: string) => {
+    if (window.confirm("정말로 이 고객 리뷰를 삭제하시겠습니까?")) {
+      deleteCustomerReviewMutation.mutate(id)
+    }
   }
 
-  const stripHtml = (html: string) => {
-    const div = document.createElement("div")
-    div.innerHTML = html
-    return div.textContent || div.innerText || ""
+  const handleTogglePublished = (id: string, isPublished: boolean) => {
+    togglePublishedMutation.mutate({ id, isPublished: !isPublished })
   }
 
   const renderStars = (rating: number) => {
-    return "★".repeat(rating) + "☆".repeat(5 - rating)
+    return Array.from({ length: 5 }, (_, i) => (
+      <StarIcon 
+        key={i} 
+        width={16} 
+        height={16} 
+        fill={i < rating ? "#f59e0b" : "none"}
+        color={i < rating ? "#f59e0b" : "#e0e0e0"}
+      />
+    ))
   }
 
+  const totalPages = customerReviewsData
+    ? Math.ceil(customerReviewsData.total / ITEMS_PER_PAGE)
+    : 0
+
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>컨텐츠 관리</h1>
-        <div className={styles.actions}>
-          <Link
-            href="/admin/content/work-showcase/new"
-            className={styles.createButton}
-          >
-            + 작업자 자랑거리 작성
-          </Link>
-          <Link
-            href="/admin/content/customer-review/new"
-            className={styles.createButton}
-          >
-            + 고객 리뷰 작성
-          </Link>
-        </div>
+    <div className={commonStyles.container}>
+      <div className={commonStyles.header}>
+        <h1 className={commonStyles.title}>고객 리뷰 관리</h1>
+        <Link href="/admin/customer-review/create" className={commonStyles.actionButton}>
+          <PlusIcon width={20} height={20} /> 새 리뷰 작성
+        </Link>
       </div>
-
-      {/* 메인 페이지 미리보기 */}
-      <div className={styles.previewSection}>
-        <h2 className={styles.sectionTitle}>📱 메인 페이지 미리보기</h2>
-        <p className={styles.sectionDescription}>
-          현재 메인 페이지에 표시되는 상위 2개 컨텐츠입니다.
-        </p>
-
-        <div className={styles.previewGrid}>
-          <div className={styles.previewCard}>
-            <h3 className={styles.previewCardTitle}>🏆 작업자 자랑거리</h3>
-            {workShowcaseItems && workShowcaseItems.length > 0 ? (
-              <div className={styles.previewList}>
-                {workShowcaseItems.map((item) => (
-                  <div key={item._id} className={styles.previewItem}>
-                    <h4 className={styles.previewItemTitle}>{item.title}</h4>
-                    <p className={styles.previewItemMeta}>
-                      {item.authorName} • {formatDate(item.publishedAt)}
-                    </p>
-                    <p className={styles.previewItemStats}>
-                      👀 {item.viewCount} | 👍 {item.likeCount}
-                    </p>
+      
+      <table className={commonStyles.table}>
+        <thead>
+          <tr>
+            <th className={commonStyles.tableHeader}>제목</th>
+            <th className={commonStyles.tableHeader}>고객명</th>
+            <th className={commonStyles.tableHeader}>평점</th>
+            <th className={commonStyles.tableHeader}>서비스</th>
+            <th className={commonStyles.tableHeader}>게시여부</th>
+            <th className={commonStyles.tableHeader}>작성일</th>
+            <th className={commonStyles.tableHeader}></th>
+          </tr>
+        </thead>
+        <tbody>
+          {isLoading ? (
+            Array.from({ length: 5 }).map((_, index) => (
+              <tr key={index}>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.skeleton} />
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.skeleton} />
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.skeleton} />
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.skeleton} />
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.skeleton} />
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.skeleton} />
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.skeleton} />
+                </td>
+              </tr>
+            ))
+          ) : (
+            customerReviewsData?.data.map((review, index) => (
+              <tr key={`${review._id}-${index}`}>
+                <td className={commonStyles.tableCell}>
+                  <Link
+                    href={`/admin/customer-review/${review._id}`}
+                    className={commonStyles.link}
+                  >
+                    {review.title}
+                  </Link>
+                </td>
+                <td className={commonStyles.tableCell}>
+                  {review.customerName}
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div style={{ display: 'flex', gap: '2px' }}>
+                    {renderStars(review.rating)}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <p className={styles.emptyState}>
-                표시할 작업자 자랑거리가 없습니다.
-              </p>
-            )}
-          </div>
-
-          <div className={styles.previewCard}>
-            <h3 className={styles.previewCardTitle}>⭐ 고객 리뷰</h3>
-            {customerReviewItems && customerReviewItems.length > 0 ? (
-              <div className={styles.previewList}>
-                {customerReviewItems.map((item) => (
-                  <div key={item._id} className={styles.previewItem}>
-                    <h4 className={styles.previewItemTitle}>{item.title}</h4>
-                    <p className={styles.previewItemMeta}>
-                      {item.customerName} • {renderStars(item.rating)} •{" "}
-                      {formatDate(item.publishedAt)}
-                    </p>
-                    <p className={styles.previewItemStats}>
-                      👀 {item.viewCount} | 👍 {item.helpfulCount}
-                    </p>
+                </td>
+                <td className={commonStyles.tableCell}>
+                  {review.serviceType}
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.statusContainer}>
+                    <span className={review.isActive ? commonStyles.publishedBadge : commonStyles.unpublishedBadge}>
+                      {review.isActive ? "활성" : "비활성"}
+                    </span>
+                    <label className={commonStyles.toggle}>
+                      <input 
+                        type="checkbox" 
+                        checked={review.isActive} 
+                        onChange={() => handleTogglePublished(review._id, review.isActive)}
+                        className={commonStyles.toggleInput}
+                      />
+                      <span className={`${commonStyles.slider} ${review.isActive ? commonStyles.sliderChecked : ""}`}></span>
+                    </label>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <p className={styles.emptyState}>표시할 고객 리뷰가 없습니다.</p>
-            )}
-          </div>
-        </div>
-      </div>
+                </td>
+                <td className={commonStyles.tableCell}>
+                  {new Date(review.createdAt).toLocaleDateString()}
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.actionButtons}>
+                    <Link
+                      href={`/admin/customer-review/${review._id}/edit`}
+                      className={commonStyles.editButton}
+                    >
+                      수정
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(review._id)}
+                      className={commonStyles.deleteButton}
+                    >
+                      <TrashIcon width={16} height={16} />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
 
-      {/* 탭 네비게이션 */}
-      <div className={styles.tabNavigation}>
+      <div className={commonStyles.modalActions}>
         <button
-          className={`${styles.tabButton} ${activeTab === "work" ? styles.tabButtonActive : ""
-            }`}
-          onClick={() => setActiveTab("work")}
+          onClick={() => setPage((p) => Math.max(p - 1, 1))}
+          disabled={page === 1}
         >
-          작업자 자랑거리 관리
+          이전
         </button>
+        <span>
+          {page} / {totalPages || 1}
+        </span>
         <button
-          className={`${styles.tabButton} ${activeTab === "review" ? styles.tabButtonActive : ""
-            }`}
-          onClick={() => setActiveTab("review")}
+          onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+          disabled={page === totalPages || totalPages === 0}
         >
-          고객 리뷰 관리
+          다음
         </button>
-      </div>
-
-      {/* 컨텐츠 목록 */}
-      <div className={styles.contentSection}>
-        {activeTab === "work" ? (
-          <div>
-            <div className={styles.contentHeader}>
-              <h2>작업자 자랑거리 목록</h2>
-              <Link
-                href="/admin/content/work-showcase/new"
-                className={styles.addButton}
-              >
-                + 새 자랑거리 작성
-              </Link>
-            </div>
-
-            {workShowcases && workShowcases.items.length > 0 ? (
-              <div className={styles.contentGrid}>
-                {workShowcases.items.map((item) => (
-                  <div key={item._id} className={styles.contentCard}>
-                    {item.imageUrls && item.imageUrls.length > 0 && (
-                      <div className={styles.cardImage}>
-                        <Image
-                          src={item.imageUrls[0]}
-                          alt={item.title}
-                          className={styles.cardImageElement}
-                          width={300}
-                          height={200}
-                          style={{ objectFit: "cover" }}
-                        />
-                      </div>
-                    )}
-                    <div className={styles.cardContent}>
-                      <h3 className={styles.cardTitle}>{item.title}</h3>
-                      <p className={styles.cardMeta}>
-                        작성자: {item.authorName} ({item.authorRole})
-                      </p>
-                      <p className={styles.cardMeta}>
-                        위치: {item.projectLocation} | 장비:{" "}
-                        {item.equipmentUsed}
-                      </p>
-                      <p className={styles.cardDescription}>
-                        {stripHtml(item.content).substring(0, 100)}...
-                      </p>
-                      <div className={styles.cardStats}>
-                        <span>👀 {item.viewCount}</span>
-                        <span>👍 {item.likeCount}</span>
-                        <span>📅 {formatDate(item.publishedAt)}</span>
-                      </div>
-                      <div className={styles.cardActions}>
-                        <Link
-                          href={`/admin/content/work-showcase/${item._id}`}
-                          className={styles.actionButton}
-                        >
-                          수정
-                        </Link>
-                        <button className={styles.actionButtonDanger}>
-                          삭제
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className={styles.emptyContent}>
-                <p>📝 등록된 작업자 자랑거리가 없습니다.</p>
-                <Link
-                  href="/admin/content/work-showcase/new"
-                  className={styles.createFirstButton}
-                >
-                  첫 번째 자랑거리 작성하기
-                </Link>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div>
-            <div className={styles.contentHeader}>
-              <h2>고객 리뷰 목록</h2>
-              <Link
-                href="/admin/content/customer-review/new"
-                className={styles.addButton}
-              >
-                + 새 리뷰 작성
-              </Link>
-            </div>
-
-            {/* @ts-ignore */}
-            {customerReviews && customerReviews.data.length > 0 ? (
-              <div className={styles.contentGrid}>
-                {/* @ts-ignore */}
-                {customerReviews.data.map((item) => (
-                  <div key={item._id} className={styles.contentCard}>
-                    {item.imageUrls && item.imageUrls.length > 0 && (
-                      <div className={styles.cardImage}>
-                        <Image
-                          src={item.imageUrls[0]}
-                          alt={item.title}
-                          className={styles.cardImageElement}
-                          width={300}
-                          height={200}
-                          style={{ objectFit: "cover" }}
-                        />
-                      </div>
-                    )}
-                    <div className={styles.cardContent}>
-                      <h3 className={styles.cardTitle}>{item.title}</h3>
-                      <p className={styles.cardMeta}>
-                        고객: {item.customerName} ({item.customerCompany})
-                      </p>
-                      <p className={styles.cardMeta}>
-                        평점: {renderStars(item.rating)} | 서비스:{" "}
-                        {item.serviceType}
-                      </p>
-                      <p className={styles.cardMeta}>
-                        위치: {item.projectLocation}
-                      </p>
-                      <p className={styles.cardDescription}>
-                        {stripHtml(item.content).substring(0, 100)}...
-                      </p>
-                      <div className={styles.cardStats}>
-                        <span>👀 {item.viewCount}</span>
-                        <span>👍 {item.helpfulCount}</span>
-                        <span>📅 {formatDate(item.publishedAt)}</span>
-                      </div>
-                      <div className={styles.cardActions}>
-                        <Link
-                          href={`/admin/content/customer-review/${item._id}`}
-                          className={styles.actionButton}
-                        >
-                          수정
-                        </Link>
-                        <button className={styles.actionButtonDanger}>
-                          삭제
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className={styles.emptyContent}>
-                <p>📝 등록된 고객 리뷰가 없습니다.</p>
-                <Link
-                  href="/admin/content/customer-review/new"
-                  className={styles.createFirstButton}
-                >
-                  첫 번째 리뷰 작성하기
-                </Link>
-              </div>
-            )}
-          </div>
-        )}
       </div>
     </div>
   )
 }
+
+export default AdminCustomerReviewPage

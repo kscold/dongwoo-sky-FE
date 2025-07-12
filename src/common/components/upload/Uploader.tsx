@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useCallback } from "react"
+import Image from "next/image"
 import { useDropzone } from "react-dropzone"
 import * as styles from "../../../styles/components/uploader.css"
 
@@ -120,14 +121,17 @@ export const Uploader: React.FC<UploaderProps> = ({
           </h4>
           <div className={styles.previewContainer}>
             {value.map((item, index) => (
-              <div key={index} className={styles.previewItem}>
+              <div key={getImageUrl(item) || `preview-${index}`} className={styles.previewItem}>
                 <div className={styles.imageContainer}>
-                  <img
+                  <Image
                     src={getImageUrl(item)}
                     alt={getFileName(item)}
                     className={styles.previewImage}
+                    width={120}
+                    height={120}
+                    style={{ objectFit: "cover" }}
                     onError={(e) => {
-                      const target = e.target as HTMLImageElement
+                      const target = e.currentTarget
                       target.style.display = "none"
                       target.nextElementSibling?.setAttribute(
                         "style",

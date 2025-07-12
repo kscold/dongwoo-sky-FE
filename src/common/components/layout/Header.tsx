@@ -10,12 +10,12 @@ import * as styles from "../../../styles/service/layout/header.css"
 import * as mobileStyles from "../../../styles/service/layout/mobile-menu.css"
 
 const navItems = [
-  { href: "/service-guide", label: "서비스 안내", icon: "🛠️" },
-  { href: "/pricing", label: "이용 요금", icon: "💰" },
-  { href: "/work-showcases", label: "작업 사례", icon: "🏆" },
-  { href: "/customer-reviews", label: "고객 후기", icon: "💬" },
-  { href: "/notice", label: "공지사항", icon: "📢" },
-  { href: "/contact", label: "견적 문의", icon: "📞" },
+  { href: "/service-guide", label: "서비스 안내" },
+  { href: "/pricing", label: "이용 요금" },
+  { href: "/work-showcases", label: "작업 사례" },
+  { href: "/customer-reviews", label: "고객 후기" },
+  { href: "/notice", label: "공지사항" },
+  { href: "/contact", label: "견적 문의" },
 ]
 
 const Header = () => {

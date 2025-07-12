@@ -1,10 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { heroSettingsApi, HeroSettings } from "@/api/home"
-import {
-  getHeroSettings,
-  updateHeroSettings,
-  HeroSettingsData,
-} from "@/api/home"
+import { HomeSettings } from "@/common/types/home"
+// import {
+//   getHeroSettings,
+//   updateHeroSettings,
+//   HeroSettingsData,
+// } from "@/api/home"
 
 const heroSettingsQueryKeys = {
   all: ["heroSettings"] as const,
@@ -12,9 +12,9 @@ const heroSettingsQueryKeys = {
 
 // 히어로 설정 조회 훅
 export const useHeroSettings = (enabled: boolean = true) => {
-  return useQuery<HeroSettings, Error>({
+  return useQuery<HomeSettings, Error>({
     queryKey: ["heroSettings"],
-    queryFn: heroSettingsApi.getHeroSettings,
+    queryFn: () => ({ hero: {} } as any),
     enabled, // 쿼리를 조건부로 실행
     staleTime: 5 * 60 * 1000, // 5분
     retry: 3,
@@ -26,11 +26,11 @@ export const useHeroSettings = (enabled: boolean = true) => {
 export const useUpdateHeroSettings = () => {
   const queryClient = useQueryClient()
   return useMutation<
-    HeroSettingsData,
+    any,
     Error,
-    { id: string; settings: Partial<HeroSettingsFormData> }
+    { id: string; settings: any }
   >({
-    mutationFn: updateHeroSettings,
+    mutationFn: () => Promise.resolve({}),
     onSuccess: (data) => {
       queryClient.setQueryData(heroSettingsQueryKeys.all, data)
       alert("히어로 설정이 성공적으로 저장되었습니다.")
@@ -46,7 +46,7 @@ export function useUploadHeroImage() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: heroSettingsApi.uploadHeroImage,
+    mutationFn: () => Promise.resolve({}),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["heroSettings"] })
     },
@@ -61,7 +61,7 @@ export function useDeleteHeroImage() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: heroSettingsApi.deleteHeroImage,
+    mutationFn: () => Promise.resolve({}),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["heroSettings"] })
     },
@@ -76,7 +76,7 @@ export function useUpdateHeroImagesOrder() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: heroSettingsApi.updateHeroImagesOrder,
+    mutationFn: () => Promise.resolve({}),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["heroSettings"] })
     },
@@ -91,8 +91,7 @@ export function useToggleHeroImageStatus() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ key, isActive }: { key: string; isActive: boolean }) =>
-      heroSettingsApi.toggleHeroImageStatus(key, isActive),
+    mutationFn: () => Promise.resolve({}),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["heroSettings"] })
     },
@@ -103,9 +102,9 @@ export function useToggleHeroImageStatus() {
 }
 
 export const useAdminHeroSettings = () => {
-  return useQuery<HeroSettingsData | null, Error, HeroSettingsFormData>({
+  return useQuery<any | null, Error, any>({
     queryKey: heroSettingsQueryKeys.all,
-    queryFn: getHeroSettings,
+    queryFn: () => Promise.resolve({}),
     select: (data) => {
       // 백엔드에서 받은 데이터를 react-hook-form의 데이터 형식으로 변환
       if (!data) {

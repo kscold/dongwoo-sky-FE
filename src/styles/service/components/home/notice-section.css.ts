@@ -11,9 +11,25 @@ const pulse = keyframes({
 })
 
 export const noticeSection = style({
-  paddingTop: vars.space.xxxl,
+  paddingTop: vars.space.xxxxl,
   paddingBottom: vars.space.xxxxl,
+  marginTop: vars.space.xxxxl,
+  marginBottom: vars.space.xxxxl,
   backgroundColor: vars.colors.backgroundLight,
+  "@media": {
+    "(max-width: 768px)": {
+      paddingTop: vars.space.xxxxl,
+      paddingBottom: vars.space.xxxxl,
+      marginTop: vars.space.xxxxl,
+      marginBottom: vars.space.xxxxl,
+    },
+    "(max-width: 480px)": {
+      paddingTop: vars.space.xxxl,
+      paddingBottom: vars.space.xxxl,
+      marginTop: vars.space.xxxl,
+      marginBottom: vars.space.xxxl,
+    },
+  },
 })
 
 export const noticeContainer = style({
@@ -282,7 +298,7 @@ export const title = style({
   fontWeight: vars.fontWeights.bold,
   color: vars.colors.textStrong,
   marginBottom: vars.space.md,
-  
+
   "@media": {
     "(max-width: 768px)": {
       fontSize: vars.fontSizes.xxl,

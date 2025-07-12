@@ -20,6 +20,7 @@ import type {
 export const customerReviewKeys = {
   all: ["customer-reviews"] as const,
   public: () => [...customerReviewKeys.all, "public"] as const,
+  publicList: (page: number, limit: number) => [...customerReviewKeys.public(), "list", page, limit] as const,
   detail: (id: string) => [...customerReviewKeys.all, "detail", id] as const,
   admin: () => [...customerReviewKeys.all, "admin"] as const,
   adminList: (page: number, limit: number) => [...customerReviewKeys.admin(), "list", page, limit] as const,
@@ -33,7 +34,16 @@ export const customerReviewKeys = {
 export const usePublishedCustomerReviews = () => {
   return useQuery({
     queryKey: customerReviewKeys.public(),
-    queryFn: getPublishedCustomerReviews,
+    queryFn: () => getPublishedCustomerReviews(),
+    staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
+    gcTime: 10 * 60 * 1000, // 10분간 메모리에 유지
+  })
+}
+
+export const useCustomerReviews = (page: number = 1, limit: number = 10) => {
+  return useQuery({
+    queryKey: customerReviewKeys.publicList(page, limit),
+    queryFn: () => getPublishedCustomerReviews(page, limit),
     staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
     gcTime: 10 * 60 * 1000, // 10분간 메모리에 유지
   })

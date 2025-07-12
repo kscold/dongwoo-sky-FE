@@ -3,11 +3,13 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useAdmin } from "@/common/context/AdminContext"
+import { useAdminStats } from "@/common/hooks/useAdminStats"
 
 import * as styles from "../../../styles/admin/admin-dashboard.css"
 
 export default function AdminDashboardPage() {
   const { user, logout, isLoading } = useAdmin()
+  const { data: statsData, isLoading: statsLoading } = useAdminStats()
   const router = useRouter()
 
   // 로그아웃 핸들러
@@ -44,24 +46,32 @@ export default function AdminDashboardPage() {
         <div className={styles.dashboardContent}>
           <div className={styles.dashboardStatsGrid}>
             <div className={styles.dashboardStatCard}>
-              <div className={styles.statIcon}>📄</div>
-              <div className={styles.statNumber}>-</div>
-              <div className={styles.statLabel}>총 공지사항</div>
-            </div>
-            <div className={styles.dashboardStatCard}>
               <div className={styles.statIcon}>✅</div>
-              <div className={styles.statNumber}>-</div>
+              <div className={styles.statNumber}>
+                {statsLoading ? "⏳" : (statsData?.notices.published || 0)}
+              </div>
               <div className={styles.statLabel}>공개 공지사항</div>
             </div>
             <div className={styles.dashboardStatCard}>
               <div className={styles.statIcon}>🏗️</div>
-              <div className={styles.statNumber}>-</div>
+              <div className={styles.statNumber}>
+                {statsLoading ? "⏳" : (statsData?.equipment.active || 0)}
+              </div>
               <div className={styles.statLabel}>등록된 장비</div>
             </div>
             <div className={styles.dashboardStatCard}>
-              <div className={styles.statIcon}>🔧</div>
-              <div className={styles.statNumber}>-</div>
-              <div className={styles.statLabel}>제공 서비스</div>
+              <div className={styles.statIcon}>🎯</div>
+              <div className={styles.statNumber}>
+                {statsLoading ? "⏳" : (statsData?.workShowcases.active || 0)}
+              </div>
+              <div className={styles.statLabel}>작업자 자랑거리</div>
+            </div>
+            <div className={styles.dashboardStatCard}>
+              <div className={styles.statIcon}>⭐</div>
+              <div className={styles.statNumber}>
+                {statsLoading ? "⏳" : (statsData?.customerReviews.active || 0)}
+              </div>
+              <div className={styles.statLabel}>고객 리뷰</div>
             </div>
           </div>
 
@@ -99,19 +109,19 @@ export default function AdminDashboardPage() {
               </p>
             </Link>
 
-            <Link href="/admin/content" className={styles.actionCard}>
-              <div className={styles.actionIcon}>📝</div>
+            <Link href="/admin/work-showcase" className={styles.actionCard}>
+              <div className={styles.actionIcon}>🎯</div>
               <h3 className={styles.actionTitle}>작업자 자랑거리 관리</h3>
               <p className={styles.actionDescription}>
-                작업자 자랑거리와 고객 리뷰를 관리할 수 있습니다.
+                작업자 자랑거리를 작성, 수정, 삭제할 수 있습니다.
               </p>
             </Link>
 
-            <Link href="/admin/content" className={styles.actionCard}>
-              <div className={styles.actionIcon}>📝</div>
+            <Link href="/admin/customer-review" className={styles.actionCard}>
+              <div className={styles.actionIcon}>⭐</div>
               <h3 className={styles.actionTitle}>고객 리뷰 관리</h3>
               <p className={styles.actionDescription}>
-                작업자 자랑거리와 고객 리뷰를 관리할 수 있습니다.
+                고객 리뷰를 작성, 수정, 삭제할 수 있습니다.
               </p>
             </Link>
 

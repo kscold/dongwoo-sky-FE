@@ -125,35 +125,40 @@ export const noticeActions = style({
 })
 
 export const editButton = style({
-    padding: "8px 16px",
-    fontSize: "14px",
-    fontWeight: "500",
+    padding: `${vars.space.xs} ${vars.space.sm}`,
+    fontSize: vars.fontSizes.xs,
+    fontWeight: vars.fontWeights.medium,
     color: vars.colors.primary,
     backgroundColor: "transparent",
     border: `1px solid ${vars.colors.primary}`,
-    borderRadius: "6px",
+    borderRadius: vars.radii.sm,
     cursor: "pointer",
     textDecoration: "none",
     transition: "all 0.2s ease",
+    
     ":hover": {
         backgroundColor: vars.colors.primary,
-        color: "white",
+        color: vars.colors.white,
     },
 })
 
 export const deleteButton = style({
-    padding: "8px 16px",
-    fontSize: "14px",
-    fontWeight: "500",
+    padding: vars.space.xs,
+    fontSize: vars.fontSizes.xs,
+    fontWeight: vars.fontWeights.medium,
     color: vars.colors.danger,
     backgroundColor: "transparent",
     border: `1px solid ${vars.colors.danger}`,
-    borderRadius: "6px",
+    borderRadius: vars.radii.sm,
     cursor: "pointer",
     transition: "all 0.2s ease",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    
     ":hover": {
         backgroundColor: vars.colors.danger,
-        color: "white",
+        color: vars.colors.white,
     },
 })
 
@@ -463,18 +468,12 @@ export const modalActions = style({
 export const skeleton = style({
     backgroundColor: vars.colors.backgroundLight,
     borderRadius: vars.radii.md,
-    animation: "pulse 1.5s ease-in-out infinite",
-    
-    "@keyframes": {
-        pulse: {
-            "0%": { opacity: 1 },
-            "50%": { opacity: 0.5 },
-            "100%": { opacity: 1 },
-        },
-    },
+    animation: "pulse 1.5s ease-in-out infinite"
 })
 
 export const actionButton = style({
+    backgroundColor: vars.colors.primary,
+    color: vars.colors.white,
     padding: `${vars.space.sm} ${vars.space.md}`,
     fontSize: vars.fontSizes.sm,
     fontWeight: vars.fontWeights.medium,
@@ -488,6 +487,83 @@ export const actionButton = style({
     gap: vars.space.xs,
     
     ":hover": {
+        backgroundColor: vars.colors.primaryDark,
         transform: "translateY(-1px)",
     },
+})
+
+export const statusContainer = style({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: vars.space.sm,
+})
+
+export const publishedBadge = style({
+    padding: `${vars.space.xs} ${vars.space.sm}`,
+    borderRadius: vars.radii.sm,
+    fontSize: vars.fontSizes.xs,
+    fontWeight: vars.fontWeights.medium,
+    backgroundColor: vars.colors.primaryLight,
+    color: vars.colors.primary,
+})
+
+export const unpublishedBadge = style({
+    padding: `${vars.space.xs} ${vars.space.sm}`,
+    borderRadius: vars.radii.sm,
+    fontSize: vars.fontSizes.xs,
+    fontWeight: vars.fontWeights.medium,
+    backgroundColor: vars.colors.gray[100],
+    color: vars.colors.textLight,
+})
+
+export const toggle = style({
+    position: "relative",
+    display: "inline-block",
+    width: "40px",
+    height: "20px",
+})
+
+export const toggleInput = style({
+    opacity: 0,
+    width: 0,
+    height: 0,
+})
+
+export const slider = style({
+    position: "absolute",
+    cursor: "pointer",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: vars.colors.gray[300],
+    transition: "0.4s",
+    borderRadius: "20px",
+    
+    "::before": {
+        position: "absolute",
+        content: '""',
+        height: "16px",
+        width: "16px",
+        left: "2px",
+        bottom: "2px",
+        backgroundColor: vars.colors.white,
+        transition: "0.4s",
+        borderRadius: "50%",
+    },
+})
+
+export const sliderChecked = style({
+    backgroundColor: vars.colors.primary,
+    
+    "::before": {
+        transform: "translateX(20px)",
+    },
+})
+
+export const actionButtons = style({
+    display: "flex",
+    gap: vars.space.xs,
+    alignItems: "center",
 }) 

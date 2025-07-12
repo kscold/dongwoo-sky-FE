@@ -33,7 +33,10 @@ export const workShowcaseKeys = {
 export const usePublishedWorkShowcases = () => {
   return useQuery({
     queryKey: workShowcaseKeys.public(),
-    queryFn: getPublishedWorkShowcases,
+    queryFn: async () => {
+      const data = await getPublishedWorkShowcases()
+      return data.data || []
+    },
     staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
     gcTime: 10 * 60 * 1000, // 10분간 메모리에 유지
   })
@@ -155,27 +158,25 @@ export const useCustomerReview = (id: string) => {
   })
 }
 
-export const useCustomerReviews = (page: number = 1, limit: number = 10) => {
-  return useQuery({
-    queryKey: [...workShowcaseKeys.all, "customer-reviews", page, limit],
-    queryFn: async () => {
-      const data = await getPublishedWorkShowcases()
-      // PaginatedWorkShowcases 형식으로 변환
-      return {
-        items: data || [],
-        totalPages: 1,
-        currentPage: page,
-        totalItems: data?.length || 0,
-      } as PaginatedWorkShowcases
-    },
-    staleTime: 5 * 60 * 1000,
-  })
-}
+// This hook is deprecated - use useCustomerReviews from useCustomerReview.ts instead
+// export const useCustomerReviews = (page: number = 1, limit: number = 10) => {
+//   return useQuery({
+//     queryKey: [...workShowcaseKeys.all, "customer-reviews", page, limit],
+//     queryFn: async () => {
+//       const data = await getPublishedWorkShowcases(1, limit)
+//       return data
+//     },
+//     staleTime: 5 * 60 * 1000,
+//   })
+// }
 
 export const useTopWorkShowcases = (limit: number = 5) => {
   return useQuery({
     queryKey: [...workShowcaseKeys.all, "top", limit],
-    queryFn: () => getPublishedWorkShowcases(), // 임시로 동일한 API 사용
+    queryFn: async () => {
+      const data = await getPublishedWorkShowcases(1, limit)
+      return data.data || []
+    },
     staleTime: 5 * 60 * 1000,
   })
 }
@@ -183,7 +184,10 @@ export const useTopWorkShowcases = (limit: number = 5) => {
 export const useTopCustomerReviews = (limit: number = 5) => {
   return useQuery({
     queryKey: [...workShowcaseKeys.all, "top-customer-reviews", limit],
-    queryFn: () => getPublishedWorkShowcases(), // 임시로 동일한 API 사용
+    queryFn: async () => {
+      const data = await getPublishedWorkShowcases(1, limit)
+      return data.data || []
+    },
     staleTime: 5 * 60 * 1000,
   })
 }
@@ -191,15 +195,7 @@ export const useTopCustomerReviews = (limit: number = 5) => {
 export const useWorkShowcases = (page: number = 1, limit: number = 10) => {
   return useQuery({
     queryKey: [...workShowcaseKeys.all, "showcases", page, limit],
-    queryFn: async () => {
-      const data = await getPublishedWorkShowcases()
-      return {
-        items: data || [],
-        totalPages: 1,
-        currentPage: page,
-        totalItems: data?.length || 0,
-      } as PaginatedWorkShowcases
-    },
+    queryFn: () => getPublishedWorkShowcases(page, limit),
     staleTime: 5 * 60 * 1000,
   })
 }

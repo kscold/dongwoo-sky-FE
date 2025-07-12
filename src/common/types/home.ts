@@ -1,6 +1,7 @@
 import { Notice } from "./notice"
 import { Equipment } from "./equipment"
-import { WorkShowcase, CustomerReview } from "./content"
+import { WorkShowcase } from "./work-showcase"
+import { CustomerReview } from "./customer-review"
 import { SiteContact } from "./site-setting"
 
 export interface HeroTitle {

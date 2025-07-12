@@ -5,6 +5,7 @@ import Link from "next/link"
 import { format } from "date-fns"
 import { ko } from "date-fns/locale"
 import { useNotices } from "@/common/hooks/useNotices"
+import PageSkeleton from "@/common/components/ui/PageSkeleton"
 import * as styles from "@/styles/service/page/service-page-common.css"
 
 export default function NoticePage() {
@@ -26,14 +27,7 @@ export default function NoticePage() {
   }
 
   if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <h1 className={styles.title}>공지사항</h1>
-        <div className={styles.loading}>
-          <p>로딩 중...</p>
-        </div>
-      </div>
-    )
+    return <PageSkeleton variant="notice" />
   }
 
   if (error) {
@@ -61,8 +55,8 @@ export default function NoticePage() {
 
       {notices && notices.length > 0 ? (
         <ul className={styles.noticeList}>
-          {notices.map((notice: any) => (
-            <li key={notice._id} className={styles.noticeItem}>
+          {notices.map((notice: any, index: number) => (
+            <li key={notice._id || `notice-${index}`} className={styles.noticeItem}>
               <Link
                 href={`/notice/${notice._id}`}
                 className={styles.noticeLink}

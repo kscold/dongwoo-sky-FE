@@ -10,14 +10,46 @@ export const pageWrapper = style({
 
 // Hero 섹션 (contact.css.ts와 유사)
 export const heroSection = style({
-  background: `linear-gradient(to right, ${vars.colors.primary}, ${vars.colors.secondary})`,
+  background: `linear-gradient(135deg, 
+    ${vars.colors.primary} 0%, 
+    ${vars.colors.primaryDark} 25%,
+    ${vars.colors.secondary} 70%,
+    #009688 100%)`,
   color: vars.colors.white,
   paddingTop: vars.space.xxxxl,
   paddingBottom: vars.space.xxxxl,
   paddingLeft: vars.space.lg,
   paddingRight: vars.space.lg,
   textAlign: "center",
-  marginBottom: vars.space.xxxl, // 다음 섹션과의 간격
+  marginBottom: vars.space.xxxl,
+  position: "relative",
+  overflow: "hidden",
+  selectors: {
+    "&::before": {
+      content: '""',
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: `
+        radial-gradient(ellipse 1000px 500px at 20% 10%, rgba(255, 255, 255, 0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 800px 400px at 80% 90%, rgba(255, 255, 255, 0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 600px 300px at 50% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 50%)
+      `,
+      pointerEvents: "none",
+    },
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: `linear-gradient(45deg, transparent 25%, rgba(255, 255, 255, 0.04) 50%, transparent 75%)`,
+      pointerEvents: "none",
+    }
+  }
 })
 
 export const heroTitle = style({
@@ -341,12 +373,28 @@ export const processGrid = style({
   gap: vars.space.xl,
   gridTemplateColumns: "1fr",
   "@media": {
+    '(max-width: 767px)': {
+      display: "none", // 모바일에서는 숨김
+    },
     '(min-width: 768px)': {
       gridTemplateColumns: 'repeat(2, 1fr)',
       gap: vars.space.xxl,
     },
     '(min-width: 1024px)': {
       gridTemplateColumns: 'repeat(4, 1fr)',
+    }
+  }
+})
+
+// 모바일에서 슬라이더로 사용할 때의 스타일
+export const processSlider = style({
+  position: "relative",
+  "@media": {
+    '(max-width: 767px)': {
+      display: "block",
+    },
+    '(min-width: 768px)': {
+      display: "none",
     }
   }
 });

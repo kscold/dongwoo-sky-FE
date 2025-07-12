@@ -7,6 +7,7 @@ import { format } from "date-fns"
 import { ko } from "date-fns/locale"
 
 import { useNotice } from "../../../../common/hooks/useNotices"
+import PageSkeleton from "../../../../common/components/ui/PageSkeleton"
 import * as styles from "@/styles/notice.css"
 import { Notice, Attachment } from "@/common/types/notice"
 
@@ -42,14 +43,7 @@ export default function NoticeDetailPage({ params }: PageProps) {
   }
 
   if (isLoading || !noticeId) {
-    return (
-      <div className={styles.container}>
-        <h1 className={styles.title}>공지사항</h1>
-        <div className={styles.loading}>
-          <p>로딩 중...</p>
-        </div>
-      </div>
-    )
+    return <PageSkeleton variant="notice" />
   }
 
   if (error || !notice) {
@@ -91,7 +85,7 @@ export default function NoticeDetailPage({ params }: PageProps) {
         <div className={styles.detailContent}>
           {/* 본문 내용을 단락으로 나누어 표시 */}
           {notice.content.split("\n").map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
+            <p key={`paragraph-${index}-${paragraph.slice(0, 10)}`}>{paragraph}</p>
           ))}
         </div>
 
@@ -100,7 +94,7 @@ export default function NoticeDetailPage({ params }: PageProps) {
             <h3 className={styles.attachmentsTitle}>첨부파일</h3>
             <ul className={styles.attachmentsList}>
               {notice.attachments.map((file, index) => (
-                <li key={index} className={styles.attachmentItem}>
+                <li key={file.url || file.name || `attachment-${index}`} className={styles.attachmentItem}>
                   <a
                     href={file.url}
                     download={file.name}

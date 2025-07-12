@@ -25,6 +25,8 @@ import {
 } from "@heroicons/react/24/solid"
 
 import EquipmentSwiper from "../../../common/components/equipment/EquipmentSwiper"
+import ProcessSwiper from "../../../common/components/swiper/ProcessSwiper"
+import PageSkeleton from "../../../common/components/ui/PageSkeleton"
 import { ProcessStep, ScopeOfWork } from "../../../common/types/service-guide"
 import * as styles from "../../../styles/service/page/service-guide.css"
 import { useServiceGuide } from "../../../common/hooks/useServiceGuide"
@@ -54,7 +56,7 @@ const ServiceGuidePage = () => {
   const { data: serviceGuideData, isLoading, isError } = useServiceGuide()
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <PageSkeleton variant="service-guide" />
   }
 
   if (isError || !serviceGuideData) {
@@ -155,6 +157,8 @@ const ServiceGuidePage = () => {
         <section className={styles.serviceProcessSection}>
           <div className={styles.sectionContainer}>
             <h2 className={styles.sectionTitle}>서비스 계약 프로세스</h2>
+            
+            {/* Desktop Grid */}
             <div className={styles.processGrid}>
               {serviceGuide.processSteps.map((step: ProcessStep, index: number) => {
                 const IconComponent = (step.icon && iconMap[step.icon]) || null
@@ -173,6 +177,11 @@ const ServiceGuidePage = () => {
                   </div>
                 )
               })}
+            </div>
+
+            {/* Mobile Swiper */}
+            <div className={styles.processSlider}>
+              <ProcessSwiper processSteps={serviceGuide.processSteps} iconMap={iconMap} />
             </div>
           </div>
         </section>

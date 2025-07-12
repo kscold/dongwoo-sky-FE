@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useRef, useEffect, useCallback } from "react"
+import Image from "next/image"
 
 import {
   useMainHomeSettings,
@@ -9,12 +10,16 @@ import {
   useEnsureMainHomeExists,
   useCreateAdminHomeSettings,
 } from "../../../common/hooks/useHome"
+import { useAdminStats } from "../../../common/hooks/useAdminStats"
 import { HomeSettings } from "../../../common/types/home"
 import ProtectedRoute from "../../../common/auth/ProtectedRoute"
+import { StatsCard } from "../../../common/components/admin/StatsCard"
+import PageSkeleton from "../../../common/components/ui/PageSkeleton"
 import * as styles from "../../../styles/admin/admin-home-page.css"
 
 function HomePageAdminContent() {
   const { data: homeSettings, isLoading, error } = useMainHomeSettings()
+  const { data: statsData, isLoading: statsLoading } = useAdminStats()
   const updateMutation = useUpdateAdminHomeSettings()
   const uploadImagesMutation = useUploadHeroImages()
   const ensureMainHomeMutation = useEnsureMainHomeExists()
@@ -256,14 +261,7 @@ function HomePageAdminContent() {
   };
 
   if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>홈 화면 관리</h1>
-          <p className={styles.subtitle}>로딩 중...</p>
-        </div>
-      </div>
-    );
+    return <PageSkeleton variant="default" />
   }
 
   if (error) {
@@ -299,6 +297,91 @@ function HomePageAdminContent() {
 
   return (
     <div className={styles.container}>
+      {/* 통계 카드 섹션 */}
+      <div style={{ marginBottom: "32px" }}>
+        <h2 style={{ 
+          fontSize: "24px", 
+          fontWeight: "700", 
+          color: "#111827", 
+          marginBottom: "20px",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px"
+        }}>
+          📊 관리 현황
+        </h2>
+        
+        {statsLoading ? (
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "20px"
+          }}>
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} style={{
+                background: "white",
+                borderRadius: "12px",
+                padding: "24px",
+                border: "1px solid #e5e7eb",
+                minHeight: "120px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#6b7280"
+              }}>
+                ⏳ 로딩 중...
+              </div>
+            ))}
+          </div>
+        ) : statsData ? (
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "20px"
+          }}>
+            <StatsCard
+              title="공개 공지사항"
+              value={statsData.notices.published}
+              subtitle="현재 공개된 공지사항"
+              icon="📢"
+              color="blue"
+            />
+            <StatsCard
+              title="등록된 장비"
+              value={statsData.equipment.active}
+              subtitle="활성 상태 장비 수"
+              icon="🏗️"
+              color="green"
+            />
+            <StatsCard
+              title="작업자 자랑거리"
+              value={statsData.workShowcases.active}
+              subtitle="공개된 자랑거리 수"
+              icon="🎯"
+              color="purple"
+            />
+            <StatsCard
+              title="고객 리뷰"
+              value={statsData.customerReviews.active}
+              subtitle="공개된 고객 리뷰 수"
+              icon="⭐"
+              color="orange"
+            />
+          </div>
+        ) : (
+          <div style={{
+            background: "white",
+            borderRadius: "12px",
+            padding: "24px",
+            border: "1px solid #e5e7eb",
+            textAlign: "center",
+            color: "#6b7280"
+          }}>
+            ⚠️ 통계 데이터를 불러올 수 없습니다.
+          </div>
+        )}
+      </div>
+
       <div className={styles.header}>
         <h1 className={styles.title}>서비스 홈 페이지 관리</h1>
         {!isEditing ? (
@@ -493,14 +576,12 @@ function HomePageAdminContent() {
                             height: "120px",
                             overflow: "hidden"
                           }}>
-                            <img
+                            <Image
                               src={imageUrl}
                               alt={imageName}
+                              fill
                               style={{
-                                width: "100%",
-                                height: "100%",
-                                objectFit: "cover",
-                                display: "block"
+                                objectFit: "cover"
                               }}
                               onError={(e) => {
                                 const target = e.currentTarget
@@ -672,14 +753,12 @@ function HomePageAdminContent() {
                           height: "120px",
                           overflow: "hidden"
                         }}>
-                          <img
+                          <Image
                             src={imageUrl}
                             alt={imageName}
+                            fill
                             style={{
-                              width: "100%",
-                              height: "100%",
-                              objectFit: "cover",
-                              display: "block"
+                              objectFit: "cover"
                             }}
                             onError={(e) => {
                               const target = e.currentTarget

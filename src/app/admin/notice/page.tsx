@@ -63,8 +63,8 @@ const AdminNoticePage: React.FC = () => {
               </tr>
             ))
           ) : (
-            noticesData?.data.map(notice => (
-              <tr key={notice._id}>
+            noticesData?.data.map((notice, index) => (
+              <tr key={`${notice._id}-${index}`}>
                 <td className={commonStyles.tableCell}>
                   <Link
                     href={`/admin/notice/${notice._id}`}
@@ -77,15 +77,36 @@ const AdminNoticePage: React.FC = () => {
                   {new Date(notice.createdAt).toLocaleDateString()}
                 </td>
                 <td className={commonStyles.tableCell}>
-                  {notice.isPublished ? "게시됨" : "비공개"}
+                  <div className={commonStyles.statusContainer}>
+                    <span className={notice.isPublished ? commonStyles.publishedBadge : commonStyles.unpublishedBadge}>
+                      {notice.isPublished ? "게시됨" : "비공개"}
+                    </span>
+                    <label className={commonStyles.toggle}>
+                      <input 
+                        type="checkbox" 
+                        checked={notice.isPublished} 
+                        readOnly 
+                        className={commonStyles.toggleInput}
+                      />
+                      <span className={`${commonStyles.slider} ${notice.isPublished ? commonStyles.sliderChecked : ""}`}></span>
+                    </label>
+                  </div>
                 </td>
                 <td className={commonStyles.tableCell}>
-                  <button
-                    onClick={() => handleDelete(notice._id)}
-                    className={commonStyles.deleteButton}
-                  >
-                    <TrashIcon width={20} height={20} />
-                  </button>
+                  <div className={commonStyles.actionButtons}>
+                    <Link
+                      href={`/admin/notice/${notice._id}/edit`}
+                      className={commonStyles.editButton}
+                    >
+                      수정
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(notice._id)}
+                      className={commonStyles.deleteButton}
+                    >
+                      <TrashIcon width={16} height={16} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))

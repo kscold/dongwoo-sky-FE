@@ -14,11 +14,16 @@ export type {
 }
 
 /**
- * 공개용 작업자 자랑거리 데이터를 가져옵니다.
+ * 공개용 작업자 자랑거리 데이터를 가져옵니다. (페이지네이션)
  */
-export const getPublishedWorkShowcases = async (): Promise<WorkShowcase[]> => {
+export const getPublishedWorkShowcases = async (
+  page: number = 1,
+  limit: number = 10
+): Promise<PaginatedWorkShowcases> => {
   try {
-    const response = await apiClient.get<WorkShowcase[]>("/service/work-showcase")
+    const response = await apiClient.get<PaginatedWorkShowcases>("/service/work-showcase", {
+      params: { page, limit }
+    })
     console.log(`[getPublishedWorkShowcases] 작업자 자랑거리 데이터:`, response.data)
     return response.data
   } catch (error) {

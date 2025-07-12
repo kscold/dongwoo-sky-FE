@@ -44,20 +44,29 @@ const spin = keyframes({
 
 // 컨테이너 및 레이아웃
 export const container = style({
-    maxWidth: "1200px",
+    maxWidth: "1400px",
     margin: "0 auto",
     padding: `0 ${vars.space.lg}`,
     minHeight: "100vh",
+    background: "linear-gradient(180deg, #fafafa 0%, #ffffff 100%)",
 })
 
 export const heroSection = style({
     textAlign: "center",
     padding: `${vars.space.xl} 0`,
     marginBottom: vars.space.lg,
+    background: "linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%)",
+    backdropFilter: "blur(20px)",
+    borderRadius: "24px",
+    margin: `${vars.space.lg} ${vars.space.md}`,
+    border: "1px solid rgba(255,255,255,0.3)",
+    boxShadow: "0 8px 32px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.1)",
     "@media": {
         "screen and (max-width: 768px)": {
             padding: `${vars.space.lg} 0`,
             marginBottom: vars.space.md,
+            margin: `${vars.space.md}`,
+            borderRadius: "20px",
         },
     },
 })
@@ -253,32 +262,39 @@ export const equipmentList = style({
 
 export const equipmentCard = style({
     flexShrink: 0,
-    width: "200px",
-    background: "white",
-    borderRadius: vars.radii.lg,
+    width: "220px",
+    background: "rgba(255, 255, 255, 0.85)",
+    backdropFilter: "blur(20px)",
+    borderRadius: "20px",
     padding: vars.space.lg,
     cursor: "pointer",
-    transition: "all 0.3s ease",
-    border: "2px solid transparent",
-    boxShadow: vars.shadows.sm,
+    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.1)",
+    position: "relative",
+    overflow: "hidden",
     ":hover": {
-        transform: "translateY(-5px)",
-        boxShadow: vars.shadows.lg,
-        borderColor: vars.colors.primaryLight,
+        transform: "translateY(-8px) scale(1.02)",
+        boxShadow: "0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.1)",
+        borderColor: "rgba(59, 130, 246, 0.3)",
     },
     "@media": {
         "screen and (max-width: 768px)": {
-            width: "160px",
+            width: "180px",
             padding: vars.space.md,
+            borderRadius: "16px",
         },
     },
 })
 
 export const equipmentCardActive = style({
-    borderColor: vars.colors.primary,
-    background: `linear-gradient(135deg, ${vars.colors.primaryLight} 0%, white 100%)`,
-    transform: "translateY(-5px)",
-    boxShadow: vars.shadows.lg,
+    borderColor: "rgba(59, 130, 246, 0.6)",
+    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(59, 130, 246, 0.05) 100%)",
+    transform: "translateY(-8px) scale(1.02)",
+    boxShadow: "0 20px 40px rgba(59, 130, 246, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1)",
+    ":before": {
+        opacity: 1,
+    },
 })
 
 export const equipmentImageWrapper = style({

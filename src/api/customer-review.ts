@@ -14,11 +14,16 @@ export type {
 }
 
 /**
- * 공개용 고객 후기 데이터를 가져옵니다.
+ * 공개용 고객 후기 데이터를 가져옵니다. (페이지네이션)
  */
-export const getPublishedCustomerReviews = async (): Promise<CustomerReview[]> => {
+export const getPublishedCustomerReviews = async (
+  page: number = 1,
+  limit: number = 10
+): Promise<PaginatedCustomerReviews> => {
   try {
-    const response = await apiClient.get<CustomerReview[]>("/service/customer-review")
+    const response = await apiClient.get<PaginatedCustomerReviews>("/service/customer-review", {
+      params: { page, limit }
+    })
     console.log(`[getPublishedCustomerReviews] 고객 후기 데이터:`, response.data)
     return response.data
   } catch (error) {

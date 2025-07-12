@@ -4,6 +4,11 @@ import { vars } from "@/styles/common/theme.css"
 export const swiperContainer = style({
   position: "relative",
   paddingBottom: "60px",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      paddingBottom: "50px",
+    },
+  },
 })
 
 export const swiperWrapper = style({
@@ -41,6 +46,11 @@ export const equipmentImage = style({
 
 export const slideContent = style({
   padding: vars.space.lg,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      padding: vars.space.md,
+    },
+  },
 })
 
 export const slideTitle = style({
@@ -48,6 +58,12 @@ export const slideTitle = style({
   fontWeight: vars.fontWeights.bold,
   color: vars.colors.textStrong,
   marginBottom: vars.space.md,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: vars.fontSizes.md,
+      marginBottom: vars.space.sm,
+    },
+  },
 })
 
 export const slideInfo = style({
@@ -101,6 +117,13 @@ export const navButton = style({
       backgroundColor: "rgba(30, 41, 59, 0.8)",
       transform: "translateY(-50%) scale(1.05)",
       borderColor: `rgba(255, 255, 255, 0.4)`,
+    },
+  },
+  "@media": {
+    "screen and (max-width: 768px)": {
+      width: "36px",
+      height: "36px",
+      display: "none", // 모바일에서는 숨김
     },
   },
 })

@@ -6,7 +6,9 @@ import { usePricingSetting, useUpdatePricingSetting } from "@/common/hooks/usePr
 import { UpdatePricingSettingDto } from "@/api/pricingSettings"
 import * as styles from "@/styles/admin/admin-pricing-setting.css"
 
-interface FormValues extends UpdatePricingSettingDto { }
+interface FormValues extends Omit<UpdatePricingSettingDto, 'infoNotes'> {
+    infoNotes: string[]
+}
 
 export default function AdminPricingSettingPage() {
     const { data: pricingSetting, isLoading } = usePricingSetting()
@@ -21,9 +23,12 @@ export default function AdminPricingSettingPage() {
         formState: { errors, isSubmitting },
     } = useForm<FormValues>()
 
+    // @ts-ignore
     const { fields: infoNotesFields, append: appendInfoNote, remove: removeInfoNote } = useFieldArray({
+        // @ts-ignore
         control,
-        name: "infoNotes" as const
+        // @ts-ignore
+        name: "infoNotes"
     })
 
     useEffect(() => {
@@ -36,7 +41,16 @@ export default function AdminPricingSettingPage() {
 
             reset({
                 ...pricingSetting,
-                infoNotes: pricingSetting.infoNotes || defaultNotes
+                infoNotes: pricingSetting.infoNotes || defaultNotes,
+                // UI 라벨 기본값 설정
+                timeSelectionLabel: pricingSetting.timeSelectionLabel || "선택한 작업 시간",
+                hourUnit: pricingSetting.hourUnit || "시간",
+                baseHoursLabel: pricingSetting.baseHoursLabel || "기본",
+                additionalHoursLabel: pricingSetting.additionalHoursLabel || "추가",
+                hourlyRateLabel: pricingSetting.hourlyRateLabel || "시간당",
+                specificationsLabel: pricingSetting.specificationsLabel || "주요 사양",
+                scrollLeftAriaLabel: pricingSetting.scrollLeftAriaLabel || "왼쪽으로 스크롤",
+                scrollRightAriaLabel: pricingSetting.scrollRightAriaLabel || "오른쪽으로 스크롤",
             })
         }
     }, [pricingSetting, reset])
@@ -266,6 +280,99 @@ export default function AdminPricingSettingPage() {
                             placeholder="예: 전화 상담을 통해 더 정확한 견적과 할인 혜택을 받아보세요"
                             disabled={isSubmitting}
                         />
+                    </div>
+                </div>
+
+                {/* UI 라벨 섹션 */}
+                <div className={styles.section}>
+                    <h2 className={styles.sectionTitle}>🏷️ UI 라벨 설정</h2>
+
+                    <div className={styles.formRow}>
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>시간 선택 라벨</label>
+                            <input
+                                {...register("timeSelectionLabel")}
+                                className={styles.input}
+                                placeholder="예: 선택한 작업 시간"
+                                disabled={isSubmitting}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>시간 단위</label>
+                            <input
+                                {...register("hourUnit")}
+                                className={styles.input}
+                                placeholder="예: 시간"
+                                disabled={isSubmitting}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={styles.formRow}>
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>기본 시간 라벨</label>
+                            <input
+                                {...register("baseHoursLabel")}
+                                className={styles.input}
+                                placeholder="예: 기본"
+                                disabled={isSubmitting}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>추가 시간 라벨</label>
+                            <input
+                                {...register("additionalHoursLabel")}
+                                className={styles.input}
+                                placeholder="예: 추가"
+                                disabled={isSubmitting}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={styles.formRow}>
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>시간당 요금 라벨</label>
+                            <input
+                                {...register("hourlyRateLabel")}
+                                className={styles.input}
+                                placeholder="예: 시간당"
+                                disabled={isSubmitting}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>사양 라벨</label>
+                            <input
+                                {...register("specificationsLabel")}
+                                className={styles.input}
+                                placeholder="예: 주요 사양"
+                                disabled={isSubmitting}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={styles.formRow}>
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>왼쪽 스크롤 버튼 접근성 라벨</label>
+                            <input
+                                {...register("scrollLeftAriaLabel")}
+                                className={styles.input}
+                                placeholder="예: 왼쪽으로 스크롤"
+                                disabled={isSubmitting}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>오른쪽 스크롤 버튼 접근성 라벨</label>
+                            <input
+                                {...register("scrollRightAriaLabel")}
+                                className={styles.input}
+                                placeholder="예: 오른쪽으로 스크롤"
+                                disabled={isSubmitting}
+                            />
+                        </div>
                     </div>
                 </div>
 

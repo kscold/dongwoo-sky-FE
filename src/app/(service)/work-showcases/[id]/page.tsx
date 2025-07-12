@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useWorkShowcase, useLikeWorkShowcase } from "@/common/hooks/useWorkShowcase"
+import PageSkeleton from "@/common/components/ui/PageSkeleton"
 import * as styles from "@/styles/service/page/work-showcase-page.css"
 
 const WorkShowcaseDetailPage = () => {
@@ -33,13 +34,7 @@ const WorkShowcaseDetailPage = () => {
   }
 
   if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loadingState}>
-          ⏳ 작업자 자랑거리를 불러오는 중입니다...
-        </div>
-      </div>
-    )
+    return <PageSkeleton variant="work-showcase" />
   }
 
   if (error || !showcase) {
@@ -47,6 +42,9 @@ const WorkShowcaseDetailPage = () => {
       <div className={styles.container}>
         <div className={styles.errorState}>
           ⚠️ 작업자 자랑거리를 찾을 수 없습니다.
+          <p style={{ fontSize: "14px", color: "#666", marginTop: "8px" }}>
+            해당 게시물이 삭제되었거나 비공개 상태일 수 있습니다.
+          </p>
         </div>
         <Link href="/work-showcases" className={styles.backButton}>
           ← 목록으로 돌아가기
