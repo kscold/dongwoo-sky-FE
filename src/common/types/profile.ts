@@ -1,26 +1,24 @@
+/** 관리자 프로필 정보 */
+export interface AdminProfile {
+  imageUrl: string
+  name: string
+  phoneNumber: string
+  email: string
+}
+
 export interface Profile {
   _id: string
   name: string
-  title: string
+  role: string
   introduction: string
-  careers: string[]
+  imageUrl: string
+  career: string[]
   skills: string[]
-  profileImage?: string
-  isActive: boolean
-  sortOrder: number
+  isPublished: boolean
   createdAt: string
   updatedAt: string
 }
 
-export type CreateProfileDto = {
-  name: string
-  title: string
-  introduction: string
-  careers: string[]
-  skills: string[]
-  profileImage?: string
-  isActive?: boolean
-  sortOrder?: number
-}
+export interface CreateProfileDto extends Omit<Profile, '_id' | 'createdAt' | 'updatedAt'> { }
 
-export type UpdateProfileDto = Partial<CreateProfileDto>
+export interface UpdateProfileDto extends Partial<CreateProfileDto> { }

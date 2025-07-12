@@ -4,16 +4,19 @@ import React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { useWorkShowcase } from "@/common/hooks/useContent.ts"
-import * as styles from "../../../../styles/page/work-showcase-page.css.ts"
+import { useWorkShowcase, useLikeWorkShowcase } from "@/common/hooks/useWorkShowcase"
+import PageSkeleton from "@/common/components/ui/PageSkeleton"
+import * as styles from "@/styles/service/page/work-showcase-page.css"
 
 const WorkShowcaseDetailPage = () => {
   const params = useParams()
   const id = params.id as string
 
   const { data: showcase, isLoading, error } = useWorkShowcase(id)
+  const likeMutation = useLikeWorkShowcase()
 
-  const formatDate = (dateString: string | Date) => {
+  const formatDate = (dateString: string | Date | null | undefined) => {
+    if (!dateString) return "날짜 정보 없음"
     const date = new Date(dateString)
     return date.toLocaleDateString("ko-KR", {
       year: "numeric",
@@ -22,14 +25,16 @@ const WorkShowcaseDetailPage = () => {
     })
   }
 
+  const handleLike = async () => {
+    try {
+      await likeMutation.mutateAsync(id)
+    } catch (error) {
+      console.error("좋아요 실패:", error)
+    }
+  }
+
   if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loadingState}>
-          ⏳ 작업자 자랑거리를 불러오는 중입니다...
-        </div>
-      </div>
-    )
+    return <PageSkeleton variant="work-showcase" />
   }
 
   if (error || !showcase) {
@@ -37,6 +42,9 @@ const WorkShowcaseDetailPage = () => {
       <div className={styles.container}>
         <div className={styles.errorState}>
           ⚠️ 작업자 자랑거리를 찾을 수 없습니다.
+          <p style={{ fontSize: "14px", color: "#666", marginTop: "8px" }}>
+            해당 게시물이 삭제되었거나 비공개 상태일 수 있습니다.
+          </p>
         </div>
         <Link href="/work-showcases" className={styles.backButton}>
           ← 목록으로 돌아가기
@@ -121,7 +129,11 @@ const WorkShowcaseDetailPage = () => {
 
       {/* 액션 버튼 */}
       <div className={styles.actions}>
-        <button className={styles.likeButton}>
+        <button
+          className={styles.likeButton}
+          onClick={handleLike}
+          disabled={likeMutation.isPending}
+        >
           ❤️ 좋아요 ({showcase.likeCount})
         </button>
         <Link href="/work-showcases" className={styles.backToListButton}>

@@ -1,11 +1,7 @@
 import axios from "axios"
 
 // API 기본 설정
-// 프로덕션에서는 Next.js 프록시를 통해 API 호출
-const API_URL =
-  process.env.NODE_ENV === "production"
-    ? "/api" // 프로덕션에서는 Next.js 프록시 사용
-    : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api"
+const API_URL = '/api';
 
 // Axios 인스턴스 생성 및 내보내기
 export const apiClient = axios.create({
@@ -15,11 +11,10 @@ export const apiClient = axios.create({
   },
 })
 
-// JWT 토큰을 자동으로 포함하는 인터셉터 추가
+// 요청 인터셉터 추가
 apiClient.interceptors.request.use(
   (config) => {
-    console.log(`Making request to: ${config.baseURL}${config.url}`)
-    // 브라우저 환경에서만 localStorage 접근
+    // localStorage는 브라우저 환경에서만 접근 가능
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("auth_token")
       if (token) {
@@ -29,19 +24,16 @@ apiClient.interceptors.request.use(
     return config
   },
   (error) => {
-    console.error("Request error:", error)
     return Promise.reject(error)
-  }
+  },
 )
 
 // 응답 인터셉터 - 401 에러 시 로그아웃 처리
 apiClient.interceptors.response.use(
   (response) => {
-    console.log(`Response from ${response.config.url}:`, response.data)
     return response
   },
   (error) => {
-    console.error("Response error:", error)
     if (error.response?.status === 401 && typeof window !== "undefined") {
       // 로그인 페이지가 아닐 때만 리다이렉트
       const isLoginPage = window.location.pathname === "/admin/login"

@@ -1,160 +1,138 @@
 "use client"
 
-import Link from "next/link"
-
-import { Notice } from "../../../common/types/notice"
+import React, { useState } from "react"
 import {
   useNotices,
   useDeleteNotice,
-  useUpdateNotice,
 } from "../../../common/hooks/useNotices"
-import * as styles from "../../../styles/admin/admin-notice.css"
+import * as commonStyles from "../../../styles/admin/admin-notice.css"
+import Link from "next/link"
+import { PlusIcon, TrashIcon } from "lucide-react"
 
-export default function AdminNoticesPage() {
-  const { data: notices, isLoading, error } = useNotices()
+const NOTICES_PER_PAGE = 10
+
+const AdminNoticePage: React.FC = () => {
+  const [page, setPage] = useState(1)
+
+  const { data: noticesData, isLoading } = useNotices(page, NOTICES_PER_PAGE)
   const deleteNoticeMutation = useDeleteNotice()
-  const updateNoticeMutation = useUpdateNotice()
 
-  // 공지사항 삭제 핸들러
-  const handleDelete = async (id: string) => {
-    if (!window.confirm("이 공지사항을 삭제하시겠습니까?")) return
-
-    try {
-      await deleteNoticeMutation.mutateAsync(id)
-      // React Query가 자동으로 목록을 새로고침합니다
-    } catch (err) {
-      console.error("공지사항 삭제 오류:", err)
-      alert("공지사항 삭제에 실패했습니다.")
+  const handleDelete = (id: string) => {
+    if (window.confirm("정말로 이 공지사항을 삭제하시겠습니까?")) {
+      deleteNoticeMutation.mutate(id)
     }
   }
 
-  // 공지사항 모달 상태 토글
-  const toggleModal = async (notice: Notice) => {
-    try {
-      await updateNoticeMutation.mutateAsync({
-        id: notice._id,
-        data: { isModal: !notice.isModal },
-      })
-      // React Query가 자동으로 목록을 새로고침합니다
-    } catch (err) {
-      console.error("모달 상태 변경 오류:", err)
-      alert("모달 상태 변경에 실패했습니다.")
-    }
-  }
-
-  // 공지사항 공개 상태 토글
-  const togglePublished = async (notice: Notice) => {
-    try {
-      await updateNoticeMutation.mutateAsync({
-        id: notice._id,
-        data: { isPublished: !notice.isPublished },
-      })
-      // React Query가 자동으로 목록을 새로고침합니다
-    } catch (err) {
-      console.error("공개 상태 변경 오류:", err)
-      alert("공개 상태 변경에 실패했습니다.")
-    }
-  }
-
-  // 날짜 포맷 함수
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "날짜 없음"
-    const date = new Date(dateString)
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}-${String(date.getDate()).padStart(2, "0")}`
-  }
+  const totalPages = noticesData
+    ? Math.ceil(noticesData.total / NOTICES_PER_PAGE)
+    : 0
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>공지사항 관리</h1>
-        <div className={styles.actions}>
-          <Link href="/admin/notice/create" className={styles.createButton}>
-            새 공지사항
-          </Link>
-          <Link href="/admin/dashboard" className={styles.backButton}>
-            대시보드로 돌아가기
-          </Link>
-        </div>
+    <div className={commonStyles.container}>
+      <div className={commonStyles.header}>
+        <h1 className={commonStyles.title}>공지사항 관리</h1>
+        <Link href="/admin/notice/create" className={commonStyles.actionButton}>
+          <PlusIcon width={20} height={20} /> 새 공지사항 작성
+        </Link>
       </div>
-
-      {isLoading ? (
-        <div className={styles.loading}>로딩 중...</div>
-      ) : error ? (
-        <div className={styles.error}>
-          공지사항을 불러오는데 문제가 발생했습니다
-        </div>
-      ) : notices?.length === 0 ? (
-        <div className={styles.empty}>
-          <p>등록된 공지사항이 없습니다.</p>
-        </div>
-      ) : (
-        <div className={styles.tableContainer}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th className={styles.tableHeader}>제목</th>
-                <th className={styles.tableHeader}>작성일</th>
-                <th className={styles.tableHeader}>공개 상태</th>
-                <th className={styles.tableHeader}>모달 표시</th>
-                <th className={styles.tableHeader}>관리</th>
+      <table className={commonStyles.table}>
+        <thead>
+          <tr>
+            <th className={commonStyles.tableHeader}>제목</th>
+            <th className={commonStyles.tableHeader}>작성일</th>
+            <th className={commonStyles.tableHeader}>게시여부</th>
+            <th className={commonStyles.tableHeader}></th>
+          </tr>
+        </thead>
+        <tbody>
+          {isLoading ? (
+            Array.from({ length: 5 }).map((_, index) => (
+              <tr key={index}>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.skeleton} />
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.skeleton} />
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.skeleton} />
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.skeleton} />
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {notices?.map((notice) => (
-                <tr key={notice._id} className={styles.tableRow}>
-                  <td className={`${styles.tableCell} ${styles.titleCell}`}>
+            ))
+          ) : (
+            noticesData?.data.map((notice, index) => (
+              <tr key={`${notice._id}-${index}`}>
+                <td className={commonStyles.tableCell}>
+                  <Link
+                    href={`/admin/notice/${notice._id}`}
+                    className={commonStyles.link}
+                  >
                     {notice.title}
-                  </td>
-                  <td className={styles.tableCell}>
-                    {formatDate(notice.createdAt)}
-                  </td>
-                  <td className={styles.tableCell}>
-                    <button
-                      onClick={() => togglePublished(notice)}
-                      className={
-                        notice.isPublished
-                          ? styles.statusPublished
-                          : styles.statusDraft
-                      }
-                    >
-                      {notice.isPublished ? "공개" : "비공개"}
-                    </button>
-                  </td>
-                  <td className={styles.tableCell}>
-                    <button
-                      onClick={() => toggleModal(notice)}
-                      className={
-                        notice.isModal
-                          ? styles.modalActive
-                          : styles.modalInactive
-                      }
-                    >
-                      {notice.isModal ? "활성화" : "비활성화"}
-                    </button>
-                  </td>
-                  <td className={`${styles.tableCell} ${styles.actions}`}>
+                  </Link>
+                </td>
+                <td className={commonStyles.tableCell}>
+                  {new Date(notice.createdAt).toLocaleDateString()}
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.statusContainer}>
+                    <span className={notice.isPublished ? commonStyles.publishedBadge : commonStyles.unpublishedBadge}>
+                      {notice.isPublished ? "게시됨" : "비공개"}
+                    </span>
+                    <label className={commonStyles.toggle}>
+                      <input 
+                        type="checkbox" 
+                        checked={notice.isPublished} 
+                        readOnly 
+                        className={commonStyles.toggleInput}
+                      />
+                      <span className={`${commonStyles.slider} ${notice.isPublished ? commonStyles.sliderChecked : ""}`}></span>
+                    </label>
+                  </div>
+                </td>
+                <td className={commonStyles.tableCell}>
+                  <div className={commonStyles.actionButtons}>
                     <Link
-                      href={`/admin/notice/${notice._id}`}
-                      className={styles.editButton}
+                      href={`/admin/notice/${notice._id}/edit`}
+                      className={commonStyles.editButton}
                     >
                       수정
                     </Link>
                     <button
                       onClick={() => handleDelete(notice._id)}
-                      className={styles.deleteButton}
+                      className={commonStyles.deleteButton}
                     >
-                      삭제
+                      <TrashIcon width={16} height={16} />
                     </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+
+      <div className={commonStyles.modalActions}>
+        <button
+          onClick={() => setPage((p) => Math.max(p - 1, 1))}
+          disabled={page === 1}
+        >
+          이전
+        </button>
+        <span>
+          {page} / {totalPages || 1}
+        </span>
+        <button
+          onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+          disabled={page === totalPages || totalPages === 0}
+        >
+          다음
+        </button>
+      </div>
     </div>
   )
 }
+
+export default AdminNoticePage

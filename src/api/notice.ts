@@ -1,200 +1,61 @@
 import { apiClient } from "./client"
-import {
-  CreateNoticeDto,
-  Notice,
-  UpdateNoticeDto,
-  FileUploadResponse,
-  NoticeStats,
-} from "@/common/types/notice"
+import { Notice } from "@/common/types/notice"
 
-interface ApiResponse<T> {
-  success: boolean
-  message: string
-  data?: T
-  error?: string
+export interface PaginatedNotices {
+  data: Notice[]
+  total: number
 }
 
-// 공지사항 API 함수
 export const noticeApi = {
-  // 모든 공지사항 가져오기
-  getAll: async (): Promise<Notice[]> => {
-    try {
-      const response = await apiClient.get<ApiResponse<Notice[]>>("/notices")
-      if (response.data.success && response.data.data) {
-        return response.data.data
-      }
-      throw new Error(response.data.message || "공지사항 조회에 실패했습니다.")
-    } catch (error) {
-      console.error("공지사항 조회 오류:", error)
-      throw error
-    }
-  },
-
-  // 공개된 공지사항만 가져오기
-  getPublished: async (): Promise<Notice[]> => {
-    console.log(
-      "API 요청 URL:",
-      `${apiClient.defaults.baseURL}/notices/published`
-    )
-    try {
-      const response = await apiClient.get<ApiResponse<Notice[]>>(
-        "/notices/published"
-      )
-      console.log("API 응답:", response.data)
-
-      if (response.data.success && response.data.data) {
-        // 모든 공개된 공지사항을 반환 (클라이언트에서 필터링)
-        console.log("공개된 공지사항:", response.data.data)
-        return response.data.data
-      }
-      throw new Error(response.data.message || "공지사항 조회에 실패했습니다.")
-    } catch (error: unknown) {
-      console.error("API 오류:", error)
-      // 네트워크 오류인 경우 빈 배열 반환
-      if (
-        error &&
-        typeof error === "object" &&
-        "code" in error &&
-        (error as { code: string }).code === "ERR_NETWORK"
-      ) {
-        console.warn(
-          "백엔드 서버에 연결할 수 없습니다. 빈 데이터를 반환합니다."
-        )
-        return []
-      }
-      throw error
-    }
-  },
-
-  // 모달로 표시할 공지사항 가져오기
-  getModal: async (): Promise<Notice[]> => {
-    console.log("API 요청 URL:", `${apiClient.defaults.baseURL}/notices/modal`)
-    try {
-      const response = await apiClient.get<ApiResponse<Notice[]>>(
-        "/notices/modal"
-      )
-      console.log("API 응답:", response.data)
-
-      if (response.data.success && response.data.data) {
-        const modalNotices = response.data.data.filter(
-          (notice) => notice.isModal === true
-        )
-        console.log("모달 공지사항:", modalNotices)
-        return modalNotices
-      }
-      return []
-    } catch (error) {
-      console.error("모달 공지사항 조회 오류:", error)
-      return []
-    }
-  },
-
-  // 단일 공지사항 가져오기
-  getById: async (id: string): Promise<Notice> => {
-    const response = await apiClient.get<ApiResponse<Notice>>(`/notices/${id}`)
-    if (response.data.success && response.data.data) {
-      return response.data.data
-    }
-    throw new Error(response.data.message || "공지사항을 찾을 수 없습니다.")
-  },
-
-  // 공지사항 생성하기
-  create: async (notice: CreateNoticeDto): Promise<Notice> => {
-    const response = await apiClient.post<ApiResponse<Notice>>(
-      "/notices",
-      notice
-    )
-    if (response.data.success && response.data.data) {
-      return response.data.data
-    }
-    throw new Error(response.data.message || "공지사항 생성에 실패했습니다.")
-  },
-
-  // 공지사항 수정하기
-  update: async (id: string, notice: UpdateNoticeDto): Promise<Notice> => {
-    const response = await apiClient.patch<ApiResponse<Notice>>(
-      `/notices/${id}`,
-      notice
-    )
-    if (response.data.success && response.data.data) {
-      return response.data.data
-    }
-    throw new Error(response.data.message || "공지사항 수정에 실패했습니다.")
-  },
-
-  // 공지사항 삭제하기
-  delete: async (id: string): Promise<void> => {
-    const response = await apiClient.delete<ApiResponse<void>>(`/notices/${id}`)
-    if (!response.data.success) {
-      throw new Error(response.data.message || "공지사항 삭제에 실패했습니다.")
-    }
-  },
-
-  // 통계 정보 가져오기
-  getStats: async (): Promise<NoticeStats> => {
-    try {
-      const response = await apiClient.get<ApiResponse<NoticeStats>>(
-        "/notices/stats"
-      )
-      if (response.data.success && response.data.data) {
-        return response.data.data
-      }
-      throw new Error(response.data.message || "통계 정보 조회에 실패했습니다.")
-    } catch (error: unknown) {
-      console.error("통계 정보 조회 오류:", error)
-      // 네트워크 오류인 경우 기본값 반환
-      if (
-        error &&
-        typeof error === "object" &&
-        "code" in error &&
-        (error as { code: string }).code === "ERR_NETWORK"
-      ) {
-        return {
-          totalNotices: 0,
-          publishedNotices: 0,
-          modalNotices: 0,
-          recentNotices: 0,
-        }
-      }
-      throw error
-    }
-  },
-
-  // 파일 업로드 - 단일 파일
-  uploadFile: async (file: File): Promise<FileUploadResponse> => {
-    const formData = new FormData()
-    formData.append("file", file)
-
-    const response = await apiClient.post<FileUploadResponse>(
-      "/files/notice/upload",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    )
-
-    return response.data
-  },
-
-  // 파일 업로드 - 다중 파일
-  uploadFiles: async (files: File[]): Promise<FileUploadResponse[]> => {
-    const formData = new FormData()
-    files.forEach((file) => {
-      formData.append("files", file)
+  /** 전체 공지사항 (관리자용, 페이지네이션) */
+  getAllAdmin: async (
+    page: number,
+    limit: number
+  ): Promise<PaginatedNotices> => {
+    const response = await apiClient.get("/admin/notice", {
+      params: { page, limit },
     })
-
-    const response = await apiClient.post<FileUploadResponse[]>(
-      "/files/notice/uploads",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    )
-
     return response.data
+  },
+
+  /** 단일 공지사항 조회 */
+  getById: async (id: string): Promise<Notice> => {
+    const response = await apiClient.get(`/admin/notice/${id}`)
+    return response.data
+  },
+
+  /** 공지사항 생성 */
+  create: async (data: Omit<Notice, "_id" | "createdAt" | "updatedAt">): Promise<Notice> => {
+    const response = await apiClient.post("/admin/notice", data)
+    return response.data
+  },
+
+  /** 공지사항 수정 */
+  update: async (
+    id: string,
+    data: Partial<Omit<Notice, "id" | "createdAt" | "updatedAt">>
+  ): Promise<Notice> => {
+    const response = await apiClient.patch(`/admin/notice/${id}`, data)
+    return response.data
+  },
+
+  /** 공지사항 삭제 */
+  delete: async (id: string): Promise<void> => {
+    await apiClient.delete(`/admin/notice/${id}`)
+  },
+
+  /** 팝업으로 띄울 공지사항 조회 */
+  getModalNotice: async (): Promise<Notice | null> => {
+    try {
+      const response = await apiClient.get("/service/notice/modal")
+      return response.data
+    } catch (error) {
+      // 404 Not Found의 경우, null을 반환하여 처리
+      // @ts-ignore
+      if (error.response && error.response.status === 404) {
+        return null
+      }
+      throw error // 그 외 다른 에러는 다시 던짐
+    }
   },
 }

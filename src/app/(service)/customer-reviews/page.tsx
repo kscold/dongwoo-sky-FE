@@ -4,11 +4,12 @@ import React, { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 
-import Header from "../../../common/components/layout/Header.tsx"
-import Footer from "../../..//common/components/layout/Footer.tsx"
-import { useCustomerReviews } from "../../..//common/hooks/useContent.ts"
+import Pagination from "../../../common/components/ui/Pagination"
+import PageSkeleton from "../../../common/components/ui/PageSkeleton"
+import { useCustomerReviews } from "../../../common/hooks/useCustomerReview"
+import { CustomerReview } from "../../../common/types/customer-review"
 
-import * as styles from "../../../styles/page/customer-reviews-page.css.ts"
+import * as styles from "@/styles/service/page/customer-reviews-page.css.ts"
 
 const CustomerReviewsPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -29,11 +30,13 @@ const CustomerReviewsPage = () => {
     return html.replace(/<[^>]*>/g, "")
   }
 
-  const renderStars = (rating: number) => {
-    return "★".repeat(rating) + "☆".repeat(5 - rating)
+  const renderStars = (rating: number | undefined) => {
+    const validRating = rating || 0
+    return "★".repeat(validRating) + "☆".repeat(5 - validRating)
   }
 
-  const formatDate = (dateString: string | Date) => {
+  const formatDate = (dateString: string | Date | null | undefined) => {
+    if (!dateString) return "날짜 미정"
     const date = new Date(dateString)
     return date.toLocaleDateString("ko-KR", {
       year: "numeric",
@@ -43,34 +46,16 @@ const CustomerReviewsPage = () => {
   }
 
   if (isLoading) {
-    return (
-      <>
-        <Header />
-        <main>
-          <div className={styles.container}>
-            <div className={styles.loadingState}>
-              ⏳ 고객 리뷰를 불러오는 중입니다...
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </>
-    )
+    return <PageSkeleton variant="customer-review" />
   }
 
   if (error) {
     return (
-      <>
-        <Header />
-        <main>
-          <div className={styles.container}>
-            <div className={styles.errorState}>
-              ⚠️ 고객 리뷰를 불러올 수 없습니다.
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </>
+      <div className={styles.container}>
+        <div className={styles.errorState}>
+          ⚠️ 고객 리뷰를 불러올 수 없습니다.
+        </div>
+      </div>
     )
   }
 
@@ -78,9 +63,7 @@ const CustomerReviewsPage = () => {
   const totalPages = customerReviewsData?.totalPages || 1
 
   return (
-    <>
-      <main>
-        <div className={styles.container}>
+    <div className={styles.container}>
           {/* 헤더 */}
           <div className={styles.header}>
             <h1 className={styles.title}>고객 리뷰</h1>
@@ -96,7 +79,7 @@ const CustomerReviewsPage = () => {
           {customerReviews.length > 0 ? (
             <>
               <div className={styles.grid}>
-                {customerReviews.map((review: any) => (
+                {customerReviews.map((review: CustomerReview) => (
                   <Link
                     key={review._id}
                     href={`/customer-reviews/${review._id}`}
@@ -166,45 +149,11 @@ const CustomerReviewsPage = () => {
               </div>
 
               {/* 페이지네이션 */}
-              {totalPages > 1 && (
-                <div className={styles.pagination}>
-                  <button
-                    onClick={() =>
-                      setCurrentPage((prev) => Math.max(prev - 1, 1))
-                    }
-                    disabled={currentPage === 1}
-                    className={styles.pageButton}
-                  >
-                    ← 이전
-                  </button>
-
-                  <div className={styles.pageNumbers}>
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                      (page) => (
-                        <button
-                          key={page}
-                          onClick={() => setCurrentPage(page)}
-                          className={`${styles.pageNumber} ${
-                            currentPage === page ? styles.active : ""
-                          }`}
-                        >
-                          {page}
-                        </button>
-                      )
-                    )}
-                  </div>
-
-                  <button
-                    onClick={() =>
-                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                    }
-                    disabled={currentPage === totalPages}
-                    className={styles.pageButton}
-                  >
-                    다음 →
-                  </button>
-                </div>
-              )}
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
             </>
           ) : (
             <div className={styles.emptyState}>
@@ -213,8 +162,6 @@ const CustomerReviewsPage = () => {
             </div>
           )}
         </div>
-      </main>
-    </>
   )
 }
 

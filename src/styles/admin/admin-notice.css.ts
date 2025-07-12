@@ -1,455 +1,569 @@
 import { style } from "@vanilla-extract/css"
-import { vars } from "@/styles/common/theme.css"
+import { vars } from "../common/theme.css"
 
 export const container = style({
-  padding: vars.space.xl,
-  maxWidth: "1200px",
-  margin: "0 auto",
+    padding: "32px",
+    maxWidth: "1200px",
+    margin: "0 auto",
 })
 
 export const header = style({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: vars.space.xl,
-  paddingBottom: vars.space.md,
-  borderBottom: `1px solid ${vars.colors.border}`,
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "32px",
 })
 
 export const title = style({
-  fontSize: vars.fontSizes.xxl,
-  fontWeight: vars.fontWeights.bold,
-  color: vars.colors.textStrong,
-  margin: 0,
-})
-
-export const actions = style({
-  display: "flex",
-  gap: vars.space.md,
+    fontSize: "32px",
+    fontWeight: "700",
+    color: vars.colors.text,
+    margin: 0,
 })
 
 export const createButton = style({
-  padding: `${vars.space.sm} ${vars.space.lg}`,
-  backgroundColor: vars.colors.primary,
-  color: vars.colors.white,
-  border: "none",
-  borderRadius: vars.radii.md,
-  fontSize: vars.fontSizes.sm,
-  textDecoration: "none",
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  cursor: "pointer",
-  transition: "background-color 0.2s",
-  ":hover": {
-    backgroundColor: vars.colors.primaryDark,
-  },
+    backgroundColor: vars.colors.primary,
+    color: "white",
+    padding: "12px 24px",
+    borderRadius: "8px",
+    border: "none",
+    fontSize: "16px",
+    fontWeight: "500",
+    cursor: "pointer",
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "8px",
+    transition: "all 0.2s ease",
+    ":hover": {
+        backgroundColor: vars.colors.primaryDark,
+        transform: "translateY(-1px)",
+    },
 })
 
-export const backButton = style({
-  padding: `${vars.space.sm} ${vars.space.lg}`,
-  backgroundColor: "transparent",
-  color: vars.colors.text,
-  border: `1px solid ${vars.colors.border}`,
-  borderRadius: vars.radii.md,
-  fontSize: vars.fontSizes.sm,
-  textDecoration: "none",
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  cursor: "pointer",
-  transition: "background-color 0.2s",
-  ":hover": {
-    backgroundColor: vars.colors.backgroundLight,
-  },
+export const noticeList = style({
+    backgroundColor: "white",
+    borderRadius: "12px",
+    boxShadow: vars.shadows.sm,
+    overflow: "hidden",
+    border: `1px solid ${vars.colors.border}`,
 })
 
-export const tableContainer = style({
-  overflowX: "auto",
+export const noticeItem = style({
+    padding: "24px",
+    borderBottom: `1px solid ${vars.colors.border}`,
+    transition: "background-color 0.2s ease",
+    ":hover": {
+        backgroundColor: vars.colors.backgroundLight,
+    },
+    ":last-child": {
+        borderBottom: "none",
+    },
 })
 
-export const table = style({
-  width: "100%",
-  borderCollapse: "collapse",
-  marginTop: vars.space.md,
-  fontSize: vars.fontSizes.sm,
+export const noticeHeader = style({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginBottom: "12px",
 })
 
-export const tableHeader = style({
-  backgroundColor: vars.colors.backgroundLight,
-  fontWeight: vars.fontWeights.semibold,
-  color: vars.colors.textStrong,
-  padding: vars.space.md,
-  textAlign: "left",
-  borderBottom: `1px solid ${vars.colors.border}`,
+export const noticeTitle = style({
+    fontSize: "18px",
+    fontWeight: "600",
+    color: vars.colors.text,
+    marginBottom: "8px",
+    lineHeight: 1.4,
 })
 
-export const tableRow = style({
-  transition: "background-color 0.2s",
-  ":hover": {
-    backgroundColor: vars.colors.backgroundLight,
-  },
+export const noticeContent = style({
+    fontSize: "14px",
+    color: vars.colors.textLight,
+    lineHeight: 1.6,
+    marginBottom: "16px",
 })
 
-export const tableCell = style({
-  padding: vars.space.md,
-  borderBottom: `1px solid ${vars.colors.border}`,
-  textAlign: "left",
+export const noticeMeta = style({
+    display: "flex",
+    alignItems: "center",
+    gap: "16px",
+    fontSize: "12px",
+    color: vars.colors.textLight,
 })
 
-export const titleCell = style({
-  fontWeight: vars.fontWeights.medium,
-  maxWidth: "300px",
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  whiteSpace: "nowrap",
+export const noticeDate = style({
+    fontWeight: "500",
 })
 
-export const statusPublished = style({
-  backgroundColor: vars.colors.success,
-  color: vars.colors.white,
-  padding: `${vars.space.xs} ${vars.space.sm}`,
-  borderRadius: vars.radii.sm,
-  border: "none",
-  fontSize: vars.fontSizes.xs,
-  cursor: "pointer",
+export const noticeStatus = style({
+    padding: "4px 8px",
+    borderRadius: "12px",
+    fontSize: "12px",
+    fontWeight: "500",
 })
 
-export const statusDraft = style({
-  backgroundColor: vars.colors.textLight,
-  color: vars.colors.white,
-  padding: `${vars.space.xs} ${vars.space.sm}`,
-  borderRadius: vars.radii.sm,
-  border: "none",
-  fontSize: vars.fontSizes.xs,
-  cursor: "pointer",
-})
+export const publishedStatus = style([
+    noticeStatus,
+    {
+        backgroundColor: vars.colors.primaryLight,
+        color: vars.colors.primary,
+    },
+])
 
-export const modalActive = style({
-  backgroundColor: vars.colors.primary,
-  color: vars.colors.white,
-  padding: `${vars.space.xs} ${vars.space.sm}`,
-  borderRadius: vars.radii.sm,
-  border: "none",
-  fontSize: vars.fontSizes.xs,
-  cursor: "pointer",
-})
+export const draftStatus = style([
+    noticeStatus,
+    {
+        backgroundColor: vars.colors.accent,
+        color: vars.colors.textLight,
+    },
+])
 
-export const modalInactive = style({
-  backgroundColor: vars.colors.textLight,
-  color: vars.colors.white,
-  padding: `${vars.space.xs} ${vars.space.sm}`,
-  borderRadius: vars.radii.sm,
-  border: "none",
-  fontSize: vars.fontSizes.xs,
-  cursor: "pointer",
+export const noticeActions = style({
+    display: "flex",
+    gap: "8px",
+    marginTop: "16px",
 })
 
 export const editButton = style({
-  padding: `${vars.space.xs} ${vars.space.sm}`,
-  backgroundColor: "#E0F2FE",
-  color: "#0369A1",
-  border: "1px solid #0369A1",
-  borderRadius: vars.radii.sm,
-  fontSize: vars.fontSizes.xs,
-  textDecoration: "none",
-  marginRight: vars.space.sm,
-  display: "inline-block",
+    padding: `${vars.space.xs} ${vars.space.sm}`,
+    fontSize: vars.fontSizes.xs,
+    fontWeight: vars.fontWeights.medium,
+    color: vars.colors.primary,
+    backgroundColor: "transparent",
+    border: `1px solid ${vars.colors.primary}`,
+    borderRadius: vars.radii.sm,
+    cursor: "pointer",
+    textDecoration: "none",
+    transition: "all 0.2s ease",
+    
+    ":hover": {
+        backgroundColor: vars.colors.primary,
+        color: vars.colors.white,
+    },
 })
 
 export const deleteButton = style({
-  padding: `${vars.space.xs} ${vars.space.sm}`,
-  backgroundColor: "#FEE2E2",
-  color: "#DC2626",
-  border: "1px solid #DC2626",
-  borderRadius: vars.radii.sm,
-  fontSize: vars.fontSizes.xs,
-  cursor: "pointer",
+    padding: vars.space.xs,
+    fontSize: vars.fontSizes.xs,
+    fontWeight: vars.fontWeights.medium,
+    color: vars.colors.danger,
+    backgroundColor: "transparent",
+    border: `1px solid ${vars.colors.danger}`,
+    borderRadius: vars.radii.sm,
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    
+    ":hover": {
+        backgroundColor: vars.colors.danger,
+        color: vars.colors.white,
+    },
+})
+
+export const emptyState = style({
+    textAlign: "center",
+    padding: "64px 32px",
+    color: vars.colors.textLight,
+})
+
+export const emptyStateIcon = style({
+    fontSize: "48px",
+    marginBottom: "16px",
+    opacity: 0.5,
+})
+
+export const emptyStateText = style({
+    fontSize: "18px",
+    fontWeight: "500",
+    marginBottom: "8px",
+})
+
+export const emptyStateSubtext = style({
+    fontSize: "14px",
+    opacity: 0.7,
 })
 
 export const loading = style({
-  padding: vars.space.xxl,
-  textAlign: "center",
-  color: vars.colors.textLight,
+    textAlign: "center",
+    padding: "64px",
+    color: vars.colors.textLight,
+    fontSize: "16px",
 })
 
 export const error = style({
-  padding: vars.space.xl,
-  backgroundColor: "#FEE2E2",
-  color: "#DC2626",
-  borderRadius: vars.radii.md,
+    textAlign: "center",
+    padding: "64px",
+    color: vars.colors.danger,
+    backgroundColor: vars.colors.primaryLight,
+    borderRadius: "8px",
+    border: `1px solid ${vars.colors.border}`,
 })
 
-export const empty = style({
-  padding: vars.space.xxl,
-  textAlign: "center",
-  color: vars.colors.textLight,
-})
-
-// 폼 관련 스타일들
+// Form styles
 export const form = style({
-  backgroundColor: vars.colors.white,
-  padding: vars.space.xl,
-  borderRadius: vars.radii.lg,
-  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-  border: `1px solid ${vars.colors.border}`,
+    backgroundColor: "white",
+    borderRadius: "12px",
+    padding: "24px",
+    boxShadow: vars.shadows.sm,
+    border: `1px solid ${vars.colors.border}`,
 })
 
 export const formGroup = style({
-  marginBottom: vars.space.lg,
-})
-
-export const formRow = style({
-  display: "flex",
-  gap: vars.space.xl,
-  marginBottom: vars.space.lg,
-  "@media": {
-    "screen and (max-width: 768px)": {
-      flexDirection: "column",
-      gap: vars.space.md,
-    },
-  },
+    marginBottom: "16px",
 })
 
 export const label = style({
-  display: "block",
-  marginBottom: vars.space.sm,
-  fontSize: vars.fontSizes.sm,
-  fontWeight: vars.fontWeights.medium,
-  color: vars.colors.textStrong,
+    display: "block",
+    fontSize: "14px",
+    fontWeight: "500",
+    color: vars.colors.text,
+    marginBottom: "6px",
 })
 
 export const input = style({
-  width: "100%",
-  padding: vars.space.md,
-  border: `1px solid ${vars.colors.border}`,
-  borderRadius: vars.radii.md,
-  fontSize: vars.fontSizes.sm,
-  transition: "border-color 0.2s",
-  ":focus": {
-    outline: "none",
-    borderColor: vars.colors.primary,
-    boxShadow: `0 0 0 3px ${vars.colors.primary}20`,
-  },
+    width: "100%",
+    padding: "12px",
+    border: `1px solid ${vars.colors.border}`,
+    borderRadius: "6px",
+    fontSize: "14px",
+    boxSizing: "border-box",
+    ":focus": {
+        outline: "none",
+        borderColor: vars.colors.primary,
+        boxShadow: `0 0 0 3px ${vars.colors.primaryTransparent}`,
+    },
 })
 
-export const textarea = style({
-  width: "100%",
-  padding: vars.space.md,
-  border: `1px solid ${vars.colors.border}`,
-  borderRadius: vars.radii.md,
-  fontSize: vars.fontSizes.sm,
-  minHeight: "120px",
-  resize: "vertical",
-  fontFamily: "inherit",
-  transition: "border-color 0.2s",
-  ":focus": {
-    outline: "none",
-    borderColor: vars.colors.primary,
-    boxShadow: `0 0 0 3px ${vars.colors.primary}20`,
-  },
-})
-
-export const checkboxGroup = style({
-  display: "flex",
-  alignItems: "center",
-  gap: vars.space.sm,
-})
+export const textarea = style([
+    input,
+    {
+        minHeight: "120px",
+        resize: "vertical",
+    },
+])
 
 export const checkbox = style({
-  width: "16px",
-  height: "16px",
-  accentColor: vars.colors.primary,
+    marginRight: "8px",
 })
 
-export const checkboxLabel = style({
-  fontSize: vars.fontSizes.sm,
-  color: vars.colors.text,
-  cursor: "pointer",
+export const buttonGroup = style({
+    display: "flex",
+    gap: "12px",
+    justifyContent: "flex-end",
+    marginTop: "24px",
 })
 
-export const fileInput = style({
-  width: "100%",
-  padding: vars.space.sm,
-  border: `1px solid ${vars.colors.border}`,
-  borderRadius: vars.radii.md,
-  fontSize: vars.fontSizes.sm,
-  backgroundColor: vars.colors.backgroundLight,
-})
-
-export const helpText = style({
-  display: "block",
-  marginTop: vars.space.xs,
-  fontSize: vars.fontSizes.xs,
-  color: vars.colors.textLight,
-})
-
-export const formActions = style({
-  display: "flex",
-  gap: vars.space.md,
-  justifyContent: "flex-end",
-  marginTop: vars.space.xl,
-  "@media": {
-    "screen and (max-width: 768px)": {
-      flexDirection: "column",
+export const saveButton = style({
+    backgroundColor: vars.colors.primary,
+    color: "white",
+    padding: "12px 24px",
+    borderRadius: "6px",
+    border: "none",
+    fontSize: "14px",
+    fontWeight: "500",
+    cursor: "pointer",
+    ":hover": {
+        backgroundColor: vars.colors.primaryDark,
     },
-  },
-})
-
-export const submitButton = style({
-  padding: `${vars.space.sm} ${vars.space.xl}`,
-  backgroundColor: vars.colors.primary,
-  color: vars.colors.white,
-  border: "none",
-  borderRadius: vars.radii.md,
-  fontSize: vars.fontSizes.sm,
-  fontWeight: vars.fontWeights.medium,
-  cursor: "pointer",
-  transition: "background-color 0.2s",
-  ":hover": {
-    backgroundColor: vars.colors.primaryDark,
-  },
-  ":disabled": {
-    backgroundColor: vars.colors.textLight,
-    cursor: "not-allowed",
-  },
 })
 
 export const cancelButton = style({
-  padding: `${vars.space.sm} ${vars.space.xl}`,
-  backgroundColor: "transparent",
-  color: vars.colors.text,
-  border: `1px solid ${vars.colors.border}`,
-  borderRadius: vars.radii.md,
-  fontSize: vars.fontSizes.sm,
-  fontWeight: vars.fontWeights.medium,
-  textDecoration: "none",
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  cursor: "pointer",
-  transition: "background-color 0.2s",
-  ":hover": {
-    backgroundColor: vars.colors.backgroundLight,
-  },
+    backgroundColor: vars.colors.textLight,
+    color: "white",
+    padding: "12px 24px",
+    borderRadius: "6px",
+    border: "none",
+    fontSize: "14px",
+    fontWeight: "500",
+    cursor: "pointer",
+    ":hover": {
+        backgroundColor: vars.colors.text,
+    },
 })
 
-// 첨부파일 관련 스타일
+// 빌드 오류 해결을 위한 누락된 스타일들 추가
+export const backButton = style({
+    color: vars.colors.primary,
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: vars.space.sm,
+    fontSize: vars.fontSizes.md,
+    fontWeight: vars.fontWeights.medium,
+    marginBottom: vars.space.lg,
+    padding: `${vars.space.sm} ${vars.space.md}`,
+    borderRadius: vars.radii.md,
+    border: `1px solid ${vars.colors.primary}`,
+    transition: "all 0.2s ease",
+    
+    ":hover": {
+        backgroundColor: vars.colors.primary,
+        color: vars.colors.white,
+    },
+})
+
+export const formRow = style({
+    display: "flex",
+    gap: vars.space.md,
+    marginBottom: vars.space.lg,
+    
+    "@media": {
+        "(max-width: 768px)": {
+            flexDirection: "column",
+            gap: vars.space.sm,
+        },
+    },
+})
+
+export const checkboxGroup = style({
+    display: "flex",
+    alignItems: "center",
+    gap: vars.space.sm,
+})
+
+export const checkboxLabel = style({
+    fontSize: vars.fontSizes.md,
+    fontWeight: vars.fontWeights.medium,
+    color: vars.colors.text,
+    cursor: "pointer",
+})
+
 export const attachmentList = style({
-  listStyle: "none",
-  padding: 0,
-  margin: 0,
+    display: "flex",
+    flexDirection: "column",
+    gap: vars.space.sm,
+    marginTop: vars.space.sm,
 })
 
 export const attachmentItem = style({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  padding: vars.space.md,
-  backgroundColor: vars.colors.backgroundLight,
-  borderRadius: vars.radii.md,
-  border: `1px solid ${vars.colors.border}`,
-  marginBottom: vars.space.sm,
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: vars.space.sm,
+    backgroundColor: vars.colors.backgroundLight,
+    borderRadius: vars.radii.md,
+    border: `1px solid ${vars.colors.border}`,
 })
 
 export const attachmentName = style({
-  fontSize: vars.fontSizes.sm,
-  color: vars.colors.text,
-  flex: 1,
+    fontSize: vars.fontSizes.sm,
+    color: vars.colors.text,
+    fontWeight: vars.fontWeights.medium,
 })
 
 export const removeButton = style({
-  padding: `${vars.space.xs} ${vars.space.sm}`,
-  backgroundColor: "#DC2626",
-  color: vars.colors.white,
-  border: "none",
-  borderRadius: vars.radii.sm,
-  fontSize: vars.fontSizes.xs,
-  cursor: "pointer",
-  ":hover": {
-    backgroundColor: "#B91C1C",
-  },
+    padding: `${vars.space.xs} ${vars.space.sm}`,
+    fontSize: vars.fontSizes.xs,
+    fontWeight: vars.fontWeights.medium,
+    color: vars.colors.danger,
+    backgroundColor: "transparent",
+    border: `1px solid ${vars.colors.danger}`,
+    borderRadius: vars.radii.sm,
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    
+    ":hover": {
+        backgroundColor: vars.colors.danger,
+        color: vars.colors.white,
+    },
 })
 
-// 공지사항 상세 페이지 스타일
-export const noticeHeader = style({
-  marginBottom: vars.space.lg,
-  paddingBottom: vars.space.md,
-  borderBottom: `1px solid ${vars.colors.border}`,
+export const fileInput = style({
+    width: "100%",
+    padding: vars.space.sm,
+    border: `1px solid ${vars.colors.border}`,
+    borderRadius: vars.radii.md,
+    fontSize: vars.fontSizes.sm,
+    
+    ":focus": {
+        outline: "none",
+        borderColor: vars.colors.primary,
+        boxShadow: `0 0 0 3px ${vars.colors.primaryTransparent}`,
+    },
 })
 
-export const noticeDetail = style({
-  backgroundColor: vars.colors.white,
-  padding: vars.space.xl,
-  borderRadius: vars.radii.lg,
-  border: `1px solid ${vars.colors.border}`,
-  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
+export const helpText = style({
+    fontSize: vars.fontSizes.xs,
+    color: vars.colors.textLight,
+    marginTop: vars.space.xs,
 })
 
-export const detailTitle = style({
-  fontSize: vars.fontSizes.xxl,
-  fontWeight: vars.fontWeights.bold,
-  color: vars.colors.textStrong,
-  marginBottom: vars.space.md,
-  lineHeight: "1.3",
+export const formActions = style({
+    display: "flex",
+    gap: vars.space.md,
+    justifyContent: "flex-end",
+    marginTop: vars.space.xl,
+    paddingTop: vars.space.lg,
+    borderTop: `1px solid ${vars.colors.border}`,
 })
 
-export const detailInfo = style({
-  marginBottom: vars.space.lg,
-  paddingBottom: vars.space.md,
-  borderBottom: `1px solid ${vars.colors.border}`,
+export const submitButton = style({
+    backgroundColor: vars.colors.primary,
+    color: vars.colors.white,
+    padding: `${vars.space.md} ${vars.space.xl}`,
+    borderRadius: vars.radii.md,
+    border: "none",
+    fontSize: vars.fontSizes.md,
+    fontWeight: vars.fontWeights.medium,
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    
+    ":hover": {
+        backgroundColor: vars.colors.primaryDark,
+        transform: "translateY(-1px)",
+    },
+    
+    ":disabled": {
+        opacity: 0.5,
+        cursor: "not-allowed",
+        transform: "none",
+    },
 })
 
-export const detailDate = style({
-  fontSize: vars.fontSizes.sm,
-  color: vars.colors.textLight,
+// 테이블 관련 스타일들
+export const table = style({
+    width: "100%",
+    borderCollapse: "collapse",
+    backgroundColor: vars.colors.white,
+    borderRadius: vars.radii.lg,
+    overflow: "hidden",
+    boxShadow: vars.shadows.sm,
 })
 
-export const detailContent = style({
-  fontSize: vars.fontSizes.md,
-  lineHeight: "1.8",
-  color: vars.colors.text,
-  marginBottom: vars.space.xl,
-  whiteSpace: "pre-wrap",
+export const tableHeader = style({
+    backgroundColor: vars.colors.backgroundLight,
+    fontSize: vars.fontSizes.sm,
+    fontWeight: vars.fontWeights.semibold,
+    color: vars.colors.textStrong,
 })
 
-export const detailAttachments = style({
-  marginTop: vars.space.xl,
-  padding: vars.space.lg,
-  backgroundColor: vars.colors.backgroundLight,
-  borderRadius: vars.radii.lg,
+export const tableCell = style({
+    padding: vars.space.md,
+    textAlign: "left",
+    borderBottom: `1px solid ${vars.colors.border}`,
+    verticalAlign: "top",
 })
 
-export const attachmentsTitle = style({
-  fontSize: vars.fontSizes.lg,
-  fontWeight: vars.fontWeights.semibold,
-  color: vars.colors.textStrong,
-  marginBottom: vars.space.md,
+export const link = style({
+    color: vars.colors.primary,
+    textDecoration: "none",
+    fontWeight: vars.fontWeights.medium,
+    
+    ":hover": {
+        textDecoration: "underline",
+    },
 })
 
-export const attachmentsList = style({
-  listStyle: "none",
-  padding: 0,
-  margin: 0,
+export const modalActions = style({
+    display: "flex",
+    gap: vars.space.md,
+    justifyContent: "flex-end",
+    marginTop: vars.space.lg,
+    paddingTop: vars.space.lg,
+    borderTop: `1px solid ${vars.colors.border}`,
 })
 
-export const imageAttachment = style({
-  textAlign: "center",
-  marginBottom: vars.space.md,
+export const skeleton = style({
+    backgroundColor: vars.colors.backgroundLight,
+    borderRadius: vars.radii.md,
+    animation: "pulse 1.5s ease-in-out infinite"
 })
 
-export const attachmentImage = style({
-  maxWidth: "100%",
-  height: "auto",
-  borderRadius: vars.radii.md,
-  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+export const actionButton = style({
+    backgroundColor: vars.colors.primary,
+    color: vars.colors.white,
+    padding: `${vars.space.sm} ${vars.space.md}`,
+    fontSize: vars.fontSizes.sm,
+    fontWeight: vars.fontWeights.medium,
+    borderRadius: vars.radii.md,
+    border: "none",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: vars.space.xs,
+    
+    ":hover": {
+        backgroundColor: vars.colors.primaryDark,
+        transform: "translateY(-1px)",
+    },
 })
 
-export const attachmentLink = style({
-  color: vars.colors.primary,
-  textDecoration: "none",
-  fontSize: vars.fontSizes.sm,
-  ":hover": {
-    textDecoration: "underline",
-  },
+export const statusContainer = style({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: vars.space.sm,
 })
+
+export const publishedBadge = style({
+    padding: `${vars.space.xs} ${vars.space.sm}`,
+    borderRadius: vars.radii.sm,
+    fontSize: vars.fontSizes.xs,
+    fontWeight: vars.fontWeights.medium,
+    backgroundColor: vars.colors.primaryLight,
+    color: vars.colors.primary,
+})
+
+export const unpublishedBadge = style({
+    padding: `${vars.space.xs} ${vars.space.sm}`,
+    borderRadius: vars.radii.sm,
+    fontSize: vars.fontSizes.xs,
+    fontWeight: vars.fontWeights.medium,
+    backgroundColor: vars.colors.gray[100],
+    color: vars.colors.textLight,
+})
+
+export const toggle = style({
+    position: "relative",
+    display: "inline-block",
+    width: "40px",
+    height: "20px",
+})
+
+export const toggleInput = style({
+    opacity: 0,
+    width: 0,
+    height: 0,
+})
+
+export const slider = style({
+    position: "absolute",
+    cursor: "pointer",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: vars.colors.gray[300],
+    transition: "0.4s",
+    borderRadius: "20px",
+    
+    "::before": {
+        position: "absolute",
+        content: '""',
+        height: "16px",
+        width: "16px",
+        left: "2px",
+        bottom: "2px",
+        backgroundColor: vars.colors.white,
+        transition: "0.4s",
+        borderRadius: "50%",
+    },
+})
+
+export const sliderChecked = style({
+    backgroundColor: vars.colors.primary,
+    
+    "::before": {
+        transform: "translateX(20px)",
+    },
+})
+
+export const actionButtons = style({
+    display: "flex",
+    gap: vars.space.xs,
+    alignItems: "center",
+}) 

@@ -19,28 +19,14 @@ export interface GeolocationPosition {
  */
 export const checkLocationPermission = async (): Promise<void> => {
   if (!navigator.permissions) {
-    console.log("🌍 Permissions API가 지원되지 않는 브라우저입니다.")
     return
   }
 
   try {
     const result = await navigator.permissions.query({ name: "geolocation" })
-    console.log("📍 현재 위치 권한 상태:", result.state)
-
-    switch (result.state) {
-      case "granted":
-        console.log("✅ 위치 권한이 허용되어 있습니다.")
-        break
-      case "denied":
-        console.log("❌ 위치 권한이 거부되어 있습니다.")
-        console.log("브라우저 설정에서 위치 권한을 허용해주세요.")
-        break
-      case "prompt":
-        console.log("⏳ 위치 권한을 요청할 예정입니다.")
-        break
-    }
+    // Permission handling logic without console logs
   } catch (error) {
-    console.log("위치 권한 상태를 확인할 수 없습니다:", error)
+    // Error handling without console logs
   }
 }
 
@@ -50,16 +36,14 @@ export const checkLocationPermission = async (): Promise<void> => {
 export const getCurrentPosition = (): Promise<GeolocationPosition> => {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      console.log("🌍 Geolocation이 지원되지 않는 브라우저입니다.")
       reject(new Error("Geolocation is not supported by this browser."))
       return
     }
 
-    console.log("📍 위치 권한 요청 중...")
+    // Location permission request
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        console.log("✅ 위치 정보 획득 성공:", position.coords)
         resolve(position)
       },
       (error) => {
@@ -79,8 +63,7 @@ export const getCurrentPosition = (): Promise<GeolocationPosition> => {
             errorMessage = "알 수 없는 위치 오류가 발생했습니다."
             break
         }
-        console.log("📍 위치 정보를 가져올 수 없습니다:", errorMessage)
-        console.log("브라우저 설정에서 위치 권한을 허용해주세요.")
+        // Error handling without console logs
         reject(error)
       },
       {
@@ -100,44 +83,26 @@ export const getAddressFromCoords = async (
   longitude: number
 ): Promise<LocationInfo | null> => {
   try {
-    console.log("🌍 위치 좌표:", { latitude, longitude })
-    console.log(
-      "🔑 카카오 API 키 확인:",
-      process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY ? "✅ 존재" : "❌ 없음"
-    )
 
     // Next.js API 라우트를 통해 카카오 API 호출
     const response = await fetch(
       `/api/kakao/geocode?x=${longitude}&y=${latitude}`
     )
 
-    console.log("📡 Kakao API 응답 상태:", response.status)
-
     if (!response.ok) {
-      console.error(
-        "❌ Kakao API 요청 실패:",
-        response.status,
-        response.statusText
-      )
       throw new Error(
         `카카오 주소 API 요청 실패: ${response.status} ${response.statusText}`
       )
     }
 
     const data = await response.json()
-    console.log("📍 Kakao API 전체 응답:", data)
 
     if (data.documents && data.documents.length > 0) {
       const address = data.documents[0].address
       const roadAddress = data.documents[0].road_address
 
-      console.log("🏠 지번 주소:", address)
-      console.log("🛣️ 도로명 주소:", roadAddress)
-
       // 우선 도로명 주소를 사용하고, 없으면 지번 주소 사용
       const mainAddress = roadAddress || address
-
-      console.log("✅ 사용할 주소:", mainAddress)
 
       const locationInfo = {
         district: mainAddress.region_2depth_name || "", // 구 이름
@@ -147,21 +112,12 @@ export const getAddressFromCoords = async (
           : address.address_name,
       }
 
-      console.log("🎯 추출된 위치 정보:", locationInfo)
-
       return locationInfo
     }
 
     return null
   } catch (error) {
     // 위치 정보 에러는 조용히 처리
-    console.log(
-      "📍 주소 변환 중 오류 발생:",
-      error instanceof Error ? error.message : "알 수 없는 오류"
-    )
-    console.log(
-      "Kakao API 키가 올바른지, 네트워크 연결이 정상인지 확인해보세요."
-    )
     return null
   }
 }
@@ -172,10 +128,7 @@ export const getAddressFromCoords = async (
 export const generateBrandName = (
   locationInfo: LocationInfo | null
 ): string => {
-  console.log("🏷️ 브랜드명 생성 시작, 위치 정보:", locationInfo)
-
   if (!locationInfo) {
-    console.log("📍 위치 정보가 없어서 기본 브랜드명 사용")
     return "어울림 스카이"
   }
 
@@ -183,7 +136,6 @@ export const generateBrandName = (
   if (locationInfo.dong) {
     const dongName = locationInfo.dong.replace("동", "")
     const brandName = `어울림(${dongName}) 스카이`
-    console.log("🎯 동 이름 기반 브랜드명:", brandName)
     return brandName
   }
 
@@ -191,11 +143,10 @@ export const generateBrandName = (
   if (locationInfo.district) {
     const districtName = locationInfo.district.replace("구", "")
     const brandName = `어울림(${districtName}) 스카이`
-    console.log("🎯 구 이름 기반 브랜드명:", brandName)
     return brandName
   }
 
-  console.log("📍 구/동 정보가 없어서 기본 브랜드명 사용")
+  // 구/동 정보가 없어서 기본 브랜드명 사용
   return "어울림 스카이"
 }
 
@@ -204,32 +155,21 @@ export const generateBrandName = (
  */
 export const getLocationBasedBrandName = async (): Promise<string> => {
   try {
-    console.log("🚀 위치 기반 브랜드명 가져오기 시작")
-
     // 먼저 위치 권한 상태 확인
     await checkLocationPermission()
 
     const position = await getCurrentPosition()
-    console.log("📍 위치 정보 획득 성공:", position.coords)
 
     const locationInfo = await getAddressFromCoords(
       position.coords.latitude,
       position.coords.longitude
     )
 
-    console.log("📍 주소 변환 결과:", locationInfo)
-
     const brandName = generateBrandName(locationInfo)
-    console.log("🎉 최종 브랜드명:", brandName)
 
     return brandName
   } catch (error) {
     // 위치 기반 브랜드명 실패는 조용히 처리 - 사용자에게 방해되지 않도록
-    console.log("📍 위치 기반 브랜드명을 가져올 수 없어서 기본값을 사용합니다.")
-    console.log(
-      "원인:",
-      error instanceof Error ? error.message : "알 수 없는 오류"
-    )
     return "어울림 스카이" // 기본값
   }
 }
@@ -238,7 +178,6 @@ export const getLocationBasedBrandName = async (): Promise<string> => {
  * 간단한 테스트 함수
  */
 export const testFunction = (): string => {
-  console.log("🧪 테스트 함수 호출됨")
   return "테스트 성공"
 }
 
@@ -249,20 +188,16 @@ export const testKakaoAPI = async (): Promise<void> => {
   const seoulCityHallLat = 37.5666102
   const seoulCityHallLng = 126.9783881
 
-  console.log("🧪 Kakao API 테스트 시작 (서울 시청 좌표)")
-  console.log(
-    "🔑 사용 중인 API 키:",
-    process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY ? "설정됨" : "없음"
-  )
+  // Kakao API 테스트 시작 (서울 시청 좌표)
 
   try {
     const result = await getAddressFromCoords(
       seoulCityHallLat,
       seoulCityHallLng
     )
-    console.log("✅ Kakao API 테스트 성공:", result)
+    // Kakao API 테스트 성공
   } catch (error) {
-    console.error("❌ Kakao API 테스트 실패:", error)
+    // Kakao API 테스트 실패
   }
 }
 
@@ -277,8 +212,6 @@ if (typeof window !== "undefined") {
     generateBrandName,
     testFunction,
   }
-  console.log("🧪 위치 테스트 함수들이 window.testLocation에 노출되었습니다.")
-  console.log(
-    "사용법: window.testLocation.testKakaoAPI() 또는 window.testLocation.getLocationBasedBrandName()"
-  )
+  // 위치 테스트 함수들이 window.testLocation에 노출되었습니다.
+  // 사용법: window.testLocation.testKakaoAPI() 또는 window.testLocation.getLocationBasedBrandName()
 }

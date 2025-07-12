@@ -3,11 +3,13 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useAdmin } from "@/common/context/AdminContext"
+import { useAdminStats } from "@/common/hooks/useAdminStats"
 
 import * as styles from "../../../styles/admin/admin-dashboard.css"
 
 export default function AdminDashboardPage() {
   const { user, logout, isLoading } = useAdmin()
+  const { data: statsData, isLoading: statsLoading } = useAdminStats()
   const router = useRouter()
 
   // 로그아웃 핸들러
@@ -42,35 +44,52 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className={styles.dashboardContent}>
-          <div className={styles.statsGrid}>
-            <div className={styles.statCard}>
-              <div className={styles.statIcon}>📄</div>
-              <div className={styles.statNumber}>-</div>
-              <div className={styles.statLabel}>총 공지사항</div>
-            </div>
-            <div className={styles.statCard}>
+          <div className={styles.dashboardStatsGrid}>
+            <div className={styles.dashboardStatCard}>
               <div className={styles.statIcon}>✅</div>
-              <div className={styles.statNumber}>-</div>
+              <div className={styles.statNumber}>
+                {statsLoading ? "⏳" : (statsData?.notices.published || 0)}
+              </div>
               <div className={styles.statLabel}>공개 공지사항</div>
             </div>
-            <div className={styles.statCard}>
+            <div className={styles.dashboardStatCard}>
               <div className={styles.statIcon}>🏗️</div>
-              <div className={styles.statNumber}>-</div>
+              <div className={styles.statNumber}>
+                {statsLoading ? "⏳" : (statsData?.equipment.active || 0)}
+              </div>
               <div className={styles.statLabel}>등록된 장비</div>
             </div>
-            <div className={styles.statCard}>
-              <div className={styles.statIcon}>🔧</div>
-              <div className={styles.statNumber}>-</div>
-              <div className={styles.statLabel}>제공 서비스</div>
+            <div className={styles.dashboardStatCard}>
+              <div className={styles.statIcon}>🎯</div>
+              <div className={styles.statNumber}>
+                {statsLoading ? "⏳" : (statsData?.workShowcases.active || 0)}
+              </div>
+              <div className={styles.statLabel}>작업자 자랑거리</div>
+            </div>
+            <div className={styles.dashboardStatCard}>
+              <div className={styles.statIcon}>⭐</div>
+              <div className={styles.statNumber}>
+                {statsLoading ? "⏳" : (statsData?.customerReviews.active || 0)}
+              </div>
+              <div className={styles.statLabel}>고객 리뷰</div>
             </div>
           </div>
 
+
           <div className={styles.quickActionsGrid}>
-            <Link href="/admin/notice" className={styles.actionCard}>
-              <div className={styles.actionIcon}>📢</div>
-              <h3 className={styles.actionTitle}>공지사항 관리</h3>
+            <Link href="/admin/home" className={styles.actionCard}>
+              <div className={styles.actionIcon}>🎨</div>
+              <h3 className={styles.actionTitle}>서비스 홈 페이지 관리</h3>
               <p className={styles.actionDescription}>
-                사이트 공지사항을 작성, 수정, 삭제할 수 있습니다.
+                메인 페이지의 내용과 이미지를 관리할 수 있습니다.
+              </p>
+            </Link>
+
+            <Link href="/admin/service-guide" className={styles.actionCard}>
+              <div className={styles.actionIcon}>🗺️</div>
+              <h3 className={styles.actionTitle}>서비스 안내 관리</h3>
+              <p className={styles.actionDescription}>
+                서비스 안내 페이지의 내용과 구성을 관리합니다.
               </p>
             </Link>
 
@@ -82,43 +101,35 @@ export default function AdminDashboardPage() {
               </p>
             </Link>
 
-            <Link href="/admin/content" className={styles.actionCard}>
-              <div className={styles.actionIcon}>📝</div>
-              <h3 className={styles.actionTitle}>컨텐츠 관리</h3>
+            <Link href="/admin/pricing-setting" className={styles.actionCard}>
+              <div className={styles.actionIcon}>💰</div>
+              <h3 className={styles.actionTitle}>이용요금 페이지 관리</h3>
               <p className={styles.actionDescription}>
-                작업자 자랑거리와 고객 리뷰를 관리할 수 있습니다.
+                가격 설정, 할인율, 텍스트 등을 관리할 수 있습니다.
               </p>
             </Link>
 
-            <Link href="/admin/landing-page" className={styles.actionCard}>
-              <div className={styles.actionIcon}>🎨</div>
-              <h3 className={styles.actionTitle}>랜딩 페이지 관리</h3>
+            <Link href="/admin/work-showcase" className={styles.actionCard}>
+              <div className={styles.actionIcon}>🎯</div>
+              <h3 className={styles.actionTitle}>작업자 자랑거리 관리</h3>
               <p className={styles.actionDescription}>
-                메인 페이지의 내용과 이미지를 관리할 수 있습니다.
+                작업자 자랑거리를 작성, 수정, 삭제할 수 있습니다.
               </p>
             </Link>
 
-            <Link href="/admin/hero-settings" className={styles.actionCard}>
-              <div className={styles.actionIcon}>🏞️</div>
-              <h3 className={styles.actionTitle}>히어로 섹션 관리</h3>
+            <Link href="/admin/customer-review" className={styles.actionCard}>
+              <div className={styles.actionIcon}>⭐</div>
+              <h3 className={styles.actionTitle}>고객 리뷰 관리</h3>
               <p className={styles.actionDescription}>
-                메인 페이지 상단 히어로 섹션을 관리할 수 있습니다.
+                고객 리뷰를 작성, 수정, 삭제할 수 있습니다.
               </p>
             </Link>
 
-            <Link href="/admin/service" className={styles.actionCard}>
-              <div className={styles.actionIcon}>⚙️</div>
-              <h3 className={styles.actionTitle}>서비스 관리</h3>
+            <Link href="/admin/notice" className={styles.actionCard}>
+              <div className={styles.actionIcon}>📢</div>
+              <h3 className={styles.actionTitle}>공지사항 관리</h3>
               <p className={styles.actionDescription}>
-                제공하는 서비스의 정보와 가격을 관리할 수 있습니다.
-              </p>
-            </Link>
-
-            <Link href="/admin/profile" className={styles.actionCard}>
-              <div className={styles.actionIcon}>🏢</div>
-              <h3 className={styles.actionTitle}>회사 프로필 관리</h3>
-              <p className={styles.actionDescription}>
-                회사 정보, 연락처, 위치 정보를 관리할 수 있습니다.
+                사이트 공지사항을 작성, 수정, 삭제할 수 있습니다.
               </p>
             </Link>
           </div>

@@ -1,70 +1,50 @@
-import { useState, useEffect } from "react"
-import { usePathname } from "next/navigation"
-import { useModalNotices } from "./useNotices"
+import { create } from "zustand"
+import { useQuery } from "@tanstack/react-query"
+import { noticeApi } from "@/api/notice"
 import type { Notice } from "@/common/types/notice"
 
-interface UseNoticeModalReturn {
-  currentNotice: Notice | null
+interface NoticeModalState {
   isModalOpen: boolean
+  currentNotice: Notice | null
+  isLoading: boolean
+  openModal: (notice: Notice) => void
   closeModal: () => void
   closeTodayModal: () => void
-  loadingState: {
-    isLoading: boolean
-  }
 }
 
-export function useNoticeModal(): UseNoticeModalReturn {
-  const [currentNotice, setCurrentNotice] = useState<Notice | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const pathname = usePathname()
-  const { data: modalNotices, isLoading } = useModalNotices()
+export const useNoticeModalStore = create<NoticeModalState>((set) => ({
+  isModalOpen: false, // 초기에는 닫혀있도록 변경
+  currentNotice: null,
+  isLoading: true,
+  openModal: (notice) => set({ isModalOpen: true, currentNotice: notice }),
+  closeModal: () => set({ isModalOpen: false, currentNotice: null }),
+  closeTodayModal: () => {
+    const expiryDate = new Date()
+    expiryDate.setDate(expiryDate.getDate() + 1)
+    expiryDate.setHours(0, 0, 0, 0)
+    document.cookie = `noticeModalClosed=true; expires=${expiryDate.toUTCString()}; path=/`
+    set({ isModalOpen: false, currentNotice: null })
+  },
+}))
 
-  // admin 페이지인지 확인
-  const isAdminPage = pathname?.startsWith("/admin")
+export function useNoticeModal() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["notices", "modal"],
+    queryFn: noticeApi.getModalNotice,
+  })
 
-  // 모달 공지사항이 있으면 첫 번째 것을 표시 (admin 페이지가 아닐 때만)
-  useEffect(() => {
-    if (isAdminPage) {
-      // admin 페이지에서는 모달을 표시하지 않음
-      return
-    }
+  // zustand 스토어의 상태와 함수들을 가져옴
+  const { isModalOpen, currentNotice, openModal, closeModal, closeTodayModal } =
+    useNoticeModalStore()
 
-    if (modalNotices && modalNotices.length > 0) {
-      const notice = modalNotices[0]
-
-      // 오늘 하루 보지 않기 체크
-      const today = new Date().toDateString()
-      const hideKey = `notice_hide_${notice._id}_${today}`
-      const shouldHide = localStorage.getItem(hideKey) === "true"
-
-      if (!shouldHide) {
-        setCurrentNotice(notice)
-        setIsModalOpen(true)
-      }
-    }
-  }, [modalNotices, isAdminPage])
-
-  const closeModal = () => {
-    setIsModalOpen(false)
-    setCurrentNotice(null)
-  }
-
-  const closeTodayModal = () => {
-    if (currentNotice) {
-      const today = new Date().toDateString()
-      const hideKey = `notice_hide_${currentNotice._id}_${today}`
-      localStorage.setItem(hideKey, "true")
-    }
-    closeModal()
-  }
-
+  // 쿠키 확인 로직은 여기서 처리하지 않고 NoticeModalManager 등에서 처리
   return {
-    currentNotice,
+    notice: data,
+    isLoading,
     isModalOpen,
+    currentNotice,
+    openModal,
     closeModal,
     closeTodayModal,
-    loadingState: {
-      isLoading,
-    },
   }
 }

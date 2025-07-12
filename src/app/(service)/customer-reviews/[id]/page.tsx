@@ -5,14 +5,16 @@ import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 
-import { useCustomerReview } from "../../../../common/hooks/useContent.ts"
-import * as styles from "../../../../styles/page/customer-review-page.css.ts"
+import { useCustomerReview, useMarkReviewHelpful } from "../../../../common/hooks/useCustomerReview"
+import PageSkeleton from "../../../../common/components/ui/PageSkeleton"
+import * as styles from "@/styles/service/page/customer-review-page.css.ts"
 
 const CustomerReviewDetailPage = () => {
   const params = useParams()
   const id = params.id as string
 
   const { data: review, isLoading, error } = useCustomerReview(id)
+  const helpfulMutation = useMarkReviewHelpful()
 
   const renderStars = (rating: number) => {
     return "★".repeat(rating) + "☆".repeat(5 - rating)
@@ -27,14 +29,16 @@ const CustomerReviewDetailPage = () => {
     })
   }
 
+  const handleHelpful = async () => {
+    try {
+      await helpfulMutation.mutateAsync(id)
+    } catch (error) {
+      console.error("도움됨 표시 실패:", error)
+    }
+  }
+
   if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loadingState}>
-          ⏳ 고객 리뷰를 불러오는 중입니다...
-        </div>
-      </div>
-    )
+    return <PageSkeleton variant="customer-review" />
   }
 
   if (error || !review) {
@@ -61,8 +65,8 @@ const CustomerReviewDetailPage = () => {
 
         {/* 평점 */}
         <div className={styles.ratingSection}>
-          <div className={styles.stars}>{renderStars(review.rating)}</div>
-          <span className={styles.ratingText}>({review.rating}/5)</span>
+          <div className={styles.stars}>{renderStars(review.rating || 0)}</div>
+          <span className={styles.ratingText}>({review.rating || 0}/5)</span>
         </div>
 
         {/* 메타 정보 */}
@@ -85,7 +89,7 @@ const CustomerReviewDetailPage = () => {
             <span className={styles.stat}>👀 조회수 {review.viewCount}</span>
             <span className={styles.stat}>👍 도움됨 {review.helpfulCount}</span>
             <span className={styles.date}>
-              {formatDate(review.publishedAt)}
+              {review.publishedAt ? formatDate(review.publishedAt) : formatDate(review.createdAt)}
             </span>
           </div>
         </div>
@@ -132,7 +136,11 @@ const CustomerReviewDetailPage = () => {
 
       {/* 액션 버튼 */}
       <div className={styles.actions}>
-        <button className={styles.helpfulButton}>
+        <button 
+          className={styles.helpfulButton}
+          onClick={handleHelpful}
+          disabled={helpfulMutation.isPending}
+        >
           👍 도움됨 ({review.helpfulCount})
         </button>
         <Link href="/customer-reviews" className={styles.backToListButton}>

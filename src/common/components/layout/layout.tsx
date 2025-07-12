@@ -18,7 +18,7 @@ const inter = Inter({
 // };
 
 // 동적 임포트로 모달 컴포넌트 가져오기
-import NoticeModal from "@/common/components/notice-modal/NoticeModal"
+import NoticeModalManager from "../notice-modal/NoticeModalManager"
 import FloatingCallButton from "@/common/components/button/FloatingCallButton"
 import QueryProvider from "@/common/providers/query-provider"
 
@@ -35,7 +35,7 @@ export default function RootLayout({
       <body>
         <QueryProvider>
           {children}
-          {!isAdminPage && <NoticeModal />}
+          {!isAdminPage && <NoticeModalManager />}
           <FloatingCallButton />
         </QueryProvider>
       </body>

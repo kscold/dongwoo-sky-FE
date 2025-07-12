@@ -1,63 +1,68 @@
-import {
-  Service,
-  CreateServiceDto,
-  UpdateServiceDto,
-} from "@/common/types/service"
 import { apiClient } from "./client"
+import type { Service, CreateServiceDto, UpdateServiceDto } from "@/common/types/service"
 
 export const serviceApi = {
-  // 모든 서비스 조회 (활성화된 것만)
-  getAll: async (): Promise<Service[]> => {
-    const response = await apiClient.get<Service[]>("/service")
-    return response.data
-  },
+    // 공개 API
+    async getAll(): Promise<Service[]> {
+        try {
+            const response = await apiClient.get<Service[]>("/service")
+            return response.data
+        } catch (error) {
+            throw error
+        }
+    },
 
-  // 관리자용 모든 서비스 조회
-  getAllAdmin: async (): Promise<Service[]> => {
-    const token = localStorage.getItem("adminToken")
-    const response = await apiClient.get<Service[]>("/service/admin", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    return response.data
-  },
+    async getById(id: string): Promise<Service> {
+        try {
+            const response = await apiClient.get<Service>(`/service/${id}`)
+            return response.data
+        } catch (error) {
+            throw error
+        }
+    },
 
-  // 특정 서비스 조회
-  getOne: async (id: string): Promise<Service> => {
-    const response = await apiClient.get<Service>(`/service/${id}`)
-    return response.data
-  },
-  // 서비스 생성 (관리자용)
-  create: async (data: CreateServiceDto): Promise<Service> => {
-    const token = localStorage.getItem("adminToken")
-    const response = await apiClient.post<Service>("/service", data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    return response.data
-  },
+    // 관리자 API
+    async getAllAdmin(): Promise<Service[]> {
+        try {
+            const response = await apiClient.get<Service[]>("/admin/service")
+            return response.data
+        } catch (error) {
+            throw error
+        }
+    },
 
-  // 서비스 수정 (관리자용)
-  update: async (id: string, data: UpdateServiceDto): Promise<Service> => {
-    const token = localStorage.getItem("adminToken")
-    const response = await apiClient.patch<Service>(`/service/${id}`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    return response.data
-  },
+    async getByIdAdmin(id: string): Promise<Service> {
+        try {
+            const response = await apiClient.get<Service>(`/admin/service/${id}`)
+            return response.data
+        } catch (error) {
+            throw error
+        }
+    },
 
-  // 서비스 삭제 (관리자용)
-  delete: async (id: string): Promise<Service> => {
-    const token = localStorage.getItem("adminToken")
-    const response = await apiClient.delete<Service>(`/service/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    return response.data
-  },
-}
+    async create(data: CreateServiceDto): Promise<Service> {
+        try {
+            const response = await apiClient.post<Service>("/admin/service", data)
+            return response.data
+        } catch (error) {
+            throw error
+        }
+    },
+
+    async update(id: string, data: UpdateServiceDto): Promise<Service> {
+        try {
+            const response = await apiClient.patch<Service>(`/admin/service/${id}`, data)
+            return response.data
+        } catch (error) {
+            throw error
+        }
+    },
+
+    async delete(id: string): Promise<void> {
+        try {
+            await apiClient.delete(`/admin/service/${id}`)
+        } catch (error) {
+            throw error
+        }
+    }
+} 

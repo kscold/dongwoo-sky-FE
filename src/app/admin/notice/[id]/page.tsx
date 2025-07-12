@@ -116,7 +116,7 @@ export default function EditNoticePage() {
     } catch (err: unknown) {
       setError(
         "공지사항 수정에 실패했습니다: " +
-          ((err as Error).message || "알 수 없는 오류")
+        ((err as Error).message || "알 수 없는 오류")
       )
       console.error("공지사항 수정 오류:", err)
     } finally {
