@@ -1,7 +1,9 @@
 import axios from "axios"
 
 // API 기본 설정
-const API_URL = '/api';
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://q1a6v9lwqd.execute-api.ap-northeast-2.amazonaws.com/prod"
 
 // Axios 인스턴스 생성 및 내보내기
 export const apiClient = axios.create({
@@ -25,7 +27,7 @@ apiClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error)
-  },
+  }
 )
 
 // 응답 인터셉터 - 401 에러 시 로그아웃 처리

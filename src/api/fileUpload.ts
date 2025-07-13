@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081/api"
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 export const fileUploadApi = {
   // 범용 파일 업로드 함수
