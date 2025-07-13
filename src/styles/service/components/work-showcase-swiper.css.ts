@@ -1,4 +1,5 @@
 import { style } from "@vanilla-extract/css"
+
 import { vars } from "../../common/theme.css"
 
 export const swiperSection = style({
@@ -34,15 +35,15 @@ export const sectionHeader = style({
   borderBottom: `1px solid ${vars.colors.gray[200]}`,
   "@media": {
     "screen and (max-width: 768px)": {
-      flexDirection: "column",
-      gap: vars.space.lg,
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: vars.space.md,
       marginBottom: vars.space.xl,
-      alignItems: "center",
-      textAlign: "center",
+      alignItems: "flex-start",
       paddingBottom: vars.space.md,
     },
     "screen and (max-width: 480px)": {
-      gap: vars.space.md,
+      gap: vars.space.sm,
       marginBottom: vars.space.lg,
     },
   },
@@ -52,8 +53,8 @@ export const sectionTitleContainer = style({
   flex: 1,
   "@media": {
     "screen and (max-width: 768px)": {
-      flex: "none",
-      width: "100%",
+      flex: "1",
+      minWidth: "0",
     },
   },
 })
@@ -68,7 +69,6 @@ export const sectionTitle = style({
     "screen and (max-width: 768px)": {
       fontSize: vars.fontSizes.xxxl,
       marginBottom: vars.space.sm,
-      textAlign: "center",
     },
     "screen and (max-width: 480px)": {
       fontSize: vars.fontSizes.xxl,
@@ -85,8 +85,7 @@ export const sectionDescription = style({
   "@media": {
     "screen and (max-width: 768px)": {
       fontSize: vars.fontSizes.lg,
-      textAlign: "center",
-      marginBottom: vars.space.lg,
+      marginBottom: vars.space.md,
       maxWidth: "none",
     },
     "screen and (max-width: 480px)": {
@@ -126,19 +125,17 @@ export const viewAllButton = style({
   // },
   "@media": {
     "screen and (max-width: 768px)": {
-      alignSelf: "center",
-      padding: `${vars.space.lg} ${vars.space.xxl}`,
-      fontSize: vars.fontSizes.xl,
-      borderRadius: vars.radii.xxl,
-      minHeight: "56px",
-      boxShadow: vars.shadows.xl,
+      alignSelf: "flex-start",
+      padding: `${vars.space.sm} ${vars.space.lg}`,
+      fontSize: vars.fontSizes.md,
+      borderRadius: vars.radii.lg,
+      minHeight: "40px",
+      boxShadow: vars.shadows.md,
     },
     "screen and (max-width: 480px)": {
-      width: "100%",
-      justifyContent: "center",
-      fontSize: vars.fontSizes.lg,
-      minHeight: "52px",
-      padding: `${vars.space.md} ${vars.space.xl}`,
+      fontSize: vars.fontSizes.sm,
+      minHeight: "36px",
+      padding: `${vars.space.xs} ${vars.space.md}`,
     },
   },
 })
