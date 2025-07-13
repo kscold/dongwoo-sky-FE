@@ -95,7 +95,21 @@ export default function HeroSection({ home }: HeroSectionProps) {
             try {
               const { latitude, longitude } = position.coords
 
-              // Vercel 프록시를 통한 카카오 API 호출
+              // 환경에 따라 다른 API 호출 방식 사용
+              const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+              
+              if (isLocalhost) {
+                // 로컬 개발환경에서는 더미 데이터 사용 (CORS 문제 방지)
+                console.log('로컬 환경에서는 더미 위치 데이터를 사용합니다.')
+                setLocation({
+                  city: '서울특별시',
+                  district: '강남구',
+                  isLoading: false
+                })
+                return
+              }
+
+              // 프로덕션에서는 Vercel 프록시를 통한 카카오 API 호출
               const response = await fetch(
                 `/api/kakao/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`,
                 {
