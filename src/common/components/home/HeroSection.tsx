@@ -90,65 +90,116 @@ export default function HeroSection({ home }: HeroSectionProps) {
           return
         }
 
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            try {
-              const { latitude, longitude } = position.coords
+        // 위치 정보 요청 옵션 개선
+        const geolocationOptions = {
+          enableHighAccuracy: true, // 고정밀도 위치 요청
+          timeout: 15000, // 15초 타임아웃
+          maximumAge: 60000 // 1분 캐시 (더 자주 업데이트)
+        }
 
-              // 환경에 따라 다른 API 호출 방식 사용
-              const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+        const handleLocationSuccess = async (position: GeolocationPosition) => {
+          try {
+            const { latitude, longitude } = position.coords
+            console.log('위치 정보 획득 성공:', { latitude, longitude })
+
+            // 환경에 따라 다른 API 호출 방식 사용
+            const isLocalhost = typeof window !== 'undefined' && 
+              (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            
+            if (isLocalhost) {
+              // 로컬 개발환경에서는 실제 위치 기반 더미 데이터 사용
+              console.log('로컬 환경: 현재 위치 기반 더미 데이터 사용')
+              console.log('좌표:', { latitude, longitude })
               
-              if (isLocalhost) {
-                // 로컬 개발환경에서는 더미 데이터 사용 (CORS 문제 방지)
-                console.log('로컬 환경에서는 더미 위치 데이터를 사용합니다.')
+              // 서울 영등포구 좌표 범위 체크 (더 정확한 범위)
+              if (latitude >= 37.505 && latitude <= 37.555 && longitude >= 126.88 && longitude <= 126.935) {
                 setLocation({
                   city: '서울특별시',
-                  district: '강남구',
+                  district: '영등포구',
                   isLoading: false
                 })
-                return
-              }
-
-              // 프로덕션에서는 Vercel 프록시를 통한 카카오 API 호출
-              const response = await fetch(
-                `/api/kakao/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`,
-                {
-                  headers: {
-                    Authorization: `KakaoAK ${kakaoApiKey}`,
-                  },
-                }
-              )
-
-              if (response.ok) {
-                const data = await response.json()
-                if (data.documents && data.documents.length > 0) {
-                  const address = data.documents[0].address
-                  setLocation({
-                    city: address.region_1depth_name,
-                    district: address.region_2depth_name,
-                    isLoading: false
-                  })
-                } else {
-                  setLocation({ isLoading: false })
-                }
+              } else if (latitude >= 37.4 && latitude <= 37.7 && longitude >= 126.7 && longitude <= 127.2) {
+                // 서울 내 다른 지역
+                setLocation({
+                  city: '서울특별시', 
+                  district: '현재 위치',
+                  isLoading: false
+                })
               } else {
-                console.error('카카오 API 호출 실패:', response.status)
+                // 서울 외 지역
+                setLocation({
+                  city: '현재 지역',
+                  district: '현재 위치',
+                  isLoading: false
+                })
+              }
+              return
+            }
+
+            // 프로덕션에서는 Vercel 프록시를 통한 카카오 API 호출
+            console.log('프로덕션 환경: 카카오 API 호출 시작')
+            const response = await fetch(
+              `/api/kakao/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`,
+              {
+                headers: {
+                  'Authorization': `KakaoAK ${kakaoApiKey}`,
+                  'Content-Type': 'application/json',
+                },
+              }
+            )
+
+            console.log('카카오 API 응답 상태:', response.status)
+            
+            if (response.ok) {
+              const data = await response.json()
+              console.log('카카오 API 응답 데이터:', data)
+              
+              if (data.documents && data.documents.length > 0) {
+                const address = data.documents[0].address
+                setLocation({
+                  city: address.region_1depth_name,
+                  district: address.region_2depth_name,
+                  isLoading: false
+                })
+                console.log('위치 정보 설정 완료:', address.region_1depth_name, address.region_2depth_name)
+              } else {
+                console.warn('카카오 API: 주소 데이터가 없습니다')
                 setLocation({ isLoading: false })
               }
-            } catch (err) {
-              console.error('주소 변환 실패:', err)
+            } else {
+              const errorText = await response.text()
+              console.error('카카오 API 호출 실패:', response.status, errorText)
               setLocation({ isLoading: false })
             }
-          },
-          (err) => {
-            console.error('위치 정보 가져오기 실패:', err)
-            setLocation({ isLoading: false, error: "위치 정보를 가져올 수 없습니다." })
-          },
-          {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 300000 // 5분 캐시
+          } catch (err) {
+            console.error('주소 변환 실패:', err)
+            setLocation({ isLoading: false })
           }
+        }
+
+        const handleLocationError = (err: GeolocationPositionError) => {
+          console.error('위치 정보 가져오기 실패:', err)
+          let errorMessage = "위치 정보를 가져올 수 없습니다."
+          
+          switch (err.code) {
+            case err.PERMISSION_DENIED:
+              errorMessage = "위치 정보 접근이 거부되었습니다."
+              break
+            case err.POSITION_UNAVAILABLE:
+              errorMessage = "위치 정보를 사용할 수 없습니다."
+              break
+            case err.TIMEOUT:
+              errorMessage = "위치 정보 요청 시간이 초과되었습니다."
+              break
+          }
+          
+          setLocation({ isLoading: false, error: errorMessage })
+        }
+
+        navigator.geolocation.getCurrentPosition(
+          handleLocationSuccess,
+          handleLocationError,
+          geolocationOptions
         )
       } catch (err) {
         console.error('위치 서비스 오류:', err)
@@ -216,7 +267,12 @@ export default function HeroSection({ home }: HeroSectionProps) {
       return `${baseName}(위치 확인 중...)`
     }
 
+    if (location.error) {
+      return `${baseName}(위치 정보 없음)`
+    }
+
     if (location.city && location.district) {
+      // 더 자연스러운 표시
       return `${baseName}(${location.district})`
     }
 

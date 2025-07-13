@@ -51,7 +51,12 @@
     "rewrites": [
         {
             "source": "/api/kakao/v2/local/geo/coord2address.json",
-            "destination": "https://dapi.kakao.com/v2/local/geo/coord2address.json"
+            "destination": "https://dapi.kakao.com/v2/local/geo/coord2address.json",
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, OPTIONS",
+                "Access-Control-Allow-Headers": "Authorization, Content-Type"
+            }
         },
         {
             "source": "/api/:path*",
