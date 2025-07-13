@@ -3,7 +3,7 @@ import axios from "axios"
 // API 기본 설정
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://3ak7hxj6fj.execute-api.ap-northeast-2.amazonaws.com/dev/api"
+  "https://kt7v4q8o60.execute-api.ap-northeast-2.amazonaws.com/production/api"
 
 // Axios 인스턴스 생성 및 내보내기
 export const apiClient = axios.create({

@@ -55,7 +55,7 @@
         },
         {
             "source": "/api/:path*",
-            "destination": "https://3ak7hxj6fj.execute-api.ap-northeast-2.amazonaws.com/dev/api/:path*"
+            "destination": "https://kt7v4q8o60.execute-api.ap-northeast-2.amazonaws.com/production/api/:path*"
         }
     ]
 }

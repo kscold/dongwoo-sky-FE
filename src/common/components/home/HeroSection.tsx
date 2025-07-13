@@ -78,8 +78,14 @@ export default function HeroSection({ home }: HeroSectionProps) {
         }
 
         // 카카오 API 키가 없으면 위치 정보 기능 비활성화
-        if (!process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY) {
+        const kakaoApiKey = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY || process.env.NEXT_PUBLIC_KAKAO_API_KEY
+        if (!kakaoApiKey) {
           console.warn('카카오 REST API 키가 설정되지 않았습니다.')
+          console.log('사용 가능한 키들:', {
+            NEXT_PUBLIC_KAKAO_REST_API_KEY: process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY,
+            NEXT_PUBLIC_KAKAO_API_KEY: process.env.NEXT_PUBLIC_KAKAO_API_KEY,
+            NEXT_PUBLIC_KAKAO_JS_API_KEY: process.env.NEXT_PUBLIC_KAKAO_JS_API_KEY
+          })
           setLocation({ isLoading: false })
           return
         }
@@ -94,7 +100,7 @@ export default function HeroSection({ home }: HeroSectionProps) {
                 `/api/kakao/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`,
                 {
                   headers: {
-                    Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+                    Authorization: `KakaoAK ${kakaoApiKey}`,
                   },
                 }
               )
