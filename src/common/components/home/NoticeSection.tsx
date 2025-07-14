@@ -2,8 +2,9 @@
 
 import React from "react"
 import Link from "next/link"
-import * as styles from "@/styles/service/components/home/notice-section.css"
-import { Notice } from "@/types/notice"
+
+import { Notice } from "../../../types/notice"
+import * as styles from "../../../styles/service/components/home/notice-section.css.ts"
 
 interface NoticeSectionProps {
   notices: Notice[]
@@ -27,14 +28,11 @@ export default function NoticeSection({ notices }: NoticeSectionProps) {
         </p>
       </div>
       <ul className={styles.noticeList}>
-        {notices.slice(0, 5).map(notice => (
+        {notices.slice(0, 5).map((notice) => (
           <li key={notice._id} className={styles.noticeItem}>
             <Link href={`/notice/${notice._id}`} className={styles.noticeLink}>
               <span className={styles.noticeTitle}>{notice.title}</span>
-              <time
-                className={styles.noticeDate}
-                dateTime={notice.publishedAt}
-              >
+              <time className={styles.noticeDate} dateTime={notice.publishedAt}>
                 {formatDate(notice.publishedAt)}
               </time>
             </Link>
