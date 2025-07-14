@@ -8,7 +8,7 @@ import { ko } from "date-fns/locale"
 
 import { useNotice } from "../../../../common/hooks/useNotices"
 import PageSkeleton from "../../../../common/components/ui/PageSkeleton"
-import * as styles from "../../../../styles/notice.css"
+import * as styles from "../../../../styles/service/page/notice.css.ts"
 import { Notice, Attachment } from "../../../../types/notice"
 
 interface PageProps {

@@ -5,9 +5,15 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, Autoplay } from "swiper/modules"
 import Image from "next/image"
 import Link from "next/link"
-import { ChevronLeftIcon, ChevronRightIcon, HeartIcon, UserIcon } from "@heroicons/react/24/outline"
-import { WorkShowcase } from "@/types/work-showcase"
-import * as styles from "@/styles/service/components/work-showcase-swiper.css"
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  HeartIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline"
+
+import { WorkShowcase } from "../../../types/work-showcase"
+import * as styles from "../../../styles/service/components/work-showcase-swiper.css.ts"
 
 import "swiper/css"
 import "swiper/css/navigation"
@@ -94,7 +100,10 @@ const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
         >
           {workShowcases.map((showcase) => (
             <SwiperSlide key={showcase._id} className={styles.swiperSlide}>
-              <Link href={`/work-showcases/${showcase._id}`} className={styles.showcaseCard}>
+              <Link
+                href={`/work-showcases/${showcase._id}`}
+                className={styles.showcaseCard}
+              >
                 <div className={styles.imageContainer}>
                   {showcase.imageUrls && showcase.imageUrls.length > 0 ? (
                     <Image

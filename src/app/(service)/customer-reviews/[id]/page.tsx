@@ -5,9 +5,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 
-import { useCustomerReview, useMarkReviewHelpful } from "../../../../common/hooks/useCustomerReview"
+import {
+  useCustomerReview,
+  useMarkReviewHelpful,
+} from "../../../../common/hooks/useCustomerReview"
 import PageSkeleton from "../../../../common/components/ui/PageSkeleton"
-import * as styles from "@/styles/service/page/customer-review-page.css.ts"
+import * as styles from "../../../../styles/service/page/customer-review-page.css.ts"
 
 const CustomerReviewDetailPage = () => {
   const params = useParams()
@@ -89,7 +92,9 @@ const CustomerReviewDetailPage = () => {
             <span className={styles.stat}>👀 조회수 {review.viewCount}</span>
             <span className={styles.stat}>👍 도움됨 {review.helpfulCount}</span>
             <span className={styles.date}>
-              {review.publishedAt ? formatDate(review.publishedAt) : formatDate(review.createdAt)}
+              {review.publishedAt
+                ? formatDate(review.publishedAt)
+                : formatDate(review.createdAt)}
             </span>
           </div>
         </div>
@@ -136,7 +141,7 @@ const CustomerReviewDetailPage = () => {
 
       {/* 액션 버튼 */}
       <div className={styles.actions}>
-        <button 
+        <button
           className={styles.helpfulButton}
           onClick={handleHelpful}
           disabled={helpfulMutation.isPending}
