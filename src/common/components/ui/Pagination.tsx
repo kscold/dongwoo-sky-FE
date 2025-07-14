@@ -1,7 +1,8 @@
 "use client"
 
 import React from "react"
-import * as styles from "@/styles/components/pagination.css"
+
+import * as styles from "../../../styles/components/pagination.css"
 
 interface PaginationProps {
   currentPage: number
@@ -33,7 +34,7 @@ export default function Pagination({
   const getPageNumbers = () => {
     const pages = []
     const maxVisiblePages = 5
-    
+
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i)
@@ -42,17 +43,17 @@ export default function Pagination({
       const half = Math.floor(maxVisiblePages / 2)
       let start = Math.max(currentPage - half, 1)
       let end = Math.min(start + maxVisiblePages - 1, totalPages)
-      
+
       if (end - start + 1 < maxVisiblePages) {
         start = Math.max(end - maxVisiblePages + 1, 1)
         end = Math.min(start + maxVisiblePages - 1, totalPages)
       }
-      
+
       for (let i = start; i <= end; i++) {
         pages.push(i)
       }
     }
-    
+
     return pages
   }
 

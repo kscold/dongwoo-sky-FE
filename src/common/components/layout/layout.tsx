@@ -3,7 +3,8 @@
 // import type { Metadata } from "next"; // 사용하지 않으므로 제거
 import { Inter } from "next/font/google"
 import { usePathname } from "next/navigation"
-import "@/styles/common/reset.css"
+
+import "../../../styles/common/reset.css"
 import "./globals.css"
 
 const inter = Inter({

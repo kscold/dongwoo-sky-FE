@@ -7,7 +7,7 @@ import Link from "next/link"
 import Pagination from "../../../common/components/ui/Pagination"
 import PageSkeleton from "../../../common/components/ui/PageSkeleton"
 import { useCustomerReviews } from "../../../common/hooks/useCustomerReview"
-import { CustomerReview } from "../../../common/types/customer-review"
+import { CustomerReview } from "../../../types/customer-review"
 
 import * as styles from "@/styles/service/page/customer-reviews-page.css.ts"
 

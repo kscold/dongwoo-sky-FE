@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+
 import {
   getPublishedCustomerReviews,
   getCustomerReviewById,
@@ -9,22 +10,25 @@ import {
   updateCustomerReview,
   deleteCustomerReview,
   uploadCustomerReviewImages,
-} from "@/api/customer-review"
+} from "../../api/customer-review"
 import type {
   CustomerReview,
   CreateCustomerReviewDto,
   UpdateCustomerReviewDto,
   PaginatedCustomerReviews,
-} from "@/common/types/customer-review"
+} from "../../types/customer-review"
 
 export const customerReviewKeys = {
   all: ["customer-reviews"] as const,
   public: () => [...customerReviewKeys.all, "public"] as const,
-  publicList: (page: number, limit: number) => [...customerReviewKeys.public(), "list", page, limit] as const,
+  publicList: (page: number, limit: number) =>
+    [...customerReviewKeys.public(), "list", page, limit] as const,
   detail: (id: string) => [...customerReviewKeys.all, "detail", id] as const,
   admin: () => [...customerReviewKeys.all, "admin"] as const,
-  adminList: (page: number, limit: number) => [...customerReviewKeys.admin(), "list", page, limit] as const,
-  adminDetail: (id: string) => [...customerReviewKeys.admin(), "detail", id] as const,
+  adminList: (page: number, limit: number) =>
+    [...customerReviewKeys.admin(), "list", page, limit] as const,
+  adminDetail: (id: string) =>
+    [...customerReviewKeys.admin(), "detail", id] as const,
 }
 
 // =================================================================
@@ -75,7 +79,10 @@ export const useMarkReviewHelpful = () => {
 // 관리자용 훅들 (Admin API)
 // =================================================================
 
-export const useAdminCustomerReviews = (page: number = 1, limit: number = 10) => {
+export const useAdminCustomerReviews = (
+  page: number = 1,
+  limit: number = 10
+) => {
   return useQuery({
     queryKey: customerReviewKeys.adminList(page, limit),
     queryFn: () => getAdminCustomerReviews(page, limit),
@@ -110,18 +117,15 @@ export const useUpdateCustomerReview = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({
-      id,
-      data,
-    }: {
-      id: string
-      data: UpdateCustomerReviewDto
-    }) => updateCustomerReview(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateCustomerReviewDto }) =>
+      updateCustomerReview(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: customerReviewKeys.admin() })
       queryClient.invalidateQueries({ queryKey: customerReviewKeys.public() })
       queryClient.invalidateQueries({ queryKey: customerReviewKeys.detail(id) })
-      queryClient.invalidateQueries({ queryKey: customerReviewKeys.adminDetail(id) })
+      queryClient.invalidateQueries({
+        queryKey: customerReviewKeys.adminDetail(id),
+      })
     },
     onError: (error) => {
       // Error handling can be added here if needed

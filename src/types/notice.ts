@@ -40,22 +40,6 @@ export interface FileUploadResponse {
   name: string
 }
 
-// 공지사항 통계 타입
-export interface NoticeStats {
-  totalNotices: number
-  publishedNotices: number
-  modalNotices: number
-  recentNotices: number
-}
-
-// 페이지네이션된 공지사항 응답 타입
-export interface PaginatedNoticesResponse {
-  data: Notice[]
-  total: number
-  page: number
-  limit: number
-}
-
 export interface PaginatedNotices {
   data: Notice[]
   total: number

@@ -1,5 +1,5 @@
 import { apiClient } from "./client"
-import { Notice } from "@/common/types/notice"
+import { Notice } from "../types/notice"
 
 export interface PaginatedNotices {
   data: Notice[]
@@ -7,6 +7,14 @@ export interface PaginatedNotices {
 }
 
 export const noticeApi = {
+  /** 공개용 공지사항 목록 조회 */
+  getAll: async (page: number, limit: number): Promise<PaginatedNotices> => {
+    const response = await apiClient.get("/service/notice", {
+      params: { page, limit },
+    })
+    return response.data
+  },
+
   /** 전체 공지사항 (관리자용, 페이지네이션) */
   getAllAdmin: async (
     page: number,
@@ -18,14 +26,22 @@ export const noticeApi = {
     return response.data
   },
 
-  /** 단일 공지사항 조회 */
+  /** 공개용 단일 공지사항 조회 */
   getById: async (id: string): Promise<Notice> => {
+    const response = await apiClient.get(`/service/notice/${id}`)
+    return response.data
+  },
+
+  /** 관리자용 단일 공지사항 조회 */
+  getByIdAdmin: async (id: string): Promise<Notice> => {
     const response = await apiClient.get(`/admin/notice/${id}`)
     return response.data
   },
 
   /** 공지사항 생성 */
-  create: async (data: Omit<Notice, "_id" | "createdAt" | "updatedAt">): Promise<Notice> => {
+  create: async (
+    data: Omit<Notice, "_id" | "createdAt" | "updatedAt">
+  ): Promise<Notice> => {
     const response = await apiClient.post("/admin/notice", data)
     return response.data
   },

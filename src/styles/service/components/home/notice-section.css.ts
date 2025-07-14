@@ -1,5 +1,6 @@
 import { style, keyframes } from "@vanilla-extract/css"
-import { vars } from "@/styles/common/theme.css"
+
+import { vars } from "../../../common/theme.css"
 
 const pulse = keyframes({
   "0%, 80%, 100%": {

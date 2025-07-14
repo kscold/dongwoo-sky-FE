@@ -2,7 +2,8 @@
 
 import React from "react"
 import Link from "next/link"
-import * as errorStyles from "@/styles/service/components/error.css"
+
+import * as errorStyles from "../../../styles/service/components/error.css"
 
 interface ErrorProps {
   error: Error & { digest?: string }

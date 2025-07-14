@@ -6,7 +6,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules"
 import Image from "next/image"
 import Link from "next/link"
 import { ChevronLeftIcon, ChevronRightIcon, HeartIcon, UserIcon } from "@heroicons/react/24/outline"
-import { WorkShowcase } from "@/common/types/work-showcase"
+import { WorkShowcase } from "@/types/work-showcase"
 import * as styles from "@/styles/service/components/work-showcase-swiper.css"
 
 import "swiper/css"

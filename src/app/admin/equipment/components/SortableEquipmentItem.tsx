@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 
-import { Equipment } from "../../../../common/types/equipment"
+import { Equipment } from "../../../../types/equipment"
 import * as styles from "../../../../styles/admin/admin-equipment.css"
 
 interface SortableEquipmentItemProps {
@@ -24,7 +24,7 @@ const SortableEquipmentItem: React.FC<SortableEquipmentItemProps> = ({
   const [imageError, setImageError] = useState(false)
 
   // 안전한 ID 생성
-  const sortableId = equipment.id || `equipment-${index}`;
+  const sortableId = equipment.id || `equipment-${index}`
 
   const {
     attributes,
@@ -44,16 +44,17 @@ const SortableEquipmentItem: React.FC<SortableEquipmentItemProps> = ({
 
   // 이미지 URL 검증
   const isValidImageUrl = (url: string): boolean => {
-    if (!url || url.trim() === '') return false
+    if (!url || url.trim() === "") return false
     try {
       const urlObj = new URL(url)
-      return urlObj.protocol === 'http:' || urlObj.protocol === 'https:'
+      return urlObj.protocol === "http:" || urlObj.protocol === "https:"
     } catch {
       return false
     }
   }
 
-  const shouldShowImage = equipment.imageUrl && isValidImageUrl(equipment.imageUrl) && !imageError
+  const shouldShowImage =
+    equipment.imageUrl && isValidImageUrl(equipment.imageUrl) && !imageError
 
   return (
     <div ref={setNodeRef} style={style} className={styles.equipmentCard}>
@@ -100,7 +101,11 @@ const SortableEquipmentItem: React.FC<SortableEquipmentItemProps> = ({
             {equipment.priceRanges[0]}
           </div>
         )}
-        <div className={equipment.isPublished ? styles.activeStatus : styles.inactiveStatus}>
+        <div
+          className={
+            equipment.isPublished ? styles.activeStatus : styles.inactiveStatus
+          }
+        >
           {equipment.isPublished ? "게시됨" : "비공개"}
         </div>
       </div>
@@ -117,4 +122,4 @@ const SortableEquipmentItem: React.FC<SortableEquipmentItemProps> = ({
   )
 }
 
-export default SortableEquipmentItem 
+export default SortableEquipmentItem

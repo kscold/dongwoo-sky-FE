@@ -19,6 +19,7 @@ export interface Profile {
   updatedAt: string
 }
 
-export interface CreateProfileDto extends Omit<Profile, '_id' | 'createdAt' | 'updatedAt'> { }
+export interface CreateProfileDto
+  extends Omit<Profile, "_id" | "createdAt" | "updatedAt"> {}
 
-export interface UpdateProfileDto extends Partial<CreateProfileDto> { }
+export interface UpdateProfileDto extends Partial<CreateProfileDto> {}

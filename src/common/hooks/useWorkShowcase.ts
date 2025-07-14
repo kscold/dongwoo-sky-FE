@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+
 import {
   getPublishedWorkShowcases,
   getWorkShowcaseById,
@@ -9,21 +10,23 @@ import {
   updateWorkShowcase,
   deleteWorkShowcase,
   uploadWorkShowcaseImages,
-} from "@/api/work-showcase"
+} from "../../api/work-showcase"
 import type {
   WorkShowcase,
   CreateWorkShowcaseDto,
   UpdateWorkShowcaseDto,
   PaginatedWorkShowcases,
-} from "@/common/types/work-showcase"
+} from "../../types/work-showcase"
 
 export const workShowcaseKeys = {
   all: ["work-showcases"] as const,
   public: () => [...workShowcaseKeys.all, "public"] as const,
   detail: (id: string) => [...workShowcaseKeys.all, "detail", id] as const,
   admin: () => [...workShowcaseKeys.all, "admin"] as const,
-  adminList: (page: number, limit: number) => [...workShowcaseKeys.admin(), "list", page, limit] as const,
-  adminDetail: (id: string) => [...workShowcaseKeys.admin(), "detail", id] as const,
+  adminList: (page: number, limit: number) =>
+    [...workShowcaseKeys.admin(), "list", page, limit] as const,
+  adminDetail: (id: string) =>
+    [...workShowcaseKeys.admin(), "detail", id] as const,
 }
 
 // =================================================================
@@ -103,18 +106,15 @@ export const useUpdateWorkShowcase = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({
-      id,
-      data,
-    }: {
-      id: string
-      data: UpdateWorkShowcaseDto
-    }) => updateWorkShowcase(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateWorkShowcaseDto }) =>
+      updateWorkShowcase(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: workShowcaseKeys.admin() })
       queryClient.invalidateQueries({ queryKey: workShowcaseKeys.public() })
       queryClient.invalidateQueries({ queryKey: workShowcaseKeys.detail(id) })
-      queryClient.invalidateQueries({ queryKey: workShowcaseKeys.adminDetail(id) })
+      queryClient.invalidateQueries({
+        queryKey: workShowcaseKeys.adminDetail(id),
+      })
     },
     onError: (error) => {
       // Error handling can be added here if needed

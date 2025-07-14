@@ -9,10 +9,7 @@ import {
   useUpdateEquipment,
   useUploadEquipmentImage,
 } from "../../../../common/hooks/useEquipment"
-import {
-  Equipment,
-  CreateEquipmentDto,
-} from "../../../../common/types/equipment"
+import { Equipment, CreateEquipmentDto } from "../../../../types/equipment"
 import { Uploader } from "../../../../common/components/upload/Uploader"
 import * as styles from "../../../../styles/admin/admin-equipment.css"
 
@@ -52,8 +49,8 @@ export default function EquipmentFormModal({
 
   useEffect(() => {
     if (isOpen) {
-      console.log("EquipmentFormModal opened with initialData:", initialData);
-      console.log("initialData.id:", initialData?.id);
+      console.log("EquipmentFormModal opened with initialData:", initialData)
+      console.log("initialData.id:", initialData?.id)
 
       const defaultValues = {
         name: initialData?.name ?? "",
@@ -75,20 +72,20 @@ export default function EquipmentFormModal({
   const handleFileChange = (files: any[]) => {
     if (files && files.length > 0) {
       // 새로 추가된 파일 중 File 객체만 처리
-      const newFiles = files.filter(file => file instanceof File);
+      const newFiles = files.filter((file) => file instanceof File)
       if (newFiles.length > 0) {
-        const file = newFiles[0];
-        const filePreview = URL.createObjectURL(file);
-        setPreview(filePreview);
-        setValue("imageFile", [file] as any);
+        const file = newFiles[0]
+        const filePreview = URL.createObjectURL(file)
+        setPreview(filePreview)
+        setValue("imageFile", [file] as any)
       }
     } else {
-      setPreview(null);
-      setValue("imageFile", undefined);
+      setPreview(null)
+      setValue("imageFile", undefined)
     }
-  };
+  }
 
-  const onSubmit: SubmitHandler<FormValues> = async data => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       let imageUrl = initialData?.imageUrl ?? ""
       const imageFile = data.imageFile?.[0]
@@ -99,7 +96,11 @@ export default function EquipmentFormModal({
         console.log("업로드 결과:", uploadResult)
 
         // 백엔드에서 반환하는 URL 구조에 맞게 수정
-        imageUrl = uploadResult.url || uploadResult.attachment?.url || uploadResult.attachment?.key || ""
+        imageUrl =
+          uploadResult.url ||
+          uploadResult.attachment?.url ||
+          uploadResult.attachment?.key ||
+          ""
 
         console.log("최종 이미지 URL:", imageUrl)
 
@@ -118,8 +119,8 @@ export default function EquipmentFormModal({
         })
       } else if (initialData && !initialData.id) {
         // initialData는 있지만 id가 없는 경우 - 생성으로 처리
-        console.warn("장비 데이터에 id가 없어 새로 생성합니다.", initialData);
-        await createMutate(equipmentData);
+        console.warn("장비 데이터에 id가 없어 새로 생성합니다.", initialData)
+        await createMutate(equipmentData)
       } else {
         // 새 장비 생성
         await createMutate(equipmentData)
@@ -175,7 +176,9 @@ export default function EquipmentFormModal({
               rows={4}
             />
             {errors.description && (
-              <p className={styles.errorMessage}>{errors.description.message}</p>
+              <p className={styles.errorMessage}>
+                {errors.description.message}
+              </p>
             )}
           </div>
 
@@ -183,9 +186,7 @@ export default function EquipmentFormModal({
             <label className={styles.label}>이미지</label>
             <Uploader
               onFilesChange={handleFileChange}
-              value={
-                preview ? [{ url: preview, alt: "기존 이미지" }] : []
-              }
+              value={preview ? [{ url: preview, alt: "기존 이미지" }] : []}
               uploadType="existing"
               disabled={isSubmitting}
             />
@@ -194,7 +195,9 @@ export default function EquipmentFormModal({
           {/* 가격 설정 섹션 */}
           <div className={styles.sectionHeader}>
             <h3 className={styles.sectionTitle}>💰 가격 설정</h3>
-            <p className={styles.sectionDescription}>요금 안내 페이지에 표시될 가격 정보를 설정하세요</p>
+            <p className={styles.sectionDescription}>
+              요금 안내 페이지에 표시될 가격 정보를 설정하세요
+            </p>
           </div>
 
           <div className={styles.formRow}>
@@ -204,14 +207,16 @@ export default function EquipmentFormModal({
                 type="number"
                 {...register("basePrice", {
                   valueAsNumber: true,
-                  min: { value: 0, message: "0 이상의 값을 입력해주세요" }
+                  min: { value: 0, message: "0 이상의 값을 입력해주세요" },
                 })}
                 className={styles.input}
                 disabled={isSubmitting}
                 placeholder="예: 200000"
               />
               {errors.basePrice && (
-                <p className={styles.errorMessage}>{errors.basePrice.message}</p>
+                <p className={styles.errorMessage}>
+                  {errors.basePrice.message}
+                </p>
               )}
             </div>
 
@@ -221,14 +226,16 @@ export default function EquipmentFormModal({
                 type="number"
                 {...register("baseHours", {
                   valueAsNumber: true,
-                  min: { value: 1, message: "1 이상의 값을 입력해주세요" }
+                  min: { value: 1, message: "1 이상의 값을 입력해주세요" },
                 })}
                 className={styles.input}
                 disabled={isSubmitting}
                 placeholder="예: 4"
               />
               {errors.baseHours && (
-                <p className={styles.errorMessage}>{errors.baseHours.message}</p>
+                <p className={styles.errorMessage}>
+                  {errors.baseHours.message}
+                </p>
               )}
             </div>
           </div>
@@ -240,14 +247,16 @@ export default function EquipmentFormModal({
                 type="number"
                 {...register("hourlyRate", {
                   valueAsNumber: true,
-                  min: { value: 0, message: "0 이상의 값을 입력해주세요" }
+                  min: { value: 0, message: "0 이상의 값을 입력해주세요" },
                 })}
                 className={styles.input}
                 disabled={isSubmitting}
                 placeholder="예: 30000"
               />
               {errors.hourlyRate && (
-                <p className={styles.errorMessage}>{errors.hourlyRate.message}</p>
+                <p className={styles.errorMessage}>
+                  {errors.hourlyRate.message}
+                </p>
               )}
             </div>
           </div>
@@ -259,7 +268,7 @@ export default function EquipmentFormModal({
                 type="number"
                 {...register("minHours", {
                   valueAsNumber: true,
-                  min: { value: 1, message: "1 이상의 값을 입력해주세요" }
+                  min: { value: 1, message: "1 이상의 값을 입력해주세요" },
                 })}
                 className={styles.input}
                 disabled={isSubmitting}
@@ -276,7 +285,7 @@ export default function EquipmentFormModal({
                 type="number"
                 {...register("maxHours", {
                   valueAsNumber: true,
-                  min: { value: 1, message: "1 이상의 값을 입력해주세요" }
+                  min: { value: 1, message: "1 이상의 값을 입력해주세요" },
                 })}
                 className={styles.input}
                 disabled={isSubmitting}
@@ -337,8 +346,8 @@ export default function EquipmentFormModal({
               {isSubmitting
                 ? "저장 중..."
                 : initialData
-                  ? "수정하기"
-                  : "추가하기"}
+                ? "수정하기"
+                : "추가하기"}
             </button>
           </div>
         </form>
@@ -346,4 +355,4 @@ export default function EquipmentFormModal({
     </div>,
     document.body
   )
-} 
+}

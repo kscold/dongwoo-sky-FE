@@ -3,7 +3,8 @@
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import * as styles from "@/styles/components/card.css"
+
+import * as styles from "../../../styles/components/card.css"
 
 interface CardProps {
   id: string
@@ -44,14 +45,14 @@ export default function Card({
           <div className={styles.imagePlaceholder}>{imagePlaceholder}</div>
         )}
       </div>
-      
+
       <div className={styles.content}>
         <h3 className={styles.title}>{title}</h3>
-        
+
         {meta && <div className={styles.meta}>{meta}</div>}
-        
+
         <p className={styles.description}>{description}</p>
-        
+
         {stats && <div className={styles.stats}>{stats}</div>}
       </div>
     </Link>

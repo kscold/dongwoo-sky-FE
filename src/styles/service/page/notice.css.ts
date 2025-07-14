@@ -1,5 +1,6 @@
 import { style, keyframes } from "@vanilla-extract/css"
-import { vars } from "@/styles/common/theme.css"
+
+import { vars } from "../../common/theme.css"
 
 export const container = style({
   padding: vars.space.xl,

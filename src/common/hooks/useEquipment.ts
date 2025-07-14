@@ -1,11 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+
 import {
   equipmentApi,
   EquipmentCreationData,
   EquipmentUpdateData,
-} from "@/api/equipment"
-import { Equipment } from "@/common/types/equipment"
-import { fileUploadApi } from "@/api/fileUpload"
+} from "../../api/equipment"
+import { Equipment } from "../../types/equipment"
+import { fileUploadApi } from "../../api/fileUpload"
 
 const equipmentQueryKeys = {
   all: ["equipments"] as const,
@@ -34,13 +35,8 @@ export const useCreateEquipment = () => {
 export const useUpdateEquipment = () => {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: ({
-      id,
-      data,
-    }: {
-      id: string
-      data: EquipmentUpdateData
-    }) => equipmentApi.update(id, data),
+    mutationFn: ({ id, data }: { id: string; data: EquipmentUpdateData }) =>
+      equipmentApi.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: equipmentQueryKeys.all })
     },
@@ -76,4 +72,4 @@ export const useUploadEquipmentImage = () => {
     mutationFn: (file: File) =>
       fileUploadApi.uploadFile("/admin/equipment/upload-image", file),
   })
-} 
+}

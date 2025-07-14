@@ -16,25 +16,6 @@ export interface WorkShowcase {
   updatedAt?: Date
 }
 
-// 고객 리뷰 타입
-export interface CustomerReview {
-  _id?: string
-  title: string
-  content: string
-  imageUrls: string[]
-  customerName: string
-  customerCompany?: string
-  projectLocation?: string
-  serviceType?: string
-  rating: number
-  isActive: boolean
-  viewCount: number
-  helpfulCount: number
-  publishedAt: Date
-  createdAt?: Date
-  updatedAt?: Date
-}
-
 // 페이지네이션 응답 타입
 export interface PaginatedResponse<T> {
   items: T[]
@@ -62,20 +43,6 @@ export interface CreateWorkShowcaseDto {
 }
 
 export type UpdateWorkShowcaseDto = Partial<CreateWorkShowcaseDto>
-
-export interface CreateCustomerReviewDto {
-  title: string
-  content: string
-  imageUrls?: string[]
-  customerName: string
-  customerCompany?: string
-  projectLocation?: string
-  serviceType?: string
-  rating: number
-  isActive?: boolean
-}
-
-export type UpdateCustomerReviewDto = Partial<CreateCustomerReviewDto>
 
 // 이미지 업로드 응답 타입
 export interface ImageUploadResponse {

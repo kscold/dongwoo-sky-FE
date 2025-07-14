@@ -4,22 +4,22 @@
  * @returns { basePrice, hourlyRate, baseHours }
  */
 export const parsePriceInfo = (priceInfo: string | undefined | null) => {
-    if (!priceInfo) {
-        return { basePrice: 0, hourlyRate: 0, baseHours: 0 }
-    }
+  if (!priceInfo) {
+    return { basePrice: 0, hourlyRate: 0, baseHours: 0 }
+  }
 
-    const basePriceMatch = priceInfo.match(/기본 (\d+)시간 ([\d,]+)원/)
-    const hourlyRateMatch = priceInfo.match(/추가 시간당 ([\d,]+)원/)
+  const basePriceMatch = priceInfo.match(/기본 (\d+)시간 ([\d,]+)원/)
+  const hourlyRateMatch = priceInfo.match(/추가 시간당 ([\d,]+)원/)
 
-    const baseHours = basePriceMatch ? parseInt(basePriceMatch[1], 10) : 0
-    const basePrice = basePriceMatch
-        ? parseInt(basePriceMatch[2].replace(/,/g, ""), 10)
-        : 0
-    const hourlyRate = hourlyRateMatch
-        ? parseInt(hourlyRateMatch[1].replace(/,/g, ""), 10)
-        : 0
+  const baseHours = basePriceMatch ? parseInt(basePriceMatch[1], 10) : 0
+  const basePrice = basePriceMatch
+    ? parseInt(basePriceMatch[2].replace(/,/g, ""), 10)
+    : 0
+  const hourlyRate = hourlyRateMatch
+    ? parseInt(hourlyRateMatch[1].replace(/,/g, ""), 10)
+    : 0
 
-    return { basePrice, hourlyRate, baseHours }
+  return { basePrice, hourlyRate, baseHours }
 }
 
 /**
@@ -31,17 +31,17 @@ export const parsePriceInfo = (priceInfo: string | undefined | null) => {
  * @returns 총 예상 비용
  */
 export const calculatePrice = (
-    workingHours: number,
-    basePrice: number,
-    hourlyRate: number,
-    baseHours: number,
+  workingHours: number,
+  basePrice: number,
+  hourlyRate: number,
+  baseHours: number
 ): number => {
-    if (workingHours <= 0) {
-        return 0
-    }
-    if (workingHours <= baseHours) {
-        return basePrice
-    }
-    const extraHours = workingHours - baseHours
-    return basePrice + extraHours * hourlyRate
-} 
+  if (workingHours <= 0) {
+    return 0
+  }
+  if (workingHours <= baseHours) {
+    return basePrice
+  }
+  const extraHours = workingHours - baseHours
+  return basePrice + extraHours * hourlyRate
+}

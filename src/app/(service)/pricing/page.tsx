@@ -4,12 +4,12 @@ import React, { useState, useMemo, useEffect, useRef } from "react"
 import Image from "next/image"
 import Head from "next/head"
 
-import { usePricingEquipments } from "@/common/hooks/usePricing"
-import { useServicePricingSettings } from "@/common/hooks/usePricingSettings"
-import ErrorComponent from "@/common/components/error/ErrorComponent"
-import PageSkeleton from "@/common/components/ui/PageSkeleton"
-import * as styles from "@/styles/page/pricing-page.css"
-import { Equipment } from "@/common/types/equipment"
+import { usePricingEquipments } from "../../../common/hooks/usePricing"
+import { useServicePricingSettings } from "../../../common/hooks/usePricingSettings"
+import ErrorComponent from "../../../common/components/error/ErrorComponent"
+import PageSkeleton from "../../../common/components/ui/PageSkeleton"
+import { Equipment } from "../../../types/equipment"
+import * as styles from "../../../styles/page/pricing-page.css"
 
 export default function PricingPage() {
   const {
@@ -33,9 +33,9 @@ export default function PricingPage() {
   const activeEquipments = useMemo(
     () =>
       equipments
-        ?.filter(e => e.showInPricing && e.isPublished)
+        ?.filter((e) => e.showInPricing && e.isPublished)
         .sort((a, b) => a.sortOrder - b.sortOrder) || [],
-    [equipments],
+    [equipments]
   )
 
   useEffect(() => {
@@ -45,8 +45,8 @@ export default function PricingPage() {
   }, [activeEquipments, selectedId])
 
   const selectedEquipment = useMemo(
-    () => activeEquipments.find(e => (e._id || e.id) === selectedId),
-    [activeEquipments, selectedId],
+    () => activeEquipments.find((e) => (e._id || e.id) === selectedId),
+    [activeEquipments, selectedId]
   )
 
   const calculatePrice = (equipment: Equipment, hours: number) => {
@@ -68,7 +68,9 @@ export default function PricingPage() {
 
   // 관리자 설정에서 할인율 가져오기
   const discountPercentage = pricingSetting?.discountPercentage || 5
-  const discountedPrice = Math.floor(estimatedPrice * (1 - discountPercentage / 100))
+  const discountedPrice = Math.floor(
+    estimatedPrice * (1 - discountPercentage / 100)
+  )
   const savings = estimatedPrice - discountedPrice
 
   const isLoading = equipmentsLoading || settingsLoading
@@ -81,7 +83,10 @@ export default function PricingPage() {
   if (isError) {
     return (
       <div className={styles.container}>
-        <ErrorComponent error={equipmentsErrorData as Error} reset={refetchEquipments} />
+        <ErrorComponent
+          error={equipmentsErrorData as Error}
+          reset={refetchEquipments}
+        />
       </div>
     )
   }
@@ -89,7 +94,8 @@ export default function PricingPage() {
   // 기본값 설정 (pricingSetting이 없는 경우)
   const settings = pricingSetting || {
     mainTitle: "이용 요금 안내",
-    mainSubtitle: "투명하고 합리적인 비용으로 최상의 서비스를 제공합니다.\n원하시는 장비를 선택하고 작업 시간을 조절하여 예상 비용을 확인해보세요.",
+    mainSubtitle:
+      "투명하고 합리적인 비용으로 최상의 서비스를 제공합니다.\n원하시는 장비를 선택하고 작업 시간을 조절하여 예상 비용을 확인해보세요.",
     discountBannerTitle: "직접 문의 시 특별 할인!",
     discountBannerSubtitle: `온라인 견적 대비 최대 ${discountPercentage}% 추가 할인 혜택`,
     equipmentSectionTitle: "장비 선택",
@@ -108,7 +114,9 @@ export default function PricingPage() {
 
   const handleEquipmentSelect = (equipmentId: string) => {
     setSelectedId(equipmentId)
-    const equipment = activeEquipments.find(e => (e._id || e.id) === equipmentId)
+    const equipment = activeEquipments.find(
+      (e) => (e._id || e.id) === equipmentId
+    )
     if (equipment) {
       // 선택된 장비의 작업 시간 범위에 맞게 조정
       const minHours = equipment.minHours || 1
@@ -121,13 +129,15 @@ export default function PricingPage() {
     }
   }
 
-  const scrollToEquipment = (direction: 'left' | 'right') => {
+  const scrollToEquipment = (direction: "left" | "right") => {
     if (scrollRef.current) {
       const scrollAmount = 300
-      const newScrollLeft = scrollRef.current.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount)
+      const newScrollLeft =
+        scrollRef.current.scrollLeft +
+        (direction === "left" ? -scrollAmount : scrollAmount)
       scrollRef.current.scrollTo({
         left: newScrollLeft,
-        behavior: 'smooth'
+        behavior: "smooth",
       })
     }
   }
@@ -138,7 +148,7 @@ export default function PricingPage() {
         <title>{settings.mainTitle} - 어울림 스카이</title>
         <meta
           name="description"
-          content={settings.mainSubtitle.replace('\n', ' ')}
+          content={settings.mainSubtitle.replace("\n", " ")}
         />
       </Head>
 
@@ -148,10 +158,12 @@ export default function PricingPage() {
           <div className={styles.heroContent}>
             <h1 className={styles.mainTitle}>{settings.mainTitle}</h1>
             <p className={styles.mainSubtitle}>
-              {settings.mainSubtitle.split('\n').map((line, index) => (
+              {settings.mainSubtitle.split("\n").map((line, index) => (
                 <React.Fragment key={index}>
                   {line}
-                  {index < settings.mainSubtitle.split('\n').length - 1 && <br />}
+                  {index < settings.mainSubtitle.split("\n").length - 1 && (
+                    <br />
+                  )}
                 </React.Fragment>
               ))}
             </p>
@@ -173,15 +185,18 @@ export default function PricingPage() {
               {settings.equipmentSectionTitle}
             </h2>
             <p className={styles.sectionDescription}>
-              {activeEquipments.length}{settings.equipmentSectionDescription}
+              {activeEquipments.length}
+              {settings.equipmentSectionDescription}
             </p>
           </div>
 
           <div className={styles.equipmentSelector}>
             <button
               className={styles.scrollButton}
-              onClick={() => scrollToEquipment('left')}
-              aria-label={pricingSetting?.scrollLeftAriaLabel || "왼쪽으로 스크롤"}
+              onClick={() => scrollToEquipment("left")}
+              aria-label={
+                pricingSetting?.scrollLeftAriaLabel || "왼쪽으로 스크롤"
+              }
             >
               ←
             </button>
@@ -191,9 +206,14 @@ export default function PricingPage() {
                 {activeEquipments.map((equipment) => (
                   <div
                     key={equipment._id || equipment.id}
-                    className={`${styles.equipmentCard} ${selectedId === (equipment._id || equipment.id) ? styles.equipmentCardActive : ''
-                      }`}
-                    onClick={() => handleEquipmentSelect(equipment._id || equipment.id)}
+                    className={`${styles.equipmentCard} ${
+                      selectedId === (equipment._id || equipment.id)
+                        ? styles.equipmentCardActive
+                        : ""
+                    }`}
+                    onClick={() =>
+                      handleEquipmentSelect(equipment._id || equipment.id)
+                    }
                   >
                     <div className={styles.equipmentImageWrapper}>
                       {equipment.imageUrl ? (
@@ -214,7 +234,9 @@ export default function PricingPage() {
                     <div className={styles.equipmentInfo}>
                       <h3 className={styles.equipmentName}>{equipment.name}</h3>
                       <p className={styles.equipmentPrice}>
-                        {equipment.basePrice ? `${equipment.basePrice.toLocaleString()}원~` : '문의'}
+                        {equipment.basePrice
+                          ? `${equipment.basePrice.toLocaleString()}원~`
+                          : "문의"}
                       </p>
                     </div>
                   </div>
@@ -224,8 +246,10 @@ export default function PricingPage() {
 
             <button
               className={styles.scrollButton}
-              onClick={() => scrollToEquipment('right')}
-              aria-label={pricingSetting?.scrollRightAriaLabel || "오른쪽으로 스크롤"}
+              onClick={() => scrollToEquipment("right")}
+              aria-label={
+                pricingSetting?.scrollRightAriaLabel || "오른쪽으로 스크롤"
+              }
             >
               →
             </button>
@@ -236,8 +260,9 @@ export default function PricingPage() {
             {activeEquipments.map((_, index) => (
               <div
                 key={index}
-                className={`${styles.indicatorDot} ${index < 5 ? styles.indicatorDotActive : ''
-                  }`}
+                className={`${styles.indicatorDot} ${
+                  index < 5 ? styles.indicatorDotActive : ""
+                }`}
               />
             ))}
           </div>
@@ -251,14 +276,23 @@ export default function PricingPage() {
               {settings.timeSectionTitle}
             </h2>
             <p className={styles.sectionDescription}>
-              {selectedEquipment?.minHours || 1}{settings.timeSectionDescription.replace('시간부터 시간까지', `시간부터 ${selectedEquipment?.maxHours || 12}시간까지`)}
+              {selectedEquipment?.minHours || 1}
+              {settings.timeSectionDescription.replace(
+                "시간부터 시간까지",
+                `시간부터 ${selectedEquipment?.maxHours || 12}시간까지`
+              )}
             </p>
           </div>
 
           <div className={styles.timeSelector}>
             <div className={styles.timeDisplay}>
-              <span className={styles.timeLabel}>{pricingSetting?.timeSelectionLabel || "선택한 작업 시간"}</span>
-              <span className={styles.timeValue}>{workingHours}{pricingSetting?.hourUnit || "시간"}</span>
+              <span className={styles.timeLabel}>
+                {pricingSetting?.timeSelectionLabel || "선택한 작업 시간"}
+              </span>
+              <span className={styles.timeValue}>
+                {workingHours}
+                {pricingSetting?.hourUnit || "시간"}
+              </span>
             </div>
 
             <div className={styles.timeSlider}>
@@ -272,8 +306,14 @@ export default function PricingPage() {
                 className={styles.slider}
               />
               <div className={styles.sliderLabels}>
-                <span>{selectedEquipment?.minHours || 1}{pricingSetting?.hourUnit || "시간"}</span>
-                <span>{selectedEquipment?.maxHours || 12}{pricingSetting?.hourUnit || "시간"}</span>
+                <span>
+                  {selectedEquipment?.minHours || 1}
+                  {pricingSetting?.hourUnit || "시간"}
+                </span>
+                <span>
+                  {selectedEquipment?.maxHours || 12}
+                  {pricingSetting?.hourUnit || "시간"}
+                </span>
               </div>
             </div>
           </div>
@@ -286,18 +326,23 @@ export default function PricingPage() {
               <h3 className={styles.priceTitle}>{settings.priceCardTitle}</h3>
               <div className={styles.priceComparison}>
                 <div className={styles.originalPrice}>
-                  <span className={styles.originalPriceLabel}>{settings.onlinePriceLabel}</span>
+                  <span className={styles.originalPriceLabel}>
+                    {settings.onlinePriceLabel}
+                  </span>
                   <span className={styles.originalPriceValue}>
                     {estimatedPrice.toLocaleString()}원
                   </span>
                 </div>
                 <div className={styles.discountPrice}>
-                  <span className={styles.discountPriceLabel}>{settings.contactPriceLabel}</span>
+                  <span className={styles.discountPriceLabel}>
+                    {settings.contactPriceLabel}
+                  </span>
                   <span className={styles.discountPriceValue}>
                     {discountedPrice.toLocaleString()}원
                   </span>
                   <span className={styles.savings}>
-                    {savings.toLocaleString()}{settings.savingsLabel}
+                    {savings.toLocaleString()}
+                    {settings.savingsLabel}
                   </span>
                 </div>
               </div>
@@ -305,17 +350,30 @@ export default function PricingPage() {
 
             <div className={styles.priceBreakdown}>
               <div className={styles.breakdownItem}>
-                <span>{pricingSetting?.baseHoursLabel || "기본"} {selectedEquipment?.baseHours || 4}{pricingSetting?.hourUnit || "시간"}</span>
-                <span>{(selectedEquipment?.basePrice || 0).toLocaleString()}원</span>
+                <span>
+                  {pricingSetting?.baseHoursLabel || "기본"}{" "}
+                  {selectedEquipment?.baseHours || 4}
+                  {pricingSetting?.hourUnit || "시간"}
+                </span>
+                <span>
+                  {(selectedEquipment?.basePrice || 0).toLocaleString()}원
+                </span>
               </div>
               {workingHours > (selectedEquipment?.baseHours || 4) && (
                 <div className={styles.breakdownItem}>
                   <span>
-                    {pricingSetting?.additionalHoursLabel || "추가"} {workingHours - (selectedEquipment?.baseHours || 4)}{pricingSetting?.hourUnit || "시간"}
-                    ({pricingSetting?.hourlyRateLabel || "시간당"} {(selectedEquipment?.hourlyRate || 0).toLocaleString()}원)
+                    {pricingSetting?.additionalHoursLabel || "추가"}{" "}
+                    {workingHours - (selectedEquipment?.baseHours || 4)}
+                    {pricingSetting?.hourUnit || "시간"}(
+                    {pricingSetting?.hourlyRateLabel || "시간당"}{" "}
+                    {(selectedEquipment?.hourlyRate || 0).toLocaleString()}원)
                   </span>
                   <span>
-                    {((workingHours - (selectedEquipment?.baseHours || 4)) * (selectedEquipment?.hourlyRate || 0)).toLocaleString()}원
+                    {(
+                      (workingHours - (selectedEquipment?.baseHours || 4)) *
+                      (selectedEquipment?.hourlyRate || 0)
+                    ).toLocaleString()}
+                    원
                   </span>
                 </div>
               )}
@@ -324,11 +382,13 @@ export default function PricingPage() {
             <div className={styles.priceNote}>
               <div className={styles.noteIcon}>ℹ️</div>
               <div className={styles.noteText}>
-                {(pricingSetting?.infoNotes || [
-                  'VAT 별도, 현장 상황에 따라 변동될 수 있습니다',
-                  '직접 문의 시 현장 조건을 고려한 정확한 견적을 제공합니다',
-                  '장기 이용 시 추가 할인 혜택이 있습니다'
-                ]).map((note, index) => (
+                {(
+                  pricingSetting?.infoNotes || [
+                    "VAT 별도, 현장 상황에 따라 변동될 수 있습니다",
+                    "직접 문의 시 현장 조건을 고려한 정확한 견적을 제공합니다",
+                    "장기 이용 시 추가 할인 혜택이 있습니다",
+                  ]
+                ).map((note, index) => (
                   <p key={index}>• {note}</p>
                 ))}
               </div>
@@ -339,14 +399,12 @@ export default function PricingPage() {
                 className={styles.ctaButton}
                 onClick={() => {
                   // 전화번호로 직접 연결
-                  window.open(`tel:${settings.phoneNumber}`, '_self')
+                  window.open(`tel:${settings.phoneNumber}`, "_self")
                 }}
               >
                 {settings.ctaButtonText}
               </button>
-              <p className={styles.ctaSubtext}>
-                {settings.ctaSubtext}
-              </p>
+              <p className={styles.ctaSubtext}>{settings.ctaSubtext}</p>
             </div>
           </div>
 
@@ -370,16 +428,20 @@ export default function PricingPage() {
                   )}
                 </div>
                 <div className={styles.detailInfo}>
-                  <h4 className={styles.detailName}>{selectedEquipment.name}</h4>
+                  <h4 className={styles.detailName}>
+                    {selectedEquipment.name}
+                  </h4>
                   <p className={styles.detailDescription}>
                     {selectedEquipment.description}
                   </p>
                   {selectedEquipment.specifications && (
                     <div className={styles.detailSpecs}>
-                      <h5>{pricingSetting?.specificationsLabel || "주요 사양"}</h5>
+                      <h5>
+                        {pricingSetting?.specificationsLabel || "주요 사양"}
+                      </h5>
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: selectedEquipment.specifications
+                          __html: selectedEquipment.specifications,
                         }}
                       />
                     </div>

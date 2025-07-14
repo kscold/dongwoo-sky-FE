@@ -1,20 +1,24 @@
 "use client"
 
 import React, { useState } from "react"
+import Link from "next/link"
+import { PlusIcon, TrashIcon } from "lucide-react"
+
 import {
-  useNotices,
+  useNoticesAdmin,
   useDeleteNotice,
 } from "../../../common/hooks/useNotices"
 import * as commonStyles from "../../../styles/admin/admin-notice.css"
-import Link from "next/link"
-import { PlusIcon, TrashIcon } from "lucide-react"
 
 const NOTICES_PER_PAGE = 10
 
 const AdminNoticePage: React.FC = () => {
   const [page, setPage] = useState(1)
 
-  const { data: noticesData, isLoading } = useNotices(page, NOTICES_PER_PAGE)
+  const { data: noticesData, isLoading } = useNoticesAdmin(
+    page,
+    NOTICES_PER_PAGE
+  )
   const deleteNoticeMutation = useDeleteNotice()
 
   const handleDelete = (id: string) => {
@@ -45,72 +49,80 @@ const AdminNoticePage: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {isLoading ? (
-            Array.from({ length: 5 }).map((_, index) => (
-              <tr key={index}>
-                <td className={commonStyles.tableCell}>
-                  <div className={commonStyles.skeleton} />
-                </td>
-                <td className={commonStyles.tableCell}>
-                  <div className={commonStyles.skeleton} />
-                </td>
-                <td className={commonStyles.tableCell}>
-                  <div className={commonStyles.skeleton} />
-                </td>
-                <td className={commonStyles.tableCell}>
-                  <div className={commonStyles.skeleton} />
-                </td>
-              </tr>
-            ))
-          ) : (
-            noticesData?.data.map((notice, index) => (
-              <tr key={`${notice._id}-${index}`}>
-                <td className={commonStyles.tableCell}>
-                  <Link
-                    href={`/admin/notice/${notice._id}`}
-                    className={commonStyles.link}
-                  >
-                    {notice.title}
-                  </Link>
-                </td>
-                <td className={commonStyles.tableCell}>
-                  {new Date(notice.createdAt).toLocaleDateString()}
-                </td>
-                <td className={commonStyles.tableCell}>
-                  <div className={commonStyles.statusContainer}>
-                    <span className={notice.isPublished ? commonStyles.publishedBadge : commonStyles.unpublishedBadge}>
-                      {notice.isPublished ? "게시됨" : "비공개"}
-                    </span>
-                    <label className={commonStyles.toggle}>
-                      <input 
-                        type="checkbox" 
-                        checked={notice.isPublished} 
-                        readOnly 
-                        className={commonStyles.toggleInput}
-                      />
-                      <span className={`${commonStyles.slider} ${notice.isPublished ? commonStyles.sliderChecked : ""}`}></span>
-                    </label>
-                  </div>
-                </td>
-                <td className={commonStyles.tableCell}>
-                  <div className={commonStyles.actionButtons}>
+          {isLoading
+            ? Array.from({ length: 5 }).map((_, index) => (
+                <tr key={index}>
+                  <td className={commonStyles.tableCell}>
+                    <div className={commonStyles.skeleton} />
+                  </td>
+                  <td className={commonStyles.tableCell}>
+                    <div className={commonStyles.skeleton} />
+                  </td>
+                  <td className={commonStyles.tableCell}>
+                    <div className={commonStyles.skeleton} />
+                  </td>
+                  <td className={commonStyles.tableCell}>
+                    <div className={commonStyles.skeleton} />
+                  </td>
+                </tr>
+              ))
+            : noticesData?.data.map((notice, index) => (
+                <tr key={`${notice._id}-${index}`}>
+                  <td className={commonStyles.tableCell}>
                     <Link
-                      href={`/admin/notice/${notice._id}/edit`}
-                      className={commonStyles.editButton}
+                      href={`/admin/notice/${notice._id}`}
+                      className={commonStyles.link}
                     >
-                      수정
+                      {notice.title}
                     </Link>
-                    <button
-                      onClick={() => handleDelete(notice._id)}
-                      className={commonStyles.deleteButton}
-                    >
-                      <TrashIcon width={16} height={16} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))
-          )}
+                  </td>
+                  <td className={commonStyles.tableCell}>
+                    {new Date(notice.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className={commonStyles.tableCell}>
+                    <div className={commonStyles.statusContainer}>
+                      <span
+                        className={
+                          notice.isPublished
+                            ? commonStyles.publishedBadge
+                            : commonStyles.unpublishedBadge
+                        }
+                      >
+                        {notice.isPublished ? "게시됨" : "비공개"}
+                      </span>
+                      <label className={commonStyles.toggle}>
+                        <input
+                          type="checkbox"
+                          checked={notice.isPublished}
+                          readOnly
+                          className={commonStyles.toggleInput}
+                        />
+                        <span
+                          className={`${commonStyles.slider} ${
+                            notice.isPublished ? commonStyles.sliderChecked : ""
+                          }`}
+                        ></span>
+                      </label>
+                    </div>
+                  </td>
+                  <td className={commonStyles.tableCell}>
+                    <div className={commonStyles.actionButtons}>
+                      <Link
+                        href={`/admin/notice/${notice._id}/edit`}
+                        className={commonStyles.editButton}
+                      >
+                        수정
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(notice._id)}
+                        className={commonStyles.deleteButton}
+                      >
+                        <TrashIcon width={16} height={16} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
         </tbody>
       </table>
 

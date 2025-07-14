@@ -4,7 +4,7 @@ import {
   LoginRequest,
   RegisterRequest,
   User,
-} from "@/common/types/auth"
+} from "../types/auth"
 
 export const authApi = {
   login: async (loginData: LoginRequest): Promise<AuthResponse> => {

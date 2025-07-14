@@ -11,28 +11,37 @@ import PageSkeleton from "../common/components/ui/PageSkeleton"
 import ErrorComponent from "../common/components/error/ErrorComponent"
 
 export default function Home() {
-  const { data: homePageData, isLoading, isError, error, refetch } = useHomePageData()
+  const {
+    data: homePageData,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useHomePageData()
 
   if (isLoading) {
     return <PageSkeleton variant="default" />
   }
 
   if (isError || !homePageData) {
-    return <ErrorComponent error={error || new Error("Failed to load data")} reset={refetch} />
+    return (
+      <ErrorComponent
+        error={error || new Error("Failed to load data")}
+        reset={refetch}
+      />
+    )
   }
 
   const workShowcaseSection = homePageData.home.contentSettings.find(
-    (s: any) => s.key === "section-1",
+    (s: any) => s.key === "section-1"
   )
   const customerReviewSection = homePageData.home.contentSettings.find(
-    (s: any) => s.key === "section-2",
+    (s: any) => s.key === "section-2"
   )
 
   return (
     <main>
-      {homePageData?.home && (
-        <HeroSection home={homePageData.home} />
-      )}
+      {homePageData?.home && <HeroSection home={homePageData.home} />}
 
       {/* 작업자 자랑거리 섹션 */}
       {workShowcaseSection?.isActive && homePageData?.workShowcases && (

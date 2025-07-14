@@ -1,4 +1,5 @@
 import { style } from "@vanilla-extract/css"
+
 import { vars } from "../../common/theme.css"
 
 export const swiperContainer = style({

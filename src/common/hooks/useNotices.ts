@@ -3,9 +3,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { noticeApi } from "../../api/notice"
 import type {
   Notice,
-  CreateNoticeDto,
   UpdateNoticeDto,
-} from "../../common/types/notice"
+} from "../../types/notice"
 
 const noticeQueryKeys = {
   all: ["notices"] as const,
@@ -17,21 +16,38 @@ const noticeQueryKeys = {
   published: () => [...noticeQueryKeys.all, "published"] as const,
 }
 
-
-/** 공지사항 목록 조회 (페이지네이션) */
+/** 공개용 공지사항 목록 조회 (페이지네이션) */
 export const useNotices = (page: number, limit: number) => {
   return useQuery({
     queryKey: noticeQueryKeys.list(page, limit),
+    queryFn: () => noticeApi.getAll(page, limit),
+    placeholderData: (previousData) => previousData,
+  })
+}
+
+/** 관리자용 공지사항 목록 조회 (페이지네이션) */
+export const useNoticesAdmin = (page: number, limit: number) => {
+  return useQuery({
+    queryKey: [...noticeQueryKeys.list(page, limit), "admin"],
     queryFn: () => noticeApi.getAllAdmin(page, limit),
     placeholderData: (previousData) => previousData,
   })
 }
 
-// 단일 공지사항을 가져오는 훅
+// 공개용 단일 공지사항을 가져오는 훅
 export const useNotice = (id: string) => {
   return useQuery({
     queryKey: noticeQueryKeys.detail(id),
     queryFn: () => noticeApi.getById(id),
+    enabled: !!id, // id가 있을 때만 쿼리 실행
+  })
+}
+
+// 관리자용 단일 공지사항을 가져오는 훅
+export const useNoticeAdmin = (id: string) => {
+  return useQuery({
+    queryKey: [...noticeQueryKeys.detail(id), "admin"],
+    queryFn: () => noticeApi.getByIdAdmin(id),
     enabled: !!id, // id가 있을 때만 쿼리 실행
   })
 }

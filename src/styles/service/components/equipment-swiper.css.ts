@@ -1,5 +1,6 @@
 import { style, globalStyle } from "@vanilla-extract/css"
-import { vars } from "@/styles/common/theme.css"
+
+import { vars } from "../../common/theme.css"
 
 export const swiperContainer = style({
   position: "relative",
@@ -204,7 +205,7 @@ export const swiperPagination = style({
   paddingTop: vars.space.lg,
 })
 
-globalStyle('.swiper-pagination', {
+globalStyle(".swiper-pagination", {
   bottom: "20px !important",
 })
 
@@ -222,11 +223,11 @@ globalStyle(`${swiperPagination} .swiper-pagination-bullet-active`, {
   borderRadius: vars.radii.full,
 })
 
-globalStyle('.swiper-button-prev::after, .swiper-button-next::after', {
-  display: 'none',
+globalStyle(".swiper-button-prev::after, .swiper-button-next::after", {
+  display: "none",
 })
 
-globalStyle('.swiper-pagination-bullet', {
+globalStyle(".swiper-pagination-bullet", {
   backgroundColor: `${vars.colors.gray[300]} !important`,
   opacity: "1 !important",
   width: "8px !important",
@@ -234,7 +235,7 @@ globalStyle('.swiper-pagination-bullet', {
   transition: `all ${vars.transitions.fast} !important`,
 })
 
-globalStyle('.swiper-pagination-bullet-active', {
+globalStyle(".swiper-pagination-bullet-active", {
   backgroundColor: `${vars.colors.primary} !important`,
   width: "24px !important",
   borderRadius: `${vars.radii.full} !important`,

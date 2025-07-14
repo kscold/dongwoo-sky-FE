@@ -4,7 +4,7 @@ import React, { useRef } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination } from "swiper/modules"
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline"
-import { ProcessStep } from "@/common/types/service-guide"
+import { ProcessStep } from "@/types/service-guide"
 import * as styles from "@/styles/service/components/process-swiper.css"
 
 import "swiper/css"

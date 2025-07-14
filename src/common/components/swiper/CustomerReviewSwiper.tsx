@@ -5,14 +5,19 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, Autoplay } from "swiper/modules"
 import Image from "next/image"
 import Link from "next/link"
-import { ChevronLeftIcon, ChevronRightIcon, StarIcon, UserIcon } from "@heroicons/react/24/outline"
-import { CustomerReview } from "@/common/types/customer-review"
-import * as styles from "@/styles/service/components/customer-review-swiper.css"
-
 import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 import "swiper/css/autoplay"
+
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  StarIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline"
+import { CustomerReview } from "../../../types/customer-review"
+import * as styles from "../../../styles/service/components/customer-review-swiper.css"
 
 interface CustomerReviewSwiperProps {
   customerReviews: CustomerReview[]
@@ -106,7 +111,10 @@ const CustomerReviewSwiper: React.FC<CustomerReviewSwiperProps> = ({
         >
           {customerReviews.map((review) => (
             <SwiperSlide key={review._id} className={styles.swiperSlide}>
-              <Link href={`/customer-reviews/${review._id}`} className={styles.reviewCard}>
+              <Link
+                href={`/customer-reviews/${review._id}`}
+                className={styles.reviewCard}
+              >
                 <div className={styles.imageContainer}>
                   {review.imageUrls && review.imageUrls.length > 0 ? (
                     <Image

@@ -4,9 +4,10 @@ import React, { useState } from "react"
 import Link from "next/link"
 import { format } from "date-fns"
 import { ko } from "date-fns/locale"
-import { useNotices } from "@/common/hooks/useNotices"
-import PageSkeleton from "@/common/components/ui/PageSkeleton"
-import * as styles from "@/styles/service/page/service-page-common.css"
+
+import { useNotices } from "../../../common/hooks/useNotices"
+import PageSkeleton from "../../../common/components/ui/PageSkeleton"
+import * as styles from "../../../styles/service/page/service-page-common.css"
 
 export default function NoticePage() {
   const [page, setPage] = useState(1)
@@ -15,7 +16,8 @@ export default function NoticePage() {
   const { data: noticesData, isLoading, error } = useNotices(page, limit)
 
   // 공지사항 목록 필터링 (isModal이 false인 것만)
-  const notices = noticesData?.data?.filter((notice: any) => notice.isModal !== true) || []
+  const notices =
+    noticesData?.data?.filter((notice: any) => notice.isModal !== true) || []
 
   // 날짜 포맷 함수
   const formatDate = (dateString: string) => {
@@ -56,7 +58,10 @@ export default function NoticePage() {
       {notices && notices.length > 0 ? (
         <ul className={styles.noticeList}>
           {notices.map((notice: any, index: number) => (
-            <li key={notice._id || `notice-${index}`} className={styles.noticeItem}>
+            <li
+              key={notice._id || `notice-${index}`}
+              className={styles.noticeItem}
+            >
               <Link
                 href={`/notice/${notice._id}`}
                 className={styles.noticeLink}

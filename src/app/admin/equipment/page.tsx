@@ -20,7 +20,7 @@ import {
   useUpdateEquipmentOrder,
   useDeleteEquipment,
 } from "../../../common/hooks/useEquipment"
-import { Equipment } from "../../../common/types/equipment"
+import { Equipment } from "../../../types/equipment"
 import SortableEquipmentItem from "./components/SortableEquipmentItem"
 import EquipmentFormModal from "./components/EquipmentFormModal"
 import ProtectedRoute from "../../../common/auth/ProtectedRoute"
@@ -33,24 +33,26 @@ function EquipmentAdminContent() {
   const deleteMutation = useDeleteEquipment()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editingEquipment, setEditingEquipment] = useState<Equipment | null>(null)
+  const [editingEquipment, setEditingEquipment] = useState<Equipment | null>(
+    null
+  )
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 8,
       },
-    }),
+    })
   )
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
     if (active.id !== over?.id) {
-      const activeIndex = equipments.findIndex((item, index) =>
-        (item.id || `equipment-${index}`) === active.id
+      const activeIndex = equipments.findIndex(
+        (item, index) => (item.id || `equipment-${index}`) === active.id
       )
-      const overIndex = equipments.findIndex((item, index) =>
-        (item.id || `equipment-${index}`) === over!.id
+      const overIndex = equipments.findIndex(
+        (item, index) => (item.id || `equipment-${index}`) === over!.id
       )
 
       if (activeIndex === -1 || overIndex === -1) return
@@ -58,8 +60,8 @@ function EquipmentAdminContent() {
       const newOrder = arrayMove(equipments, activeIndex, overIndex)
       // 실제 id가 있는 장비들만 순서 업데이트
       const newOrderIds = newOrder
-        .filter(item => item.id)
-        .map(item => item.id)
+        .filter((item) => item.id)
+        .map((item) => item.id)
 
       if (newOrderIds.length > 0) {
         updateOrderMutation.mutate(newOrderIds)
@@ -68,8 +70,8 @@ function EquipmentAdminContent() {
   }
 
   const openModal = (equipment: Equipment | null = null) => {
-    console.log("Opening modal with equipment:", equipment);
-    console.log("Equipment ID:", equipment?.id);
+    console.log("Opening modal with equipment:", equipment)
+    console.log("Equipment ID:", equipment?.id)
     setEditingEquipment(equipment)
     setIsModalOpen(true)
   }
@@ -99,7 +101,9 @@ function EquipmentAdminContent() {
       <div className={styles.container}>
         <div className={styles.header}>
           <h1 className={styles.title}>장비 관리</h1>
-          <p className={styles.subtitle}>오류가 발생했습니다: {String(error)}</p>
+          <p className={styles.subtitle}>
+            오류가 발생했습니다: {String(error)}
+          </p>
         </div>
       </div>
     )
@@ -127,7 +131,8 @@ function EquipmentAdminContent() {
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>전체 장비 목록</h2>
           <p className={styles.sectionDescription}>
-            드래그하여 장비의 노출 순서를 변경할 수 있습니다. ({equipments.length}개 장비)
+            드래그하여 장비의 노출 순서를 변경할 수 있습니다. (
+            {equipments.length}개 장비)
           </p>
         </div>
 
@@ -158,7 +163,7 @@ function EquipmentAdminContent() {
             >
               <div className={styles.equipmentGrid}>
                 {equipments.map((equipment, index) => {
-                  const uniqueKey = equipment.id || `equipment-${index}`;
+                  const uniqueKey = equipment.id || `equipment-${index}`
 
                   return (
                     <SortableEquipmentItem
@@ -168,7 +173,7 @@ function EquipmentAdminContent() {
                       onEdit={() => openModal(equipment)}
                       onDelete={() => handleDelete(equipment.id || "")}
                     />
-                  );
+                  )
                 })}
               </div>
             </SortableContext>

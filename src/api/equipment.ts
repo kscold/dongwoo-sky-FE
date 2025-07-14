@@ -1,5 +1,5 @@
 import { apiClient } from "./client"
-import { Equipment, CreateEquipmentDto } from "@/common/types/equipment"
+import { Equipment, CreateEquipmentDto } from "../types/equipment"
 
 // API 요청 및 응답 타입 정의
 export type EquipmentCreationData = CreateEquipmentDto
@@ -25,10 +25,7 @@ export const equipmentApi = {
   },
 
   /** 장비 수정 */
-  update: async (
-    id: string,
-    data: EquipmentUpdateData
-  ): Promise<Equipment> => {
+  update: async (id: string, data: EquipmentUpdateData): Promise<Equipment> => {
     const response = await apiClient.patch(`/admin/equipment/${id}`, data)
     return response.data
   },

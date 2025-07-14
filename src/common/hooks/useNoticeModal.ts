@@ -1,7 +1,8 @@
 import { create } from "zustand"
 import { useQuery } from "@tanstack/react-query"
-import { noticeApi } from "@/api/notice"
-import type { Notice } from "@/common/types/notice"
+
+import { noticeApi } from "../../api/notice"
+import type { Notice } from "../../types/notice"
 
 interface NoticeModalState {
   isModalOpen: boolean

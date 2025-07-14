@@ -119,11 +119,11 @@ export const vars = createGlobalTheme(":root", {
     },
   },
   breakpoints: {
-    xs: "320px",   // Small phones
-    sm: "480px",   // Large phones  
-    md: "768px",   // Tablets
-    lg: "1024px",  // Small laptops
-    xl: "1280px",  // Large laptops
+    xs: "320px", // Small phones
+    sm: "480px", // Large phones
+    md: "768px", // Tablets
+    lg: "1024px", // Small laptops
+    xl: "1280px", // Large laptops
     xxl: "1536px", // Desktop
   },
   zIndices: {

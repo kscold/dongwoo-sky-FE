@@ -3,7 +3,7 @@
 import React from "react"
 import Link from "next/link"
 import * as styles from "@/styles/service/components/home/notice-section.css"
-import { Notice } from "@/common/types/notice"
+import { Notice } from "@/types/notice"
 
 interface NoticeSectionProps {
   notices: Notice[]

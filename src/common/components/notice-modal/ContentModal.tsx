@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import { Notice } from "../../types/notice"
+import { Notice } from "../../../types/notice"
 import * as styles from "../../../styles/service/components/content-modal.css"
 
 export interface ContentModalProps {
@@ -35,7 +35,7 @@ export const ContentModal: React.FC<ContentModalProps> = ({
           <h2 className={styles.title}>{notice.title}</h2>
           <div className={styles.contentText}>
             {notice.content.split("\\n").map((line, index) => (
-              <p key={index} style={{ margin: '0 0 8px 0', padding: 0 }}>
+              <p key={index} style={{ margin: "0 0 8px 0", padding: 0 }}>
                 {line}
               </p>
             ))}

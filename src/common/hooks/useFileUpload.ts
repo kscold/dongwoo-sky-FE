@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
-import { fileUploadApi } from "@/api/fileUpload"
-import { Attachment } from "@/common/types/notice"
+
+import { fileUploadApi } from "../../api/fileUpload"
+import { Attachment } from "../../types/notice"
 
 // 범용 파일 업로드 훅
 export function useFileUpload(endpoint: string) {

@@ -2,9 +2,9 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useAdmin } from "@/common/context/AdminContext"
-import { useAdminStats } from "@/common/hooks/useAdminStats"
 
+import { useAdmin } from "../../../common/context/AdminContext"
+import { useAdminStats } from "../../../common/hooks/useAdminStats"
 import * as styles from "../../../styles/admin/admin-dashboard.css"
 
 export default function AdminDashboardPage() {
@@ -48,33 +48,32 @@ export default function AdminDashboardPage() {
             <div className={styles.dashboardStatCard}>
               <div className={styles.statIcon}>✅</div>
               <div className={styles.statNumber}>
-                {statsLoading ? "⏳" : (statsData?.notices.published || 0)}
+                {statsLoading ? "⏳" : statsData?.notices.published || 0}
               </div>
               <div className={styles.statLabel}>공개 공지사항</div>
             </div>
             <div className={styles.dashboardStatCard}>
               <div className={styles.statIcon}>🏗️</div>
               <div className={styles.statNumber}>
-                {statsLoading ? "⏳" : (statsData?.equipment.active || 0)}
+                {statsLoading ? "⏳" : statsData?.equipment.active || 0}
               </div>
               <div className={styles.statLabel}>등록된 장비</div>
             </div>
             <div className={styles.dashboardStatCard}>
               <div className={styles.statIcon}>🎯</div>
               <div className={styles.statNumber}>
-                {statsLoading ? "⏳" : (statsData?.workShowcases.active || 0)}
+                {statsLoading ? "⏳" : statsData?.workShowcases.active || 0}
               </div>
               <div className={styles.statLabel}>작업자 자랑거리</div>
             </div>
             <div className={styles.dashboardStatCard}>
               <div className={styles.statIcon}>⭐</div>
               <div className={styles.statNumber}>
-                {statsLoading ? "⏳" : (statsData?.customerReviews.active || 0)}
+                {statsLoading ? "⏳" : statsData?.customerReviews.active || 0}
               </div>
               <div className={styles.statLabel}>고객 리뷰</div>
             </div>
           </div>
-
 
           <div className={styles.quickActionsGrid}>
             <Link href="/admin/home" className={styles.actionCard}>

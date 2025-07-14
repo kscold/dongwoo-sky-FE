@@ -4,9 +4,13 @@ import React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { useWorkShowcase, useLikeWorkShowcase } from "@/common/hooks/useWorkShowcase"
-import PageSkeleton from "@/common/components/ui/PageSkeleton"
-import * as styles from "@/styles/service/page/work-showcase-page.css"
+
+import {
+  useWorkShowcase,
+  useLikeWorkShowcase,
+} from "../../../../common/hooks/useWorkShowcase"
+import PageSkeleton from "../../../../common/components/ui/PageSkeleton"
+import * as styles from "../../../../styles/service/page/work-showcase-page.css"
 
 const WorkShowcaseDetailPage = () => {
   const params = useParams()

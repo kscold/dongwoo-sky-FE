@@ -83,7 +83,6 @@ export const getAddressFromCoords = async (
   longitude: number
 ): Promise<LocationInfo | null> => {
   try {
-
     // Next.js API 라우트를 통해 카카오 API 호출
     const response = await fetch(
       `/api/kakao/geocode?x=${longitude}&y=${latitude}`

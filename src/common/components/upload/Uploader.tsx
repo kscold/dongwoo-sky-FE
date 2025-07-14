@@ -3,6 +3,7 @@
 import React, { useCallback } from "react"
 import Image from "next/image"
 import { useDropzone } from "react-dropzone"
+
 import * as styles from "../../../styles/components/uploader.css"
 
 interface UploaderProps {
@@ -26,9 +27,9 @@ export const Uploader: React.FC<UploaderProps> = ({
 }) => {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      const currentFiles = Array.isArray(value) ? value : [];
-      const newFiles = [...currentFiles, ...acceptedFiles];
-      onFilesChange(newFiles);
+      const currentFiles = Array.isArray(value) ? value : []
+      const newFiles = [...currentFiles, ...acceptedFiles]
+      onFilesChange(newFiles)
     },
     [onFilesChange, value]
   )
@@ -68,33 +69,33 @@ export const Uploader: React.FC<UploaderProps> = ({
     return item instanceof File
   }
 
-  const dropzoneClass = `${styles.dropzone} ${isDragActive ? styles.dragActive : ""
-    } ${disabled ? styles.disabled : ""}`
+  const dropzoneClass = `${styles.dropzone} ${
+    isDragActive ? styles.dragActive : ""
+  } ${disabled ? styles.disabled : ""}`
 
   return (
     <div className={styles.uploaderContainer}>
       <div {...getRootProps({ className: dropzoneClass })}>
         <input {...getInputProps()} />
         <div className={styles.dropzoneContent}>
-          <div className={styles.uploadIcon}>
-            {isDragActive ? "🎯" : "📸"}
-          </div>
+          <div className={styles.uploadIcon}>{isDragActive ? "🎯" : "📸"}</div>
 
           <div className={styles.uploadText}>
             {isDragActive ? (
-              <div className={styles.dragText}>
-                ✨ 여기에 놓아주세요!
-              </div>
+              <div className={styles.dragText}>✨ 여기에 놓아주세요!</div>
             ) : (
               <>
                 <div className={styles.primaryText}>
-                  {uploadType === "new" ? "새로운 이미지 업로드" : "이미지 업로드"}
+                  {uploadType === "new"
+                    ? "새로운 이미지 업로드"
+                    : "이미지 업로드"}
                 </div>
                 <div className={styles.secondaryText}>
                   이미지를 드래그하여 놓거나 아래 버튼을 클릭하세요
                   <br />
                   <span style={{ fontSize: "12px", color: "#9CA3AF" }}>
-                    {accept["image/*"]?.join(", ")} 파일 지원 • 최대 {maxFiles}개 파일
+                    {accept["image/*"]?.join(", ")} 파일 지원 • 최대 {maxFiles}
+                    개 파일
                   </span>
                 </div>
               </>
@@ -121,7 +122,10 @@ export const Uploader: React.FC<UploaderProps> = ({
           </h4>
           <div className={styles.previewContainer}>
             {value.map((item, index) => (
-              <div key={getImageUrl(item) || `preview-${index}`} className={styles.previewItem}>
+              <div
+                key={getImageUrl(item) || `preview-${index}`}
+                className={styles.previewItem}
+              >
                 <div className={styles.imageContainer}>
                   <Image
                     src={getImageUrl(item)}
@@ -139,9 +143,7 @@ export const Uploader: React.FC<UploaderProps> = ({
                       )
                     }}
                   />
-                  <div style={{ display: "none" }}>
-                    🖼️ 이미지 로드 실패
-                  </div>
+                  <div style={{ display: "none" }}>🖼️ 이미지 로드 실패</div>
                   <button
                     type="button"
                     className={styles.removeButton}
@@ -167,4 +169,4 @@ export const Uploader: React.FC<UploaderProps> = ({
       )}
     </div>
   )
-} 
+}

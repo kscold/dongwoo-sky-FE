@@ -1,17 +1,16 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { serviceApi } from "@/api/service"
+
+import { serviceApi } from "../../../api/service"
 import {
   Service,
   CreateServiceDto,
   UpdateServiceDto,
-} from "@/common/types/service"
-import { useAdmin } from "@/common/context/AdminContext"
-import * as styles from "@/styles/common/admin-common.css"
+} from "../../../types/service"
+import * as styles from "../../../styles/common/admin-common.css"
 
 export default function AdminServicePage() {
-  const { isAuthenticated } = useAdmin()
   const [services, setServices] = useState<Service[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)

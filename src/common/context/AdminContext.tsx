@@ -3,8 +3,9 @@
 import { create } from "zustand"
 import { usePathname } from "next/navigation"
 import { useEffect } from "react"
-import { User } from "@/common/types/auth"
-import { authApi } from "@/api/auth"
+
+import { User } from "../../types/auth"
+import { authApi } from "../../api/auth"
 
 interface AdminState {
   user: User | null

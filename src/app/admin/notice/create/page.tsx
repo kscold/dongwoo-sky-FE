@@ -5,13 +5,12 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useRouter } from "next/navigation"
-import { useCreateNotice } from "@/common/hooks/useNotices"
-import { Uploader } from "@/common/components/upload/Uploader"
-import { Attachment } from "@/common/types/notice"
-import * as commonStyles from "@/styles/common/admin-common.css"
-import Link from "next/link"
-import { useAdmin } from "@/common/context/AdminContext"
-import { useFileUpload } from "@/common/hooks/useFileUpload"
+
+import { useCreateNotice } from "../../../../common/hooks/useNotices"
+import { Uploader } from "../../../../common/components/upload/Uploader"
+import { useAdmin } from "../../../../common/context/AdminContext"
+import { useFileUpload } from "../../../../common/hooks/useFileUpload"
+import * as commonStyles from "../../../../styles/common/admin-common.css"
 
 const attachmentSchema = z.object({
   name: z.string(),
@@ -56,13 +55,13 @@ export default function CreateNoticePage() {
 
   const handleFilesSelect = async (files: any[]) => {
     // File 객체만 필터링
-    const newFiles = files.filter(file => file instanceof File);
+    const newFiles = files.filter((file) => file instanceof File)
     if (newFiles.length > 0) {
-      const newAttachments = await uploadFiles(newFiles);
-      const currentAttachments = watch("attachments");
+      const newAttachments = await uploadFiles(newFiles)
+      const currentAttachments = watch("attachments")
       setValue("attachments", [...currentAttachments, ...newAttachments], {
         shouldValidate: true,
-      });
+      })
     }
   }
 
@@ -94,18 +93,24 @@ export default function CreateNoticePage() {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={commonStyles.formGroup}>
-          <label htmlFor="title" className={commonStyles.label}>제목</label>
+          <label htmlFor="title" className={commonStyles.label}>
+            제목
+          </label>
           <input
             id="title"
             {...register("title")}
             className={commonStyles.input}
             placeholder="공지사항 제목"
           />
-          {errors.title && <p className={commonStyles.description}>{errors.title.message}</p>}
+          {errors.title && (
+            <p className={commonStyles.description}>{errors.title.message}</p>
+          )}
         </div>
 
         <div className={commonStyles.formGroup}>
-          <label htmlFor="content" className={commonStyles.label}>내용</label>
+          <label htmlFor="content" className={commonStyles.label}>
+            내용
+          </label>
           <textarea
             id="content"
             {...register("content")}
@@ -113,7 +118,9 @@ export default function CreateNoticePage() {
             rows={10}
             placeholder="공지사항 내용"
           />
-          {errors.content && <p className={commonStyles.description}>{errors.content.message}</p>}
+          {errors.content && (
+            <p className={commonStyles.description}>{errors.content.message}</p>
+          )}
         </div>
 
         <div className={commonStyles.formGroup}>

@@ -5,7 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 
 import * as styles from "../../../styles/service/components/home/hero-section.css"
-import { Home } from "../../types/home"
+import { Home } from "../../../types/home"
 
 interface HeroSectionProps {
   home: Home

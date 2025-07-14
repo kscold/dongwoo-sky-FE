@@ -1,13 +1,14 @@
 import { style, keyframes } from "@vanilla-extract/css"
+
 import { vars } from "./theme.css"
 
 const shimmer = keyframes({
   "0%": {
-    backgroundPosition: "-200px 0"
+    backgroundPosition: "-200px 0",
   },
   "100%": {
-    backgroundPosition: "calc(200px + 100%) 0"
-  }
+    backgroundPosition: "calc(200px + 100%) 0",
+  },
 })
 
 export const skeleton = style({

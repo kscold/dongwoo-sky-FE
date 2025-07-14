@@ -1,4 +1,5 @@
 import { style, keyframes } from "@vanilla-extract/css"
+
 import { vars } from "../../common/theme.css"
 
 // 애니메이션 정의

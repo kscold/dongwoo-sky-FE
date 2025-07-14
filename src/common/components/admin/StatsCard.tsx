@@ -1,4 +1,5 @@
 import React from "react"
+
 import * as styles from "../../../styles/admin/stats-card.css"
 
 interface StatsCardProps {
@@ -32,11 +33,17 @@ export const StatsCard: React.FC<StatsCardProps> = ({
           {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
         </div>
       </div>
-      
+
       <div className={styles.valueContainer}>
-        <span className={styles.value}>{typeof value === 'number' ? value.toLocaleString() : '0'}</span>
+        <span className={styles.value}>
+          {typeof value === "number" ? value.toLocaleString() : "0"}
+        </span>
         {trend && (
-          <div className={`${styles.trend} ${trend.isPositive ? styles.positive : styles.negative}`}>
+          <div
+            className={`${styles.trend} ${
+              trend.isPositive ? styles.positive : styles.negative
+            }`}
+          >
             <span className={styles.trendIcon}>
               {trend.isPositive ? "↗" : "↘"}
             </span>

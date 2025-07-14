@@ -1,11 +1,18 @@
 "use client"
 
 import React from "react"
+
 import LoadingSkeleton from "./LoadingSkeleton"
 import * as styles from "../../../styles/common/page-skeleton.css"
 
 interface PageSkeletonProps {
-  variant?: "service-guide" | "pricing" | "work-showcase" | "customer-review" | "notice" | "default"
+  variant?:
+    | "service-guide"
+    | "pricing"
+    | "work-showcase"
+    | "customer-review"
+    | "notice"
+    | "default"
 }
 
 const PageSkeleton: React.FC<PageSkeletonProps> = ({ variant = "default" }) => {
@@ -13,8 +20,16 @@ const PageSkeleton: React.FC<PageSkeletonProps> = ({ variant = "default" }) => {
     <div className={styles.pageSkeletonContainer}>
       {/* Hero Section Skeleton */}
       <div className={styles.heroSkeleton}>
-        <LoadingSkeleton height="3rem" width="60%" className={styles.titleSkeleton} />
-        <LoadingSkeleton height="1.5rem" width="80%" className={styles.subtitleSkeleton} />
+        <LoadingSkeleton
+          height="3rem"
+          width="60%"
+          className={styles.titleSkeleton}
+        />
+        <LoadingSkeleton
+          height="1.5rem"
+          width="80%"
+          className={styles.subtitleSkeleton}
+        />
       </div>
 
       {/* Content Section Skeleton */}
@@ -23,12 +38,20 @@ const PageSkeleton: React.FC<PageSkeletonProps> = ({ variant = "default" }) => {
           <>
             {/* Equipment Swiper Section */}
             <div className={styles.sectionSkeleton}>
-              <LoadingSkeleton height="2rem" width="200px" className={styles.sectionTitleSkeleton} />
+              <LoadingSkeleton
+                height="2rem"
+                width="200px"
+                className={styles.sectionTitleSkeleton}
+              />
               <div className={styles.equipmentSwiperSkeleton}>
                 {[1, 2, 3].map((i) => (
                   <div key={i} className={styles.equipmentCardSkeleton}>
                     <LoadingSkeleton height="200px" width="100%" />
-                    <LoadingSkeleton height="1.5rem" width="80%" className={styles.equipmentTitleSkeleton} />
+                    <LoadingSkeleton
+                      height="1.5rem"
+                      width="80%"
+                      className={styles.equipmentTitleSkeleton}
+                    />
                     <LoadingSkeleton height="1rem" width="60%" />
                   </div>
                 ))}
@@ -37,7 +60,11 @@ const PageSkeleton: React.FC<PageSkeletonProps> = ({ variant = "default" }) => {
 
             {/* Capabilities Section */}
             <div className={styles.sectionSkeleton}>
-              <LoadingSkeleton height="2rem" width="200px" className={styles.sectionTitleSkeleton} />
+              <LoadingSkeleton
+                height="2rem"
+                width="200px"
+                className={styles.sectionTitleSkeleton}
+              />
               <div className={styles.capabilitiesGridSkeleton}>
                 {[1, 2, 3, 4, 5, 6].map((i) => (
                   <LoadingSkeleton key={i} height="60px" width="100%" />
@@ -115,7 +142,12 @@ const PageSkeleton: React.FC<PageSkeletonProps> = ({ variant = "default" }) => {
             <div className={styles.defaultContentSkeleton}>
               <LoadingSkeleton height="2rem" width="300px" />
               {[1, 2, 3, 4].map((i) => (
-                <LoadingSkeleton key={i} height="1rem" width="100%" className={styles.textLineSkeleton} />
+                <LoadingSkeleton
+                  key={i}
+                  height="1rem"
+                  width="100%"
+                  className={styles.textLineSkeleton}
+                />
               ))}
             </div>
           </>

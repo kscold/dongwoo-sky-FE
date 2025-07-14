@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
-import { getAdminStats } from "@/api/admin-stats"
+
+import { getAdminStats } from "../../api/admin-stats"
 
 export const adminStatsKeys = {
   all: ["admin-stats"] as const,

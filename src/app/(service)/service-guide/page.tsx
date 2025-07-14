@@ -27,7 +27,7 @@ import {
 import EquipmentSwiper from "../../../common/components/equipment/EquipmentSwiper"
 import ProcessSwiper from "../../../common/components/swiper/ProcessSwiper"
 import PageSkeleton from "../../../common/components/ui/PageSkeleton"
-import { ProcessStep, ScopeOfWork } from "../../../common/types/service-guide"
+import { ProcessStep, ScopeOfWork } from "../../../types/service-guide"
 import * as styles from "../../../styles/service/page/service-guide.css"
 import { useServiceGuide } from "../../../common/hooks/useServiceGuide"
 
@@ -87,21 +87,21 @@ const ServiceGuidePage = () => {
           <section>
             <h2 className={styles.sectionTitle}>작업 가능 범위</h2>
             <ul className={styles.capabilitiesList}>
-              {serviceGuide.scopeOfWork.map((item: ScopeOfWork, index: number) => {
-                const Icon = iconMap[item.icon || ""] || UserCircleIcon
-                return (
-                  <li key={index} className={styles.capabilityItem}>
-                    <Icon className={styles.capabilityIcon} />
-                    <span>{item.text}</span>
-                  </li>
-                )
-              })}
+              {serviceGuide.scopeOfWork.map(
+                (item: ScopeOfWork, index: number) => {
+                  const Icon = iconMap[item.icon || ""] || UserCircleIcon
+                  return (
+                    <li key={index} className={styles.capabilityItem}>
+                      <Icon className={styles.capabilityIcon} />
+                      <span>{item.text}</span>
+                    </li>
+                  )
+                }
+              )}
             </ul>
           </section>
         )}
       </div>
-
-
 
       {/* Operator Profile Section */}
       {serviceGuide.profile && (
@@ -127,17 +127,17 @@ const ServiceGuidePage = () => {
               <h3 className={styles.profileName}>
                 {serviceGuide.profile.name}
               </h3>
-              <p className={styles.profileRole}>
-                {serviceGuide.profile.role}
-              </p>
+              <p className={styles.profileRole}>{serviceGuide.profile.role}</p>
               <div>
                 <h4 className={styles.profileSectionTitle}>주요 경력</h4>
                 <ul className={styles.profileList}>
-                  {serviceGuide.profile.career.map((career: string, i: number) => (
-                    <li key={i} className={styles.profileListItem}>
-                      {career}
-                    </li>
-                  ))}
+                  {serviceGuide.profile.career.map(
+                    (career: string, i: number) => (
+                      <li key={i} className={styles.profileListItem}>
+                        {career}
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
               <div>
@@ -151,43 +151,46 @@ const ServiceGuidePage = () => {
         </section>
       )}
 
-
       {/* Service Process Section */}
       {serviceGuide.processSteps && serviceGuide.processSteps.length > 0 && (
         <section className={styles.serviceProcessSection}>
           <div className={styles.sectionContainer}>
             <h2 className={styles.sectionTitle}>서비스 계약 프로세스</h2>
-            
+
             {/* Desktop Grid */}
             <div className={styles.processGrid}>
-              {serviceGuide.processSteps.map((step: ProcessStep, index: number) => {
-                const IconComponent = (step.icon && iconMap[step.icon]) || null
-                return (
-                  <div key={index} className={styles.processStep}>
-                    <div className={styles.processStepNumber}>
-                      {String(index + 1).padStart(2, "0")}
+              {serviceGuide.processSteps.map(
+                (step: ProcessStep, index: number) => {
+                  const IconComponent =
+                    (step.icon && iconMap[step.icon]) || null
+                  return (
+                    <div key={index} className={styles.processStep}>
+                      <div className={styles.processStepNumber}>
+                        {String(index + 1).padStart(2, "0")}
+                      </div>
+                      {IconComponent && (
+                        <IconComponent className={styles.processStepIcon} />
+                      )}
+                      <h3 className={styles.processStepTitle}>{step.title}</h3>
+                      <p className={styles.processStepDescription}>
+                        {step.description}
+                      </p>
                     </div>
-                    {IconComponent && (
-                      <IconComponent className={styles.processStepIcon} />
-                    )}
-                    <h3 className={styles.processStepTitle}>{step.title}</h3>
-                    <p className={styles.processStepDescription}>
-                      {step.description}
-                    </p>
-                  </div>
-                )
-              })}
+                  )
+                }
+              )}
             </div>
 
             {/* Mobile Swiper */}
             <div className={styles.processSlider}>
-              <ProcessSwiper processSteps={serviceGuide.processSteps} iconMap={iconMap} />
+              <ProcessSwiper
+                processSteps={serviceGuide.processSteps}
+                iconMap={iconMap}
+              />
             </div>
           </div>
         </section>
       )}
-
-
 
       {/* Pricing Button Section */}
       <div className={styles.pricingButtonContainer}>

@@ -46,12 +46,20 @@ export const getAdminStats = async (): Promise<AdminStats> => {
 
     const stats: AdminStats = {
       notices: {
-        total: Array.isArray(publishedNoticesResponse.data) ? publishedNoticesResponse.data.length : 0,
-        published: Array.isArray(publishedNoticesResponse.data) ? publishedNoticesResponse.data.length : 0,
+        total: Array.isArray(publishedNoticesResponse.data)
+          ? publishedNoticesResponse.data.length
+          : 0,
+        published: Array.isArray(publishedNoticesResponse.data)
+          ? publishedNoticesResponse.data.length
+          : 0,
       },
       equipment: {
-        total: Array.isArray(activeEquipmentResponse.data) ? activeEquipmentResponse.data.length : 0,
-        active: Array.isArray(activeEquipmentResponse.data) ? activeEquipmentResponse.data.length : 0,
+        total: Array.isArray(activeEquipmentResponse.data)
+          ? activeEquipmentResponse.data.length
+          : 0,
+        active: Array.isArray(activeEquipmentResponse.data)
+          ? activeEquipmentResponse.data.length
+          : 0,
       },
       workShowcases: {
         total: activeWorkShowcasesResponse.data?.total || 0,

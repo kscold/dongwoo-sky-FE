@@ -1,5 +1,6 @@
 import { style } from "@vanilla-extract/css"
-import { vars } from "@/styles/common/theme.css"
+
+import { vars } from "../../common/theme.css"
 
 export const footerContainer = style({
   padding: `${vars.space.lg} ${vars.space.lg}`,

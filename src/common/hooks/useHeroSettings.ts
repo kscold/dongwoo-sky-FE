@@ -1,10 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { HomeSettings } from "@/common/types/home"
+
+import { HomeSettings } from "../../types/home"
 // import {
 //   getHeroSettings,
 //   updateHeroSettings,
 //   HeroSettingsData,
-// } from "@/api/home"
+// } from "../../api/home"
 
 const heroSettingsQueryKeys = {
   all: ["heroSettings"] as const,
@@ -25,11 +26,7 @@ export const useHeroSettings = (enabled: boolean = true) => {
 // 히어로 설정 업데이트 훅 (관리자용)
 export const useUpdateHeroSettings = () => {
   const queryClient = useQueryClient()
-  return useMutation<
-    any,
-    Error,
-    { id: string; settings: any }
-  >({
+  return useMutation<any, Error, { id: string; settings: any }>({
     mutationFn: () => Promise.resolve({}),
     onSuccess: (data) => {
       queryClient.setQueryData(heroSettingsQueryKeys.all, data)

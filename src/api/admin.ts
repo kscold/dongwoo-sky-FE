@@ -1,8 +1,5 @@
 import { apiClient } from "./client"
-import {
-  ServiceGuide,
-  UpdateServiceGuideDto,
-} from "@/common/types/service-guide"
+import { ServiceGuide, UpdateServiceGuideDto } from "../types/service-guide"
 
 export interface AdminLoginDto {
   username: string
@@ -15,19 +12,6 @@ export interface AdminLoginResponse {
   token?: string
 }
 
-export interface AdminDashboardResponse {
-  success: boolean
-  message: string
-  admin: {
-    username: string
-    token: string
-  }
-  stats: {
-    totalNotices: number
-    publishedNotices: number
-    modalNotices: number
-  }
-}
 
 export const adminApi = {
   // 관리자 로그인
@@ -39,18 +23,6 @@ export const adminApi = {
     return response.data
   },
 
-  // 관리자 대시보드 정보 가져오기
-  async getDashboard(token: string): Promise<AdminDashboardResponse> {
-    const response = await apiClient.get<AdminDashboardResponse>(
-      "/admin/dashboard",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-    return response.data
-  },
 
   // 관리자 로그아웃
   async logout(token: string): Promise<{ success: boolean; message: string }> {
@@ -76,11 +48,11 @@ export const adminApi = {
   },
 
   updateServiceGuide: async (
-    data: UpdateServiceGuideDto,
+    data: UpdateServiceGuideDto
   ): Promise<ServiceGuide> => {
     const response = await apiClient.patch<ServiceGuide>(
       "/admin/service-guide",
-      data,
+      data
     )
     return response.data
   },

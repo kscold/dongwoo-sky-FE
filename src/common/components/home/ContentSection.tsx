@@ -1,8 +1,9 @@
 "use client"
 
 import React from "react"
-import { WorkShowcase } from "@/common/types/work-showcase"
-import { CustomerReview } from "@/common/types/customer-review"
+
+import { WorkShowcase } from "../../../types/work-showcase"
+import { CustomerReview } from "../../../types/customer-review"
 import WorkShowcaseSwiper from "../swiper/WorkShowcaseSwiper"
 import CustomerReviewSwiper from "../swiper/CustomerReviewSwiper"
 
