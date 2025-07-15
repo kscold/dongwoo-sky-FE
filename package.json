@@ -16,6 +16,9 @@
     "@hookform/resolvers": "^5.1.1",
     "@tanstack/react-query": "^5.80.7",
     "@tanstack/react-query-devtools": "^5.80.7",
+    "@types/node": "^24.0.14",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
     "@vanilla-extract/css": "^1.17.2",
     "@vanilla-extract/next-plugin": "^2.4.14",
     "axios": "^1.9.0",
@@ -31,16 +34,13 @@
     "react-hook-form": "^7.59.0",
     "react-icons": "^5.5.0",
     "swiper": "^11.2.8",
+    "typescript": "^5.8.3",
     "zod": "^3.25.67",
     "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@types/node": "^24.0.14",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
     "eslint": "^9",
-    "eslint-config-next": "15.3.2",
-    "typescript": "^5.8.3"
+    "eslint-config-next": "15.3.2"
   }
 }
