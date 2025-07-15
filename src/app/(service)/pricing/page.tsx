@@ -93,11 +93,11 @@ export default function PricingPage() {
 
   // 기본값 설정 (pricingSetting이 없는 경우)
   const settings = pricingSetting || {
-    mainTitle: "이용 요금 안내",
+    mainTitle: "투명한 가격으로 바로 견적을 받아보세요",
     mainSubtitle:
       "투명하고 합리적인 비용으로 최상의 서비스를 제공합니다.\n원하시는 장비를 선택하고 작업 시간을 조절하여 예상 비용을 확인해보세요.",
-    discountBannerTitle: "직접 문의 시 특별 할인!",
-    discountBannerSubtitle: `온라인 견적 대비 최대 ${discountPercentage}% 추가 할인 혜택`,
+    discountBannerTitle: "지금 온라인 견적시",
+    discountBannerSubtitle: `최대 ${discountPercentage}% 할인!`,
     equipmentSectionTitle: "장비 선택",
     equipmentSectionDescription: "개의 장비 중에서 선택하세요",
     timeSectionTitle: "작업 시간 선택",
@@ -130,13 +130,19 @@ export default function PricingPage() {
   }
 
   const scrollToEquipment = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const scrollAmount = 300
-      const newScrollLeft =
-        scrollRef.current.scrollLeft +
-        (direction === "left" ? -scrollAmount : scrollAmount)
-      scrollRef.current.scrollTo({
-        left: newScrollLeft,
+    const container = scrollRef.current
+    if (!container) return
+    
+    const scrollAmount = 300 // 고정 스크롤 양
+    
+    if (direction === "left") {
+      container.scrollBy({
+        left: -scrollAmount,
+        behavior: "smooth",
+      })
+    } else {
+      container.scrollBy({
+        left: scrollAmount,
         behavior: "smooth",
       })
     }
@@ -201,8 +207,8 @@ export default function PricingPage() {
               ←
             </button>
 
-            <div className={styles.equipmentScrollContainer} ref={scrollRef}>
-              <div className={styles.equipmentList}>
+            <div className={styles.equipmentScrollContainer}>
+              <div className={styles.equipmentList} ref={scrollRef}>
                 {activeEquipments.map((equipment) => (
                   <div
                     key={equipment._id || equipment.id}
@@ -255,17 +261,6 @@ export default function PricingPage() {
             </button>
           </div>
 
-          {/* 스크롤 인디케이터 */}
-          <div className={styles.scrollIndicator}>
-            {activeEquipments.map((_, index) => (
-              <div
-                key={index}
-                className={`${styles.indicatorDot} ${
-                  index < 5 ? styles.indicatorDotActive : ""
-                }`}
-              />
-            ))}
-          </div>
         </div>
 
         {/* 작업 시간 선택 섹션 */}
@@ -304,6 +299,9 @@ export default function PricingPage() {
                 value={workingHours}
                 onChange={(e) => setWorkingHours(parseInt(e.target.value))}
                 className={styles.slider}
+                style={{
+                  "--value": `${((workingHours - (selectedEquipment?.minHours || 1)) / ((selectedEquipment?.maxHours || 12) - (selectedEquipment?.minHours || 1))) * 100}%`
+                } as React.CSSProperties}
               />
               <div className={styles.sliderLabels}>
                 <span>

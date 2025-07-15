@@ -49,20 +49,18 @@ export const container = style({
   margin: "0 auto",
   padding: `0 ${vars.space.lg}`,
   minHeight: "100vh",
-  background: "linear-gradient(180deg, #fafafa 0%, #ffffff 100%)",
+  background: "#ffffff",
 })
 
 export const heroSection = style({
   textAlign: "center",
   padding: `${vars.space.xl} 0`,
   marginBottom: vars.space.lg,
-  background:
-    "linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%)",
-  backdropFilter: "blur(20px)",
+  background: "#ffffff",
   borderRadius: "24px",
   margin: `${vars.space.lg} ${vars.space.md}`,
-  border: "1px solid rgba(255,255,255,0.3)",
-  boxShadow: "0 8px 32px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.1)",
+  border: "1px solid #f1f5f9",
+  boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
   "@media": {
     "screen and (max-width: 768px)": {
       padding: `${vars.space.lg} 0`,
@@ -76,7 +74,9 @@ export const heroSection = style({
 export const heroContent = style({
   maxWidth: "800px",
   margin: "0 auto",
+  padding: `0 ${vars.space.md}`,
   animation: `${fadeInUp} 0.8s ease-out`,
+  boxSizing: "border-box",
 })
 
 export const mainTitle = style({
@@ -88,6 +88,7 @@ export const mainTitle = style({
   backgroundClip: "text",
   marginBottom: vars.space.lg,
   lineHeight: 1.2,
+  letterSpacing: "-0.02em",
   "@media": {
     "screen and (max-width: 768px)": {
       fontSize: "2rem",
@@ -119,18 +120,32 @@ export const discountBanner = style({
   borderRadius: vars.radii.xl,
   border: `2px solid ${vars.colors.primary}`,
   animation: `${pulse} 3s ease-in-out infinite`,
+  maxWidth: "100%",
+  margin: "0 auto",
+  boxSizing: "border-box",
   "@media": {
     "screen and (max-width: 768px)": {
       flexDirection: "column",
       gap: vars.space.sm,
-      padding: vars.space.lg,
+      padding: `${vars.space.md} ${vars.space.lg}`,
       textAlign: "center",
+      maxWidth: "100%",
+    },
+    "screen and (max-width: 480px)": {
+      padding: `${vars.space.sm} ${vars.space.md}`,
+      borderRadius: vars.radii.lg,
     },
   },
 })
 
 export const discountIcon = style({
   fontSize: "2rem",
+  flexShrink: 0,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: "1.5rem",
+    },
+  },
 })
 
 export const discountText = style({
@@ -138,6 +153,13 @@ export const discountText = style({
   flexDirection: "column",
   alignItems: "flex-start",
   gap: vars.space.xs,
+  minWidth: 0,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      alignItems: "center",
+      textAlign: "center",
+    },
+  },
 })
 
 export const discountText_strong = style({
@@ -221,26 +243,49 @@ export const equipmentSelector = style({
   alignItems: "center",
   gap: vars.space.md,
   marginBottom: vars.space.lg,
+  padding: `0 ${vars.space.md}`,
+  maxWidth: "100%",
+  overflow: "hidden",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      gap: vars.space.sm,
+      padding: `0 ${vars.space.sm}`,
+    },
+  },
 })
 
 export const scrollButton = style({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  width: "50px",
-  height: "50px",
+  width: "48px",
+  height: "48px",
   borderRadius: "50%",
-  border: "none",
+  border: "2px solid #e2e8f0",
   background: "white",
-  boxShadow: vars.shadows.md,
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05)",
   cursor: "pointer",
-  fontSize: "1.5rem",
+  fontSize: "1.25rem",
   color: vars.colors.primary,
-  transition: "all 0.2s ease",
-  zIndex: 2,
+  transition: "all 0.3s ease",
+  zIndex: 10,
+  flexShrink: 0,
   ":hover": {
-    transform: "scale(1.1)",
-    boxShadow: vars.shadows.lg,
+    transform: "translateY(-2px)",
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.08)",
+    borderColor: vars.colors.primary,
+    backgroundColor: "#fafafa",
+  },
+  ":active": {
+    transform: "translateY(0)",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+  },
+  "@media": {
+    "screen and (max-width: 768px)": {
+      width: "40px",
+      height: "40px",
+      fontSize: "1rem",
+    },
   },
 })
 
@@ -248,70 +293,69 @@ export const equipmentScrollContainer = style({
   flex: 1,
   overflow: "hidden",
   borderRadius: vars.radii.lg,
+  position: "relative",
+  maxWidth: "100%",
 })
 
 export const equipmentList = style({
   display: "flex",
   gap: vars.space.lg,
   overflowX: "auto",
-  padding: vars.space.md,
+  padding: `${vars.space.md} 0`,
   scrollBehavior: "smooth",
+  width: "100%",
   "::-webkit-scrollbar": {
     display: "none",
   },
   scrollbarWidth: "none",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      gap: vars.space.md,
+      padding: `${vars.space.sm} 0`,
+    },
+  },
 })
 
 export const equipmentCard = style({
   flexShrink: 0,
-  width: "220px",
-  background: "rgba(255, 255, 255, 0.85)",
-  backdropFilter: "blur(20px)",
+  width: "240px",
+  background: "white",
   borderRadius: "20px",
   padding: vars.space.lg,
   cursor: "pointer",
-  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-  border: "1px solid rgba(255, 255, 255, 0.2)",
-  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.1)",
+  transition: "border-color 0.2s ease",
+  border: "2px solid #f1f5f9",
   position: "relative",
-  overflow: "hidden",
-  ":hover": {
-    transform: "translateY(-8px) scale(1.02)",
-    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.1)",
-    borderColor: "rgba(59, 130, 246, 0.3)",
-  },
   "@media": {
     "screen and (max-width: 768px)": {
-      width: "180px",
+      width: "200px",
       padding: vars.space.md,
       borderRadius: "16px",
+    },
+    "screen and (max-width: 480px)": {
+      width: "180px",
     },
   },
 })
 
 export const equipmentCardActive = style({
-  borderColor: "rgba(59, 130, 246, 0.6)",
-  background:
-    "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(59, 130, 246, 0.05) 100%)",
-  transform: "translateY(-8px) scale(1.02)",
-  boxShadow:
-    "0 20px 40px rgba(59, 130, 246, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1)",
-  ":before": {
-    opacity: 1,
-  },
+  borderColor: vars.colors.primary,
+  background: `linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(59, 130, 246, 0.05) 100%)`,
 })
 
 export const equipmentImageWrapper = style({
   width: "100%",
-  height: "120px",
-  borderRadius: vars.radii.md,
+  height: "140px",
+  borderRadius: "16px",
   overflow: "hidden",
   marginBottom: vars.space.md,
-  backgroundColor: vars.colors.gray[100],
+  backgroundColor: "#f8fafc",
+  border: "1px solid #f1f5f9",
   "@media": {
     "screen and (max-width: 768px)": {
-      height: "100px",
+      height: "120px",
       marginBottom: vars.space.sm,
+      borderRadius: "12px",
     },
   },
 })
@@ -320,6 +364,7 @@ export const equipmentImage = style({
   width: "100%",
   height: "100%",
   objectFit: "cover",
+  transition: "transform 0.3s ease",
 })
 
 export const equipmentImagePlaceholder = style({
@@ -337,51 +382,69 @@ export const equipmentInfo = style({
 })
 
 export const equipmentName = style({
-  fontSize: "1rem",
+  fontSize: "1.125rem",
   fontWeight: "600",
   color: vars.colors.text,
   marginBottom: vars.space.xs,
   lineHeight: 1.4,
+  letterSpacing: "-0.01em",
 })
 
 export const equipmentPrice = style({
-  fontSize: "0.875rem",
-  fontWeight: "500",
+  fontSize: "1rem",
+  fontWeight: "600",
   color: vars.colors.primary,
+  letterSpacing: "-0.01em",
 })
 
 // 스크롤 인디케이터
 export const scrollIndicator = style({
   display: "flex",
   justifyContent: "center",
-  gap: vars.space.xs,
+  gap: vars.space.sm,
+  marginTop: vars.space.md,
+  padding: `${vars.space.sm} ${vars.space.md}`,
+  background: "#f8fafc",
+  borderRadius: "20px",
+  border: "1px solid #f1f5f9",
+  width: "fit-content",
+  margin: `${vars.space.md} auto 0`,
 })
 
 export const indicatorDot = style({
-  width: "8px",
-  height: "8px",
+  width: "10px",
+  height: "10px",
   borderRadius: "50%",
-  backgroundColor: vars.colors.gray[300],
-  transition: "all 0.2s ease",
+  backgroundColor: "#cbd5e1",
+  transition: "all 0.3s ease",
+  cursor: "pointer",
+  ":hover": {
+    backgroundColor: "#94a3b8",
+    transform: "scale(1.1)",
+  },
 })
 
 export const indicatorDotActive = style({
   backgroundColor: vars.colors.primary,
-  transform: "scale(1.2)",
+  transform: "scale(1.3)",
+  boxShadow: `0 0 0 2px rgba(59, 130, 246, 0.2)`,
 })
 
 // 시간 선택기
 export const timeSelector = style({
-  maxWidth: "600px",
+  maxWidth: "640px",
   margin: "0 auto",
   background: "white",
-  padding: vars.space.xl,
-  borderRadius: vars.radii.xl,
-  boxShadow: vars.shadows.md,
+  padding: `${vars.space.xl} ${vars.space.xxl}`,
+  borderRadius: "24px",
+  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04)",
+  border: "1px solid #f1f5f9",
+  position: "relative",
   "@media": {
     "screen and (max-width: 768px)": {
-      padding: vars.space.lg,
+      padding: `${vars.space.lg} ${vars.space.xl}`,
       margin: `0 ${vars.space.md}`,
+      borderRadius: "20px",
     },
   },
 })
@@ -400,31 +463,81 @@ export const timeLabel = style({
 })
 
 export const timeValue = style({
-  fontSize: "1.5rem",
-  fontWeight: "700",
-  color: vars.colors.primary,
+  fontSize: "2rem",
+  fontWeight: "800",
+  background: `linear-gradient(135deg, ${vars.colors.primary} 0%, ${vars.colors.primaryDark} 100%)`,
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  backgroundClip: "text",
+  letterSpacing: "-0.02em",
 })
 
 export const timeSlider = style({
   display: "flex",
   flexDirection: "column",
-  gap: vars.space.sm,
+  gap: vars.space.lg,
+  padding: `${vars.space.lg} 0`,
 })
 
 export const slider = style({
   width: "100%",
   height: "8px",
   borderRadius: "4px",
-  background: vars.colors.gray[200],
+  background: "#E5E7EB",
   outline: "none",
+  appearance: "none",
+  transition: "all 0.2s ease",
+  cursor: "pointer",
+  position: "relative",
+  backgroundImage: `linear-gradient(to right, ${vars.colors.primary} 0%, ${vars.colors.primary} var(--value, 0%), #E5E7EB var(--value, 0%), #E5E7EB 100%)`,
+  "::-webkit-slider-track": {
+    height: "8px",
+    borderRadius: "4px",
+    background: "transparent",
+    border: "none",
+  },
   "::-webkit-slider-thumb": {
     appearance: "none",
     width: "24px",
     height: "24px",
     borderRadius: "50%",
-    background: `linear-gradient(135deg, ${vars.colors.primary} 0%, ${vars.colors.primaryDark} 100%)`,
+    background: "white",
     cursor: "pointer",
-    boxShadow: vars.shadows.md,
+    border: `3px solid ${vars.colors.primary}`,
+    boxShadow: "0 3px 8px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08)",
+    transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+    marginTop: "0px",
+    transform: "translateY(0px)",
+  },
+  "::-webkit-slider-thumb:hover": {
+    transform: "translateY(0px) scale(1.1)",
+    boxShadow: `0 4px 12px rgba(59, 130, 246, 0.25), 0 2px 6px rgba(0, 0, 0, 0.12)`,
+  },
+  "::-webkit-slider-thumb:active": {
+    transform: "translateY(0px) scale(1.05)",
+    boxShadow: `0 3px 8px rgba(59, 130, 246, 0.3), 0 1px 3px rgba(0, 0, 0, 0.1)`,
+  },
+  "::-moz-range-track": {
+    height: "8px",
+    borderRadius: "4px",
+    background: "#E5E7EB",
+    border: "none",
+  },
+  "::-moz-range-progress": {
+    height: "8px",
+    borderRadius: "4px",
+    background: vars.colors.primary,
+    border: "none",
+  },
+  "::-moz-range-thumb": {
+    width: "24px",
+    height: "24px",
+    borderRadius: "50%",
+    background: "white",
+    cursor: "pointer",
+    border: `3px solid ${vars.colors.primary}`,
+    boxShadow: "0 3px 8px rgba(0, 0, 0, 0.12)",
+    marginTop: "0px",
   },
 })
 

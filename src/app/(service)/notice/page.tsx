@@ -7,17 +7,29 @@ import { ko } from "date-fns/locale"
 
 import { useNotices } from "../../../common/hooks/useNotices"
 import PageSkeleton from "../../../common/components/ui/PageSkeleton"
+import Pagination from "../../../common/components/ui/Pagination"
 import * as styles from "../../../styles/service/page/service-page-common.css"
 
 export default function NoticePage() {
   const [page, setPage] = useState(1)
-  const limit = 10
+  const [isMobile, setIsMobile] = useState(false)
+  const limit = isMobile ? 5 : 10
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const { data: noticesData, isLoading, error } = useNotices(page, limit)
 
   // 공지사항 목록 필터링 (isModal이 false인 것만)
   const notices =
     noticesData?.data?.filter((notice: any) => notice.isModal !== true) || []
+  const totalPages = noticesData?.total ? Math.ceil(noticesData.total / limit) : 1
 
   // 날짜 포맷 함수
   const formatDate = (dateString: string) => {
@@ -56,36 +68,45 @@ export default function NoticePage() {
       <h1 className={styles.title}>공지사항</h1>
 
       {notices && notices.length > 0 ? (
-        <ul className={styles.noticeList}>
-          {notices.map((notice: any, index: number) => (
-            <li
-              key={notice._id || `notice-${index}`}
-              className={styles.noticeItem}
-            >
-              <Link
-                href={`/notice/${notice._id}`}
-                className={styles.noticeLink}
+        <>
+          <ul className={styles.noticeList}>
+            {notices.map((notice: any, index: number) => (
+              <li
+                key={notice._id || `notice-${index}`}
+                className={styles.noticeItem}
               >
-                <h2 className={styles.noticeTitle}>{notice.title}</h2>
-                <div className={styles.noticeInfo}>
-                  <span className={styles.noticeDate}>
-                    {formatDate(notice.publishedAt || notice.createdAt)}
-                  </span>
-                </div>
-                <p className={styles.noticeContent}>
-                  {notice.content.length > 100
-                    ? `${notice.content.substring(0, 100)}...`
-                    : notice.content}
-                </p>
-                {notice.attachments && notice.attachments.length > 0 && (
-                  <div className={styles.attachmentInfo}>
-                    <span>첨부파일 {notice.attachments.length}개</span>
+                <Link
+                  href={`/notice/${notice._id}`}
+                  className={styles.noticeLink}
+                >
+                  <h2 className={styles.noticeTitle}>{notice.title}</h2>
+                  <div className={styles.noticeInfo}>
+                    <span className={styles.noticeDate}>
+                      {formatDate(notice.publishedAt || notice.createdAt)}
+                    </span>
                   </div>
-                )}
-              </Link>
-            </li>
-          ))}
-        </ul>
+                  <p className={styles.noticeContent}>
+                    {notice.content.length > 100
+                      ? `${notice.content.substring(0, 100)}...`
+                      : notice.content}
+                  </p>
+                  {notice.attachments && notice.attachments.length > 0 && (
+                    <div className={styles.attachmentInfo}>
+                      <span>첨부파일 {notice.attachments.length}개</span>
+                    </div>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          
+          {/* 페이지네이션 */}
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
+        </>
       ) : (
         <div className={styles.emptyState}>
           <p>등록된 공지사항이 없습니다.</p>

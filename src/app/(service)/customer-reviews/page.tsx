@@ -13,13 +13,23 @@ import * as styles from "../../../styles/service/page/customer-reviews-page.css.
 
 const CustomerReviewsPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
-  const limit = 10
+  const [isMobile, setIsMobile] = useState(false)
+  const limit = isMobile ? 5 : 10
 
   const {
     data: customerReviewsData,
     isLoading,
     error,
   } = useCustomerReviews(currentPage, limit)
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const stripHtml = (html: string) => {
     if (typeof window !== "undefined") {
