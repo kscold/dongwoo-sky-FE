@@ -6,12 +6,14 @@ import Head from "next/head"
 
 import { usePricingEquipments } from "../../../common/hooks/usePricing"
 import { useServicePricingSettings } from "../../../common/hooks/usePricingSettings"
+import { useHomePageData } from "../../../common/hooks/useHome"
 import ErrorComponent from "../../../common/components/error/ErrorComponent"
 import PageSkeleton from "../../../common/components/ui/PageSkeleton"
 import { Equipment } from "../../../types/equipment"
 import * as styles from "../../../styles/page/pricing-page.css"
 
 export default function PricingPage() {
+  // 기존 hooks 사용 (이미 캐싱 최적화되어 있음)
   const {
     data: equipments,
     isLoading: equipmentsLoading,
@@ -25,6 +27,9 @@ export default function PricingPage() {
     isLoading: settingsLoading,
     isError: settingsError,
   } = useServicePricingSettings()
+
+  // 연락처 정보만 필요하므로 조건부 쿼리 사용
+  const { data: homePageData } = useHomePageData()
 
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [workingHours, setWorkingHours] = useState<number>(4)
@@ -76,7 +81,8 @@ export default function PricingPage() {
   const isLoading = equipmentsLoading || settingsLoading
   const isError = equipmentsError || settingsError
 
-  if (isLoading) {
+  // 개선된 로딩 상태 - 데이터가 부분적으로 로드되더라도 UI 렌더링
+  if (isLoading && !equipments && !pricingSetting) {
     return <PageSkeleton variant="pricing" />
   }
 
@@ -109,7 +115,6 @@ export default function PricingPage() {
     ctaButtonText: "📞 직접 문의하고 할인받기",
     ctaSubtext: "전화 상담을 통해 더 정확한 견적과 할인 혜택을 받아보세요",
     detailCardTitle: "선택한 장비 정보",
-    phoneNumber: "010-1234-5678",
   }
 
   const handleEquipmentSelect = (equipmentId: string) => {
@@ -397,7 +402,8 @@ export default function PricingPage() {
                 className={styles.ctaButton}
                 onClick={() => {
                   // 전화번호로 직접 연결
-                  window.open(`tel:${settings.phoneNumber}`, "_self")
+                  const phoneNumber = homePageData?.contactInfo?.contactPhoneNumber || "010-1234-5678"
+                  window.open(`tel:${phoneNumber}`, "_self")
                 }}
               >
                 {settings.ctaButtonText}

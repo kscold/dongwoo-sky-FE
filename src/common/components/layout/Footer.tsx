@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className={styles.footerContainer}>
       <div className={styles.footerContent}>
         <p className={styles.copyrightText}>
-          &copy; {currentYear} SKY WORK. All rights reserved.
+          &copy; {currentYear} EOULLIM SKY. All rights reserved.
         </p>
         <div className={styles.footerLinks}></div>
       </div>

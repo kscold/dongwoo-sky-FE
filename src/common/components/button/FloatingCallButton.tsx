@@ -15,7 +15,9 @@ const FloatingCallButton = () => {
   }
 
   if (isLoading) return null
+
   if (error) return null
+
   if (!data?.contactInfo?.contactPhoneNumber) return null
 
   const phoneNumber = data.contactInfo.contactPhoneNumber

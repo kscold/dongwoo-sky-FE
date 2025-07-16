@@ -12,23 +12,23 @@ const pulse = keyframes({
 })
 
 export const noticeSection = style({
-  paddingTop: vars.space.xxxxl,
+  paddingTop: vars.space.xxl,
   paddingBottom: vars.space.xxxxl,
-  marginTop: vars.space.xxxxl,
+  marginTop: vars.space.lg,
   marginBottom: vars.space.xxxxl,
-  backgroundColor: vars.colors.backgroundLight,
+  backgroundColor: "transparent",
   "@media": {
     "(max-width: 768px)": {
-      paddingTop: vars.space.xxxxl,
-      paddingBottom: vars.space.xxxxl,
-      marginTop: vars.space.xxxxl,
-      marginBottom: vars.space.xxxxl,
+      paddingTop: vars.space.xl,
+      paddingBottom: vars.space.xxxl,
+      marginTop: vars.space.md,
+      marginBottom: vars.space.xxxl,
     },
     "(max-width: 480px)": {
-      paddingTop: vars.space.xxxl,
-      paddingBottom: vars.space.xxxl,
-      marginTop: vars.space.xxxl,
-      marginBottom: vars.space.xxxl,
+      paddingTop: vars.space.lg,
+      paddingBottom: vars.space.xxl,
+      marginTop: vars.space.sm,
+      marginBottom: vars.space.xxl,
     },
   },
 })

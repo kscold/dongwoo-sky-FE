@@ -4,8 +4,11 @@ import React from "react"
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid"
 
 import * as styles from "../../../styles/service/page/contact.css"
+import { useHomePageData } from "../../../common/hooks/useHome"
 
 export default function ContactPage() {
+  const { data: homePageData } = useHomePageData()
+  
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     alert(
@@ -14,7 +17,9 @@ export default function ContactPage() {
     // 여기에 실제 폼 제출 로직 추가 (예: API 호출)
   }
 
-  const KAKAO_CHANNEL_URL = "https://pf.kakao.com/_YOUR_CHANNEL_ID"
+  // 연락처 정보 가져오기
+  const phoneNumber = homePageData?.contactInfo?.contactPhoneNumber || "010-1234-5678"
+  const kakaoChannelUrl = homePageData?.contactInfo?.kakaoOpenChatUrl || "https://pf.kakao.com/_YOUR_CHANNEL_ID"
 
   return (
     <div className={styles.pageWrapper}>
@@ -24,11 +29,11 @@ export default function ContactPage() {
         <p className={styles.heroSubtitle}>
           신속하고 정확한 서비스, 지금 바로 문의하세요!
         </p>
-        <a href="tel:1666-2400" className={styles.phoneLinkButton}>
-          전화 문의: 010-1234-5678
+        <a href={`tel:${phoneNumber}`} className={styles.phoneLinkButton}>
+          전화 문의: {phoneNumber}
         </a>
         <a
-          href={KAKAO_CHANNEL_URL}
+          href={kakaoChannelUrl}
           target="_blank"
           rel="noopener noreferrer"
           className={styles.kakaoButton}
@@ -46,8 +51,8 @@ export default function ContactPage() {
             아래 양식을 작성해주시면 신속하게 확인 후 연락드리겠습니다.
             <br />
             급한 용무는 언제든지{" "}
-            <a href="tel:1666-2400" className={styles.formDescriptionLink}>
-              010-1234-5678
+            <a href={`tel:${phoneNumber}`} className={styles.formDescriptionLink}>
+              {phoneNumber}
             </a>{" "}
             으로 전화 주시면 친절히 상담해 드립니다.
           </p>

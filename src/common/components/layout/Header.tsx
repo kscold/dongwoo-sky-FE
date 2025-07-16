@@ -9,6 +9,7 @@ import { FaPhoneAlt } from "react-icons/fa"
 
 import * as styles from "../../../styles/service/layout/header.css"
 import * as mobileStyles from "../../../styles/service/layout/mobile-menu.css"
+import { useHomePageData } from "../../hooks/useHome"
 
 const navItems = [
   { href: "/service-guide", label: "서비스 안내" },
@@ -23,6 +24,10 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const pathname = usePathname()
+  const { data: homePageData } = useHomePageData()
+
+  // 연락처 정보 가져오기
+  const phoneNumber = homePageData?.contactInfo?.contactPhoneNumber || "010-1234-5678"
 
   // 링크가 현재 페이지와 일치하는지 확인하는 함수
   const isActive = (href: string): boolean => {
@@ -131,10 +136,10 @@ const Header = () => {
           <button
             className={styles.ctaButton}
             onClick={() => {
-              window.location.href = "tel:010-1234-5678"
+              window.location.href = `tel:${phoneNumber}`
             }}
           >
-            {isMobile ? "빠른 상담" : "빠른 상담: 010-1234-5678"}
+            {isMobile ? "빠른 상담" : `빠른 상담: ${phoneNumber}`}
           </button>
         </div>
 
@@ -222,7 +227,7 @@ const Header = () => {
             className={mobileStyles.sidebarCTAButton}
             onClick={() => {
               // 전화 기능이나 상담 페이지로 이동
-              window.location.href = "tel:010-1234-5678"
+              window.location.href = `tel:${phoneNumber}`
             }}
           >
             <FaPhoneAlt size={16} />

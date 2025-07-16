@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css"
+import { style, globalStyle } from "@vanilla-extract/css"
 
 import { vars } from "../../common/theme.css"
 
@@ -143,44 +143,78 @@ export const viewAllButton = style({
 export const swiperContainer = style({
   position: "relative",
   paddingBottom: vars.space.xl,
+  paddingTop: vars.space.md,
   width: "100%",
   maxWidth: "100%",
-  overflow: "hidden",
+  overflow: "visible",
   boxSizing: "border-box",
   "@media": {
     "screen and (max-width: 768px)": {
       paddingBottom: vars.space.lg,
+      paddingTop: vars.space.sm,
       margin: "0 -12px",
-      padding: "0 12px",
+      padding: "12px 12px",
       borderRadius: vars.radii.xl,
       background:
         "linear-gradient(135deg, rgba(168, 85, 247, 0.02) 0%, rgba(236, 72, 153, 0.02) 100%)",
       backdropFilter: "blur(5px)",
       border: "1px solid rgba(168, 85, 247, 0.05)",
+      overflow: "hidden",
     },
     "screen and (max-width: 480px)": {
       paddingBottom: vars.space.md,
       margin: "0 -8px",
-      padding: "0 8px",
+      padding: "8px 8px",
     },
   },
 })
 
 export const swiperWrapper = style({
   paddingBottom: vars.space.lg,
+  paddingTop: vars.space.md,
   width: "100%",
   maxWidth: "100%",
-  overflow: "hidden",
+  overflow: "visible",
   boxSizing: "border-box",
   "@media": {
     "screen and (max-width: 768px)": {
       paddingBottom: vars.space.md,
+      paddingTop: vars.space.sm,
       borderRadius: vars.radii.lg,
       padding: "12px 0",
+      overflow: "hidden",
     },
     "screen and (max-width: 480px)": {
       paddingBottom: vars.space.sm,
       padding: "8px 0",
+    },
+  },
+})
+
+// 데스크탑에서 Swiper 요소들의 overflow를 visible로 설정
+globalStyle(`${swiperWrapper} .swiper`, {
+  overflow: "visible",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      overflow: "hidden",
+    },
+  },
+})
+
+globalStyle(`${swiperWrapper} .swiper-wrapper`, {
+  overflow: "visible",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      overflow: "hidden",
+    },
+  },
+})
+
+globalStyle(`${swiperWrapper} .swiper-slide`, {
+  overflow: "visible",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      overflow: "hidden",
     },
   },
 })
@@ -206,8 +240,8 @@ export const reviewCard = style({
   textDecoration: "none",
   color: "inherit",
   ":hover": {
-    transform: "translateY(-8px)",
-    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.12)",
+    transform: "translateY(-4px)",
+    boxShadow: "0 12px 32px rgba(0, 0, 0, 0.12)",
     borderColor: "rgba(168, 85, 247, 0.3)",
   },
   "@media": {
