@@ -1,31 +1,31 @@
-"use client"
+"use client";
 
-import React, { useRef } from "react"
-import { Swiper, SwiperSlide } from "swiper/react"
-import { Navigation, Pagination, Autoplay } from "swiper/modules"
-import Image from "next/image"
-import Link from "next/link"
+import React, { useRef, useEffect } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import Image from "next/image";
+import Link from "next/link";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   HeartIcon,
   UserIcon,
-} from "@heroicons/react/24/outline"
+} from "@heroicons/react/24/outline";
 
-import { WorkShowcase } from "../../../types/work-showcase"
-import * as styles from "../../../styles/service/components/work-showcase-swiper.css.ts"
+import { WorkShowcase } from "../../../types/work-showcase";
+import * as styles from "../../../styles/service/components/work-showcase-swiper.css.ts";
 
-import "swiper/css"
-import "swiper/css/navigation"
-import "swiper/css/pagination"
-import "swiper/css/autoplay"
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
 
 interface WorkShowcaseSwiperProps {
-  workShowcases: WorkShowcase[]
-  title?: string
-  description?: string
-  showViewAll?: boolean
-  viewAllLink?: string
+  workShowcases: WorkShowcase[];
+  title?: string;
+  description?: string;
+  showViewAll?: boolean;
+  viewAllLink?: string;
 }
 
 const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
@@ -35,26 +35,46 @@ const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
   showViewAll = true,
   viewAllLink = "/work-showcases",
 }) => {
-  const navigationPrevRef = useRef<HTMLButtonElement>(null)
-  const navigationNextRef = useRef<HTMLButtonElement>(null)
+  const navigationPrevRef = useRef<HTMLButtonElement>(null);
+  const navigationNextRef = useRef<HTMLButtonElement>(null);
+  const swiperRef = useRef<any>(null);
 
   const stripHtml = (html: string) => {
     if (typeof window !== "undefined") {
-      const div = document.createElement("div")
-      div.innerHTML = html
-      return div.textContent || div.innerText || ""
+      const div = document.createElement("div");
+      div.innerHTML = html;
+      return div.textContent || div.innerText || "";
     }
-    return html.replace(/<[^>]*>/g, "")
-  }
+    return html.replace(/<[^>]*>/g, "");
+  };
 
   const formatDate = (dateString: string | Date) => {
-    const date = new Date(dateString)
+    const date = new Date(dateString);
     return date.toLocaleDateString("ko-KR", {
       year: "numeric",
       month: "long",
       day: "numeric",
-    })
+    });
+  };
+
+  // 데이터가 없으면 렌더링하지 않음
+  if (!workShowcases || workShowcases.length === 0) {
+    return null;
   }
+
+  // 버튼 클릭 핸들러
+  const handlePrevClick = () => {
+    if (swiperRef.current) {
+      swiperRef.current.slidePrev();
+    }
+  };
+
+  const handleNextClick = () => {
+    if (swiperRef.current) {
+      swiperRef.current.slideNext();
+    }
+  };
+
 
   return (
     <section className={styles.swiperSection}>
@@ -82,11 +102,15 @@ const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
           }}
           autoplay={{
             delay: 5000,
-            disableOnInteraction: false,
+            disableOnInteraction: true,
+            pauseOnMouseEnter: true,
+          }}
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper;
           }}
           onBeforeInit={(swiper: any) => {
-            swiper.params.navigation.prevEl = navigationPrevRef.current
-            swiper.params.navigation.nextEl = navigationNextRef.current
+            swiper.params.navigation.prevEl = navigationPrevRef.current;
+            swiper.params.navigation.nextEl = navigationNextRef.current;
           }}
           breakpoints={{
             640: { slidesPerView: 2, spaceBetween: 16 },
@@ -97,9 +121,22 @@ const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
           className={styles.swiperWrapper}
           watchOverflow={true}
           centerInsufficientSlides={true}
+          allowTouchMove={true}
+          touchRatio={1}
+          threshold={10}
+          grabCursor={true}
+          loop={false}
+          speed={300}
+          slidesPerGroup={1}
+          observer={true}
+          observeParents={true}
+          updateOnWindowResize={true}
         >
-          {workShowcases.map((showcase) => (
-            <SwiperSlide key={showcase._id} className={styles.swiperSlide}>
+          {workShowcases.map((showcase, index) => (
+            <SwiperSlide
+              key={showcase._id || index}
+              className={styles.swiperSlide}
+            >
               <Link
                 href={`/work-showcases/${showcase._id}`}
                 className={styles.showcaseCard}
@@ -112,17 +149,30 @@ const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
                       fill
                       style={{ objectFit: "cover" }}
                       className={styles.image}
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML =
+                            '<div class="' +
+                            styles.imagePlaceholder +
+                            '">🏗️</div>';
+                        }
+                      }}
+                      loading="lazy"
                     />
                   ) : (
                     <div className={styles.imagePlaceholder}>🏗️</div>
                   )}
                 </div>
                 <div className={styles.cardContent}>
-                  <h3 className={styles.cardTitle}>{showcase.title}</h3>
+                  <h3 className={styles.cardTitle}>
+                    {showcase.title || "No Title"}
+                  </h3>
                   <div className={styles.meta}>
                     <div className={styles.metaItem}>
                       <UserIcon className={styles.metaIcon} />
-                      <span>{showcase.authorName}</span>
+                      <span>{showcase.authorName || "Unknown"}</span>
                     </div>
                     {showcase.projectLocation && (
                       <div className={styles.metaItem}>
@@ -132,15 +182,19 @@ const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
                     )}
                   </div>
                   <p className={styles.description}>
-                    {stripHtml(showcase.content).slice(0, 100)}...
+                    {showcase.content
+                      ? stripHtml(showcase.content).slice(0, 100) + "..."
+                      : "No content available"}
                   </p>
                   <div className={styles.stats}>
                     <div className={styles.stat}>
                       <HeartIcon className={styles.statIcon} />
-                      <span>{showcase.likeCount}</span>
+                      <span>{showcase.likeCount || 0}</span>
                     </div>
                     <span className={styles.date}>
-                      {formatDate(showcase.createdAt)}
+                      {showcase.createdAt
+                        ? formatDate(showcase.createdAt)
+                        : "No date"}
                     </span>
                   </div>
                 </div>
@@ -154,18 +208,22 @@ const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
         <button
           ref={navigationPrevRef}
           className={`${styles.navButton} ${styles.prevButton}`}
+          onClick={handlePrevClick}
+          type="button"
         >
           <ChevronLeftIcon className={styles.navIcon} />
         </button>
         <button
           ref={navigationNextRef}
           className={`${styles.navButton} ${styles.nextButton}`}
+          onClick={handleNextClick}
+          type="button"
         >
           <ChevronRightIcon className={styles.navIcon} />
         </button>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default WorkShowcaseSwiper
+export default WorkShowcaseSwiper;

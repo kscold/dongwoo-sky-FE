@@ -8,12 +8,12 @@ export const useAdminHomeState = (homeSettings?: HomeSettings) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   const currentTitle = isEditing
-    ? editData.heroTitle || homeSettings?.heroTitle || {}
-    : homeSettings?.heroTitle || {}
+    ? editData.heroTitle || homeSettings?.heroTitle || { preTitle: "", mainTitle: "", postTitle: "" }
+    : homeSettings?.heroTitle || { preTitle: "", mainTitle: "", postTitle: "" }
   
   const currentButtons = isEditing
-    ? editData.heroButtons || homeSettings?.heroButtons || {}
-    : homeSettings?.heroButtons || {}
+    ? editData.heroButtons || homeSettings?.heroButtons || { primaryButtonText: "", primaryButtonLink: "", secondaryButtonText: "", secondaryButtonLink: "" }
+    : homeSettings?.heroButtons || { primaryButtonText: "", primaryButtonLink: "", secondaryButtonText: "", secondaryButtonLink: "" }
   
   const currentImages = isEditing
     ? editData.heroImages || homeSettings?.heroImages || []
@@ -40,15 +40,9 @@ export const useAdminHomeState = (homeSettings?: HomeSettings) => {
               secondaryButtonText: "",
               secondaryButtonLink: "",
             },
-        heroSection: {
-          companyName: homeSettings.heroSection?.companyName || "어울림 스카이",
-          businessType: homeSettings.heroSection?.businessType || "건설장비 대여",
-          businessDescription: homeSettings.heroSection?.businessDescription || "",
-          locationInfo: homeSettings.heroSection?.locationInfo || "",
-          operatingHours: homeSettings.heroSection?.operatingHours || "",
-          contactInfo: homeSettings.heroSection?.contactInfo || "",
-          additionalInfo: homeSettings.heroSection?.additionalInfo || "",
-        },
+        contentSettings: homeSettings.contentSettings ? [...homeSettings.contentSettings] : [],
+        isActive: homeSettings.isActive,
+        sortOrder: homeSettings.sortOrder,
       })
     }
     setIsEditing(true)
@@ -83,13 +77,10 @@ export const useAdminHomeState = (homeSettings?: HomeSettings) => {
     }))
   }, [])
 
-  const updateHeroSection = useCallback((updates: Partial<HomeSettings['heroSection']>) => {
+  const updateContentSettings = useCallback((updatedSettings: HomeSettings['contentSettings']) => {
     setEditData(prev => ({
       ...prev,
-      heroSection: {
-        ...prev.heroSection,
-        ...updates
-      }
+      contentSettings: updatedSettings
     }))
   }, [])
 
@@ -108,6 +99,6 @@ export const useAdminHomeState = (homeSettings?: HomeSettings) => {
     updateEditData,
     updateTitleField,
     updateButtonField,
-    updateHeroSection
+    updateContentSettings
   }
 }

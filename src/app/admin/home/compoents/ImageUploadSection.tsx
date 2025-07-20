@@ -3,7 +3,7 @@ import Image from "next/image"
 
 import { HomeSettings } from "../../../../types/home"
 
-import "../../../../styles/admin/admin-home-page.css"
+import * as styles from "../../../../styles/admin/admin-home-page.css"
 
 interface ImageUploadSectionProps {
   currentImages: HomeSettings["heroImages"]
@@ -44,50 +44,53 @@ export const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
   )
 
   return (
-    <div className="formSection">
-      <label className="label">Hero Images</label>
-      <div className="imageUploadContainer">
+    <div className={styles.formSection}>
+      <label className={styles.label}>Hero Images</label>
+      <div className={styles.imageUploadContainer}>
         <input
           type="file"
           ref={fileInputRef}
           onChange={handleFileSelect}
           accept="image/*"
           multiple
-          className="hiddenInput"
+          className={styles.hiddenInput}
         />
 
         {isEditing && (
           <button
             type="button"
             onClick={handleUploadClick}
-            className="uploadButton"
+            className={styles.uploadButton}
             disabled={isUploading}
           >
             {isUploading ? "업로드 중..." : "이미지 업로드"}
           </button>
         )}
 
-        <div className="imageGrid">
-          {currentImages?.filter(image => image.url).map((image, index) => (
-            <div key={index} className="imageItem">
-              <Image
-                src={image.url || "/placeholder-image.jpg"}
-                alt={`Hero image ${index + 1}`}
-                width={200}
-                height={150}
-                className="previewImage"
-              />
-              {isEditing && (
-                <button
-                  type="button"
-                  onClick={() => handleDelete(index)}
-                  className="deleteButton"
-                >
-                  삭제
-                </button>
-              )}
-            </div>
-          ))}
+        <div className={styles.imageGrid}>
+          {currentImages?.filter(image => image && (typeof image === 'string' || image.url)).map((image, index) => {
+            const imageUrl = typeof image === 'string' ? image : image.url
+            return (
+              <div key={index} className={styles.imageItem}>
+                <Image
+                  src={imageUrl || "/placeholder-image.jpg"}
+                  alt={`Hero image ${index + 1}`}
+                  width={200}
+                  height={150}
+                  className={styles.previewImage}
+                />
+                {isEditing && (
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(index)}
+                    className={styles.deleteButton}
+                  >
+                    삭제
+                  </button>
+                )}
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>

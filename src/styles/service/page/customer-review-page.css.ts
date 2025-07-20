@@ -5,16 +5,28 @@ import { vars } from "../../common/theme.css"
 export const container = style({
   maxWidth: "1200px",
   margin: "0 auto",
-  padding: vars.space.xl,
+  padding: "32px",
+  minHeight: "100vh",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      padding: "16px",
+    },
+    "screen and (max-width: 480px)": {
+      padding: "12px",
+    },
+  },
 })
 
 export const header = style({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: vars.space.xl,
-  paddingBottom: vars.space.lg,
-  borderBottom: `2px solid ${vars.colors.border}`,
+  marginBottom: "32px",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      marginBottom: "24px",
+    },
+    "screen and (max-width: 480px)": {
+      marginBottom: "16px",
+    },
+  },
 })
 
 export const loadingState = style({
@@ -29,19 +41,52 @@ export const errorState = style({
 })
 
 export const backButton = style({
-  color: vars.colors.primary,
+  display: "inline-flex",
+  alignItems: "center",
+  color: "#3b82f6",
   textDecoration: "none",
-  marginBottom: vars.space.lg,
+  fontSize: "14px",
+  marginBottom: "16px",
+  ":hover": {
+    textDecoration: "underline",
+  },
+  "@media": {
+    "screen and (max-width: 768px)": {
+      marginBottom: "12px",
+      fontSize: "13px",
+    },
+  },
 })
 
 export const title = style({
-  fontSize: vars.fontSizes.xxxl,
-  fontWeight: vars.fontWeights.bold,
-  marginBottom: vars.space.lg,
+  fontSize: "32px",
+  fontWeight: "700",
+  color: "#111827",
+  marginBottom: "16px",
+  lineHeight: 1.3,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: "28px",
+      marginBottom: "14px",
+    },
+    "screen and (max-width: 480px)": {
+      fontSize: "24px",
+      marginBottom: "12px",
+      lineHeight: 1.2,
+    },
+  },
 })
 
 export const ratingSection = style({
-  marginBottom: vars.space.lg,
+  marginBottom: "12px",
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+  "@media": {
+    "screen and (max-width: 480px)": {
+      marginBottom: "10px",
+    },
+  },
 })
 
 export const stars = style({
@@ -55,72 +100,103 @@ export const ratingText = style({
 })
 
 export const meta = style({
-  marginBottom: vars.space.lg,
+  display: "flex",
+  flexDirection: "column",
+  gap: "12px",
 })
 
 export const customerInfo = style({
-  marginBottom: vars.space.md,
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
 })
 
 export const customer = style({
-  fontWeight: vars.fontWeights.medium,
+  fontSize: "16px",
+  fontWeight: "600",
+  color: "#374151",
 })
 
 export const company = style({
-  color: vars.colors.textLight,
+  fontSize: "14px",
+  color: "#6b7280",
 })
 
 export const details = style({
-  marginBottom: vars.space.md,
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "16px",
 })
 
 export const detail = style({
-  display: "inline-block",
-  marginRight: vars.space.md,
-  color: vars.colors.textLight,
+  fontSize: "14px",
+  color: "#6b7280",
+  backgroundColor: "#f3f4f6",
+  padding: "4px 12px",
+  borderRadius: "6px",
 })
 
 export const stats = style({
   display: "flex",
-  gap: vars.space.md,
-  fontSize: vars.fontSizes.sm,
-  color: vars.colors.textLight,
+  alignItems: "center",
+  gap: "16px",
+  fontSize: "14px",
+  color: "#6b7280",
 })
 
 export const stat = style({
   display: "flex",
   alignItems: "center",
+  gap: "8px",
 })
 
 export const date = style({
-  fontSize: vars.fontSizes.sm,
-  color: vars.colors.textLight,
+  marginLeft: "auto",
 })
 
+// 이미지 갤러리 스타일 (work-showcase와 동일)
 export const imageGallery = style({
-  marginBottom: vars.space.xl,
+  marginBottom: "32px",
 })
 
 export const mainImage = style({
-  marginBottom: vars.space.md,
+  marginBottom: "16px",
+  borderRadius: "8px",
+  overflow: "hidden",
 })
 
 export const image = style({
   width: "100%",
   height: "auto",
-  borderRadius: vars.radii.md,
+  borderRadius: "8px",
 })
 
 export const thumbnails = style({
   display: "flex",
-  gap: vars.space.md,
+  gap: "12px",
   flexWrap: "wrap",
+  justifyContent: "flex-start",
+  width: "100%",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      gap: "8px",
+    },
+    "screen and (max-width: 480px)": {
+      gap: "6px",
+    },
+  },
 })
 
 export const thumbnail = style({
-  borderRadius: vars.radii.md,
+  borderRadius: "6px",
   cursor: "pointer",
+  transition: "transform 0.2s ease",
+  ":hover": {
+    transform: "scale(1.05)",
+  },
 })
+
+// 기존의 중복된 스타일들 제거됨
 
 export const content = style({
   marginBottom: vars.space.xl,

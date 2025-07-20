@@ -36,24 +36,16 @@ export function useSingleFileUpload() {
   })
 }
 
-// 공지사항 이미지 업로드 전용 훅
-export function useNoticeImageUpload() {
+// 공지사항 첨부파일 업로드 전용 훅
+export function useNoticeAttachmentsUpload() {
   return useMutation({
-    mutationFn: (file: File) =>
-      fileUploadApi.uploadFile("/files/notice/upload", file),
+    mutationFn: (files: File[]) =>
+      fileUploadApi.uploadFiles("/admin/notice/upload-attachments", files),
     onError: (error) => {
       // Error handling can be added here if needed
     },
   })
 }
 
-// 공지사항 다중 이미지 업로드 전용 훅
-export function useNoticeImagesUpload() {
-  return useMutation({
-    mutationFn: (files: File[]) =>
-      fileUploadApi.uploadFiles("/files/notice/uploads", files),
-    onError: (error) => {
-      // Error handling can be added here if needed
-    },
-  })
-}
+// 이전 버전과의 호환성을 위한 alias
+export const useNoticeImagesUpload = useNoticeAttachmentsUpload;

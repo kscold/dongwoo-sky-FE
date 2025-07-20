@@ -1,189 +1,104 @@
-"use client"
+"use client";
 
-import React, { useEffect, useState, useRef } from "react"
-import Link from "next/link"
-import { useForm, useFieldArray, Controller } from "react-hook-form"
+import React, { useEffect, useState, useRef } from "react";
+import Link from "next/link";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import {
-  CheckCircleIcon,
-  UserCircleIcon,
-  PhoneIcon,
-  DocumentTextIcon,
-  CalendarIcon,
-  CheckBadgeIcon,
-  BriefcaseIcon,
-  WrenchScrewdriverIcon,
-  BuildingOfficeIcon,
-  PaintBrushIcon,
-  SparklesIcon,
-  ArchiveBoxIcon,
-  SunIcon,
-  PlusCircleIcon,
-  ChatBubbleBottomCenterTextIcon,
-  TruckIcon,
-  CreditCardIcon,
-  ClipboardDocumentCheckIcon,
   ChevronDownIcon,
   TrashIcon,
   ArrowLeftIcon,
-} from "@heroicons/react/24/solid"
+} from "@heroicons/react/24/solid";
 
 import {
   useAdminServiceGuide,
   useUpdateAdminServiceGuide,
-} from "../../../common/hooks/useAdminServiceGuide"
+  useUploadProfileImage,
+  useDeleteProfileImage,
+} from "./hooks/useAdminServiceGuide";
 import {
   ServiceGuide,
   UpdateServiceGuideDto,
-} from "../../../types/service-guide"
-import * as commonStyles from "../../../styles/common/admin-common.css"
-import * as pageStyles from "../../../styles/admin/admin-service-guide.css"
-import { Uploader } from "../../../common/components/upload/Uploader"
-
-const iconMap: { [key: string]: React.ElementType } = {
-  CheckCircleIcon,
-  UserCircleIcon,
-  PhoneIcon,
-  DocumentTextIcon,
-  CalendarIcon,
-  CheckBadgeIcon,
-  BriefcaseIcon,
-  WrenchScrewdriverIcon,
-  BuildingOfficeIcon,
-  PaintBrushIcon,
-  SparklesIcon,
-  ArchiveBoxIcon,
-  SunIcon,
-  PlusCircleIcon,
-  ChatBubbleBottomCenterTextIcon,
-  TruckIcon,
-  CreditCardIcon,
-  ClipboardDocumentCheckIcon,
-}
-
-const iconOptions = [
-  { value: "CheckCircleIcon", label: "체크 원" },
-  { value: "UserCircleIcon", label: "사용자" },
-  { value: "PhoneIcon", label: "전화" },
-  { value: "DocumentTextIcon", label: "문서" },
-  { value: "CalendarIcon", label: "달력" },
-  { value: "CheckBadgeIcon", label: "체크 뱃지" },
-  { value: "BriefcaseIcon", label: "서류 가방" },
-  { value: "WrenchScrewdriverIcon", label: "도구" },
-  { value: "BuildingOfficeIcon", label: "빌딩" },
-  { value: "PaintBrushIcon", label: "페인트 브러시" },
-  { value: "SparklesIcon", label: "반짝임" },
-  { value: "ArchiveBoxIcon", label: "상자" },
-  { value: "SunIcon", label: "태양" },
-  { value: "PlusCircleIcon", label: "플러스 원" },
-  { value: "ChatBubbleBottomCenterTextIcon", label: "말풍선" },
-  { value: "TruckIcon", label: "트럭" },
-  { value: "CreditCardIcon", label: "신용카드" },
-  { value: "ClipboardDocumentCheckIcon", label: "클립보드" },
-].sort((a, b) => a.label.localeCompare(b.label))
-
-const IconSelect = ({
-  value,
-  onChange,
-}: {
-  value: string
-  onChange: (value: string) => void
-}) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-
-  const SelectedIcon = value ? iconMap[value] : null
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        setIsOpen(false)
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [ref])
-
-  return (
-    <div className={pageStyles.iconSelectContainer} ref={ref}>
-      <button
-        type="button"
-        className={pageStyles.iconSelectButton}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <div className={pageStyles.iconSelectItem}>
-          {SelectedIcon ? <SelectedIcon className={pageStyles.icon} /> : null}
-          <span>
-            {value
-              ? iconOptions.find((opt) => opt.value === value)?.label
-              : "아이콘 선택"}
-          </span>
-        </div>
-        <ChevronDownIcon
-          className={`${pageStyles.chevron} ${
-            isOpen ? pageStyles.chevronOpen : ""
-          }`}
-        />
-      </button>
-      {isOpen && (
-        <ul className={pageStyles.iconSelectList}>
-          {iconOptions.map((option) => {
-            const IconComponent = iconMap[option.value]
-            return (
-              <li
-                key={option.value}
-                className={pageStyles.iconSelectItem}
-                onClick={() => {
-                  onChange(option.value)
-                  setIsOpen(false)
-                }}
-              >
-                <IconComponent className={pageStyles.icon} />
-                <span>{option.label}</span>
-              </li>
-            )
-          })}
-        </ul>
-      )}
-    </div>
-  )
-}
+} from "../../../types/service-guide";
+import { Uploader } from "../../../common/components/upload/Uploader";
+import IconSelect from "./components/ionSelect";
+import * as commonStyles from "../../../styles/common/admin-common.css";
+import * as pageStyles from "../../../styles/admin/admin-service-guide.css";
 
 const ServiceGuideAdminPage = () => {
   const { data: serviceGuide, isLoading: isLoadingServiceGuide } =
-    useAdminServiceGuide()
-  const mutation = useUpdateAdminServiceGuide()
+    useAdminServiceGuide();
+  const mutation = useUpdateAdminServiceGuide();
+  const uploadMutation = useUploadProfileImage();
+  const deleteMutation = useDeleteProfileImage();
 
-  const { control, register, handleSubmit, reset } =
+  const { control, register, handleSubmit, reset, setValue, watch } =
     useForm<UpdateServiceGuideDto>({
       defaultValues: serviceGuide || {},
-    })
+    });
+
+  // 현재 폼 데이터 감시
+  const currentFormData = watch();
 
   useEffect(() => {
     if (serviceGuide) {
-      reset(serviceGuide)
+      reset(serviceGuide);
     }
-  }, [serviceGuide, reset])
+  }, [serviceGuide, reset]);
 
   const {
     fields: scopeOfWorkFields,
     append: appendScope,
     remove: removeScope,
-  } = useFieldArray({ control, name: "scopeOfWork" })
+  } = useFieldArray({ control, name: "scopeOfWork" });
 
   const {
     fields: processStepsFields,
     append: appendStep,
     remove: removeStep,
-  } = useFieldArray({ control, name: "processSteps" })
+  } = useFieldArray({ control, name: "processSteps" });
 
   const onSubmit = (data: UpdateServiceGuideDto) => {
-    mutation.mutate(data)
-  }
+    mutation.mutate(data);
+  };
+
+  const handleImageUpload = async (files: FileList) => {
+    try {
+      const file = files[0];
+      if (file) {
+        const result = await uploadMutation.mutateAsync(file);
+
+        // admin-home 방식: 폼 상태 직접 업데이트
+        setValue("profile.imageUrl", result.imageUrl);
+
+        alert("대표 사진이 성공적으로 업로드되었습니다.");
+      }
+    } catch (error) {
+      console.error("이미지 업로드 실패:", error);
+      alert("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  const handleImageDelete = async (index: number) => {
+    try {
+      const currentImageUrl = currentFormData.profile?.imageUrl;
+      if (currentImageUrl && !currentImageUrl.startsWith("blob:")) {
+        await deleteMutation.mutateAsync(currentImageUrl);
+
+        // admin-home 방식: 폼 상태 직접 업데이트
+        setValue("profile.imageUrl", "");
+
+        alert("대표 사진이 성공적으로 삭제되었습니다.");
+      }
+    } catch (error) {
+      console.error("이미지 삭제 실패:", error);
+      alert("이미지 삭제 중 오류가 발생했습니다.");
+    }
+  };
 
   if (isLoadingServiceGuide)
-    return <div className={commonStyles.container}>Loading...</div>
+    return <div className={commonStyles.container}>Loading...</div>;
   if (!serviceGuide)
-    return <div className={commonStyles.container}>Error loading data.</div>
+    return <div className={commonStyles.container}>Error loading data.</div>;
 
   return (
     <div className={pageStyles.pageContainer}>
@@ -265,7 +180,6 @@ const ServiceGuideAdminPage = () => {
           </div>
         </section>
 
-        {/* 대표 프로필 섹션 */}
         <section className={pageStyles.card}>
           <div className={pageStyles.cardHeader}>
             <h2 className={pageStyles.cardTitle}>대표 프로필</h2>
@@ -301,30 +215,26 @@ const ServiceGuideAdminPage = () => {
             </div>
             <div className={pageStyles.formGroup}>
               <label className={pageStyles.label}>대표 사진</label>
-              <Controller
-                name="profile.imageUrl"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <Uploader
-                    value={value ? [{ url: value, alt: "대표 사진" }] : []}
-                    onFilesChange={(files) => {
-                      if (files.length > 0) {
-                        const file = files[0]
-                        if (file instanceof File) {
-                          // 새로 업로드된 파일의 경우 URL.createObjectURL 사용
-                          onChange(URL.createObjectURL(file))
-                        } else {
-                          // 기존 파일의 경우 url 속성 사용
-                          onChange(file.url)
-                        }
-                      } else {
-                        onChange("")
-                      }
-                    }}
-                    maxFiles={1}
-                    uploadType="existing"
-                  />
-                )}
+              <Uploader
+                value={
+                  currentFormData.profile?.imageUrl &&
+                  !currentFormData.profile.imageUrl.startsWith("blob:")
+                    ? [
+                        {
+                          url: currentFormData.profile.imageUrl,
+                          alt: "대표 사진",
+                        },
+                      ]
+                    : []
+                }
+                onFilesChange={() => {}} // 이 함수는 사용하지 않음
+                maxFiles={1}
+                uploadType="existing"
+                label="대표 사진"
+                isEditing={true}
+                isUploading={uploadMutation.isPending}
+                onImageUpload={handleImageUpload}
+                onImageDelete={handleImageDelete}
               />
             </div>
 
@@ -424,7 +334,7 @@ const ServiceGuideAdminPage = () => {
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default ServiceGuideAdminPage
+export default ServiceGuideAdminPage;

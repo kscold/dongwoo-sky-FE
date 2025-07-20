@@ -1,47 +1,47 @@
-"use client"
+"use client";
 
-import React from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { useParams } from "next/navigation"
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 import {
   useCustomerReview,
   useMarkReviewHelpful,
-} from "../../../../common/hooks/useCustomerReview"
-import PageSkeleton from "../../../../common/components/ui/PageSkeleton"
-import * as styles from "../../../../styles/service/page/customer-review-page.css.ts"
+} from "../../../../common/hooks/useCustomerReview";
+import PageSkeleton from "../../../../common/components/ui/PageSkeleton";
+import * as styles from "../../../../styles/service/page/customer-review-page.css.ts";
 
 const CustomerReviewDetailPage = () => {
-  const params = useParams()
-  const id = params.id as string
+  const params = useParams();
+  const id = params.id as string;
 
-  const { data: review, isLoading, error } = useCustomerReview(id)
-  const helpfulMutation = useMarkReviewHelpful()
+  const { data: review, isLoading, error } = useCustomerReview(id);
+  const helpfulMutation = useMarkReviewHelpful();
 
   const renderStars = (rating: number) => {
-    return "★".repeat(rating) + "☆".repeat(5 - rating)
-  }
+    return "★".repeat(rating) + "☆".repeat(5 - rating);
+  };
 
   const formatDate = (dateString: string | Date) => {
-    const date = new Date(dateString)
+    const date = new Date(dateString);
     return date.toLocaleDateString("ko-KR", {
       year: "numeric",
       month: "long",
       day: "numeric",
-    })
-  }
+    });
+  };
 
   const handleHelpful = async () => {
     try {
-      await helpfulMutation.mutateAsync(id)
+      await helpfulMutation.mutateAsync(id);
     } catch (error) {
-      console.error("도움됨 표시 실패:", error)
+      console.error("도움됨 표시 실패:", error);
     }
-  }
+  };
 
   if (isLoading) {
-    return <PageSkeleton variant="customer-review" />
+    return <PageSkeleton variant="customer-review" />;
   }
 
   if (error || !review) {
@@ -54,7 +54,7 @@ const CustomerReviewDetailPage = () => {
           ← 목록으로 돌아가기
         </Link>
       </div>
-    )
+    );
   }
 
   return (
@@ -148,12 +148,9 @@ const CustomerReviewDetailPage = () => {
         >
           👍 도움됨 ({review.helpfulCount})
         </button>
-        <Link href="/customer-reviews" className={styles.backToListButton}>
-          다른 리뷰 보기
-        </Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CustomerReviewDetailPage
+export default CustomerReviewDetailPage;

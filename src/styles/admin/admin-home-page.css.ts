@@ -420,3 +420,218 @@ export const previewNote = style({
   borderRadius: vars.radii.md,
   border: `1px solid ${vars.colors.gray[200]}`,
 })
+
+// Action Button Container
+export const actionButtonContainer = style({
+  display: "flex",
+  gap: vars.space.sm,
+  alignItems: "center",
+})
+
+export const editButtonGroup = style({
+  display: "flex",
+  gap: vars.space.sm,
+  alignItems: "center",
+})
+
+// Toggle Switch Styles
+export const toggleContainer = style({
+  display: "flex",
+  alignItems: "center",
+  gap: vars.space.sm,
+})
+
+export const toggleSwitch = style({
+  position: "relative",
+  display: "inline-block",
+  width: "44px",
+  height: "24px",
+})
+
+export const toggleInput = style({
+  opacity: "0",
+  width: "0",
+  height: "0",
+})
+
+export const slider = style({
+  position: "absolute",
+  cursor: "pointer",
+  top: "0",
+  left: "0",
+  right: "0",
+  bottom: "0",
+  backgroundColor: vars.colors.gray[300],
+  transition: "0.2s",
+  borderRadius: "24px",
+  ":before": {
+    position: "absolute",
+    content: '""',
+    height: "18px",
+    width: "18px",
+    left: "3px",
+    bottom: "3px",
+    backgroundColor: "white",
+    transition: "0.2s",
+    borderRadius: "50%",
+  },
+})
+
+export const toggleActive = style({
+  backgroundColor: vars.colors.success,
+})
+
+export const toggleActiveSlider = style({
+  ":before": {
+    transform: "translateX(20px)",
+  },
+})
+
+export const toggleLabel = style({
+  fontSize: vars.fontSizes.sm,
+  color: vars.colors.text,
+  fontWeight: "500",
+})
+
+// Status Badge Styles
+export const statusBadge = style({
+  display: "inline-flex",
+  alignItems: "center",
+  padding: "0.25rem 0.75rem",
+  borderRadius: vars.radii.md,
+  fontSize: vars.fontSizes.xs,
+  fontWeight: "500",
+  textTransform: "uppercase",
+  letterSpacing: "0.05em",
+})
+
+export const statusActive = style({
+  backgroundColor: vars.colors.gray[100],
+  color: vars.colors.success,
+})
+
+export const statusInactive = style({
+  backgroundColor: vars.colors.gray[100],
+  color: vars.colors.danger,
+})
+
+// Hero Section Components
+export const heroSectionContainer = style({
+  display: "flex",
+  flexDirection: "column",
+  gap: vars.space.md,
+})
+
+export const heroSectionField = style({
+  display: "flex",
+  flexDirection: "column",
+  gap: vars.space.xs,
+})
+
+export const heroSectionLabel = style({
+  fontSize: vars.fontSizes.sm,
+  fontWeight: "500",
+  color: vars.colors.text,
+})
+
+export const heroSectionInput = style({
+  width: "100%",
+  padding: vars.space.sm,
+  border: `1px solid ${vars.colors.border}`,
+  borderRadius: vars.radii.md,
+  fontSize: vars.fontSizes.sm,
+  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+  background: "white",
+  ":focus": {
+    outline: "none",
+    borderColor: vars.colors.primary,
+    boxShadow: `0 0 0 3px ${vars.colors.primaryTransparent}`,
+  },
+})
+
+export const heroSectionTextarea = style([
+  heroSectionInput,
+  {
+    minHeight: "80px",
+    resize: "vertical",
+  },
+])
+
+export const heroSectionValue = style({
+  padding: vars.space.sm,
+  background: vars.colors.background,
+  borderRadius: vars.radii.md,
+  color: vars.colors.text,
+  fontSize: vars.fontSizes.sm,
+  border: `1px solid ${vars.colors.border}`,
+})
+
+// Image Upload Section
+export const formSection = style({
+  marginBottom: vars.space.md,
+})
+
+export const imageUploadContainer = style({
+  border: `2px dashed ${vars.colors.border}`,
+  borderRadius: vars.radii.md,
+  padding: vars.space.lg,
+  textAlign: "center",
+  transition: "border-color 0.2s ease, background-color 0.2s ease",
+  background: vars.colors.background,
+  ":hover": {
+    borderColor: vars.colors.primary,
+    background: vars.colors.backgroundLight,
+  },
+})
+
+export const hiddenInput = style({
+  display: "none",
+})
+
+export const imageGrid = style({
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+  gap: vars.space.md,
+  marginTop: vars.space.md,
+})
+
+export const imageItem = style({
+  position: "relative",
+  borderRadius: vars.radii.md,
+  overflow: "hidden",
+  border: `1px solid ${vars.colors.border}`,
+  transition: "box-shadow 0.2s ease",
+  ":hover": {
+    boxShadow: vars.shadows.md,
+  },
+})
+
+export const previewImage = style({
+  width: "100%",
+  height: "140px",
+  objectFit: "cover",
+})
+
+export const deleteButton = style({
+  position: "absolute",
+  top: "6px",
+  right: "6px",
+  background: "rgba(239, 68, 68, 0.9)",
+  color: "white",
+  border: "none",
+  borderRadius: vars.radii.sm,
+  width: "24px",
+  height: "24px",
+  cursor: "pointer",
+  fontSize: vars.fontSizes.xs,
+  fontWeight: "500",
+  transition: "background-color 0.2s ease",
+  ":hover": {
+    background: vars.colors.danger,
+  },
+})
+
+// 누락된 스타일들 추가
+export const formGroup = style({
+  marginBottom: vars.space.md,
+})

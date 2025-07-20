@@ -1,35 +1,30 @@
 "use client"
 
-import React, { useRef, useEffect, useCallback } from "react"
+import React, { useEffect, useCallback } from "react"
+
 import {
   useMainHomeSettings,
-  useUpdateAdminHomeSettings,
+  useSaveAdminHomeSettings,
   useUploadHeroImages,
-  useEnsureMainHomeExists,
-  useCreateAdminHomeSettings,
+  useDeleteHeroImage,
 } from "../../../common/hooks/useHome"
-import { useAdminStats } from "../../../common/hooks/useAdminStats"
 import { useAdminHomeState } from "../../../common/hooks/useAdminHomeState"
 import { HomeSettings } from "../../../types/home"
 import ProtectedRoute from "../../../common/auth/ProtectedRoute"
 import PageSkeleton from "../../../common/components/ui/PageSkeleton"
-import { StatsSection } from "../../../common/components/admin/home/StatsSection"
-import { HeroTitleSection } from "../../../common/components/admin/home/HeroTitleSection"
-import { HeroButtonSection } from "../../../common/components/admin/home/HeroButtonSection"
-import { ImageUploadSection } from "../../../common/components/admin/home/ImageUploadSection"
-import { HeroSectionSettings } from "../../../common/components/admin/home/HeroSectionSettings"
-import { PreviewSection } from "../../../common/components/admin/home/PreviewSection"
-import { ActionButtons } from "../../../common/components/admin/home/ActionButtons"
-import "../../../styles/admin/admin-home-page.css"
+import { HeroTitleSection } from "./compoents/HeroTitleSection"
+import { HeroButtonSection } from "./compoents/HeroButtonSection"
+import { ImageUploadSection } from "./compoents/ImageUploadSection"
+import { ContentSectionSettings } from "./compoents/ContentSectionSettings"
+import { PreviewSection } from "./compoents/PreviewSection"
+import { ActionButtons } from "./compoents/button/ActionButtons"
+import * as styles from "../../../styles/admin/admin-home-page.css"
 
 function HomePageAdminContent() {
   const { data: homeSettings, isLoading, error } = useMainHomeSettings()
-  const { data: statsData, isLoading: statsLoading } = useAdminStats()
-  const updateMutation = useUpdateAdminHomeSettings()
+  const saveHomeSettingsMutation = useSaveAdminHomeSettings()
   const uploadImagesMutation = useUploadHeroImages()
-  const ensureMainHomeMutation = useEnsureMainHomeExists()
-  const createMutation = useCreateAdminHomeSettings()
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const deleteImageMutation = useDeleteHeroImage()
 
   const {
     isEditing,
@@ -46,8 +41,8 @@ function HomePageAdminContent() {
     updateEditData,
     updateTitleField,
     updateButtonField,
-    updateHeroSection
-  } = useAdminHomeState(homeSettings)
+    updateContentSettings
+  } = useAdminHomeState(homeSettings || undefined)
 
   // Debug logging - 데이터 구조 확인
   useEffect(() => {
@@ -84,42 +79,31 @@ function HomePageAdminContent() {
 
   const handleSave = async () => {
     console.log("=== 저장 디버깅 ===")
-    console.log("저장 시도 - homeSettings:", homeSettings)
     console.log("저장 시도 - editData:", editData)
-    console.log("저장 시도 - editData.heroImages:", editData.heroImages)
-    console.log("저장 시도 - homeSettings._id:", homeSettings?._id)
 
-    if (homeSettings && editData) {
+    if (editData) {
       try {
         // 이미지 데이터를 문자열 배열로 변환
         const processedData = {
           ...editData,
           heroImages: editData.heroImages
             ? editData.heroImages.map((img: any) =>
-                typeof img === "string" ? img : img.url
-              )
+              typeof img === "string" ? img : img.url
+            )
             : [],
         }
 
         console.log("처리된 저장 데이터:", processedData)
         console.log("처리된 heroImages:", processedData.heroImages)
 
-        // _id가 없으면 생성, 있으면 업데이트
-        if (homeSettings._id) {
-          console.log("업데이트 모드 - ID:", homeSettings._id)
-          await updateMutation.mutateAsync({
-            id: homeSettings._id,
-            settings: processedData,
-          })
-        } else {
-          console.log("생성 모드 - 새 데이터 생성")
-          await createMutation.mutateAsync(processedData)
-        }
+        // 단일 홈 설정으로 저장 (upsert)
+        await saveHomeSettingsMutation.mutateAsync(processedData)
 
+        handleCancel() // 편집 모드 종료
         alert("홈 페이지 설정이 성공적으로 업데이트되었습니다!")
       } catch (error) {
         alert("업데이트 중 오류가 발생했습니다.")
-        console.error("Update error:", error)
+        console.error("Save error:", error)
       }
     }
   }
@@ -152,12 +136,28 @@ function HomePageAdminContent() {
     } finally {
       setIsUploading(false)
     }
-  }, [editData.heroImages, homeSettings?.heroImages, updateEditData, uploadImagesMutation])
+  }, [editData.heroImages, homeSettings?.heroImages, updateEditData, uploadImagesMutation, setIsUploading])
 
-  const handleImageDelete = useCallback((index: number) => {
-    const updatedImages = currentImages.filter((_, i) => i !== index)
-    updateEditData({ heroImages: updatedImages })
-  }, [currentImages, updateEditData])
+  const handleImageDelete = useCallback(async (index: number) => {
+    try {
+      const imageToDelete = currentImages[index]
+      const imageUrl = typeof imageToDelete === 'string' ? imageToDelete : imageToDelete?.url
+      
+      if (imageUrl) {
+        // API 호출로 백엔드에서 이미지 삭제
+        await deleteImageMutation.mutateAsync(imageUrl)
+        
+        // 프론트엔드 상태에서도 이미지 제거
+        const updatedImages = currentImages.filter((_, i) => i !== index)
+        updateEditData({ heroImages: updatedImages })
+        
+        alert('이미지가 성공적으로 삭제되었습니다.')
+      }
+    } catch (error) {
+      console.error('이미지 삭제 실패:', error)
+      alert('이미지 삭제 중 오류가 발생했습니다.')
+    }
+  }, [currentImages, updateEditData, deleteImageMutation])
 
   const handleInputChange = (field: string, value: any) => {
     if (field.startsWith("heroTitle.")) {
@@ -166,23 +166,11 @@ function HomePageAdminContent() {
     } else if (field.startsWith("heroButtons.")) {
       const buttonField = field.replace("heroButtons.", "")
       updateButtonField(buttonField as keyof HomeSettings['heroButtons'], value)
-    } else if (field.startsWith("heroSection.")) {
-      const sectionField = field.replace("heroSection.", "")
-      updateHeroSection({ [sectionField]: value })
     } else {
       updateEditData({ [field]: value })
     }
   }
 
-  const handleCreateMainHome = async () => {
-    try {
-      await ensureMainHomeMutation.mutateAsync()
-      alert("메인 홈 페이지가 생성되었습니다!")
-    } catch (error) {
-      alert("메인 홈 페이지 생성 중 오류가 발생했습니다.")
-      console.error("Create main home error:", error)
-    }
-  }
 
   if (isLoading) {
     return <PageSkeleton variant="default" />
@@ -190,10 +178,10 @@ function HomePageAdminContent() {
 
   if (error) {
     return (
-      <div className="container">
-        <div className="header">
-          <h1 className="title">홈 화면 관리</h1>
-          <p className="subtitle">
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>홈 화면 관리</h1>
+          <p className={styles.subtitle}>
             오류가 발생했습니다: {String(error)}
           </p>
         </div>
@@ -203,84 +191,79 @@ function HomePageAdminContent() {
 
   if (!homeSettings) {
     return (
-      <div className="container">
-        <div className="header">
-          <h1 className="title">홈 화면 관리</h1>
-          <p className="subtitle">
-            홈 설정이 없습니다. 새로운 설정을 생성해주세요.
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>홈 화면 관리</h1>
+          <p className={styles.subtitle}>
+            홈 설정을 불러오는 중입니다...
           </p>
-          <div style={{ marginTop: "20px" }}>
-            <button
-              className="editButton"
-              onClick={handleCreateMainHome}
-              disabled={ensureMainHomeMutation.isPending}
-            >
-              {ensureMainHomeMutation.isPending
-                ? "⏳ 생성 중..."
-                : "🏠 메인 홈 페이지 생성"}
-            </button>
-          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="container">
-      <StatsSection statsData={statsData} isLoading={statsLoading} />
-
-      <div className="header">
-        <h1 className="title">서비스 홈 페이지 관리</h1>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>서비스 홈 페이지 관리</h1>
         <ActionButtons
           isEditing={isEditing}
-          isLoading={updateMutation.isPending}
+          isLoading={saveHomeSettingsMutation.isPending}
           onEdit={handleEdit}
           onSave={handleSave}
           onCancel={handleCancel}
         />
       </div>
 
-      <div className="section">
-        <h2 className="sectionTitle">기본 정보</h2>
-        <div className="field">
-          <label className="label">페이지 제목</label>
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>페이지 설정</h2>
+        <div className={styles.field}>
+          <label className={styles.label}>활성화 상태</label>
           {isEditing ? (
-            <input
-              type="text"
-              className="input"
-              value={editData.pageId || ""}
-              onChange={(e) => handleInputChange("pageId", e.target.value)}
-              placeholder="페이지 ID를 입력하세요"
-            />
+            <div className={styles.toggleContainer}>
+              <label className={styles.toggleSwitch}>
+                <input
+                  type="checkbox"
+                  className={styles.toggleInput}
+                  checked={editData.isActive !== false}
+                  onChange={(e) => handleInputChange("isActive", e.target.checked)}
+                />
+                <span className={`${styles.slider} ${editData.isActive !== false ? styles.toggleActive : ''}`}></span>
+              </label>
+              <span className={styles.toggleLabel}>
+                {editData.isActive !== false ? "활성화" : "비활성화"}
+              </span>
+            </div>
           ) : (
-            <div className="value">
-              {homeSettings.pageId || "제목 없음"}
+            <div className={styles.value}>
+              <span className={`${styles.statusBadge} ${homeSettings.isActive ? styles.statusActive : styles.statusInactive}`}>
+                {homeSettings.isActive ? "활성화" : "비활성화"}
+              </span>
             </div>
           )}
         </div>
 
-        <div className="field">
-          <label className="label">페이지 설명</label>
+        <div className={styles.field}>
+          <label className={styles.label}>정렬 순서</label>
           {isEditing ? (
-            <textarea
-              className="textarea"
-              value={editData.heroSubtitle || ""}
-              onChange={(e) =>
-                handleInputChange("heroSubtitle", e.target.value)
-              }
-              placeholder="페이지 설명을 입력하세요"
-              rows={3}
+            <input
+              type="number"
+              className={styles.input}
+              value={editData.sortOrder || 0}
+              onChange={(e) => handleInputChange("sortOrder", parseInt(e.target.value) || 0)}
+              placeholder="정렬 순서를 입력하세요"
+              min="0"
             />
           ) : (
-            <div className="value">
-              {homeSettings.heroSubtitle || "설명 없음"}
+            <div className={styles.value}>
+              {homeSettings.sortOrder || 0}
             </div>
           )}
         </div>
       </div>
 
-      <div className="section">
-        <h2 className="sectionTitle">히어로 타이틀</h2>
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>히어로 타이틀</h2>
         <HeroTitleSection
           currentTitle={currentTitle}
           isEditing={isEditing}
@@ -288,8 +271,8 @@ function HomePageAdminContent() {
         />
       </div>
 
-      <div className="section">
-        <h2 className="sectionTitle">히어로 버튼</h2>
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>히어로 버튼</h2>
         <HeroButtonSection
           currentButtons={currentButtons}
           isEditing={isEditing}
@@ -297,8 +280,8 @@ function HomePageAdminContent() {
         />
       </div>
 
-      <div className="section">
-        <h2 className="sectionTitle">히어로 이미지</h2>
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>히어로 이미지</h2>
         <ImageUploadSection
           currentImages={currentImages}
           isEditing={isEditing}
@@ -308,12 +291,12 @@ function HomePageAdminContent() {
         />
       </div>
 
-      <div className="section">
-        <h2 className="sectionTitle">히어로 섹션 설정</h2>
-        <HeroSectionSettings
-          heroSection={editData.heroSection || homeSettings?.heroSection}
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>컨텐츠 섹션 설정</h2>
+        <ContentSectionSettings
+          contentSettings={editData.contentSettings || homeSettings?.contentSettings}
           isEditing={isEditing}
-          onUpdateHeroSection={updateHeroSection}
+          onUpdateContentSettings={updateContentSettings}
         />
       </div>
 

@@ -106,7 +106,7 @@ const CustomerReviewsPage = () => {
                       style={{ objectFit: "cover" }}
                     />
                   ) : (
-                    <div className={styles.imagePlaceholder}>💬</div>
+                    <div className={styles.imagePlaceholder}>⭐</div>
                   )}
                 </div>
                 <div className={styles.content}>

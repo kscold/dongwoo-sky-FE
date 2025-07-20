@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import React from "react"
-import Image from "next/image"
-import Link from "next/link"
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import {
   CheckCircleIcon,
   UserCircleIcon,
@@ -22,14 +22,14 @@ import {
   TruckIcon,
   CreditCardIcon,
   ClipboardDocumentCheckIcon,
-} from "@heroicons/react/24/solid"
+} from "@heroicons/react/24/solid";
 
-import EquipmentSwiper from "../../../common/components/equipment/EquipmentSwiper"
-import ProcessSwiper from "../../../common/components/swiper/ProcessSwiper"
-import PageSkeleton from "../../../common/components/ui/PageSkeleton"
-import { ProcessStep, ScopeOfWork } from "../../../types/service-guide"
-import * as styles from "../../../styles/service/page/service-guide.css"
-import { useServiceGuide } from "../../../common/hooks/useServiceGuide"
+import EquipmentSwiper from "../../../common/components/equipment/EquipmentSwiper";
+import ProcessSwiper from "../../../common/components/swiper/ProcessSwiper";
+import PageSkeleton from "../../../common/components/ui/PageSkeleton";
+import { ProcessStep, ScopeOfWork } from "../../../types/service-guide";
+import * as styles from "../../../styles/service/page/service-guide.css";
+import { useServiceGuide } from "../../../common/hooks/useServiceGuide";
 
 const iconMap: { [key: string]: React.ElementType } = {
   CheckCircleIcon,
@@ -50,20 +50,20 @@ const iconMap: { [key: string]: React.ElementType } = {
   TruckIcon,
   CreditCardIcon,
   ClipboardDocumentCheckIcon,
-}
+};
 
 const ServiceGuidePage = () => {
-  const { data: serviceGuideData, isLoading, isError } = useServiceGuide()
+  const { data: serviceGuideData, isLoading, isError } = useServiceGuide();
 
   if (isLoading) {
-    return <PageSkeleton variant="service-guide" />
+    return <PageSkeleton variant="service-guide" />;
   }
 
   if (isError || !serviceGuideData) {
-    return <div>서비스 안내 데이터를 불러오는 데 실패했습니다.</div>
+    return <div>서비스 안내 데이터를 불러오는 데 실패했습니다.</div>;
   }
 
-  const { serviceGuide, equipments } = serviceGuideData
+  const { serviceGuide, equipments } = serviceGuideData;
 
   return (
     <div className={styles.pageWrapper}>
@@ -89,13 +89,13 @@ const ServiceGuidePage = () => {
             <ul className={styles.capabilitiesList}>
               {serviceGuide.scopeOfWork.map(
                 (item: ScopeOfWork, index: number) => {
-                  const Icon = iconMap[item.icon || ""] || UserCircleIcon
+                  const Icon = iconMap[item.icon || ""] || UserCircleIcon;
                   return (
                     <li key={index} className={styles.capabilityItem}>
                       <Icon className={styles.capabilityIcon} />
                       <span>{item.text}</span>
                     </li>
-                  )
+                  );
                 }
               )}
             </ul>
@@ -114,8 +114,7 @@ const ServiceGuidePage = () => {
                   alt={serviceGuide.profile.name}
                   width={300}
                   height={300}
-                  className={styles.profileImagePlaceholder}
-                  style={{ objectFit: "cover", borderRadius: "1rem" }}
+                  className={styles.profileImage}
                 />
               ) : (
                 <div className={styles.profileImagePlaceholder}>
@@ -162,7 +161,7 @@ const ServiceGuidePage = () => {
               {serviceGuide.processSteps.map(
                 (step: ProcessStep, index: number) => {
                   const IconComponent =
-                    (step.icon && iconMap[step.icon]) || null
+                    (step.icon && iconMap[step.icon]) || null;
                   return (
                     <div key={index} className={styles.processStep}>
                       <div className={styles.processStepNumber}>
@@ -176,7 +175,7 @@ const ServiceGuidePage = () => {
                         {step.description}
                       </p>
                     </div>
-                  )
+                  );
                 }
               )}
             </div>
@@ -199,7 +198,7 @@ const ServiceGuidePage = () => {
         </Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ServiceGuidePage
+export default ServiceGuidePage;

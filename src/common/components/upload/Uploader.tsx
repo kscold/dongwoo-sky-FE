@@ -1,18 +1,23 @@
-"use client"
+"use client";
 
-import React, { useCallback } from "react"
-import Image from "next/image"
-import { useDropzone } from "react-dropzone"
+import React, { useRef, useCallback } from "react";
+import Image from "next/image";
 
-import * as styles from "../../../styles/components/uploader.css"
+import * as styles from "../../../styles/components/uploader.css";
+import { isImageFile, getFileIcon } from "../../../utils/fileUtils";
 
 interface UploaderProps {
-  onFilesChange: (files: any[]) => void
-  value?: string[] | { url: string; alt?: string }[] | File[]
-  accept?: Record<string, string[]>
-  maxFiles?: number
-  disabled?: boolean
-  uploadType: "new" | "existing"
+  onFilesChange: (files: any[]) => void;
+  value?: string[] | { url: string; alt?: string }[] | File[];
+  accept?: Record<string, string[]>;
+  maxFiles?: number;
+  disabled?: boolean;
+  uploadType: "new" | "existing";
+  label?: string;
+  isEditing?: boolean;
+  isUploading?: boolean;
+  onImageUpload?: (files: FileList) => void;
+  onImageDelete?: (index: number) => void;
 }
 
 export const Uploader: React.FC<UploaderProps> = ({
@@ -24,149 +29,176 @@ export const Uploader: React.FC<UploaderProps> = ({
   maxFiles = 10,
   disabled = false,
   uploadType,
+  label = "파일 업로드",
+  isEditing = true,
+  isUploading = false,
+  onImageUpload,
+  onImageDelete,
 }) => {
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const currentFiles = Array.isArray(value) ? value : []
-      const newFiles = [...currentFiles, ...acceptedFiles]
-      onFilesChange(newFiles)
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = e.target.files;
+      if (files && files.length > 0) {
+        if (onImageUpload) {
+          // admin-home 방식: 실제 API 업로드
+          onImageUpload(files);
+        } else {
+          // 기존 방식: 로컬 파일 처리
+          const fileArray = Array.from(files);
+          const currentFiles = Array.isArray(value) ? value : [];
+          const newFiles = [...currentFiles, ...fileArray];
+          onFilesChange(newFiles);
+        }
+      }
     },
-    [onFilesChange, value]
-  )
+    [onFilesChange, value, onImageUpload]
+  );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept,
-    maxFiles,
-    disabled,
-    multiple: maxFiles > 1,
-  })
+  const handleUploadClick = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
 
-  const removeFile = (index: number) => {
-    const currentFiles = Array.isArray(value) ? value : []
-    const newFiles = currentFiles.filter((_, i) => i !== index)
-    onFilesChange(newFiles)
-  }
+  const handleDelete = useCallback(
+    (index: number) => {
+      if (onImageDelete) {
+        // admin-home 방식: 실제 API 삭제
+        onImageDelete(index);
+      } else {
+        // 기존 방식: 로컬 파일 제거
+        const currentFiles = Array.isArray(value) ? value : [];
+        const newFiles = currentFiles.filter((_, i) => i !== index);
+        onFilesChange(newFiles);
+      }
+    },
+    [onFilesChange, value, onImageDelete]
+  );
 
   const getImageUrl = (item: any): string => {
     if (item instanceof File) {
-      return URL.createObjectURL(item)
+      return URL.createObjectURL(item);
     }
-    return typeof item === "string" ? item : item?.url || ""
-  }
+    return typeof item === "string" ? item : item?.url || "";
+  };
 
   const getFileName = (item: any): string => {
     if (item instanceof File) {
-      return item.name
+      return item.name;
     }
     if (typeof item === "string") {
-      return item.split("/").pop() || "이미지"
+      return item.split("/").pop() || "이미지";
     }
-    return item?.alt || item?.url?.split("/").pop() || "이미지"
-  }
+    return item?.alt || item?.url?.split("/").pop() || "이미지";
+  };
 
   const isNewFile = (item: any): boolean => {
-    return item instanceof File
-  }
-
-  const dropzoneClass = `${styles.dropzone} ${
-    isDragActive ? styles.dragActive : ""
-  } ${disabled ? styles.disabled : ""}`
+    return item instanceof File;
+  };
 
   return (
     <div className={styles.uploaderContainer}>
-      <div {...getRootProps({ className: dropzoneClass })}>
-        <input {...getInputProps()} />
-        <div className={styles.dropzoneContent}>
-          <div className={styles.uploadIcon}>{isDragActive ? "🎯" : "📸"}</div>
+      <label className={styles.label}>{label}</label>
 
-          <div className={styles.uploadText}>
-            {isDragActive ? (
-              <div className={styles.dragText}>✨ 여기에 놓아주세요!</div>
-            ) : (
-              <>
-                <div className={styles.primaryText}>
-                  {uploadType === "new"
-                    ? "새로운 이미지 업로드"
-                    : "이미지 업로드"}
-                </div>
-                <div className={styles.secondaryText}>
-                  이미지를 드래그하여 놓거나 아래 버튼을 클릭하세요
-                  <br />
-                  <span style={{ fontSize: "12px", color: "#9CA3AF" }}>
-                    {accept["image/*"]?.join(", ")} 파일 지원 • 최대 {maxFiles}
-                    개 파일
-                  </span>
-                </div>
-              </>
-            )}
-          </div>
+      <div className={styles.imageUploadContainer}>
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileSelect}
+          accept={Object.keys(accept).join(",")}
+          multiple={maxFiles > 1}
+          className={styles.hiddenInput}
+          disabled={disabled}
+        />
 
-          {!isDragActive && (
-            <button
-              type="button"
-              className={styles.browseButton}
-              disabled={disabled}
-              onClick={(e) => e.stopPropagation()}
-            >
-              파일 선택하기
-            </button>
-          )}
+        {isEditing && (
+          <button
+            type="button"
+            onClick={handleUploadClick}
+            className={styles.uploadButton}
+            disabled={isUploading || disabled}
+          >
+            {isUploading ? "업로드 중..." : "파일 업로드"}
+          </button>
+        )}
+
+        <div className={styles.imageGrid}>
+          {value
+            ?.filter(
+              (item) =>
+                item && (typeof item === "string" || (item as any).url)
+            )
+            .map((item, index) => {
+              const itemUrl = getImageUrl(item);
+              const fileName = getFileName(item);
+              const isImage = isImageFile(fileName);
+              
+              return (
+                <div key={index} className={styles.imageItem}>
+                  {isImage ? (
+                    <>
+                      <Image
+                        src={itemUrl || "/placeholder-image.jpg"}
+                        alt={fileName}
+                        width={200}
+                        height={150}
+                        className={styles.previewImage}
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          target.style.display = "none";
+                          if (target.nextElementSibling) {
+                            (target.nextElementSibling as HTMLElement).style.display = "flex";
+                          }
+                        }}
+                      />
+                      <div style={{ 
+                        display: "none",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "150px",
+                        color: "#9CA3AF",
+                        fontSize: "14px",
+                        backgroundColor: "#f3f4f6"
+                      }}>
+                        🖼️ 이미지 로드 실패
+                      </div>
+                    </>
+                  ) : (
+                    <div style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "150px",
+                      backgroundColor: "#f3f4f6",
+                      fontSize: "48px"
+                    }}>
+                      {getFileIcon(fileName)}
+                    </div>
+                  )}
+                  {isEditing && (
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(index)}
+                      className={styles.deleteButton}
+                      disabled={disabled}
+                      title="파일 제거"
+                    >
+                      ✕
+                    </button>
+                  )}
+                  <div className={styles.fileInfo}>
+                    <div className={styles.fileName} title={fileName}>
+                      {fileName}
+                    </div>
+                    <div className={styles.fileStatus}>
+                      {isNewFile(item) ? "🆕 새 파일" : "💾 기존 파일"} • {isImage ? "이미지" : "문서"}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
         </div>
       </div>
-
-      {value && value.length > 0 && (
-        <div className={styles.previewSection}>
-          <h4 className={styles.previewTitle}>
-            업로드된 이미지 ({value.length}개)
-          </h4>
-          <div className={styles.previewContainer}>
-            {value.map((item, index) => (
-              <div
-                key={getImageUrl(item) || `preview-${index}`}
-                className={styles.previewItem}
-              >
-                <div className={styles.imageContainer}>
-                  <Image
-                    src={getImageUrl(item)}
-                    alt={getFileName(item)}
-                    className={styles.previewImage}
-                    width={120}
-                    height={120}
-                    style={{ objectFit: "cover" }}
-                    onError={(e) => {
-                      const target = e.currentTarget
-                      target.style.display = "none"
-                      target.nextElementSibling?.setAttribute(
-                        "style",
-                        "display: flex; align-items: center; justify-content: center; height: 100%; color: #9CA3AF; font-size: 14px;"
-                      )
-                    }}
-                  />
-                  <div style={{ display: "none" }}>🖼️ 이미지 로드 실패</div>
-                  <button
-                    type="button"
-                    className={styles.removeButton}
-                    onClick={() => removeFile(index)}
-                    disabled={disabled}
-                    title="이미지 제거"
-                  >
-                    ✕
-                  </button>
-                </div>
-                <div className={styles.fileInfo}>
-                  <div className={styles.fileName} title={getFileName(item)}>
-                    {getFileName(item)}
-                  </div>
-                  <div className={styles.fileStatus}>
-                    {isNewFile(item) ? "🆕 새 파일" : "💾 기존 파일"}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
-  )
-}
+  );
+};

@@ -1,29 +1,29 @@
-import { style, globalStyle } from "@vanilla-extract/css"
+import { style, globalStyle } from "@vanilla-extract/css";
 
-import { vars } from "../../common/theme.css"
+import { vars } from "../../common/theme.css";
 
 export const swiperSection = style({
   width: "100%",
   maxWidth: "100vw",
-  marginTop: vars.space.xxxxl,
-  marginBottom: vars.space.xxxxl,
-  padding: `${vars.space.xxxxl} ${vars.space.lg}`,
+  marginTop: vars.space.xxxl, // xxxxl → xxxl로 줄이기
+  marginBottom: vars.space.xxxl, // xxxxl → xxxl로 줄이기
+  padding: `${vars.space.xxxl} ${vars.space.lg}`, // xxxxl → xxxl로 줄이기
   overflow: "hidden",
   boxSizing: "border-box",
   backgroundColor: vars.colors.white,
   "@media": {
     "screen and (max-width: 768px)": {
-      marginTop: vars.space.xxxxl,
-      marginBottom: vars.space.xxxxl,
-      padding: `${vars.space.xxxl} ${vars.space.md}`,
+      marginTop: vars.space.xxl, // xxxl → xxl로 줄이기
+      marginBottom: vars.space.xxl, // xxxl → xxl로 줄이기
+      padding: `${vars.space.xl} ${vars.space.md}`, // xxxl → xl로 줄이기
     },
     "screen and (max-width: 480px)": {
-      marginTop: vars.space.xxxl,
-      marginBottom: vars.space.xxxl,
-      padding: `${vars.space.xxl} ${vars.space.sm}`,
+      marginTop: vars.space.xl, // xxl → xl로 줄이기
+      marginBottom: vars.space.xl, // xxl → xl로 줄이기
+      padding: `${vars.space.lg} ${vars.space.sm}`, // xxl → lg로 줄이기
     },
   },
-})
+});
 
 export const sectionHeader = style({
   display: "flex",
@@ -47,7 +47,7 @@ export const sectionHeader = style({
       marginBottom: vars.space.lg,
     },
   },
-})
+});
 
 export const sectionTitleContainer = style({
   flex: 1,
@@ -57,7 +57,7 @@ export const sectionTitleContainer = style({
       minWidth: "0",
     },
   },
-})
+});
 
 export const sectionTitle = style({
   fontSize: vars.fontSizes.xxxxl,
@@ -75,7 +75,7 @@ export const sectionTitle = style({
       marginBottom: vars.space.sm,
     },
   },
-})
+});
 
 export const sectionDescription = style({
   fontSize: vars.fontSizes.xl,
@@ -93,7 +93,7 @@ export const sectionDescription = style({
       lineHeight: "1.5",
     },
   },
-})
+});
 
 export const viewAllButton = style({
   display: "inline-flex",
@@ -138,7 +138,7 @@ export const viewAllButton = style({
       padding: `${vars.space.xs} ${vars.space.md}`,
     },
   },
-})
+});
 
 export const swiperContainer = style({
   position: "relative",
@@ -167,7 +167,7 @@ export const swiperContainer = style({
       padding: "8px 8px",
     },
   },
-})
+});
 
 export const swiperWrapper = style({
   paddingBottom: vars.space.lg,
@@ -189,35 +189,20 @@ export const swiperWrapper = style({
       padding: "8px 0",
     },
   },
-})
+});
 
-// 데스크탑에서 Swiper 요소들의 overflow를 visible로 설정
+// 모든 화면에서 Swiper 요소들의 overflow를 visible로 설정
 globalStyle(`${swiperWrapper} .swiper`, {
   overflow: "visible",
-  "@media": {
-    "screen and (max-width: 768px)": {
-      overflow: "hidden",
-    },
-  },
-})
+});
 
 globalStyle(`${swiperWrapper} .swiper-wrapper`, {
   overflow: "visible",
-  "@media": {
-    "screen and (max-width: 768px)": {
-      overflow: "hidden",
-    },
-  },
-})
+});
 
 globalStyle(`${swiperWrapper} .swiper-slide`, {
   overflow: "visible",
-  "@media": {
-    "screen and (max-width: 768px)": {
-      overflow: "hidden",
-    },
-  },
-})
+});
 
 export const swiperSlide = style({
   height: "auto",
@@ -225,11 +210,14 @@ export const swiperSlide = style({
   width: "100%",
   maxWidth: "100%",
   boxSizing: "border-box",
-})
+  minHeight: "400px",
+  flexShrink: 0,
+});
 
 export const reviewCard = style({
   display: "block",
   width: "100%",
+  minHeight: "400px",
   background: "rgba(255, 255, 255, 0.95)",
   backdropFilter: "blur(20px)",
   borderRadius: vars.radii.xl,
@@ -270,7 +258,7 @@ export const reviewCard = style({
       },
     },
   },
-})
+});
 
 export const imageContainer = style({
   position: "relative",
@@ -293,7 +281,7 @@ export const imageContainer = style({
       height: "140px",
     },
   },
-})
+});
 
 export const image = style({
   width: "100%",
@@ -310,7 +298,7 @@ export const image = style({
       borderRadius: `${vars.radii.lg} ${vars.radii.lg} 0 0`,
     },
   },
-})
+});
 
 export const imagePlaceholder = style({
   width: "100%",
@@ -321,7 +309,7 @@ export const imagePlaceholder = style({
   fontSize: "3rem",
   color: vars.colors.secondary,
   backgroundColor: `linear-gradient(135deg, ${vars.colors.primaryLight} 0%, ${vars.colors.secondary} 100%)`,
-})
+});
 
 export const cardContent = style({
   padding: vars.space.lg,
@@ -341,7 +329,7 @@ export const cardContent = style({
       gap: vars.space.xs,
     },
   },
-})
+});
 
 export const cardHeader = style({
   display: "flex",
@@ -349,7 +337,7 @@ export const cardHeader = style({
   alignItems: "flex-start",
   marginBottom: vars.space.sm,
   gap: vars.space.md,
-})
+});
 
 export const cardTitle = style({
   fontSize: vars.fontSizes.lg,
@@ -373,26 +361,26 @@ export const cardTitle = style({
       lineHeight: "1.3",
     },
   },
-})
+});
 
 export const rating = style({
   display: "flex",
   gap: "2px",
   alignItems: "center",
-})
+});
 
 export const starIcon = style({
   width: "16px",
   height: "16px",
   fill: "currentColor",
-})
+});
 
 export const meta = style({
   display: "flex",
   flexDirection: "column",
   gap: vars.space.xs,
   marginBottom: vars.space.sm,
-})
+});
 
 export const metaItem = style({
   display: "flex",
@@ -400,17 +388,17 @@ export const metaItem = style({
   gap: vars.space.xs,
   fontSize: vars.fontSizes.sm,
   color: vars.colors.textLight,
-})
+});
 
 export const metaIcon = style({
   width: "16px",
   height: "16px",
   color: vars.colors.secondary,
-})
+});
 
 export const serviceIcon = style({
   fontSize: vars.fontSizes.sm,
-})
+});
 
 export const description = style({
   fontSize: vars.fontSizes.sm,
@@ -437,7 +425,7 @@ export const description = style({
       WebkitLineClamp: 2,
     },
   },
-})
+});
 
 export const footer = style({
   display: "flex",
@@ -446,25 +434,25 @@ export const footer = style({
   marginTop: "auto",
   paddingTop: vars.space.sm,
   borderTop: `1px solid ${vars.colors.gray[200]}`,
-})
+});
 
 export const date = style({
   fontSize: vars.fontSizes.xs,
   color: vars.colors.textLight,
-})
+});
 
 export const navButton = style({
   position: "absolute",
   top: "50%",
   transform: "translateY(-50%)",
-  zIndex: 10,
+  zIndex: 20,
   width: "48px",
   height: "48px",
   borderRadius: "50%",
   border: "none",
-  backgroundColor: "rgba(255, 255, 255, 0.9)",
+  backgroundColor: "rgba(255, 255, 255, 0.95)",
   backdropFilter: "blur(10px)",
-  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
@@ -479,18 +467,35 @@ export const navButton = style({
     "screen and (max-width: 768px)": {
       width: "40px",
       height: "40px",
-      display: "none", // 모바일에서는 숨김
+      display: "flex",
+      top: "95px", // imageContainer 높이 180px의 정중앙 (90px + 5px 조정)
+    },
+    "screen and (max-width: 480px)": {
+      top: "95px", // imageContainer 높이 160px의 정중앙 (80px + 5px 조정)
+    },
+    "screen and (max-width: 375px)": {
+      top: "85px", // imageContainer 높이 140px의 정중앙 (70px + 5px 조정)
     },
   },
-})
+});
 
 export const prevButton = style({
   left: "-24px",
-})
+  "@media": {
+    "screen and (max-width: 768px)": {
+      left: "20px", // 좌측 여백 늘리기
+    },
+  },
+});
 
 export const nextButton = style({
   right: "-24px",
-})
+  "@media": {
+    "screen and (max-width: 768px)": {
+      right: "20px", // 우측 여백 늘리기
+    },
+  },
+});
 
 export const navIcon = style({
   width: "24px",
@@ -502,4 +507,4 @@ export const navIcon = style({
       height: "20px",
     },
   },
-})
+});

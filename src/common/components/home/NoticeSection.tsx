@@ -39,6 +39,12 @@ export default function NoticeSection({ notices }: NoticeSectionProps) {
           </li>
         ))}
       </ul>
+      
+      <div className={styles.noticeViewMore}>
+        <Link href="/notice" className={styles.viewMoreButton}>
+          공지사항 더보기
+        </Link>
+      </div>
     </section>
   )
 }

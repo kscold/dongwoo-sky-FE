@@ -17,9 +17,11 @@ export default function LayoutClientComponent({
 
   return (
     <QueryProvider>
-      {!isAdminPage && <Header />}
-      <main>{children}</main>
-      {!isAdminPage && <Footer />}
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+        {!isAdminPage && <Header />}
+        <main style={{ flex: 1 }}>{children}</main>
+        {!isAdminPage && <Footer />}
+      </div>
     </QueryProvider>
   )
 }

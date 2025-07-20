@@ -1,35 +1,36 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import Link from "next/link"
-import { PlusIcon, TrashIcon } from "lucide-react"
+import React, { useState } from "react";
+import Link from "next/link";
+import { PlusIcon, TrashIcon } from "lucide-react";
 
 import {
   useNoticesAdmin,
   useDeleteNotice,
-} from "../../../common/hooks/useNotices"
-import * as commonStyles from "../../../styles/admin/admin-notice.css"
+} from "../../../common/hooks/useNotices";
+import { isImageFile, getFileIcon } from "../../../utils/fileUtils";
+import * as commonStyles from "../../../styles/admin/admin-notice.css";
 
-const NOTICES_PER_PAGE = 10
+const NOTICES_PER_PAGE = 10;
 
 const AdminNoticePage: React.FC = () => {
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
 
   const { data: noticesData, isLoading } = useNoticesAdmin(
     page,
     NOTICES_PER_PAGE
-  )
-  const deleteNoticeMutation = useDeleteNotice()
+  );
+  const deleteNoticeMutation = useDeleteNotice();
 
   const handleDelete = (id: string) => {
     if (window.confirm("정말로 이 공지사항을 삭제하시겠습니까?")) {
-      deleteNoticeMutation.mutate(id)
+      deleteNoticeMutation.mutate(id);
     }
-  }
+  };
 
   const totalPages = noticesData
     ? Math.ceil(noticesData.total / NOTICES_PER_PAGE)
-    : 0
+    : 0;
 
   return (
     <div className={commonStyles.container}>
@@ -64,6 +65,9 @@ const AdminNoticePage: React.FC = () => {
                   <td className={commonStyles.tableCell}>
                     <div className={commonStyles.skeleton} />
                   </td>
+                  <td className={commonStyles.tableCell}>
+                    <div className={commonStyles.skeleton} />
+                  </td>
                 </tr>
               ))
             : noticesData?.data.map((notice, index) => (
@@ -75,6 +79,17 @@ const AdminNoticePage: React.FC = () => {
                     >
                       {notice.title}
                     </Link>
+                  </td>
+                  <td className={commonStyles.tableCell}>
+                    {notice.attachments && notice.attachments.length > 0 ? (
+                      <div className={commonStyles.attachmentCount}>
+                        <span className={commonStyles.attachmentText}>
+                          {notice.attachments.length}개
+                        </span>
+                      </div>
+                    ) : (
+                      <span className={commonStyles.attachmentText}>-</span>
+                    )}
                   </td>
                   <td className={commonStyles.tableCell}>
                     {new Date(notice.createdAt).toLocaleDateString()}
@@ -144,7 +159,7 @@ const AdminNoticePage: React.FC = () => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AdminNoticePage
+export default AdminNoticePage;

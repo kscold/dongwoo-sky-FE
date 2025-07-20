@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css"
+import { style, globalStyle } from "@vanilla-extract/css"
 
 import { vars } from "../common/theme.css"
 
@@ -352,6 +352,10 @@ export const attachmentName = style({
   fontSize: vars.fontSizes.sm,
   color: vars.colors.text,
   fontWeight: vars.fontWeights.medium,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  maxWidth: "100%",
 })
 
 export const removeButton = style({
@@ -567,4 +571,139 @@ export const actionButtons = style({
   display: "flex",
   gap: vars.space.xs,
   alignItems: "center",
+})
+
+// 개선된 첨부파일 표시 스타일들
+export const attachmentGrid = style({
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+  gap: vars.space.md,
+  marginTop: vars.space.sm,
+})
+
+export const attachmentCard = style({
+  position: "relative",
+  backgroundColor: vars.colors.white,
+  borderRadius: vars.radii.lg,
+  border: `1px solid ${vars.colors.border}`,
+  overflow: "hidden",
+  transition: "all 0.2s ease",
+  boxShadow: vars.shadows.sm,
+
+  ":hover": {
+    transform: "translateY(-2px)",
+    boxShadow: vars.shadows.md,
+  },
+})
+
+export const imagePreviewContainer = style({
+  position: "relative",
+  width: "100%",
+  height: "150px",
+  overflow: "hidden",
+  backgroundColor: vars.colors.backgroundLight,
+})
+
+export const attachmentImage = style({
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  transition: "transform 0.2s ease",
+
+  ":hover": {
+    transform: "scale(1.05)",
+  },
+})
+
+export const imageErrorFallback = style({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: vars.colors.backgroundLight,
+  color: vars.colors.textLight,
+  fontSize: vars.fontSizes.sm,
+  fontWeight: vars.fontWeights.medium,
+})
+
+export const filePreviewContainer = style({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "100%",
+  height: "150px",
+  backgroundColor: vars.colors.backgroundLight,
+})
+
+export const fileIcon = style({
+  fontSize: "48px",
+  opacity: 0.8,
+})
+
+export const attachmentInfo = style({
+  padding: vars.space.md,
+  display: "flex",
+  flexDirection: "column",
+  gap: vars.space.xs,
+})
+
+export const attachmentMeta = style({
+  fontSize: vars.fontSizes.xs,
+  color: vars.colors.textLight,
+  fontWeight: vars.fontWeights.medium,
+  textTransform: "uppercase",
+  letterSpacing: "0.5px",
+})
+
+export const attachmentRemoveButton = style({
+  position: "absolute",
+  top: vars.space.xs,
+  right: vars.space.xs,
+  width: "24px",
+  height: "24px",
+  backgroundColor: "rgba(239, 68, 68, 0.9)",
+  color: vars.colors.white,
+  border: "none",
+  borderRadius: vars.radii.sm,
+  cursor: "pointer",
+  fontSize: vars.fontSizes.xs,
+  fontWeight: vars.fontWeights.bold,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  transition: "all 0.2s ease",
+  opacity: 0,
+
+  ":hover": {
+    backgroundColor: vars.colors.danger,
+    transform: "scale(1.1)",
+  },
+})
+
+// 카드 호버 시 삭제 버튼 표시
+globalStyle(`${attachmentCard}:hover ${attachmentRemoveButton}`, {
+  opacity: 1,
+})
+
+// 첨부파일 카운트 표시 스타일
+export const attachmentCount = style({
+  display: "flex",
+  alignItems: "center",
+  gap: vars.space.xs,
+  fontSize: vars.fontSizes.sm,
+  color: vars.colors.textLight,
+})
+
+export const attachmentIcon = style({
+  fontSize: "16px",
+})
+
+export const attachmentText = style({
+  fontSize: vars.fontSizes.xs,
+  color: vars.colors.textLight,
+  fontWeight: vars.fontWeights.medium,
 })

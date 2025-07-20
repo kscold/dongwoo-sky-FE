@@ -8,6 +8,7 @@ import { ko } from "date-fns/locale"
 import { useNotices } from "../../../common/hooks/useNotices"
 import PageSkeleton from "../../../common/components/ui/PageSkeleton"
 import Pagination from "../../../common/components/ui/Pagination"
+import { isImageFile } from "../../../utils/fileUtils"
 import * as styles from "../../../styles/service/page/service-page-common.css"
 
 export default function NoticePage() {
@@ -69,36 +70,30 @@ export default function NoticePage() {
 
       {notices && notices.length > 0 ? (
         <>
-          <ul className={styles.noticeList}>
+          <div className={styles.grid}>
             {notices.map((notice: any, index: number) => (
-              <li
+              <Link
                 key={notice._id || `notice-${index}`}
-                className={styles.noticeItem}
+                href={`/notice/${notice._id}`}
+                className={styles.card}
               >
-                <Link
-                  href={`/notice/${notice._id}`}
-                  className={styles.noticeLink}
-                >
-                  <h2 className={styles.noticeTitle}>{notice.title}</h2>
-                  <div className={styles.noticeInfo}>
-                    <span className={styles.noticeDate}>
-                      {formatDate(notice.publishedAt || notice.createdAt)}
-                    </span>
-                  </div>
-                  <p className={styles.noticeContent}>
-                    {notice.content.length > 100
-                      ? `${notice.content.substring(0, 100)}...`
+                <div className={styles.imageContainer}>
+                  <div className={styles.imagePlaceholder}>📢</div>
+                </div>
+                <div className={styles.content}>
+                  <h3 className={styles.cardTitle}>{notice.title}</h3>
+                  <p className={styles.description}>
+                    {notice.content.length > 120
+                      ? `${notice.content.substring(0, 120)}...`
                       : notice.content}
                   </p>
-                  {notice.attachments && notice.attachments.length > 0 && (
-                    <div className={styles.attachmentInfo}>
-                      <span>첨부파일 {notice.attachments.length}개</span>
-                    </div>
-                  )}
-                </Link>
-              </li>
+                  <div className={styles.stats}>
+                    <span className={styles.stat}>📅 {formatDate(notice.publishedAt || notice.createdAt)}</span>
+                  </div>
+                </div>
+              </Link>
             ))}
-          </ul>
+          </div>
           
           {/* 페이지네이션 */}
           <Pagination
