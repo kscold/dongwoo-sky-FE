@@ -1,31 +1,31 @@
-"use client";
+"use client"
 
-import React, { useRef, useEffect } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import Image from "next/image";
-import Link from "next/link";
+import React, { useRef, useEffect } from "react"
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Navigation, Pagination, Autoplay } from "swiper/modules"
+import Image from "next/image"
+import Link from "next/link"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   HeartIcon,
   UserIcon,
-} from "@heroicons/react/24/outline";
+} from "@heroicons/react/24/outline"
 
-import { WorkShowcase } from "../../../types/work-showcase";
-import * as styles from "../../../styles/service/components/work-showcase-swiper.css.ts";
+import { WorkShowcase } from "../../../types/work-showcase"
+import * as styles from "../../../styles/service/components/work-showcase-swiper.css.ts"
 
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/autoplay";
+import "swiper/css"
+import "swiper/css/navigation"
+import "swiper/css/pagination"
+import "swiper/css/autoplay"
 
 interface WorkShowcaseSwiperProps {
-  workShowcases: WorkShowcase[];
-  title?: string;
-  description?: string;
-  showViewAll?: boolean;
-  viewAllLink?: string;
+  workShowcases: WorkShowcase[]
+  title?: string
+  description?: string
+  showViewAll?: boolean
+  viewAllLink?: string
 }
 
 const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
@@ -35,46 +35,45 @@ const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
   showViewAll = true,
   viewAllLink = "/work-showcases",
 }) => {
-  const navigationPrevRef = useRef<HTMLButtonElement>(null);
-  const navigationNextRef = useRef<HTMLButtonElement>(null);
-  const swiperRef = useRef<any>(null);
+  const navigationPrevRef = useRef<HTMLButtonElement>(null)
+  const navigationNextRef = useRef<HTMLButtonElement>(null)
+  const swiperRef = useRef<any>(null)
 
   const stripHtml = (html: string) => {
     if (typeof window !== "undefined") {
-      const div = document.createElement("div");
-      div.innerHTML = html;
-      return div.textContent || div.innerText || "";
+      const div = document.createElement("div")
+      div.innerHTML = html
+      return div.textContent || div.innerText || ""
     }
-    return html.replace(/<[^>]*>/g, "");
-  };
+    return html.replace(/<[^>]*>/g, "")
+  }
 
   const formatDate = (dateString: string | Date) => {
-    const date = new Date(dateString);
+    const date = new Date(dateString)
     return date.toLocaleDateString("ko-KR", {
       year: "numeric",
       month: "long",
       day: "numeric",
-    });
-  };
+    })
+  }
 
   // 데이터가 없으면 렌더링하지 않음
   if (!workShowcases || workShowcases.length === 0) {
-    return null;
+    return null
   }
 
   // 버튼 클릭 핸들러
   const handlePrevClick = () => {
     if (swiperRef.current) {
-      swiperRef.current.slidePrev();
+      swiperRef.current.slidePrev()
     }
-  };
+  }
 
   const handleNextClick = () => {
     if (swiperRef.current) {
-      swiperRef.current.slideNext();
+      swiperRef.current.slideNext()
     }
-  };
-
+  }
 
   return (
     <section className={styles.swiperSection}>
@@ -106,17 +105,18 @@ const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
             pauseOnMouseEnter: true,
           }}
           onSwiper={(swiper) => {
-            swiperRef.current = swiper;
+            swiperRef.current = swiper
           }}
           onBeforeInit={(swiper: any) => {
-            swiper.params.navigation.prevEl = navigationPrevRef.current;
-            swiper.params.navigation.nextEl = navigationNextRef.current;
+            swiper.params.navigation.prevEl = navigationPrevRef.current
+            swiper.params.navigation.nextEl = navigationNextRef.current
           }}
           breakpoints={{
-            640: { slidesPerView: 2, spaceBetween: 16 },
-            1024: { slidesPerView: 3, spaceBetween: 20 },
-            1280: { slidesPerView: 4, spaceBetween: 20 },
-            1536: { slidesPerView: 5, spaceBetween: 20 },
+            640: { slidesPerView: 1, spaceBetween: 16 },
+            768: { slidesPerView: 1, spaceBetween: 20 },
+            1024: { slidesPerView: 2, spaceBetween: 20 },
+            1280: { slidesPerView: 2, spaceBetween: 20 },
+            1536: { slidesPerView: 2, spaceBetween: 20 },
           }}
           className={styles.swiperWrapper}
           watchOverflow={true}
@@ -150,13 +150,13 @@ const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
                       style={{ objectFit: "cover" }}
                       className={styles.image}
                       onError={(e) => {
-                        const target = e.currentTarget;
-                        const parent = target.parentElement;
+                        const target = e.currentTarget
+                        const parent = target.parentElement
                         if (parent) {
                           parent.innerHTML =
                             '<div class="' +
                             styles.imagePlaceholder +
-                            '">🏗️</div>';
+                            '">🏗️</div>'
                         }
                       }}
                       loading="lazy"
@@ -203,7 +203,7 @@ const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
           ))}
         </Swiper>
 
-        <div className="work-showcase-pagination"></div>
+        <div className={`work-showcase-pagination ${styles.pagination}`}></div>
 
         <button
           ref={navigationPrevRef}
@@ -223,7 +223,7 @@ const WorkShowcaseSwiper: React.FC<WorkShowcaseSwiperProps> = ({
         </button>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default WorkShowcaseSwiper;
+export default WorkShowcaseSwiper

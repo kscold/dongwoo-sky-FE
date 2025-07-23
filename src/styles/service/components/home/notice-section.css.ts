@@ -12,29 +12,28 @@ const pulse = keyframes({
 })
 
 export const noticeSection = style({
+  maxWidth: "1400px",
+  margin: "0 auto",
+  padding: `${vars.space.md} ${vars.space.lg} 0`,
+  minHeight: "100vh",
+  width: "100%",
   paddingTop: vars.space.xxl,
   paddingBottom: vars.space.xxxxl,
   marginTop: vars.space.lg,
   marginBottom: vars.space.xxxxl,
-  backgroundColor: "transparent",
-  paddingLeft: vars.space.lg,
-  paddingRight: vars.space.lg,
   "@media": {
     "(max-width: 768px)": {
+      padding: `${vars.space.sm} ${vars.space.md} 0`,
       paddingTop: vars.space.xl,
       paddingBottom: vars.space.xxxl,
       marginTop: vars.space.md,
       marginBottom: vars.space.xxxl,
-      paddingLeft: vars.space.md,
-      paddingRight: vars.space.md,
     },
     "(max-width: 480px)": {
       paddingTop: vars.space.lg,
       paddingBottom: vars.space.xxl,
       marginTop: vars.space.sm,
       marginBottom: vars.space.xxl,
-      paddingLeft: vars.space.sm,
-      paddingRight: vars.space.sm,
     },
   },
 })
@@ -292,35 +291,42 @@ export const noticeList = style({
   margin: "0 auto",
   display: "flex",
   flexDirection: "column",
-  gap: 0,
+  gap: vars.space.md,
   backgroundColor: vars.colors.white,
   borderRadius: vars.radii.xl,
-  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08)",
   border: `1px solid ${vars.colors.gray[200]}`,
   overflow: "hidden",
+  backdropFilter: "blur(20px)",
   "@media": {
     "(max-width: 768px)": {
       borderRadius: vars.radii.lg,
       margin: `0 ${vars.space.md}`,
+      gap: vars.space.sm,
     },
   },
 })
 
 export const noticeItem = style({
   backgroundColor: "transparent",
-  borderBottom: `1px solid ${vars.colors.gray[200]}`,
-  transition: "all 0.2s ease-in-out",
+  borderBottom: `1px solid ${vars.colors.gray[100]}`,
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   selectors: {
     "&:last-child": {
       borderBottom: "none",
     },
     "&:hover": {
-      backgroundColor: vars.colors.gray[50],
+      backgroundColor: "rgba(59, 130, 246, 0.02)",
+      transform: "translateX(8px)",
     },
   },
   "@media": {
     "(max-width: 768px)": {
-      // 모바일에서도 동일한 스타일 유지
+      selectors: {
+        "&:hover": {
+          transform: "translateX(4px)",
+        },
+      },
     },
   },
 })
@@ -331,14 +337,31 @@ export const noticeLink = style({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: `${vars.space.lg} ${vars.space.xl}`,
+  padding: `${vars.space.xl} ${vars.space.xxl}`,
   gap: vars.space.lg,
-  transition: "all 0.2s ease-in-out",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  position: "relative",
+  "::before": {
+    content: "",
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: "4px",
+    background: "linear-gradient(180deg, #0E4DA4 0%, #00C288 100%)",
+    opacity: 0,
+    transition: "opacity 0.3s ease",
+  },
+  selectors: {
+    "&:hover::before": {
+      opacity: 1,
+    },
+  },
   "@media": {
     "(max-width: 768px)": {
       flexDirection: "column",
       alignItems: "flex-start",
-      padding: `${vars.space.md} ${vars.space.lg}`,
+      padding: `${vars.space.lg} ${vars.space.xl}`,
       gap: vars.space.sm,
     },
   },

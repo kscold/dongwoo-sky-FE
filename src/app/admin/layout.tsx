@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
 
 import { AdminProvider, useAdmin } from "../../common/context/AdminContext"
+import { AdminNavigation } from "../../common/components/admin/AdminNavigation"
 
 // 어드민 인증 체크 컴포넌트
 function AdminAuthCheck({ children }: { children: React.ReactNode }) {
@@ -36,7 +37,12 @@ function AdminAuthCheck({ children }: { children: React.ReactNode }) {
     )
   }
 
-  return <>{children}</>
+  return (
+    <>
+      <AdminNavigation />
+      {children}
+    </>
+  )
 }
 
 export default function AdminLayout({

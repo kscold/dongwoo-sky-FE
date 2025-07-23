@@ -1,20 +1,2 @@
-export const iconOptions = [
-  { value: "CheckCircleIcon", label: "체크 원" },
-  { value: "UserCircleIcon", label: "사용자" },
-  { value: "PhoneIcon", label: "전화" },
-  { value: "DocumentTextIcon", label: "문서" },
-  { value: "CalendarIcon", label: "달력" },
-  { value: "CheckBadgeIcon", label: "체크 뱃지" },
-  { value: "BriefcaseIcon", label: "서류 가방" },
-  { value: "WrenchScrewdriverIcon", label: "도구" },
-  { value: "BuildingOfficeIcon", label: "빌딩" },
-  { value: "PaintBrushIcon", label: "페인트 브러시" },
-  { value: "SparklesIcon", label: "반짝임" },
-  { value: "ArchiveBoxIcon", label: "상자" },
-  { value: "SunIcon", label: "태양" },
-  { value: "PlusCircleIcon", label: "플러스 원" },
-  { value: "ChatBubbleBottomCenterTextIcon", label: "말풍선" },
-  { value: "TruckIcon", label: "트럭" },
-  { value: "CreditCardIcon", label: "신용카드" },
-  { value: "ClipboardDocumentCheckIcon", label: "클립보드" },
-].sort((a, b) => a.label.localeCompare(b.label));
+// Icon options should come from backend/CMS
+export const iconOptions: { value: string; label: string }[] = []

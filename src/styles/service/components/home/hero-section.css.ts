@@ -345,11 +345,11 @@ const baseButton = style({
 export const primaryButton = style([
   baseButton,
   {
-    backgroundColor: vars.colors.secondary,
+    backgroundColor: vars.colors.primary,
     color: vars.colors.white,
     selectors: {
       "&:hover": {
-        backgroundColor: vars.colors.primary,
+        backgroundColor: vars.colors.primaryDark,
         color: vars.colors.white,
       },
     },

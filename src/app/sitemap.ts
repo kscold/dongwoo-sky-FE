@@ -4,13 +4,8 @@ import { MetadataRoute } from "next"
 const BASE_URL = "https://dongwoo-sky.vercel.app/"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = [
-    "",
-    "/pricing",
-    "/contact",
-    // 여기에 정적 경로를 추가합니다.
-    // 예: '/services'
-  ]
+  // Static routes should be configured from backend/CMS
+  const staticRoutes: string[] = []
 
   const routes = staticRoutes.map((route) => ({
     url: `${BASE_URL}${route}`,

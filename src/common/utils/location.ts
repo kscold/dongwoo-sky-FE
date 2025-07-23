@@ -128,7 +128,7 @@ export const generateBrandName = (
   locationInfo: LocationInfo | null
 ): string => {
   if (!locationInfo) {
-    return "어울림 스카이"
+    return ""
   }
 
   // 동 이름이 있으면 동 이름 사용 (예: "당산동" -> "어울림(당산) 스카이")
@@ -145,8 +145,8 @@ export const generateBrandName = (
     return brandName
   }
 
-  // 구/동 정보가 없어서 기본 브랜드명 사용
-  return "어울림 스카이"
+  // 구/동 정보가 없어서 빈 값 반환
+  return ""
 }
 
 /**
@@ -169,7 +169,7 @@ export const getLocationBasedBrandName = async (): Promise<string> => {
     return brandName
   } catch (error) {
     // 위치 기반 브랜드명 실패는 조용히 처리 - 사용자에게 방해되지 않도록
-    return "어울림 스카이" // 기본값
+    return "" // 빈 값 반환
   }
 }
 

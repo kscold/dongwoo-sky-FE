@@ -1,29 +1,31 @@
-import { style, globalStyle } from "@vanilla-extract/css";
+import { style, globalStyle } from "@vanilla-extract/css"
 
-import { vars } from "../../common/theme.css";
+import { vars } from "../../common/theme.css"
 
 export const swiperSection = style({
   width: "100%",
   maxWidth: "100vw",
-  marginTop: vars.space.xxxl, // xxxxl → xxxl로 줄이기
-  marginBottom: vars.space.xxxl, // xxxxl → xxxl로 줄이기
-  padding: `${vars.space.xxxl} ${vars.space.lg}`, // xxxxl → xxxl로 줄이기
+  marginTop: vars.space.xxxxl,
+  marginBottom: vars.space.xxxxl,
+  padding: `${vars.space.xxxxl} ${vars.space.xxl}`,
   overflow: "hidden",
   boxSizing: "border-box",
   backgroundColor: vars.colors.white,
+  borderRadius: vars.radii.xl,
+  boxShadow: vars.shadows.lg,
   "@media": {
-    "screen and (max-width: 768px)": {
-      marginTop: vars.space.xxl, // xxxl → xxl로 줄이기
-      marginBottom: vars.space.xxl, // xxxl → xxl로 줄이기
-      padding: `${vars.space.xl} ${vars.space.md}`, // xxxl → xl로 줄이기
+    "(max-width: 768px)": {
+      marginTop: vars.space.xxxl,
+      marginBottom: vars.space.xxxl,
+      padding: `${vars.space.xxxl} ${vars.space.xl}`,
     },
-    "screen and (max-width: 480px)": {
-      marginTop: vars.space.xl, // xxl → xl로 줄이기
-      marginBottom: vars.space.xl, // xxl → xl로 줄이기
-      padding: `${vars.space.lg} ${vars.space.sm}`, // xxl → lg로 줄이기
+    "(max-width: 480px)": {
+      marginTop: vars.space.xxl,
+      marginBottom: vars.space.xxl,
+      padding: `${vars.space.xxl} ${vars.space.lg}`,
     },
   },
-});
+})
 
 export const sectionHeader = style({
   display: "flex",
@@ -47,7 +49,7 @@ export const sectionHeader = style({
       marginBottom: vars.space.lg,
     },
   },
-});
+})
 
 export const sectionTitleContainer = style({
   flex: 1,
@@ -57,7 +59,7 @@ export const sectionTitleContainer = style({
       minWidth: "0",
     },
   },
-});
+})
 
 export const sectionTitle = style({
   fontSize: vars.fontSizes.xxxxl,
@@ -75,7 +77,7 @@ export const sectionTitle = style({
       marginBottom: vars.space.sm,
     },
   },
-});
+})
 
 export const sectionDescription = style({
   fontSize: vars.fontSizes.xl,
@@ -93,14 +95,14 @@ export const sectionDescription = style({
       lineHeight: "1.5",
     },
   },
-});
+})
 
 export const viewAllButton = style({
   display: "inline-flex",
   alignItems: "center",
   gap: vars.space.sm,
   padding: `${vars.space.md} ${vars.space.xl}`,
-  backgroundColor: vars.colors.secondary,
+  backgroundColor: vars.colors.primary,
   color: vars.colors.white,
   borderRadius: vars.radii.xl,
   textDecoration: "none",
@@ -115,7 +117,7 @@ export const viewAllButton = style({
     transition: "transform 0.3s ease",
   },
   ":hover": {
-    backgroundColor: "#008A7C",
+    backgroundColor: vars.colors.primaryDark,
     transform: "translateY(-3px)",
     boxShadow: vars.shadows.xl,
     borderColor: vars.colors.primary,
@@ -124,7 +126,7 @@ export const viewAllButton = style({
   //   transform: "translateX(4px)",
   // },
   "@media": {
-    "screen and (max-width: 768px)": {
+    "(max-width: 768px)": {
       alignSelf: "flex-start",
       padding: `${vars.space.sm} ${vars.space.lg}`,
       fontSize: vars.fontSizes.md,
@@ -132,13 +134,13 @@ export const viewAllButton = style({
       minHeight: "40px",
       boxShadow: vars.shadows.md,
     },
-    "screen and (max-width: 480px)": {
+    "(max-width: 480px)": {
       fontSize: vars.fontSizes.sm,
       minHeight: "36px",
       padding: `${vars.space.xs} ${vars.space.md}`,
     },
   },
-});
+})
 
 export const swiperContainer = style({
   position: "relative",
@@ -148,6 +150,8 @@ export const swiperContainer = style({
   maxWidth: "100%",
   overflow: "visible",
   boxSizing: "border-box",
+  height: "650px",
+  minHeight: "650px",
   "@media": {
     "screen and (max-width: 768px)": {
       paddingBottom: vars.space.lg,
@@ -160,65 +164,138 @@ export const swiperContainer = style({
       backdropFilter: "blur(5px)",
       border: "1px solid rgba(168, 85, 247, 0.05)",
       overflow: "hidden",
+      height: "610px",
+      minHeight: "610px",
     },
     "screen and (max-width: 480px)": {
       paddingBottom: vars.space.md,
       margin: "0 -8px",
       padding: "8px 8px",
+      height: "570px",
+      minHeight: "570px",
     },
   },
-});
+})
 
 export const swiperWrapper = style({
-  paddingBottom: vars.space.lg,
-  paddingTop: vars.space.md,
+  paddingBottom: vars.space.xxxl,
+  paddingTop: vars.space.xl,
   width: "100%",
   maxWidth: "100%",
   overflow: "visible",
   boxSizing: "border-box",
+  height: "620px",
+  minHeight: "620px",
+  position: "relative",
+  display: "flex",
+  flexDirection: "column",
   "@media": {
-    "screen and (max-width: 768px)": {
-      paddingBottom: vars.space.md,
-      paddingTop: vars.space.sm,
+    "(max-width: 768px)": {
+      paddingBottom: vars.space.xxl,
+      paddingTop: vars.space.lg,
       borderRadius: vars.radii.lg,
-      padding: "12px 0",
+      padding: "20px 0",
       overflow: "hidden",
+      height: "580px",
+      minHeight: "580px",
     },
-    "screen and (max-width: 480px)": {
-      paddingBottom: vars.space.sm,
-      padding: "8px 0",
+    "(max-width: 480px)": {
+      paddingBottom: vars.space.xl,
+      padding: "16px 0",
+      height: "540px",
+      minHeight: "540px",
     },
   },
-});
+})
+
+export const pagination = style({
+  position: "absolute",
+  bottom: vars.space.xl,
+  left: "50%",
+  transform: "translateX(-50%)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: vars.space.sm,
+  zIndex: 10,
+  height: "32px",
+  minHeight: "32px",
+  width: "auto",
+  maxWidth: "100%",
+  textAlign: "center",
+  "@media": {
+    "(max-width: 768px)": {
+      bottom: vars.space.lg,
+      height: "28px",
+      minHeight: "28px",
+    },
+  },
+})
+
+export const paginationBullet = style({
+  width: "12px",
+  height: "12px",
+  borderRadius: "50%",
+  backgroundColor: vars.colors.gray[300],
+  border: "none",
+  cursor: "pointer",
+  transition: "all 0.3s ease",
+  ":hover": {
+    backgroundColor: vars.colors.primary,
+    transform: "scale(1.2)",
+  },
+  "@media": {
+    "(max-width: 768px)": {
+      width: "10px",
+      height: "10px",
+    },
+  },
+})
+
+export const paginationBulletActive = style({
+  backgroundColor: vars.colors.primary,
+  transform: "scale(1.2)",
+})
 
 // 모든 화면에서 Swiper 요소들의 overflow를 visible로 설정
 globalStyle(`${swiperWrapper} .swiper`, {
   overflow: "visible",
-});
+})
 
 globalStyle(`${swiperWrapper} .swiper-wrapper`, {
   overflow: "visible",
-});
+})
 
 globalStyle(`${swiperWrapper} .swiper-slide`, {
   overflow: "visible",
-});
+})
 
 export const swiperSlide = style({
-  height: "auto",
+  height: "500px",
   display: "flex",
   width: "100%",
   maxWidth: "100%",
   boxSizing: "border-box",
-  minHeight: "400px",
+  minHeight: "500px",
   flexShrink: 0,
-});
+  "@media": {
+    "screen and (max-width: 768px)": {
+      height: "460px",
+      minHeight: "460px",
+    },
+    "screen and (max-width: 480px)": {
+      height: "420px",
+      minHeight: "420px",
+    },
+  },
+})
 
 export const reviewCard = style({
   display: "block",
   width: "100%",
-  minHeight: "400px",
-  background: "rgba(255, 255, 255, 0.95)",
+  height: "500px",
+  minHeight: "500px",
+  background: "rgba(255, 255, 255, 0.9)",
   backdropFilter: "blur(20px)",
   borderRadius: vars.radii.xl,
   overflow: "hidden",
@@ -230,35 +307,39 @@ export const reviewCard = style({
   ":hover": {
     transform: "translateY(-4px)",
     boxShadow: "0 12px 32px rgba(0, 0, 0, 0.12)",
-    borderColor: "rgba(168, 85, 247, 0.3)",
+    borderColor: "rgba(59, 130, 246, 0.3)",
   },
   "@media": {
     "screen and (max-width: 768px)": {
+      height: "460px",
+      minHeight: "460px",
       borderRadius: vars.radii.xl,
-      background: "rgba(255, 255, 255, 0.97)",
+      background: "rgba(255, 255, 255, 0.95)",
       backdropFilter: "blur(30px)",
       boxShadow:
-        "0 8px 32px rgba(168, 85, 247, 0.08), 0 4px 16px rgba(236, 72, 153, 0.04)",
+        "0 8px 32px rgba(59, 130, 246, 0.08), 0 4px 16px rgba(168, 85, 247, 0.04)",
       border: "1px solid rgba(255, 255, 255, 0.4)",
       transform: "scale(1.02)",
       ":hover": {
         transform: "translateY(-6px) scale(1.03)",
         boxShadow:
-          "0 16px 48px rgba(168, 85, 247, 0.12), 0 8px 24px rgba(236, 72, 153, 0.08)",
-        borderColor: "rgba(168, 85, 247, 0.2)",
+          "0 16px 48px rgba(59, 130, 246, 0.12), 0 8px 24px rgba(168, 85, 247, 0.08)",
+        borderColor: "rgba(59, 130, 246, 0.2)",
       },
     },
     "screen and (max-width: 480px)": {
+      height: "420px",
+      minHeight: "420px",
       borderRadius: vars.radii.lg,
       transform: "scale(1.01)",
       ":hover": {
         transform: "translateY(-4px) scale(1.02)",
         boxShadow:
-          "0 12px 32px rgba(168, 85, 247, 0.1), 0 6px 16px rgba(236, 72, 153, 0.06)",
+          "0 12px 32px rgba(59, 130, 246, 0.1), 0 6px 16px rgba(168, 85, 247, 0.06)",
       },
     },
   },
-});
+})
 
 export const imageContainer = style({
   position: "relative",
@@ -281,7 +362,7 @@ export const imageContainer = style({
       height: "140px",
     },
   },
-});
+})
 
 export const image = style({
   width: "100%",
@@ -298,7 +379,7 @@ export const image = style({
       borderRadius: `${vars.radii.lg} ${vars.radii.lg} 0 0`,
     },
   },
-});
+})
 
 export const imagePlaceholder = style({
   width: "100%",
@@ -309,7 +390,7 @@ export const imagePlaceholder = style({
   fontSize: "3rem",
   color: vars.colors.secondary,
   backgroundColor: `linear-gradient(135deg, ${vars.colors.primaryLight} 0%, ${vars.colors.secondary} 100%)`,
-});
+})
 
 export const cardContent = style({
   padding: vars.space.lg,
@@ -329,7 +410,7 @@ export const cardContent = style({
       gap: vars.space.xs,
     },
   },
-});
+})
 
 export const cardHeader = style({
   display: "flex",
@@ -337,7 +418,7 @@ export const cardHeader = style({
   alignItems: "flex-start",
   marginBottom: vars.space.sm,
   gap: vars.space.md,
-});
+})
 
 export const cardTitle = style({
   fontSize: vars.fontSizes.lg,
@@ -361,26 +442,26 @@ export const cardTitle = style({
       lineHeight: "1.3",
     },
   },
-});
+})
 
 export const rating = style({
   display: "flex",
   gap: "2px",
   alignItems: "center",
-});
+})
 
 export const starIcon = style({
   width: "16px",
   height: "16px",
   fill: "currentColor",
-});
+})
 
 export const meta = style({
   display: "flex",
   flexDirection: "column",
   gap: vars.space.xs,
   marginBottom: vars.space.sm,
-});
+})
 
 export const metaItem = style({
   display: "flex",
@@ -388,17 +469,17 @@ export const metaItem = style({
   gap: vars.space.xs,
   fontSize: vars.fontSizes.sm,
   color: vars.colors.textLight,
-});
+})
 
 export const metaIcon = style({
   width: "16px",
   height: "16px",
   color: vars.colors.secondary,
-});
+})
 
 export const serviceIcon = style({
   fontSize: vars.fontSizes.sm,
-});
+})
 
 export const description = style({
   fontSize: vars.fontSizes.sm,
@@ -425,7 +506,7 @@ export const description = style({
       WebkitLineClamp: 2,
     },
   },
-});
+})
 
 export const footer = style({
   display: "flex",
@@ -434,12 +515,12 @@ export const footer = style({
   marginTop: "auto",
   paddingTop: vars.space.sm,
   borderTop: `1px solid ${vars.colors.gray[200]}`,
-});
+})
 
 export const date = style({
   fontSize: vars.fontSizes.xs,
   color: vars.colors.textLight,
-});
+})
 
 export const navButton = style({
   position: "absolute",
@@ -477,7 +558,7 @@ export const navButton = style({
       top: "85px", // imageContainer 높이 140px의 정중앙 (70px + 5px 조정)
     },
   },
-});
+})
 
 export const prevButton = style({
   left: "-24px",
@@ -486,7 +567,7 @@ export const prevButton = style({
       left: "20px", // 좌측 여백 늘리기
     },
   },
-});
+})
 
 export const nextButton = style({
   right: "-24px",
@@ -495,16 +576,16 @@ export const nextButton = style({
       right: "20px", // 우측 여백 늘리기
     },
   },
-});
+})
 
 export const navIcon = style({
   width: "24px",
   height: "24px",
-  color: vars.colors.secondary,
+  color: vars.colors.primary,
   "@media": {
     "screen and (max-width: 768px)": {
       width: "20px",
       height: "20px",
     },
   },
-});
+})

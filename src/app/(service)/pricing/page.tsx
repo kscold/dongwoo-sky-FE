@@ -68,55 +68,63 @@ export default function PricingPage() {
   }
 
   const handleContactClick = () => {
-    const phoneNumber = homePageData?.contactInfo?.contactPhoneNumber || "010-1234-5678"
+    const phoneNumber =
+      homePageData?.contactInfo?.contactPhoneNumber || "010-1234-5678"
     window.open(`tel:${phoneNumber}`, "_self")
   }
 
   return (
-    <div className={styles.container}>
-      <PricingHeroSection settings={settings} />
-
-      <EquipmentSelector
-        activeEquipments={activeEquipments}
-        selectedId={selectedId}
-        onEquipmentSelect={handleEquipmentSelect}
-        settings={settings}
-        scrollLeftAriaLabel={pricingSetting?.scrollLeftAriaLabel}
-        scrollRightAriaLabel={pricingSetting?.scrollRightAriaLabel}
-      />
-
-      <WorkingHoursSelector
-        selectedEquipment={selectedEquipment}
-        workingHours={workingHours}
-        onWorkingHoursChange={setWorkingHours}
-        settings={settings}
-        timeSelectionLabel={pricingSetting?.timeSelectionLabel}
-        hourUnit={pricingSetting?.hourUnit}
-      />
-
-      <div className={styles.resultSection}>
-        <PriceCalculatorCard
-          selectedEquipment={selectedEquipment}
-          workingHours={workingHours}
-          estimatedPrice={estimatedPrice}
-          discountedPrice={discountedPrice}
-          savings={savings}
+    <div className={styles.pageWrapper}>
+      <div className={styles.container}>
+        <PricingHeroSection settings={settings} />
+        <EquipmentSelector
+          activeEquipments={activeEquipments}
+          selectedId={selectedId}
+          onEquipmentSelect={handleEquipmentSelect}
           settings={settings}
-          infoNotes={pricingSetting?.infoNotes}
-          baseHoursLabel={pricingSetting?.baseHoursLabel}
-          additionalHoursLabel={pricingSetting?.additionalHoursLabel}
-          hourUnit={pricingSetting?.hourUnit}
-          hourlyRateLabel={pricingSetting?.hourlyRateLabel}
-          onContactClick={handleContactClick}
+          scrollLeftAriaLabel={pricingSetting?.scrollLeftAriaLabel}
+          scrollRightAriaLabel={pricingSetting?.scrollRightAriaLabel}
         />
-
-        {selectedEquipment && (
-          <EquipmentDetailCard
-            equipment={selectedEquipment}
-            title={settings.detailCardTitle}
-            specificationsLabel={pricingSetting?.specificationsLabel}
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>{settings.timeSectionTitle}</h2>
+          <p className={styles.sectionDescription}>
+            {settings.timeSectionDescription}
+          </p>
+        </div>
+        <div className={styles.resultSection}>
+          <WorkingHoursSelector
+            selectedEquipment={selectedEquipment}
+            workingHours={workingHours}
+            onWorkingHoursChange={setWorkingHours}
+            settings={settings}
+            timeSelectionLabel={pricingSetting?.timeSelectionLabel}
+            hourUnit={pricingSetting?.hourUnit}
+            onContactClick={handleContactClick}
           />
-        )}
+
+          <PriceCalculatorCard
+            selectedEquipment={selectedEquipment}
+            workingHours={workingHours}
+            estimatedPrice={estimatedPrice}
+            discountedPrice={discountedPrice}
+            savings={savings}
+            settings={settings}
+            infoNotes={pricingSetting?.infoNotes}
+            baseHoursLabel={pricingSetting?.baseHoursLabel}
+            additionalHoursLabel={pricingSetting?.additionalHoursLabel}
+            hourUnit={pricingSetting?.hourUnit}
+            hourlyRateLabel={pricingSetting?.hourlyRateLabel}
+            onContactClick={handleContactClick}
+          />
+
+          {selectedEquipment && (
+            <EquipmentDetailCard
+              equipment={selectedEquipment}
+              title={settings.detailCardTitle}
+              specificationsLabel={pricingSetting?.specificationsLabel}
+            />
+          )}
+        </div>
       </div>
     </div>
   )

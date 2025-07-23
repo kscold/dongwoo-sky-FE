@@ -28,23 +28,20 @@ export const usePricingSettingForm = () => {
 
   useEffect(() => {
     if (pricingSetting) {
-      const defaultNotes = [
-        "VAT 별도, 현장 상황에 따라 변동될 수 있습니다",
-        "직접 문의 시 현장 조건을 고려한 정확한 견적을 제공합니다",
-        "장기 이용 시 추가 할인 혜택이 있습니다",
-      ]
+      // Default notes should come from backend, use empty array if none provided
+      const defaultNotes: string[] = []
 
       reset({
         ...pricingSetting,
         infoNotes: pricingSetting.infoNotes || defaultNotes,
-        timeSelectionLabel: pricingSetting.timeSelectionLabel || "선택한 작업 시간",
-        hourUnit: pricingSetting.hourUnit || "시간",
-        baseHoursLabel: pricingSetting.baseHoursLabel || "기본",
-        additionalHoursLabel: pricingSetting.additionalHoursLabel || "추가",
-        hourlyRateLabel: pricingSetting.hourlyRateLabel || "시간당",
-        specificationsLabel: pricingSetting.specificationsLabel || "주요 사양",
-        scrollLeftAriaLabel: pricingSetting.scrollLeftAriaLabel || "왼쪽으로 스크롤",
-        scrollRightAriaLabel: pricingSetting.scrollRightAriaLabel || "오른쪽으로 스크롤",
+        timeSelectionLabel: pricingSetting.timeSelectionLabel || "",
+        hourUnit: pricingSetting.hourUnit || "",
+        baseHoursLabel: pricingSetting.baseHoursLabel || "",
+        additionalHoursLabel: pricingSetting.additionalHoursLabel || "",
+        hourlyRateLabel: pricingSetting.hourlyRateLabel || "",
+        specificationsLabel: pricingSetting.specificationsLabel || "",
+        scrollLeftAriaLabel: pricingSetting.scrollLeftAriaLabel || "",
+        scrollRightAriaLabel: pricingSetting.scrollRightAriaLabel || "",
       })
     }
   }, [pricingSetting, reset])

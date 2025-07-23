@@ -1,30 +1,30 @@
-"use client";
+"use client"
 
-import React, { useRef, useEffect } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import Image from "next/image";
-import Link from "next/link";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/autoplay";
+import React, { useRef, useEffect } from "react"
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Navigation, Pagination, Autoplay } from "swiper/modules"
+import Image from "next/image"
+import Link from "next/link"
+import "swiper/css"
+import "swiper/css/navigation"
+import "swiper/css/pagination"
+import "swiper/css/autoplay"
 
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   StarIcon,
   UserIcon,
-} from "@heroicons/react/24/outline";
-import { CustomerReview } from "../../../types/customer-review";
-import * as styles from "../../../styles/service/components/customer-review-swiper.css";
+} from "@heroicons/react/24/outline"
+import { CustomerReview } from "../../../types/customer-review"
+import * as styles from "../../../styles/service/components/customer-review-swiper.css"
 
 interface CustomerReviewSwiperProps {
-  customerReviews: CustomerReview[];
-  title?: string;
-  description?: string;
-  showViewAll?: boolean;
-  viewAllLink?: string;
+  customerReviews: CustomerReview[]
+  title?: string
+  description?: string
+  showViewAll?: boolean
+  viewAllLink?: string
 }
 
 const CustomerReviewSwiper: React.FC<CustomerReviewSwiperProps> = ({
@@ -34,27 +34,27 @@ const CustomerReviewSwiper: React.FC<CustomerReviewSwiperProps> = ({
   showViewAll = true,
   viewAllLink = "/customer-reviews",
 }) => {
-  const navigationPrevRef = useRef<HTMLButtonElement>(null);
-  const navigationNextRef = useRef<HTMLButtonElement>(null);
-  const swiperRef = useRef<any>(null);
+  const navigationPrevRef = useRef<HTMLButtonElement>(null)
+  const navigationNextRef = useRef<HTMLButtonElement>(null)
+  const swiperRef = useRef<any>(null)
 
   const stripHtml = (html: string) => {
     if (typeof window !== "undefined") {
-      const div = document.createElement("div");
-      div.innerHTML = html;
-      return div.textContent || div.innerText || "";
+      const div = document.createElement("div")
+      div.innerHTML = html
+      return div.textContent || div.innerText || ""
     }
-    return html.replace(/<[^>]*>/g, "");
-  };
+    return html.replace(/<[^>]*>/g, "")
+  }
 
   const formatDate = (dateString: string | Date) => {
-    const date = new Date(dateString);
+    const date = new Date(dateString)
     return date.toLocaleDateString("ko-KR", {
       year: "numeric",
       month: "long",
       day: "numeric",
-    });
-  };
+    })
+  }
 
   const renderRating = (rating: number) => (
     <div className={styles.rating}>
@@ -66,26 +66,25 @@ const CustomerReviewSwiper: React.FC<CustomerReviewSwiperProps> = ({
         />
       ))}
     </div>
-  );
+  )
 
   // 데이터가 없으면 렌더링하지 않음
   if (!customerReviews || customerReviews.length === 0) {
-    return null;
+    return null
   }
 
   // 버튼 클릭 핸들러
   const handlePrevClick = () => {
     if (swiperRef.current) {
-      swiperRef.current.slidePrev();
+      swiperRef.current.slidePrev()
     }
-  };
+  }
 
   const handleNextClick = () => {
     if (swiperRef.current) {
-      swiperRef.current.slideNext();
+      swiperRef.current.slideNext()
     }
-  };
-
+  }
 
   return (
     <section className={styles.swiperSection}>
@@ -117,17 +116,18 @@ const CustomerReviewSwiper: React.FC<CustomerReviewSwiperProps> = ({
             pauseOnMouseEnter: true,
           }}
           onSwiper={(swiper) => {
-            swiperRef.current = swiper;
+            swiperRef.current = swiper
           }}
           onBeforeInit={(swiper: any) => {
-            swiper.params.navigation.prevEl = navigationPrevRef.current;
-            swiper.params.navigation.nextEl = navigationNextRef.current;
+            swiper.params.navigation.prevEl = navigationPrevRef.current
+            swiper.params.navigation.nextEl = navigationNextRef.current
           }}
           breakpoints={{
-            640: { slidesPerView: 2, spaceBetween: 16 },
-            1024: { slidesPerView: 3, spaceBetween: 20 },
-            1280: { slidesPerView: 4, spaceBetween: 20 },
-            1536: { slidesPerView: 5, spaceBetween: 20 },
+            640: { slidesPerView: 1, spaceBetween: 16 },
+            768: { slidesPerView: 1, spaceBetween: 20 },
+            1024: { slidesPerView: 2, spaceBetween: 20 },
+            1280: { slidesPerView: 2, spaceBetween: 20 },
+            1536: { slidesPerView: 2, spaceBetween: 20 },
           }}
           className={styles.swiperWrapper}
           watchOverflow={true}
@@ -161,13 +161,13 @@ const CustomerReviewSwiper: React.FC<CustomerReviewSwiperProps> = ({
                       style={{ objectFit: "cover" }}
                       className={styles.image}
                       onError={(e) => {
-                        const target = e.currentTarget;
-                        const parent = target.parentElement;
+                        const target = e.currentTarget
+                        const parent = target.parentElement
                         if (parent) {
                           parent.innerHTML =
                             '<div class="' +
                             styles.imagePlaceholder +
-                            '">⭐</div>';
+                            '">⭐</div>'
                         }
                       }}
                       loading="lazy"
@@ -211,7 +211,9 @@ const CustomerReviewSwiper: React.FC<CustomerReviewSwiperProps> = ({
           ))}
         </Swiper>
 
-        <div className="customer-review-pagination"></div>
+        <div
+          className={`customer-review-pagination ${styles.pagination}`}
+        ></div>
 
         <button
           ref={navigationPrevRef}
@@ -231,7 +233,7 @@ const CustomerReviewSwiper: React.FC<CustomerReviewSwiperProps> = ({
         </button>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default CustomerReviewSwiper;
+export default CustomerReviewSwiper

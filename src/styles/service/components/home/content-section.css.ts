@@ -12,15 +12,62 @@ const pulse = keyframes({
 })
 
 export const contentSection = style({
-  padding: "4rem 0",
-  backgroundColor: vars.colors.background,
-
+  maxWidth: "1400px",
+  margin: "0 auto",
+  padding: `${vars.space.md} ${vars.space.lg} 0`,
+  minHeight: "100vh",
+  background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
+  width: "100%",
+  paddingTop: "4rem",
+  paddingBottom: "4rem",
   "@media": {
     "(max-width: 768px)": {
-      padding: "3rem 0",
+      padding: `${vars.space.sm} ${vars.space.md} 0`,
+      paddingTop: "3rem",
+      paddingBottom: "3rem",
     },
     "(max-width: 480px)": {
-      padding: "2rem 0",
+      paddingTop: "2rem",
+      paddingBottom: "2rem",
+    },
+  },
+})
+
+export const contentWrapper = style({
+  background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
+  width: "100%",
+  padding: `${vars.space.xxxxl} 0`,
+  "@media": {
+    "(max-width: 768px)": {
+      padding: `${vars.space.xxxl} 0`,
+    },
+    "(max-width: 480px)": {
+      padding: `${vars.space.xxl} 0`,
+    },
+  },
+})
+
+export const swiperContainer = style({
+  display: "flex",
+  gap: vars.space.xxxxl,
+  padding: `${vars.space.xxxxl} ${vars.space.xxxl}`,
+  maxWidth: "1600px",
+  margin: "0 auto",
+  "@media": {
+    "(max-width: 1024px)": {
+      flexDirection: "column",
+      gap: vars.space.xxxl,
+      padding: `${vars.space.xxxl} ${vars.space.xl}`,
+      maxWidth: "1400px",
+    },
+    "(max-width: 768px)": {
+      padding: `${vars.space.xxl} ${vars.space.lg}`,
+      gap: vars.space.xxl,
+      maxWidth: "100%",
+    },
+    "(max-width: 480px)": {
+      padding: `${vars.space.xl} ${vars.space.md}`,
+      gap: vars.space.xl,
     },
   },
 })

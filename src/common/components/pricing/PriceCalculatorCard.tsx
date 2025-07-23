@@ -40,11 +40,15 @@ export const PriceCalculatorCard: React.FC<PriceCalculatorCardProps> = ({
   additionalHoursLabel = "추가",
   hourUnit = "시간",
   hourlyRateLabel = "시간당",
-  onContactClick
+  onContactClick,
 }) => {
   const baseHours = selectedEquipment?.baseHours || 4
   const basePrice = selectedEquipment?.basePrice || 0
   const hourlyRate = selectedEquipment?.hourlyRate || 0
+
+  // 추가 시간 계산
+  const additionalHours = Math.max(0, workingHours - baseHours)
+  const additionalPrice = additionalHours * hourlyRate
 
   return (
     <div className={styles.priceCard}>
@@ -77,19 +81,22 @@ export const PriceCalculatorCard: React.FC<PriceCalculatorCardProps> = ({
       <div className={styles.priceBreakdown}>
         <div className={styles.breakdownItem}>
           <span>
-            {baseHoursLabel} {baseHours}{hourUnit}
+            {baseHoursLabel} {baseHours}
+            {hourUnit}
           </span>
           <span>{basePrice.toLocaleString()}원</span>
         </div>
-        {workingHours > baseHours && (
+        {additionalHours > 0 && (
           <div className={styles.breakdownItem}>
             <span>
-              {additionalHoursLabel} {workingHours - baseHours}{hourUnit}(
-              {hourlyRateLabel} {hourlyRate.toLocaleString()}원)
+              {additionalHoursLabel} {additionalHours}
+              {hourUnit}
+              <br />
+              <small>
+                ({hourlyRateLabel} {hourlyRate.toLocaleString()}원)
+              </small>
             </span>
-            <span>
-              {((workingHours - baseHours) * hourlyRate).toLocaleString()}원
-            </span>
+            <span>{additionalPrice.toLocaleString()}원</span>
           </div>
         )}
       </div>
@@ -101,13 +108,6 @@ export const PriceCalculatorCard: React.FC<PriceCalculatorCardProps> = ({
             <p key={index}>• {note}</p>
           ))}
         </div>
-      </div>
-
-      <div className={styles.ctaSection}>
-        <button className={styles.ctaButton} onClick={onContactClick}>
-          {settings.ctaButtonText}
-        </button>
-        <p className={styles.ctaSubtext}>{settings.ctaSubtext}</p>
       </div>
     </div>
   )

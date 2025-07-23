@@ -21,16 +21,16 @@ export const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
   onEquipmentSelect,
   settings,
   scrollLeftAriaLabel = "왼쪽으로 스크롤",
-  scrollRightAriaLabel = "오른쪽으로 스크롤"
+  scrollRightAriaLabel = "오른쪽으로 스크롤",
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const scrollToEquipment = (direction: "left" | "right") => {
     const container = scrollRef.current
     if (!container) return
-    
+
     const scrollAmount = 300
-    
+
     if (direction === "left") {
       container.scrollBy({
         left: -scrollAmount,
@@ -48,11 +48,9 @@ export const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
     <div className={styles.sectionWrapper}>
       <div className={styles.sectionHeader}>
         <h2 className={styles.sectionTitle}>
-          <span className={styles.stepNumber}>1</span>
           {settings.equipmentSectionTitle}
         </h2>
         <p className={styles.sectionDescription}>
-          {activeEquipments.length}
           {settings.equipmentSectionDescription}
         </p>
       </div>
@@ -76,9 +74,7 @@ export const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
                     ? styles.equipmentCardActive
                     : ""
                 }`}
-                onClick={() =>
-                  onEquipmentSelect(equipment._id || equipment.id)
-                }
+                onClick={() => onEquipmentSelect(equipment._id || equipment.id)}
               >
                 <div className={styles.equipmentImageWrapper}>
                   {equipment.imageUrl ? (
@@ -91,9 +87,7 @@ export const EquipmentSelector: React.FC<EquipmentSelectorProps> = ({
                       style={{ objectFit: "cover" }}
                     />
                   ) : (
-                    <div className={styles.equipmentImagePlaceholder}>
-                      🚧
-                    </div>
+                    <div className={styles.equipmentImagePlaceholder}>🚧</div>
                   )}
                 </div>
                 <div className={styles.equipmentInfo}>
