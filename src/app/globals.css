@@ -18,10 +18,10 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
   color: #333;
-  background-color: #fff;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   box-sizing: border-box;
+  min-height: 100vh;
 }
-
 
 /* 기본 요소들의 스타일 리셋 */
 h1,
@@ -54,7 +54,6 @@ img {
   height: auto;
 }
 
-
 /* 모달 애니메이션 키프레임 */
 @keyframes fadeIn {
   0% {
@@ -79,7 +78,6 @@ img {
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     transform: scale(1);
@@ -100,4 +98,30 @@ img {
   100% {
     background-position: 200% 0;
   }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* 전체적인 일체감을 위한 추가 스타일 */
+.main-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+}
+
+.glass-effect {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }

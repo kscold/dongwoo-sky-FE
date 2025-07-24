@@ -20,6 +20,17 @@ export const contentSection = style({
   width: "100%",
   paddingTop: "4rem",
   paddingBottom: "4rem",
+  position: "relative",
+  "::before": {
+    content: "",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%)",
+    pointerEvents: "none",
+  },
   "@media": {
     "(max-width: 768px)": {
       padding: `${vars.space.sm} ${vars.space.md} 0`,
@@ -37,6 +48,17 @@ export const contentWrapper = style({
   background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
   width: "100%",
   padding: `${vars.space.xxxxl} 0`,
+  position: "relative",
+  "::before": {
+    content: "",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%)",
+    pointerEvents: "none",
+  },
   "@media": {
     "(max-width: 768px)": {
       padding: `${vars.space.xxxl} 0`,
@@ -53,6 +75,8 @@ export const swiperContainer = style({
   padding: `${vars.space.xxxxl} ${vars.space.xxxl}`,
   maxWidth: "1600px",
   margin: "0 auto",
+  position: "relative",
+  zIndex: 1,
   "@media": {
     "(max-width: 1024px)": {
       flexDirection: "column",
@@ -104,8 +128,9 @@ export const sectionHeader = style({
 export const sectionTitle = style({
   fontSize: "2.5rem",
   fontWeight: "bold",
-  color: vars.colors.text,
+  color: "#1e293b",
   marginBottom: "1rem",
+  textShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
 
   "@media": {
     "(max-width: 768px)": {
@@ -121,8 +146,9 @@ export const sectionTitle = style({
 
 export const sectionSubtitle = style({
   fontSize: "1.125rem",
-  color: vars.colors.textLight,
+  color: "#64748b",
   lineHeight: 1.6,
+  textShadow: "none",
 })
 
 export const contentGrid = style({
@@ -133,16 +159,17 @@ export const contentGrid = style({
 })
 
 export const contentCard = style({
-  backgroundColor: "white",
-  borderRadius: "12px",
+  backgroundColor: "rgba(255, 255, 255, 0.95)",
+  backdropFilter: "blur(20px)",
+  borderRadius: "20px",
   overflow: "hidden",
-  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+  border: "1px solid rgba(255, 255, 255, 0.2)",
   transition: "all 0.3s ease",
-  border: "1px solid #e5e7eb",
 
   ":hover": {
-    transform: "translateY(-4px)",
-    boxShadow: "0 8px 25px rgba(0, 0, 0, 0.15)",
+    transform: "translateY(-8px)",
+    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.15)",
   },
 })
 
@@ -167,11 +194,11 @@ export const cardImage = style({
 export const cardImagePlaceholder = style({
   width: "100%",
   height: "100%",
-  backgroundColor: "#f3f4f6",
+  backgroundColor: "#e2e8f0",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  color: "#9ca3af",
+  color: "white",
   fontSize: "2rem",
 })
 
@@ -182,7 +209,7 @@ export const cardContent = style({
 export const cardTitle = style({
   fontSize: "1.25rem",
   fontWeight: "600",
-  color: vars.colors.text,
+  color: "#1e293b",
   marginBottom: "0.5rem",
   lineHeight: 1.4,
   display: "-webkit-box",
@@ -193,7 +220,7 @@ export const cardTitle = style({
 
 export const cardMeta = style({
   fontSize: "0.875rem",
-  color: vars.colors.textLight,
+  color: "#64748b",
   marginBottom: "1rem",
   display: "flex",
   flexWrap: "wrap",
@@ -208,7 +235,7 @@ export const cardMetaItem = style({
 
 export const cardDescription = style({
   fontSize: "0.95rem",
-  color: vars.colors.textLight,
+  color: "#64748b",
   lineHeight: 1.6,
   display: "-webkit-box",
   WebkitLineClamp: 3,
@@ -222,17 +249,17 @@ export const cardActions = style({
   justifyContent: "space-between",
   alignItems: "center",
   paddingTop: "1rem",
-  borderTop: "1px solid #e5e7eb",
+  borderTop: "1px solid rgba(226, 232, 240, 0.6)",
 })
 
 export const cardButton = style({
   padding: "0.5rem 1rem",
   fontSize: "0.875rem",
   fontWeight: "500",
-  color: vars.colors.primary,
+  color: "#475569",
   backgroundColor: "transparent",
-  border: `1px solid ${vars.colors.primary}`,
-  borderRadius: "6px",
+  border: "1px solid #475569",
+  borderRadius: "8px",
   cursor: "pointer",
   transition: "all 0.2s ease",
   textDecoration: "none",
@@ -241,7 +268,7 @@ export const cardButton = style({
   gap: "0.5rem",
 
   ":hover": {
-    backgroundColor: vars.colors.primary,
+    backgroundColor: "#e2e8f0",
     color: "white",
   },
 })
@@ -250,7 +277,7 @@ export const cardStats = style({
   display: "flex",
   gap: "1rem",
   fontSize: "0.875rem",
-  color: vars.colors.textLight,
+  color: "#64748b",
 })
 
 export const cardStat = style({
@@ -261,7 +288,7 @@ export const cardStat = style({
   transition: "color 0.2s ease",
 
   ":hover": {
-    color: vars.colors.primary,
+    color: "#475569",
   },
 })
 
@@ -284,42 +311,46 @@ export const viewMoreButton = style({
   fontSize: "1rem",
   fontWeight: "600",
   color: "white",
-  backgroundColor: vars.colors.primary,
-  border: "none",
-  borderRadius: "8px",
+  backgroundColor: "rgba(255, 255, 255, 0.2)",
+  border: "2px solid rgba(255, 255, 255, 0.3)",
+  borderRadius: "12px",
   cursor: "pointer",
   transition: "all 0.3s ease",
   textDecoration: "none",
   display: "inline-flex",
   alignItems: "center",
   gap: "0.5rem",
+  backdropFilter: "blur(10px)",
 
   ":hover": {
-    backgroundColor: vars.colors.primaryDark,
+    backgroundColor: "#f1f5f9",
+    color: "#1e293b",
     transform: "translateY(-2px)",
+    boxShadow: "0 8px 25px rgba(0, 0, 0, 0.15)",
   },
 })
 
 export const emptyState = style({
   textAlign: "center",
   padding: "3rem 1rem",
-  color: vars.colors.textLight,
+  color: "#64748b",
   fontSize: "1.125rem",
 })
 
 export const loadingState = style({
   textAlign: "center",
   padding: "2rem 1rem",
-  color: vars.colors.textLight,
+  color: "#64748b",
 })
 
 export const errorState = style({
   textAlign: "center",
   padding: "2rem 1rem",
   color: "#ef4444",
-  backgroundColor: "#fef2f2",
-  borderRadius: "8px",
+  backgroundColor: "rgba(254, 242, 242, 0.9)",
+  borderRadius: "12px",
   margin: "1rem 0",
+  backdropFilter: "blur(10px)",
 })
 
 // 어울림 스카이 소식 새로운 스타일
@@ -343,20 +374,21 @@ export const newsContainer = style({
 })
 
 export const newsSection = style({
-  backgroundColor: "white",
-  borderRadius: "16px",
+  backgroundColor: "rgba(255, 255, 255, 0.95)",
+  backdropFilter: "blur(20px)",
+  borderRadius: "20px",
   padding: "1.5rem",
-  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-  border: "1px solid #e5e7eb",
+  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+  border: "1px solid rgba(255, 255, 255, 0.2)",
 
   "@media": {
     "(max-width: 768px)": {
       padding: "1.25rem",
-      borderRadius: "12px",
+      borderRadius: "16px",
     },
     "(max-width: 480px)": {
       padding: "1rem",
-      borderRadius: "8px",
+      borderRadius: "12px",
     },
   },
 })
@@ -384,7 +416,7 @@ export const newsSectionHeader = style({
 export const newsSectionTitle = style({
   fontSize: "1.5rem",
   fontWeight: "600",
-  color: vars.colors.text,
+  color: "#1e293b",
 
   "@media": {
     "(max-width: 768px)": {
@@ -400,7 +432,7 @@ export const plusButton = style({
   width: "32px",
   height: "32px",
   borderRadius: "50%",
-  backgroundColor: vars.colors.primary,
+  backgroundColor: "#e2e8f0",
   color: "white",
   display: "flex",
   alignItems: "center",
@@ -411,7 +443,7 @@ export const plusButton = style({
   transition: "all 0.3s ease",
 
   ":hover": {
-    backgroundColor: vars.colors.primaryDark,
+    backgroundColor: "#334155",
     transform: "scale(1.1)",
   },
 })
@@ -435,9 +467,9 @@ export const newsCard = style({
   display: "flex",
   gap: "1rem",
   padding: "1rem",
-  borderRadius: "8px",
+  borderRadius: "12px",
   backgroundColor: "#f9fafb",
-  border: "1px solid #e5e7eb",
+  border: "1px solid rgba(226, 232, 240, 0.6)",
   textDecoration: "none",
   color: "inherit",
   transition: "all 0.3s ease",
@@ -455,7 +487,7 @@ export const newsCard = style({
     "(max-width: 480px)": {
       gap: "0.5rem",
       padding: "0.75rem",
-      borderRadius: "6px",
+      borderRadius: "8px",
     },
   },
 })
@@ -490,12 +522,12 @@ export const newsImage = style({
 export const newsImagePlaceholder = style({
   width: "100%",
   height: "100%",
-  backgroundColor: "#e5e7eb",
+  backgroundColor: "#e2e8f0",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   fontSize: "1.5rem",
-  color: "#9ca3af",
+  color: "white",
 })
 
 export const newsCardContent = style({
@@ -506,7 +538,7 @@ export const newsCardContent = style({
 export const newsCardTitle = style({
   fontSize: "1rem",
   fontWeight: "600",
-  color: vars.colors.text,
+  color: "#1e293b",
   marginBottom: "0.5rem",
   lineHeight: 1.3,
   display: "-webkit-box",
@@ -530,7 +562,7 @@ export const newsCardTitle = style({
 
 export const newsCardDesc = style({
   fontSize: "0.875rem",
-  color: vars.colors.textLight,
+  color: "#64748b",
   lineHeight: 1.4,
   marginBottom: "0.5rem",
 
@@ -552,7 +584,7 @@ export const newsCardMeta = style({
   display: "flex",
   gap: "1rem",
   fontSize: "0.75rem",
-  color: vars.colors.textLight,
+  color: "#64748b",
 
   "@media": {
     "(max-width: 768px)": {
@@ -581,7 +613,7 @@ export const sectionIcon = style({
 
 export const sectionDescription = style({
   fontSize: vars.fontSizes.sm,
-  color: vars.colors.textLight,
+  color: "#64748b",
   lineHeight: vars.lineHeights.relaxed,
   margin: 0,
 
@@ -598,17 +630,20 @@ export const sectionDescription = style({
 })
 
 export const viewAllButton = style({
-  backgroundColor: vars.colors.primary,
-  color: vars.colors.white,
+  backgroundColor: "#e2e8f0",
+  color: "#475569",
   padding: "0.5rem 1rem",
-  borderRadius: vars.radii.md,
+  borderRadius: "8px",
   textDecoration: "none",
   fontSize: vars.fontSizes.sm,
   fontWeight: vars.fontWeights.medium,
   transition: "all 0.3s ease",
+  border: "1px solid #cbd5e1",
+  backdropFilter: "blur(10px)",
 
   ":hover": {
-    backgroundColor: vars.colors.primaryDark,
+    backgroundColor: "#cbd5e1",
+    color: "#1e293b",
     transform: "translateY(-1px)",
   },
 
@@ -634,7 +669,7 @@ export const loadingSpinner = style({
 export const loadingSpinnerDot = style({
   width: "8px",
   height: "8px",
-  backgroundColor: vars.colors.secondary,
+  backgroundColor: "white",
   borderRadius: "50%",
   animation: `${pulse} 1.4s ease-in-out infinite both`,
 
@@ -670,8 +705,8 @@ export const imageOverlay = style({
 })
 
 export const categoryBadge = style({
-  backgroundColor: vars.colors.secondary,
-  color: vars.colors.white,
+  backgroundColor: "#e2e8f0",
+  color: "white",
   padding: "0.25rem 0.5rem",
   borderRadius: vars.radii.sm,
   fontSize: vars.fontSizes.xs,
@@ -702,6 +737,6 @@ export const emptyIcon = style({
 
 export const emptySubtext = style({
   fontSize: vars.fontSizes.sm,
-  color: vars.colors.textLight,
+  color: "#64748b",
   marginTop: vars.space.xs,
 })
