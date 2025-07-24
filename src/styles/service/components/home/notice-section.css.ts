@@ -1,4 +1,4 @@
-import { style, keyframes } from "@vanilla-extract/css"
+import { style, keyframes, globalStyle } from "@vanilla-extract/css"
 
 import { vars } from "../../../common/theme.css"
 
@@ -12,13 +12,18 @@ const pulse = keyframes({
 })
 
 export const noticeSection = style({
+  maxWidth: "1400px",
+  margin: "0 auto",
+  padding: `${vars.space.md} ${vars.space.lg} 0`,
+  minHeight: "100vh",
+  width: "100%",
   paddingTop: vars.space.xxl,
   paddingBottom: vars.space.xxxxl,
   marginTop: vars.space.lg,
   marginBottom: vars.space.xxxxl,
-  backgroundColor: "transparent",
   "@media": {
     "(max-width: 768px)": {
+      padding: `${vars.space.sm} ${vars.space.md} 0`,
       paddingTop: vars.space.xl,
       paddingBottom: vars.space.xxxl,
       marginTop: vars.space.md,
@@ -124,14 +129,38 @@ export const noticeBadge = style({
 export const noticeDate = style({
   fontSize: vars.fontSizes.sm,
   color: vars.colors.textLight,
+  fontWeight: vars.fontWeights.medium,
+  backgroundColor: vars.colors.gray[100],
+  padding: `${vars.space.xs} ${vars.space.sm}`,
+  borderRadius: vars.radii.md,
+  whiteSpace: "nowrap",
+  flexShrink: 0,
+  "@media": {
+    "(max-width: 768px)": {
+      fontSize: vars.fontSizes.xs,
+      padding: `${vars.space.xs} ${vars.space.xs}`,
+      alignSelf: "flex-end",
+    },
+  },
 })
 
 export const noticeTitle = style({
-  fontSize: vars.fontSizes.xl,
+  fontSize: vars.fontSizes.lg,
   fontWeight: vars.fontWeights.semibold,
-  color: vars.colors.primary,
-  marginBottom: vars.space.sm,
-  lineHeight: "1.3",
+  color: vars.colors.textStrong,
+  lineHeight: "1.4",
+  flex: 1,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  transition: "color 0.2s ease-in-out",
+  "@media": {
+    "(max-width: 768px)": {
+      fontSize: vars.fontSizes.md,
+      whiteSpace: "normal",
+      marginBottom: vars.space.xs,
+    },
+  },
 })
 
 export const noticeExcerpt = style({
@@ -262,22 +291,42 @@ export const noticeList = style({
   margin: "0 auto",
   display: "flex",
   flexDirection: "column",
-  gap: vars.space.lg,
+  gap: vars.space.md,
+  backgroundColor: vars.colors.white,
+  borderRadius: vars.radii.xl,
+  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08)",
+  border: `1px solid ${vars.colors.gray[200]}`,
+  overflow: "hidden",
+  backdropFilter: "blur(20px)",
+  "@media": {
+    "(max-width: 768px)": {
+      borderRadius: vars.radii.lg,
+      margin: `0 ${vars.space.md}`,
+      gap: vars.space.sm,
+    },
+  },
 })
 
 export const noticeItem = style({
-  backgroundColor: vars.colors.white,
-  paddingTop: vars.space.lg,
-  paddingBottom: vars.space.lg,
-  paddingLeft: vars.space.xl,
-  paddingRight: vars.space.xl,
-  borderRadius: vars.radii.lg,
-  boxShadow: vars.shadows.md,
-  transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+  backgroundColor: "transparent",
+  borderBottom: `1px solid ${vars.colors.gray[100]}`,
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   selectors: {
+    "&:last-child": {
+      borderBottom: "none",
+    },
     "&:hover": {
-      transform: "translateY(-4px)",
-      boxShadow: vars.shadows.lg,
+      backgroundColor: "rgba(59, 130, 246, 0.02)",
+      transform: "translateX(8px)",
+    },
+  },
+  "@media": {
+    "(max-width: 768px)": {
+      selectors: {
+        "&:hover": {
+          transform: "translateX(4px)",
+        },
+      },
     },
   },
 })
@@ -285,19 +334,57 @@ export const noticeItem = style({
 export const noticeLink = style({
   textDecoration: "none",
   color: "inherit",
-  display: "block",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: `${vars.space.xl} ${vars.space.xxl}`,
+  gap: vars.space.lg,
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  position: "relative",
+  "::before": {
+    content: "",
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: "4px",
+    background: "linear-gradient(180deg, #0E4DA4 0%, #00C288 100%)",
+    opacity: 0,
+    transition: "opacity 0.3s ease",
+  },
+  selectors: {
+    "&:hover::before": {
+      opacity: 1,
+    },
+  },
+  "@media": {
+    "(max-width: 768px)": {
+      flexDirection: "column",
+      alignItems: "flex-start",
+      padding: `${vars.space.lg} ${vars.space.xl}`,
+      gap: vars.space.sm,
+    },
+  },
 })
 
 // NoticeSection 컴포넌트에서 사용되는 스타일들
 export const header = style({
   textAlign: "center",
   marginBottom: vars.space.xxxl,
+  paddingBottom: vars.space.lg,
+  borderBottom: `2px solid ${vars.colors.gray[100]}`,
+  "@media": {
+    "(max-width: 768px)": {
+      marginBottom: vars.space.xxl,
+      paddingBottom: vars.space.md,
+    },
+  },
 })
 
 export const title = style({
   fontSize: vars.fontSizes.xxxl,
   fontWeight: vars.fontWeights.bold,
-  color: vars.colors.textStrong,
+  color: vars.colors.primary,
   marginBottom: vars.space.md,
 
   "@media": {
@@ -311,4 +398,9 @@ export const description = style({
   fontSize: vars.fontSizes.lg,
   color: vars.colors.textLight,
   lineHeight: vars.lineHeights.relaxed,
+})
+
+// 호버 효과를 위한 글로벌 스타일
+globalStyle(`${noticeLink}:hover ${noticeTitle}`, {
+  color: vars.colors.primary,
 })

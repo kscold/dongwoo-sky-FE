@@ -53,6 +53,7 @@ export const heroSection = style({
   overflow: "hidden",
   color: vars.colors.white,
   textAlign: "center",
+  backgroundColor: "#1a1a1a",
 
   "@media": {
     "(max-width: 768px)": {
@@ -66,26 +67,24 @@ export const heroSection = style({
 
 export const heroBackgroundImage = style({
   position: "absolute",
-  top: "-10%",
+  top: 0,
   left: 0,
   right: 0,
-  bottom: "-10%",
+  bottom: 0,
+  width: "100%",
+  height: "100%",
   backgroundSize: "cover",
   backgroundPosition: "center",
   backgroundRepeat: "no-repeat",
   backgroundAttachment: "fixed",
-  zIndex: -2,
-  filter: "brightness(0.9) contrast(1.1)",
+  zIndex: 1,
+  filter: "none",
   transition: "all 0.3s ease-out",
-  transform: "scale(1.1)",
   willChange: "transform",
 
   "@media": {
     "(max-width: 768px)": {
       backgroundAttachment: "scroll",
-      top: 0,
-      bottom: 0,
-      transform: "scale(1.05)",
     },
   },
 })
@@ -96,14 +95,13 @@ export const heroOverlay = style({
   left: 0,
   right: 0,
   bottom: 0,
-  background:
-    "linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 100%)",
-  zIndex: -1,
+  background: "rgba(0, 0, 0, 0.3)",
+  zIndex: 2,
 })
 
 export const heroContent = style({
   position: "relative",
-  zIndex: 1,
+  zIndex: 10,
   padding: vars.space.lg,
   maxWidth: "900px",
   margin: "0 auto",
@@ -345,11 +343,11 @@ const baseButton = style({
 export const primaryButton = style([
   baseButton,
   {
-    backgroundColor: vars.colors.secondary,
+    backgroundColor: vars.colors.primary,
     color: vars.colors.white,
     selectors: {
       "&:hover": {
-        backgroundColor: vars.colors.primary,
+        backgroundColor: vars.colors.primaryDark,
         color: vars.colors.white,
       },
     },
@@ -410,7 +408,7 @@ export const scrollIndicator = style({
   animation: `${bounce} 2s infinite`,
   cursor: "pointer",
   transition: "all 0.3s ease",
-  zIndex: 1,
+  zIndex: 15,
   textShadow: "0 2px 10px rgba(0, 0, 0, 0.8)",
   filter: "drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))",
   textAlign: "center",

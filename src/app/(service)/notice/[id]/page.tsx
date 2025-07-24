@@ -9,7 +9,7 @@ import { ko } from "date-fns/locale"
 import { useNotice } from "../../../../common/hooks/useNotices"
 import PageSkeleton from "../../../../common/components/ui/PageSkeleton"
 import * as styles from "../../../../styles/service/page/notice.css.ts"
-import { Notice, Attachment } from "../../../../types/notice"
+import { Notice } from "../../../../types/notice"
 
 interface PageProps {
   params: Promise<{
@@ -72,16 +72,26 @@ export default function NoticeDetailPage({ params }: PageProps) {
 
       <article className={styles.noticeDetail}>
         <h1 className={styles.detailTitle}>{notice.title}</h1>
-
+        
         <div className={styles.detailInfo}>
-          <div>
-            <span>게시일</span>
-            <span>{new Date(notice.createdAt).toLocaleDateString()}</span>
+          <div className={styles.publishInfo}>
+            <span className={styles.publishLabel}>게시일</span>
+            <span className={styles.publishDate}>
+              {new Date(notice.createdAt).toLocaleDateString("ko-KR", {
+                year: "numeric",
+                month: "long", 
+                day: "numeric",
+              })}
+            </span>
+          </div>
+          <div className={styles.metaStats}>
+            <span className={styles.detailDate}>
+              {formatDate(notice.publishedAt || notice.createdAt)}
+            </span>
           </div>
         </div>
 
         <div className={styles.detailContent}>
-          {/* 본문 내용을 단락으로 나누어 표시 */}
           {notice.content.split("\n").map((paragraph, index) => (
             <p key={`paragraph-${index}-${paragraph.slice(0, 10)}`}>
               {paragraph}
@@ -89,30 +99,34 @@ export default function NoticeDetailPage({ params }: PageProps) {
           ))}
         </div>
 
+        {/* 이미지 갤러리 */}
         {notice.attachments && notice.attachments.length > 0 && (
-          <div className={styles.attachmentsSection}>
-            <h3 className={styles.attachmentsTitle}>첨부파일</h3>
-            <ul className={styles.attachmentsList}>
-              {notice.attachments.map((file, index) => (
-                <li
-                  key={file.url || file.name || `attachment-${index}`}
-                  className={styles.attachmentItem}
-                >
-                  <a
-                    href={file.url}
-                    download={file.name}
-                    className={styles.attachmentLink}
-                  >
-                    <svg
-                    // ... (svg 아이콘)
-                    >
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM6 20V4h7v5h5v11H6z" />
-                    </svg>
-                    {file.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          <div className={styles.imageGallery}>
+            <div className={styles.mainImage}>
+              <Image
+                src={notice.attachments[0].url}
+                alt={notice.title}
+                className={styles.image}
+                width={600}
+                height={400}
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+            {notice.attachments.length > 1 && (
+              <div className={styles.thumbnails}>
+                {notice.attachments.slice(1).map((attachment, index) => (
+                  <Image
+                    key={index}
+                    src={attachment.url}
+                    alt={`${notice.title} ${index + 2}`}
+                    className={styles.thumbnail}
+                    width={150}
+                    height={100}
+                    style={{ objectFit: "cover" }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </article>

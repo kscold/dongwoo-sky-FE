@@ -3,13 +3,16 @@
 import { useState, useEffect } from "react"
 import { useRouter, useParams } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 
 import {
   useNoticeAdmin,
   useUpdateNotice,
 } from "../../../../../common/hooks/useNotices"
-import { useNoticeImagesUpload } from "../../../../../common/hooks/useFileUpload"
+import { useNoticeAttachmentsUpload } from "../../../../../common/hooks/useFileUpload"
 import { UpdateNoticeDto } from "../../../../../types/notice"
+import { Uploader } from "../../../../../common/components/upload/Uploader"
+import { isImageFile, getFileIcon, formatFileSize } from "../../../../../utils/fileUtils"
 
 import * as notice from "../../../../../styles/admin/admin-notice.css"
 
@@ -20,7 +23,7 @@ export default function EditNoticePage() {
 
   const { data: noticeData, isLoading: isLoadingNotice } = useNoticeAdmin(id)
   const updateNoticeMutation = useUpdateNotice()
-  const uploadImagesMutation = useNoticeImagesUpload()
+  const uploadAttachmentsMutation = useNoticeAttachmentsUpload()
 
   const [formData, setFormData] = useState<UpdateNoticeDto>({
     title: "",
@@ -30,7 +33,7 @@ export default function EditNoticePage() {
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [files, setFiles] = useState<File[]>([])
+  const [newAttachments, setNewAttachments] = useState<any[]>([])
 
   // 공지사항 데이터 로드 시 폼 데이터 설정
   useEffect(() => {
@@ -60,43 +63,15 @@ export default function EditNoticePage() {
 
       // 파일 업로드 처리
       let attachments = formData.attachments || []
-      if (files.length > 0) {
-        try {
-          console.log(
-            "파일 업로드 시작:",
-            files.map((f) => f.name)
-          )
-          const uploadResult = await uploadImagesMutation.mutateAsync(files)
-          console.log("파일 업로드 결과:", uploadResult)
-
-          if (uploadResult) {
-            let newAttachments: { url: string; key: string; name: string }[] =
-              []
-
-            // 백엔드에서 AttachmentDto[] 배열을 직접 반환하는 경우
-            if (
-              uploadResult.attachments &&
-              Array.isArray(uploadResult.attachments)
-            ) {
-              newAttachments = uploadResult.attachments
-              console.log("첨부파일 처리 완료 (attachments):", newAttachments)
-            }
-            // 기존 방식 (urls 배열)
-            else if (uploadResult.urls && Array.isArray(uploadResult.urls)) {
-              newAttachments = uploadResult.urls.map((url, index) => ({
-                url,
-                key: `upload_${Date.now()}_${index}`,
-                name: files[index]?.name || `file_${index}`,
-              }))
-              console.log("첨부파일 처리 완료 (urls):", newAttachments)
-            }
-
-            attachments = [...attachments, ...newAttachments]
-          }
-        } catch (err) {
-          console.error("파일 업로드 오류:", err)
-          throw new Error("파일 업로드에 실패했습니다.")
-        }
+      
+      // 새로 업로드된 첨부파일이 있으면 기존 첨부파일에 추가
+      if (newAttachments.length > 0) {
+        const newAttachmentObjects = newAttachments.map((attachment) => ({
+          url: attachment.url,
+          key: attachment.key,
+          name: attachment.name,
+        }))
+        attachments = [...attachments, ...newAttachmentObjects]
       }
 
       // 공지사항 수정
@@ -149,12 +124,25 @@ export default function EditNoticePage() {
     }))
   }
 
-  // 파일 선택 핸들러
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const fileList = Array.from(e.target.files)
-      setFiles(fileList)
+  // 새 첨부파일 업로드 핸들러
+  const handleAttachmentUpload = async (files: FileList) => {
+    try {
+      const fileArray = Array.from(files)
+      const result = await uploadAttachmentsMutation.mutateAsync(fileArray)
+      
+      if (result?.attachments && Array.isArray(result.attachments)) {
+        setNewAttachments(prev => [...prev, ...result.attachments])
+        alert(`${result.attachments.length}개의 파일이 성공적으로 업로드되었습니다.`)
+      }
+    } catch (error) {
+      console.error("파일 업로드 실패:", error)
+      alert("파일 업로드에 실패했습니다. 다시 시도해주세요.")
     }
+  }
+
+  // 새 첨부파일 삭제 핸들러
+  const handleNewAttachmentDelete = (index: number) => {
+    setNewAttachments(prev => prev.filter((_, i) => i !== index))
   }
 
   // 첨부파일 삭제 핸들러
@@ -259,18 +247,51 @@ export default function EditNoticePage() {
         {formData.attachments && formData.attachments.length > 0 && (
           <div className={notice.formGroup}>
             <label className={notice.label}>기존 첨부파일</label>
-            <div className={notice.attachmentList}>
+            <div className={notice.attachmentGrid}>
               {formData.attachments.map((attachment, index) => (
-                <div key={index} className={notice.attachmentItem}>
-                  <span className={notice.attachmentName}>
-                    {attachment.name}
-                  </span>
+                <div key={index} className={notice.attachmentCard}>
+                  {isImageFile(attachment.name) ? (
+                    <div className={notice.imagePreviewContainer}>
+                      <Image
+                        src={attachment.url}
+                        alt={attachment.name}
+                        width={200}
+                        height={150}
+                        className={notice.attachmentImage}
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          target.style.display = 'none';
+                          if (target.nextElementSibling) {
+                            (target.nextElementSibling as HTMLElement).style.display = 'flex';
+                          }
+                        }}
+                      />
+                      <div className={notice.imageErrorFallback} style={{ display: 'none' }}>
+                        🖼️ 이미지 로드 실패
+                      </div>
+                    </div>
+                  ) : (
+                    <div className={notice.filePreviewContainer}>
+                      <div className={notice.fileIcon}>
+                        {getFileIcon(attachment.name)}
+                      </div>
+                    </div>
+                  )}
+                  <div className={notice.attachmentInfo}>
+                    <div className={notice.attachmentName} title={attachment.name}>
+                      {attachment.name}
+                    </div>
+                    <div className={notice.attachmentMeta}>
+                      {isImageFile(attachment.name) ? '이미지' : '문서'}
+                    </div>
+                  </div>
                   <button
                     type="button"
                     onClick={() => handleRemoveAttachment(index)}
-                    className={notice.removeButton}
+                    className={notice.attachmentRemoveButton}
+                    title="첨부파일 삭제"
                   >
-                    삭제
+                    ✕
                   </button>
                 </div>
               ))}
@@ -279,18 +300,31 @@ export default function EditNoticePage() {
         )}
 
         <div className={notice.formGroup}>
-          <label htmlFor="files" className={notice.label}>
-            새 첨부 파일
-          </label>
-          <input
-            type="file"
-            id="files"
-            onChange={handleFileChange}
-            className={notice.fileInput}
-            multiple
+          <Uploader
+            value={newAttachments}
+            onFilesChange={() => {}} // 사용하지 않음
+            maxFiles={10}
+            uploadType="new"
+            label="새 첨부 파일"
+            isEditing={true}
+            isUploading={uploadAttachmentsMutation.isPending}
+            onImageUpload={handleAttachmentUpload}
+            onImageDelete={handleNewAttachmentDelete}
+            accept={{
+              "image/*": [".jpg", ".jpeg", ".png", ".gif", ".webp"],
+              "application/pdf": [".pdf"],
+              "application/msword": [".doc"],
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+              "application/vnd.ms-excel": [".xls"],
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+              "text/plain": [".txt"],
+              "application/x-hwp": [".hwp"]
+            }}
           />
           <small className={notice.helpText}>
-            최대 5개의 파일을 첨부할 수 있습니다. (최대 용량: 15MB)
+            최대 10개의 파일을 첨부할 수 있습니다. (최대 용량: 15MB)
+            <br />
+            지원 형식: 이미지, PDF, Word, Excel, 텍스트, HWP
           </small>
         </div>
 

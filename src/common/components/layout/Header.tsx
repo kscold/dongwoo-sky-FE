@@ -11,13 +11,14 @@ import * as styles from "../../../styles/service/layout/header.css"
 import * as mobileStyles from "../../../styles/service/layout/mobile-menu.css"
 import { useHomePageData } from "../../hooks/useHome"
 
-const navItems = [
+// Static navigation items for service
+const navItems: { href: string; label: string }[] = [
   { href: "/service-guide", label: "서비스 안내" },
   { href: "/pricing", label: "이용 요금" },
   { href: "/work-showcases", label: "작업 사례" },
   { href: "/customer-reviews", label: "고객 후기" },
   { href: "/notice", label: "공지사항" },
-  { href: "/contact", label: "견적 문의" },
+  { href: "/contact", label: "견적 문의" }
 ]
 
 const Header = () => {

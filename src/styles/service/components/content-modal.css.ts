@@ -20,7 +20,8 @@ export const overlay = style({
   left: 0,
   right: 0,
   bottom: 0,
-  backgroundColor: "rgba(0, 0, 0, 0.8)",
+  background: "rgba(0, 0, 0, 0.6)",
+  backdropFilter: "blur(8px)",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -43,7 +44,7 @@ export const modal = style({
   padding: vars.space.lg,
   borderRadius: vars.radii.lg,
   width: "90%",
-  maxWidth: "500px",
+  maxWidth: "600px", // 이미지를 위해 조금 더 크게
   boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4)",
   backdropFilter: "blur(10px)",
   border: "1px solid rgba(255, 255, 255, 0.2)",
@@ -54,7 +55,7 @@ export const modal = style({
   "@media": {
     "screen and (max-width: 768px)": {
       width: "90%",
-      maxWidth: "400px",
+      maxWidth: "450px",
       padding: vars.space.lg,
       borderRadius: vars.radii.lg,
       maxHeight: "80vh",
@@ -62,7 +63,7 @@ export const modal = style({
     },
     "screen and (max-width: 480px)": {
       width: "95%",
-      maxWidth: "350px",
+      maxWidth: "400px",
       padding: vars.space.md,
       borderRadius: vars.radii.md,
       maxHeight: "85vh",
@@ -70,7 +71,7 @@ export const modal = style({
     },
     "screen and (max-width: 375px)": {
       width: "98%",
-      maxWidth: "320px",
+      maxWidth: "350px",
       padding: vars.space.sm,
       borderRadius: vars.radii.sm,
       maxHeight: "90vh",
@@ -284,6 +285,153 @@ export const contentText = style({
     "screen and (max-width: 480px)": {
       fontSize: vars.fontSizes.sm,
       lineHeight: "1.4",
+    },
+  },
+})
+
+// 첨부파일 섹션 스타일 - 깔끔하고 심플하게
+export const attachmentsSection = style({
+  marginTop: vars.space.lg,
+  padding: vars.space.md,
+  backgroundColor: "white",
+  borderRadius: vars.radii.md,
+  
+  "@media": {
+    "screen and (max-width: 768px)": {
+      marginTop: vars.space.md,
+      padding: vars.space.sm,
+    },
+  },
+})
+
+// 이미지 첨부파일 스타일 - 깔끔하고 심플하게
+export const imageAttachments = style({
+  marginBottom: vars.space.lg,
+})
+
+export const imageGrid = style({
+  display: "grid",
+  gridTemplateColumns: "1fr",
+  gap: vars.space.md,
+  "@media": {
+    "screen and (min-width: 480px)": {
+      gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+    },
+  },
+})
+
+export const imageAttachment = style({
+  borderRadius: vars.radii.md,
+  overflow: "hidden",
+  backgroundColor: "white",
+  border: `1px solid ${vars.colors.border}`,
+})
+
+export const attachmentImage = style({
+  width: "100%",
+  height: "auto",
+  maxHeight: "200px",
+  objectFit: "cover",
+  display: "block",
+  
+  "@media": {
+    "screen and (max-width: 768px)": {
+      maxHeight: "150px",
+    },
+  },
+})
+
+export const imageErrorFallback = style({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "150px",
+  backgroundColor: vars.colors.backgroundLight,
+  color: vars.colors.textLight,
+  fontSize: vars.fontSizes.sm,
+})
+
+// 문서 첨부파일 스타일 - 깔끔하고 심플하게
+export const documentAttachments = style({
+  marginTop: vars.space.lg,
+})
+
+export const documentAttachmentsTitle = style({
+  fontSize: vars.fontSizes.sm,
+  fontWeight: vars.fontWeights.semibold,
+  color: vars.colors.textStrong,
+  marginBottom: vars.space.sm,
+  
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: vars.fontSizes.xs,
+    },
+  },
+})
+
+export const documentsList = style({
+  display: "flex",
+  flexDirection: "column",
+  gap: vars.space.sm,
+})
+
+export const documentLink = style({
+  display: "flex",
+  alignItems: "center",
+  gap: vars.space.sm,
+  padding: vars.space.sm,
+  backgroundColor: vars.colors.backgroundLight,
+  borderRadius: vars.radii.sm,
+  textDecoration: "none",
+  color: vars.colors.text,
+  border: `1px solid ${vars.colors.border}`,
+  transition: "background-color 0.2s ease",
+  
+  ":hover": {
+    backgroundColor: vars.colors.background,
+  },
+  
+  "@media": {
+    "screen and (max-width: 768px)": {
+      padding: `${vars.space.xs} ${vars.space.sm}`,
+    },
+  },
+})
+
+export const fileIcon = style({
+  fontSize: "16px",
+  minWidth: "16px",
+  
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: "14px",
+      minWidth: "14px",
+    },
+  },
+})
+
+export const fileName = style({
+  fontSize: vars.fontSizes.sm,
+  fontWeight: vars.fontWeights.medium,
+  flex: 1,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: vars.fontSizes.xs,
+    },
+  },
+})
+
+export const downloadIcon = style({
+  fontSize: "14px",
+  opacity: 0.7,
+  
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: "12px",
     },
   },
 })

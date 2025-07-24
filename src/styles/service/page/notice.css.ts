@@ -3,9 +3,18 @@ import { style, keyframes } from "@vanilla-extract/css"
 import { vars } from "../../common/theme.css"
 
 export const container = style({
-  padding: vars.space.xl,
   maxWidth: "1200px",
   margin: "0 auto",
+  padding: "32px",
+  minHeight: "100vh",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      padding: "16px",
+    },
+    "screen and (max-width: 480px)": {
+      padding: "12px",
+    },
+  },
 })
 
 export const header = style({
@@ -48,20 +57,20 @@ export const createButton = style({
 })
 
 export const backButton = style({
-  padding: `${vars.space.sm} ${vars.space.lg}`,
-  backgroundColor: "transparent",
-  color: vars.colors.text,
-  border: `1px solid ${vars.colors.border}`,
-  borderRadius: vars.radii.md,
-  fontSize: vars.fontSizes.sm,
-  textDecoration: "none",
   display: "inline-flex",
   alignItems: "center",
-  justifyContent: "center",
-  cursor: "pointer",
-  transition: "background-color 0.2s",
+  color: "#3b82f6",
+  textDecoration: "none",
+  fontSize: "14px",
+  marginBottom: "16px",
   ":hover": {
-    backgroundColor: vars.colors.backgroundLight,
+    textDecoration: "underline",
+  },
+  "@media": {
+    "screen and (max-width: 768px)": {
+      marginBottom: "12px",
+      fontSize: "13px",
+    },
   },
 })
 
@@ -401,22 +410,14 @@ export const confirmButton = style({
 })
 
 // 첨부파일 스타일 - 애플 디자인
-export const attachmentsSection = style({
-  marginTop: "20px",
-  padding: "16px",
-  backgroundColor: "#F5F5F7",
-  borderRadius: "12px",
-  border: "none",
+export const imageGallery = style({
+  marginBottom: "32px",
 })
 
-export const attachmentsTitle = style({
-  fontSize: "15px",
-  fontWeight: "600",
-  color: "#1D1D1F",
-  marginBottom: "12px",
-  display: "flex",
-  alignItems: "center",
-  gap: "6px",
+export const mainImage = style({
+  marginBottom: "16px",
+  borderRadius: "8px",
+  overflow: "hidden",
 })
 
 export const attachmentsList = style({
@@ -633,41 +634,98 @@ export const cancelButton = style({
 
 // 공지사항 상세 페이지 스타일
 export const noticeHeader = style({
-  padding: vars.space.xl,
-  borderBottom: `1px solid ${vars.colors.border}`,
+  marginBottom: "32px",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      marginBottom: "24px",
+    },
+    "screen and (max-width: 480px)": {
+      marginBottom: "16px",
+    },
+  },
 })
 
 export const noticeDetail = style({
-  maxWidth: "800px",
-  margin: "0 auto",
-  padding: vars.space.xl,
+  // 컨테이너는 단순하게 유지
 })
 
 export const detailTitle = style({
-  fontSize: vars.fontSizes.xxl,
-  fontWeight: vars.fontWeights.bold,
-  color: vars.colors.textStrong,
-  marginBottom: vars.space.md,
+  fontSize: "32px",
+  fontWeight: "700",
+  color: "#111827",
+  marginBottom: "16px",
+  lineHeight: 1.3,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: "28px",
+      marginBottom: "14px",
+    },
+    "screen and (max-width: 480px)": {
+      fontSize: "24px",
+      marginBottom: "12px",
+      lineHeight: 1.2,
+    },
+  },
 })
 
 export const detailInfo = style({
   display: "flex",
-  gap: vars.space.lg,
-  fontSize: vars.fontSizes.sm,
-  color: vars.colors.textLight,
+  flexDirection: "column",
+  gap: "12px",
 })
 
 export const detailDate = style({
-  fontSize: vars.fontSizes.sm,
-  color: vars.colors.textLight,
+  marginLeft: "auto",
+})
+
+// customer-review 스타일과 동일한 메타 정보 스타일들 추가
+export const publishInfo = style({
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+})
+
+export const publishLabel = style({
+  fontSize: "16px",
+  fontWeight: "600",
+  color: "#374151",
+})
+
+export const publishDate = style({
+  fontSize: "14px",
+  color: "#6b7280",
+})
+
+export const metaStats = style({
+  display: "flex",
+  alignItems: "center",
+  gap: "16px",
+  fontSize: "14px",
+  color: "#6b7280",
+})
+
+export const metaStat = style({
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
 })
 
 export const detailContent = style({
-  fontSize: vars.fontSizes.md,
-  lineHeight: vars.lineHeights.relaxed,
-  color: vars.colors.text,
-  marginTop: vars.space.xl,
+  fontSize: "16px",
+  lineHeight: 1.6,
+  color: "#374151",
+  marginBottom: "32px",
   whiteSpace: "pre-wrap",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: "15px",
+      marginBottom: "24px",
+    },
+    "screen and (max-width: 480px)": {
+      fontSize: "14px",
+      marginBottom: "16px",
+    },
+  },
 })
 
 export const detailAttachments = style({
@@ -745,16 +803,29 @@ export const emptyState = style({
 })
 
 // 공지사항 상세 페이지용 추가 스타일
-export const imageAttachment = style({
-  position: "relative",
-  marginBottom: vars.space.md,
+export const thumbnails = style({
+  display: "flex",
+  gap: "12px",
+  flexWrap: "wrap",
+  justifyContent: "flex-start",
+  width: "100%",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      gap: "8px",
+    },
+    "screen and (max-width: 480px)": {
+      gap: "6px",
+    },
+  },
 })
 
-export const attachmentImage = style({
-  width: "100%",
-  height: "auto",
-  borderRadius: vars.radii.md,
-  border: `1px solid ${vars.colors.border}`,
+export const thumbnail = style({
+  borderRadius: "6px",
+  cursor: "pointer",
+  transition: "transform 0.2s ease",
+  ":hover": {
+    transform: "scale(1.05)",
+  },
 })
 
 export const attachmentLink = style({
@@ -790,4 +861,88 @@ export const errorMessage = style({
   borderRadius: vars.radii.md,
   textAlign: "center",
   fontSize: vars.fontSizes.md,
+})
+
+// 이미지 첨부파일 섹션 스타일
+export const imageAttachments = style({
+  marginBottom: vars.space.lg,
+})
+
+export const imageAttachmentsTitle = style({
+  fontSize: vars.fontSizes.md,
+  fontWeight: vars.fontWeights.semibold,
+  color: vars.colors.textStrong,
+  marginBottom: vars.space.md,
+  display: "flex",
+  alignItems: "center",
+  gap: vars.space.sm,
+})
+
+export const image = style({
+  width: "100%",
+  height: "auto",
+  borderRadius: "8px",
+})
+
+export const imageErrorFallback = style({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "200px",
+  backgroundColor: vars.colors.backgroundLight,
+  color: vars.colors.textLight,
+  fontSize: vars.fontSizes.sm,
+  borderRadius: vars.radii.md,
+  border: `1px solid ${vars.colors.border}`,
+})
+
+export const imageInfo = style({
+  padding: vars.space.md,
+  backgroundColor: vars.colors.white,
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  borderTop: `2px solid ${vars.colors.gray[100]}`,
+})
+
+export const imageName = style({
+  fontSize: vars.fontSizes.sm,
+  color: vars.colors.text,
+  fontWeight: vars.fontWeights.medium,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  flex: 1,
+  marginRight: vars.space.sm,
+})
+
+export const downloadButton = style({
+  padding: `${vars.space.xs} ${vars.space.sm}`,
+  backgroundColor: vars.colors.primary,
+  color: vars.colors.white,
+  border: "none",
+  borderRadius: vars.radii.sm,
+  fontSize: vars.fontSizes.xs,
+  fontWeight: vars.fontWeights.medium,
+  cursor: "pointer",
+  textDecoration: "none",
+  transition: "all 0.2s ease",
+  ":hover": {
+    backgroundColor: vars.colors.primaryDark,
+  },
+})
+
+// 문서 첨부파일 섹션 스타일
+export const documentAttachments = style({
+  marginTop: vars.space.lg,
+})
+
+export const documentAttachmentsTitle = style({
+  fontSize: vars.fontSizes.md,
+  fontWeight: vars.fontWeights.semibold,
+  color: vars.colors.textStrong,
+  marginBottom: vars.space.md,
+  display: "flex",
+  alignItems: "center",
+  gap: vars.space.sm,
 })

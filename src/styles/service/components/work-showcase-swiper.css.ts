@@ -7,20 +7,26 @@ export const swiperSection = style({
   maxWidth: "100vw",
   marginTop: vars.space.xxxxl,
   marginBottom: vars.space.xxxxl,
-  padding: `${vars.space.xxxxl} ${vars.space.lg}`,
-  overflow: "hidden",
+  padding: `${vars.space.xxxxl} ${vars.space.xxl}`,
+  paddingBottom: `calc(${vars.space.xxxxl} + 60px)`,
+  overflow: "visible",
   boxSizing: "border-box",
-  backgroundColor: "white",
+  backgroundColor: vars.colors.white,
+  borderRadius: vars.radii.xl,
+  boxShadow: vars.shadows.lg,
+  position: "relative",
   "@media": {
-    "screen and (max-width: 768px)": {
-      marginTop: vars.space.xxxxl,
-      marginBottom: vars.space.xxxxl,
-      padding: `${vars.space.xxxl} ${vars.space.md}`,
-    },
-    "screen and (max-width: 480px)": {
+    "(max-width: 768px)": {
       marginTop: vars.space.xxxl,
       marginBottom: vars.space.xxxl,
-      padding: `${vars.space.xxl} ${vars.space.sm}`,
+      padding: `${vars.space.xxxl} ${vars.space.xl}`,
+      paddingBottom: `calc(${vars.space.xxxl} + 50px)`,
+    },
+    "(max-width: 480px)": {
+      marginTop: vars.space.xxl,
+      marginBottom: vars.space.xxl,
+      padding: `${vars.space.xxl} ${vars.space.lg}`,
+      paddingBottom: `calc(${vars.space.xxl} + 40px)`,
     },
   },
 })
@@ -118,11 +124,8 @@ export const viewAllButton = style({
     backgroundColor: vars.colors.primaryDark,
     transform: "translateY(-3px)",
     boxShadow: vars.shadows.xl,
-    borderColor: vars.colors.secondary,
+    borderColor: vars.colors.primary,
   },
-  // ":hover::after": {
-  //   transform: "translateX(4px)",
-  // },
   "@media": {
     "screen and (max-width: 768px)": {
       alignSelf: "flex-start",
@@ -148,6 +151,8 @@ export const swiperContainer = style({
   maxWidth: "100%",
   overflow: "visible",
   boxSizing: "border-box",
+  height: "650px",
+  minHeight: "650px",
   "@media": {
     "screen and (max-width: 768px)": {
       paddingBottom: vars.space.lg,
@@ -159,77 +164,89 @@ export const swiperContainer = style({
         "linear-gradient(135deg, rgba(59, 130, 246, 0.02) 0%, rgba(168, 85, 247, 0.02) 100%)",
       backdropFilter: "blur(5px)",
       border: "1px solid rgba(59, 130, 246, 0.05)",
-      overflow: "hidden",
+      overflow: "visible",
+      height: "610px",
+      minHeight: "610px",
     },
     "screen and (max-width: 480px)": {
       paddingBottom: vars.space.md,
       margin: "0 -8px",
       padding: "8px 8px",
+      height: "570px",
+      minHeight: "570px",
     },
   },
 })
 
 export const swiperWrapper = style({
-  paddingBottom: vars.space.lg,
-  paddingTop: vars.space.md,
+  paddingBottom: vars.space.xxxl,
+  paddingTop: vars.space.xl,
   width: "100%",
   maxWidth: "100%",
   overflow: "visible",
   boxSizing: "border-box",
+  height: "620px",
+  minHeight: "620px",
+  position: "relative",
+  display: "flex",
+  flexDirection: "column",
   "@media": {
-    "screen and (max-width: 768px)": {
-      paddingBottom: vars.space.md,
-      paddingTop: vars.space.sm,
+    "(max-width: 768px)": {
+      paddingBottom: vars.space.xxl,
+      paddingTop: vars.space.lg,
       borderRadius: vars.radii.lg,
-      padding: "12px 0",
+      padding: "20px 0",
       overflow: "hidden",
+      height: "580px",
+      minHeight: "580px",
     },
-    "screen and (max-width: 480px)": {
-      paddingBottom: vars.space.sm,
-      padding: "8px 0",
+    "(max-width: 480px)": {
+      paddingBottom: vars.space.xl,
+      padding: "16px 0",
+      height: "540px",
+      minHeight: "540px",
     },
   },
 })
 
-// 데스크탑에서 Swiper 요소들의 overflow를 visible로 설정
+// 모든 화면에서 Swiper 요소들의 overflow를 visible로 설정
 globalStyle(`${swiperWrapper} .swiper`, {
   overflow: "visible",
-  "@media": {
-    "screen and (max-width: 768px)": {
-      overflow: "hidden",
-    },
-  },
 })
 
 globalStyle(`${swiperWrapper} .swiper-wrapper`, {
   overflow: "visible",
-  "@media": {
-    "screen and (max-width: 768px)": {
-      overflow: "hidden",
-    },
-  },
 })
 
 globalStyle(`${swiperWrapper} .swiper-slide`, {
   overflow: "visible",
-  "@media": {
-    "screen and (max-width: 768px)": {
-      overflow: "hidden",
-    },
-  },
 })
 
 export const swiperSlide = style({
-  height: "auto",
+  height: "500px",
   display: "flex",
   width: "100%",
   maxWidth: "100%",
   boxSizing: "border-box",
+  minHeight: "500px",
+  flexShrink: 0,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      height: "460px",
+      minHeight: "460px",
+    },
+    "screen and (max-width: 480px)": {
+      height: "420px",
+      minHeight: "420px",
+    },
+  },
 })
 
 export const showcaseCard = style({
   display: "block",
   width: "100%",
+  height: "500px",
+  minHeight: "500px",
   background: "rgba(255, 255, 255, 0.9)",
   backdropFilter: "blur(20px)",
   borderRadius: vars.radii.xl,
@@ -246,6 +263,8 @@ export const showcaseCard = style({
   },
   "@media": {
     "screen and (max-width: 768px)": {
+      height: "460px",
+      minHeight: "460px",
       borderRadius: vars.radii.xl,
       background: "rgba(255, 255, 255, 0.95)",
       backdropFilter: "blur(30px)",
@@ -261,6 +280,8 @@ export const showcaseCard = style({
       },
     },
     "screen and (max-width: 480px)": {
+      height: "420px",
+      minHeight: "420px",
       borderRadius: vars.radii.lg,
       transform: "scale(1.01)",
       ":hover": {
@@ -346,7 +367,7 @@ export const cardContent = style({
 export const cardTitle = style({
   fontSize: vars.fontSizes.lg,
   fontWeight: vars.fontWeights.bold,
-  color: vars.colors.textStrong,
+  color: "#000000",
   lineHeight: vars.lineHeights.heading,
   marginBottom: vars.space.sm,
   overflow: "hidden",
@@ -360,10 +381,7 @@ export const cardTitle = style({
       marginBottom: vars.space.sm,
       lineHeight: "1.4",
       fontWeight: vars.fontWeights.bold,
-      background: "linear-gradient(135deg, #1e40af 0%, #7c3aed 100%)",
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-      backgroundClip: "text",
+      color: "#000000",
     },
     "screen and (max-width: 480px)": {
       fontSize: vars.fontSizes.md,
@@ -496,14 +514,14 @@ export const navButton = style({
   position: "absolute",
   top: "50%",
   transform: "translateY(-50%)",
-  zIndex: 10,
+  zIndex: 20,
   width: "48px",
   height: "48px",
   borderRadius: "50%",
   border: "none",
-  backgroundColor: "rgba(255, 255, 255, 0.9)",
+  backgroundColor: "rgba(255, 255, 255, 0.95)",
   backdropFilter: "blur(10px)",
-  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
@@ -518,17 +536,34 @@ export const navButton = style({
     "screen and (max-width: 768px)": {
       width: "40px",
       height: "40px",
-      display: "none", // 모바일에서는 숨김
+      display: "flex",
+      top: "105px",
+    },
+    "screen and (max-width: 480px)": {
+      top: "105px",
+    },
+    "screen and (max-width: 375px)": {
+      top: "95px",
     },
   },
 })
 
 export const prevButton = style({
   left: "-24px",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      left: "20px",
+    },
+  },
 })
 
 export const nextButton = style({
   right: "-24px",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      right: "20px",
+    },
+  },
 })
 
 export const navIcon = style({
@@ -536,9 +571,68 @@ export const navIcon = style({
   height: "24px",
   color: vars.colors.primary,
   "@media": {
-    "screen and (max-width: 768px)": {
+    "(max-width: 768px)": {
       width: "20px",
       height: "20px",
     },
   },
+})
+
+export const pagination = style({
+  position: "absolute",
+  bottom: "20px",
+  left: "50%",
+  transform: "translateX(-50%)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: vars.space.sm,
+  zIndex: 15,
+  height: "32px",
+  minHeight: "32px",
+  width: "auto",
+  maxWidth: "calc(100% - 40px)",
+  textAlign: "center",
+  padding: "0 20px",
+  "@media": {
+    "(max-width: 768px)": {
+      bottom: "15px",
+      height: "28px",
+      minHeight: "28px",
+      maxWidth: "calc(100% - 24px)",
+      padding: "0 12px",
+    },
+    "(max-width: 480px)": {
+      bottom: "10px",
+      height: "24px",
+      minHeight: "24px",
+      maxWidth: "calc(100% - 16px)",
+      padding: "0 8px",
+    },
+  },
+})
+
+export const paginationBullet = style({
+  width: "12px",
+  height: "12px",
+  borderRadius: "50%",
+  backgroundColor: vars.colors.gray[300],
+  border: "none",
+  cursor: "pointer",
+  transition: "all 0.3s ease",
+  ":hover": {
+    backgroundColor: vars.colors.primary,
+    transform: "scale(1.2)",
+  },
+  "@media": {
+    "(max-width: 768px)": {
+      width: "10px",
+      height: "10px",
+    },
+  },
+})
+
+export const paginationBulletActive = style({
+  backgroundColor: vars.colors.primary,
+  transform: "scale(1.2)",
 })

@@ -282,6 +282,13 @@ export const attachmentInfo = style({
   fontSize: vars.fontSizes.sm,
   color: vars.colors.primary,
   fontWeight: vars.fontWeights.medium,
+  display: "flex",
+  alignItems: "center",
+  gap: vars.space.xs,
+})
+
+export const attachmentIcon = style({
+  fontSize: "16px",
 })
 
 // Customer review specific styles

@@ -124,6 +124,16 @@ export const thumbnails = style({
   display: "flex",
   gap: "12px",
   flexWrap: "wrap",
+  justifyContent: "flex-start",
+  width: "100%",
+  "@media": {
+    "(max-width: 768px)": {
+      gap: "8px",
+    },
+    "(max-width: 480px)": {
+      gap: "6px",
+    },
+  },
 })
 
 export const thumbnail = style({

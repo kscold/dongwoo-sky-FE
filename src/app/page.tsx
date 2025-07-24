@@ -9,6 +9,8 @@ import NoticeSection from "../common/components/home/NoticeSection"
 import FloatingCallButton from "../common/components/button/FloatingCallButton"
 import PageSkeleton from "../common/components/ui/PageSkeleton"
 import ErrorComponent from "../common/components/error/ErrorComponent"
+import * as styles from "../styles/service/components/home/content-section.css"
+import "../styles/main-page.css"
 
 export default function Home() {
   const {
@@ -40,36 +42,46 @@ export default function Home() {
   )
 
   return (
-    <main>
-      {homePageData?.home && <HeroSection home={homePageData.home} />}
+    <div className="mainPageWrapper">
+      <main>
+        {homePageData?.home && <HeroSection home={homePageData.home} />}
 
-      {/* 작업자 자랑거리 섹션 */}
-      {workShowcaseSection?.isActive && homePageData?.workShowcases && (
-        <ContentSection
-          title={workShowcaseSection.title}
-          description={workShowcaseSection.description}
-          items={homePageData.workShowcases}
-          type="work"
-          link="/work-showcases"
-        />
-      )}
+        {/* 작업자 자랑거리와 고객 리뷰 섹션을 가로로 배치 */}
+        {(workShowcaseSection?.isActive || customerReviewSection?.isActive) && (
+          <div className={styles.contentWrapper}>
+            <div className={styles.swiperContainer}>
+              {/* 작업자 자랑거리 섹션 */}
+              {workShowcaseSection?.isActive && homePageData?.workShowcases && (
+                <ContentSection
+                  title={workShowcaseSection.title}
+                  description={workShowcaseSection.description}
+                  items={homePageData.workShowcases}
+                  type="work"
+                  link="/work-showcases"
+                />
+              )}
 
-      {/* 고객 리뷰 섹션 */}
-      {customerReviewSection?.isActive && homePageData?.customerReviews && (
-        <ContentSection
-          title={customerReviewSection.title}
-          description={customerReviewSection.description}
-          items={homePageData.customerReviews}
-          type="review"
-          link="/customer-reviews"
-        />
-      )}
+              {/* 고객 리뷰 섹션 */}
+              {customerReviewSection?.isActive &&
+                homePageData?.customerReviews && (
+                  <ContentSection
+                    title={customerReviewSection.title}
+                    description={customerReviewSection.description}
+                    items={homePageData.customerReviews}
+                    type="review"
+                    link="/customer-reviews"
+                  />
+                )}
+            </div>
 
-      {homePageData?.notices && (
-        <NoticeSection notices={homePageData.notices} />
-      )}
+            {homePageData?.notices && (
+              <NoticeSection notices={homePageData.notices} />
+            )}
+          </div>
+        )}
 
-      <FloatingCallButton />
-    </main>
+        <FloatingCallButton />
+      </main>
+    </div>
   )
 }

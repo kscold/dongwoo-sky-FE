@@ -1,117 +1,66 @@
 "use client"
 
 import React, { useState } from "react"
-import Link from "next/link"
-import { format } from "date-fns"
-import { ko } from "date-fns/locale"
-
 import { useNotices } from "../../../common/hooks/useNotices"
-import PageSkeleton from "../../../common/components/ui/PageSkeleton"
-import Pagination from "../../../common/components/ui/Pagination"
-import * as styles from "../../../styles/service/page/service-page-common.css"
+import { NoticeProps } from "../../../common/interfaces/content/content.interface"
+import ContentList from "../../../common/components/content/ContentList"
+import { getContentConfig } from "../../../common/configs/content/content.config"
+import * as styles from "../../../styles/content/content-page.css"
 
 export default function NoticePage() {
-  const [page, setPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1)
   const [isMobile, setIsMobile] = useState(false)
-  const limit = isMobile ? 5 : 10
+  const config = getContentConfig("notice")
+  const limit = isMobile ? config.mobileItemsPerPage : config.itemsPerPage
 
   React.useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
     }
     checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
-  const { data: noticesData, isLoading, error } = useNotices(page, limit)
+  const { data: noticesData, isLoading, error } = useNotices(currentPage, limit)
 
-  // 공지사항 목록 필터링 (isModal이 false인 것만)
+  // 공지사항 목록 필터링 (isModal이 false인 것만) 및 변환
   const notices =
     noticesData?.data?.filter((notice: any) => notice.isModal !== true) || []
-  const totalPages = noticesData?.total ? Math.ceil(noticesData.total / limit) : 1
+  const totalPages = noticesData?.total
+    ? Math.ceil(noticesData.total / limit)
+    : 1
 
-  // 날짜 포맷 함수
-  const formatDate = (dateString: string) => {
-    try {
-      return format(new Date(dateString), "yyyy년 MM월 dd일", { locale: ko })
-    } catch {
-      return dateString
-    }
-  }
-
-  if (isLoading) {
-    return <PageSkeleton variant="notice" />
-  }
-
-  if (error) {
-    return (
-      <div className={styles.container}>
-        <h1 className={styles.title}>공지사항</h1>
-        <div className={styles.error}>
-          <p>
-            공지사항을 불러오는데 문제가 발생했습니다. 나중에 다시 시도해주세요.
-          </p>
-          <button
-            className={styles.retryButton}
-            onClick={() => window.location.reload()}
-          >
-            다시 시도
-          </button>
-        </div>
-      </div>
-    )
-  }
+  // Transform the data to match our interface
+  const transformedItems: NoticeProps[] = notices.map((item: any) => ({
+    ...item,
+    // Ensure all required properties are present
+    _id: item._id,
+    title: item.title,
+    content: item.content,
+    imageUrls: item.imageUrls,
+    viewCount: item.viewCount,
+    createdAt: item.createdAt,
+    publishedAt: item.publishedAt,
+    isActive: item.isActive,
+    summary: item.summary,
+    author: item.author,
+    priority: item.priority || "medium",
+    pinned: item.pinned || false,
+    category: item.category,
+  }))
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>공지사항</h1>
-
-      {notices && notices.length > 0 ? (
-        <>
-          <ul className={styles.noticeList}>
-            {notices.map((notice: any, index: number) => (
-              <li
-                key={notice._id || `notice-${index}`}
-                className={styles.noticeItem}
-              >
-                <Link
-                  href={`/notice/${notice._id}`}
-                  className={styles.noticeLink}
-                >
-                  <h2 className={styles.noticeTitle}>{notice.title}</h2>
-                  <div className={styles.noticeInfo}>
-                    <span className={styles.noticeDate}>
-                      {formatDate(notice.publishedAt || notice.createdAt)}
-                    </span>
-                  </div>
-                  <p className={styles.noticeContent}>
-                    {notice.content.length > 100
-                      ? `${notice.content.substring(0, 100)}...`
-                      : notice.content}
-                  </p>
-                  {notice.attachments && notice.attachments.length > 0 && (
-                    <div className={styles.attachmentInfo}>
-                      <span>첨부파일 {notice.attachments.length}개</span>
-                    </div>
-                  )}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          
-          {/* 페이지네이션 */}
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChange={setPage}
-          />
-        </>
-      ) : (
-        <div className={styles.emptyState}>
-          <p>등록된 공지사항이 없습니다.</p>
-        </div>
-      )}
+    <div className={styles.pageWrapper}>
+      <ContentList
+        items={transformedItems}
+        type="notice"
+        isLoading={isLoading}
+        error={error ? String(error) : null}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   )
 }
