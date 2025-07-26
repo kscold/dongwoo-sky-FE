@@ -10,7 +10,8 @@ interface NoticeSectionProps {
   notices: Notice[]
 }
 
-const formatDate = (dateString: string) => {
+const formatDate = (dateString: string | Date | undefined) => {
+  if (!dateString) return "날짜 없음"
   return new Date(dateString).toLocaleDateString("ko-KR", {
     year: "numeric",
     month: "long",
@@ -32,14 +33,19 @@ export default function NoticeSection({ notices }: NoticeSectionProps) {
           <li key={notice._id} className={styles.noticeItem}>
             <Link href={`/notice/${notice._id}`} className={styles.noticeLink}>
               <span className={styles.noticeTitle}>{notice.title}</span>
-              <time className={styles.noticeDate} dateTime={notice.publishedAt}>
+              <time
+                className={styles.noticeDate}
+                dateTime={
+                  notice.publishedAt ? String(notice.publishedAt) : undefined
+                }
+              >
                 {formatDate(notice.publishedAt)}
               </time>
             </Link>
           </li>
         ))}
       </ul>
-      
+
       <div className={styles.noticeViewMore}>
         <Link href="/notice" className={styles.viewMoreButton}>
           공지사항 더보기

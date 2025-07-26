@@ -30,14 +30,14 @@ const AdminWorkShowcasePage: React.FC = () => {
   }
 
   const handleToggleActive = (id: string, isActive: boolean) => {
-    updateWorkShowcaseMutation.mutate({ 
-      id, 
-      data: { isPublished: !isActive }
+    updateWorkShowcaseMutation.mutate({
+      id,
+      data: { isActive: !isActive },
     })
   }
 
   const totalPages = workShowcasesData
-    ? Math.ceil(workShowcasesData.total / ITEMS_PER_PAGE)
+    ? Math.ceil(workShowcasesData.totalItems / ITEMS_PER_PAGE)
     : 0
 
   return (
@@ -124,9 +124,12 @@ const AdminWorkShowcasePage: React.FC = () => {
                       <label className={commonStyles.toggle}>
                         <input
                           type="checkbox"
-                          checked={showcase.isActive}
+                          checked={showcase.isActive || false}
                           onChange={() =>
-                            handleToggleActive(showcase._id, showcase.isActive)
+                            handleToggleActive(
+                              showcase._id,
+                              showcase.isActive || false
+                            )
                           }
                           className={commonStyles.toggleInput}
                         />
@@ -139,7 +142,9 @@ const AdminWorkShowcasePage: React.FC = () => {
                     </div>
                   </td>
                   <td className={commonStyles.tableCell}>
-                    {new Date(showcase.createdAt).toLocaleDateString()}
+                    {showcase.createdAt
+                      ? new Date(showcase.createdAt).toLocaleDateString()
+                      : "날짜 없음"}
                   </td>
                   <td className={commonStyles.tableCell}>
                     <div className={commonStyles.actionButtons}>

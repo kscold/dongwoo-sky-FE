@@ -4,12 +4,11 @@ import { vars } from "../../common/theme.css"
 
 export const swiperSection = style({
   width: "100%",
-  maxWidth: "100vw",
-  marginTop: vars.space.xxxxl,
-  marginBottom: vars.space.xxxxl,
-  padding: `${vars.space.xxxxl} ${vars.space.xxl}`,
-  paddingBottom: `calc(${vars.space.xxxxl} + 60px)`,
-  overflow: "visible",
+  flex: 1,
+  margin: 0,
+  padding: `${vars.space.xl} ${vars.space.lg}`,
+  paddingBottom: `calc(${vars.space.xl} + 60px)`,
+  overflow: "hidden",
   boxSizing: "border-box",
   backgroundColor: vars.colors.white,
   borderRadius: vars.radii.xl,
@@ -21,6 +20,7 @@ export const swiperSection = style({
       marginBottom: vars.space.xxxl,
       padding: `${vars.space.xxxl} ${vars.space.xl}`,
       paddingBottom: `calc(${vars.space.xxxl} + 50px)`,
+      maxWidth: "100%",
     },
     "(max-width: 480px)": {
       marginTop: vars.space.xxl,
@@ -39,6 +39,7 @@ export const sectionHeader = style({
   gap: vars.space.xl,
   paddingBottom: vars.space.lg,
   borderBottom: `1px solid ${vars.colors.gray[200]}`,
+  minHeight: "120px",
   "@media": {
     "screen and (max-width: 768px)": {
       flexDirection: "row",
@@ -47,6 +48,7 @@ export const sectionHeader = style({
       marginBottom: vars.space.xl,
       alignItems: "flex-start",
       paddingBottom: vars.space.md,
+      minHeight: "auto",
     },
     "screen and (max-width: 480px)": {
       gap: vars.space.sm,
@@ -57,45 +59,60 @@ export const sectionHeader = style({
 
 export const sectionTitleContainer = style({
   flex: 1,
+  minHeight: "80px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "flex-end",
   "@media": {
     "screen and (max-width: 768px)": {
       flex: "1",
       minWidth: "0",
+      minHeight: "auto",
+      justifyContent: "flex-start",
     },
   },
 })
 
 export const sectionTitle = style({
-  fontSize: vars.fontSizes.xxxxl,
+  fontSize: vars.fontSizes.xxxl,
   fontWeight: vars.fontWeights.extrabold,
   color: vars.colors.textStrong,
   marginBottom: vars.space.md,
   lineHeight: vars.lineHeights.heading,
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
   "@media": {
     "screen and (max-width: 768px)": {
-      fontSize: vars.fontSizes.xxxl,
+      fontSize: vars.fontSizes.xxl,
       marginBottom: vars.space.sm,
+      whiteSpace: "normal",
     },
     "screen and (max-width: 480px)": {
-      fontSize: vars.fontSizes.xxl,
+      fontSize: vars.fontSizes.xl,
       marginBottom: vars.space.sm,
     },
   },
 })
 
 export const sectionDescription = style({
-  fontSize: vars.fontSizes.xl,
+  fontSize: vars.fontSizes.lg,
   color: vars.colors.textLight,
   lineHeight: vars.lineHeights.relaxed,
   maxWidth: "600px",
+  display: "-webkit-box",
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
   "@media": {
     "screen and (max-width: 768px)": {
-      fontSize: vars.fontSizes.lg,
+      fontSize: vars.fontSizes.md,
       marginBottom: vars.space.md,
       maxWidth: "none",
+      WebkitLineClamp: 3,
     },
     "screen and (max-width: 480px)": {
-      fontSize: vars.fontSizes.md,
+      fontSize: vars.fontSizes.sm,
       lineHeight: "1.5",
     },
   },
@@ -147,12 +164,12 @@ export const swiperContainer = style({
   position: "relative",
   paddingBottom: vars.space.xl,
   paddingTop: vars.space.md,
+  paddingLeft: "60px",
+  paddingRight: "60px",
   width: "100%",
   maxWidth: "100%",
-  overflow: "visible",
+  overflow: "hidden",
   boxSizing: "border-box",
-  height: "650px",
-  minHeight: "650px",
   "@media": {
     "screen and (max-width: 768px)": {
       paddingBottom: vars.space.lg,
@@ -161,19 +178,15 @@ export const swiperContainer = style({
       padding: "12px 12px",
       borderRadius: vars.radii.xl,
       background:
-        "linear-gradient(135deg, rgba(59, 130, 246, 0.02) 0%, rgba(168, 85, 247, 0.02) 100%)",
+        "linear-gradient(135deg, rgba(168, 85, 247, 0.02) 0%, rgba(236, 72, 153, 0.02) 100%)",
       backdropFilter: "blur(5px)",
-      border: "1px solid rgba(59, 130, 246, 0.05)",
-      overflow: "visible",
-      height: "610px",
-      minHeight: "610px",
+      border: "1px solid rgba(168, 85, 247, 0.05)",
+      overflow: "hidden",
     },
     "screen and (max-width: 480px)": {
       paddingBottom: vars.space.md,
       margin: "0 -8px",
       padding: "8px 8px",
-      height: "570px",
-      minHeight: "570px",
     },
   },
 })
@@ -181,15 +194,16 @@ export const swiperContainer = style({
 export const swiperWrapper = style({
   paddingBottom: vars.space.xxxl,
   paddingTop: vars.space.xl,
+  paddingLeft: "0",
+  paddingRight: "0",
   width: "100%",
   maxWidth: "100%",
   overflow: "visible",
   boxSizing: "border-box",
-  height: "620px",
-  minHeight: "620px",
+  height: "570px",
+  minHeight: "570px",
   position: "relative",
-  display: "flex",
-  flexDirection: "column",
+  display: "block",
   "@media": {
     "(max-width: 768px)": {
       paddingBottom: vars.space.xxl,
@@ -222,30 +236,58 @@ globalStyle(`${swiperWrapper} .swiper-slide`, {
   overflow: "visible",
 })
 
+// Swiper pagination 완전 중앙 정렬
+globalStyle(`.work-showcase-pagination`, {
+  position: "absolute !important",
+  bottom: "20px !important",
+  left: "50% !important",
+  right: "auto !important",
+  transform: "translateX(-50%) !important",
+  width: "auto !important",
+  textAlign: "center !important",
+  display: "flex !important",
+  justifyContent: "center !important",
+  alignItems: "center !important",
+  zIndex: "25 !important",
+})
+
+globalStyle(`.work-showcase-pagination .swiper-pagination-bullet`, {
+  width: "12px !important",
+  height: "12px !important",
+  margin: "0 6px !important",
+  backgroundColor: "#cbd5e1 !important",
+  opacity: "1 !important",
+  borderRadius: "50% !important",
+  transition: "all 0.3s ease !important",
+})
+
+globalStyle(`.work-showcase-pagination .swiper-pagination-bullet-active`, {
+  backgroundColor: `${vars.colors.primary} !important`,
+  transform: "scale(1.2) !important",
+})
+
 export const swiperSlide = style({
-  height: "500px",
   display: "flex",
   width: "100%",
-  maxWidth: "100%",
   boxSizing: "border-box",
-  minHeight: "500px",
+  flex: "0 0 auto",
   flexShrink: 0,
+  minHeight: "500px",
   "@media": {
     "screen and (max-width: 768px)": {
-      height: "460px",
       minHeight: "460px",
     },
     "screen and (max-width: 480px)": {
-      height: "420px",
       minHeight: "420px",
     },
   },
 })
 
 export const showcaseCard = style({
-  display: "block",
+  display: "flex",
+  flexDirection: "column",
   width: "100%",
-  height: "500px",
+  height: "100%",
   minHeight: "500px",
   background: "rgba(255, 255, 255, 0.9)",
   backdropFilter: "blur(20px)",
@@ -263,7 +305,6 @@ export const showcaseCard = style({
   },
   "@media": {
     "screen and (max-width: 768px)": {
-      height: "460px",
       minHeight: "460px",
       borderRadius: vars.radii.xl,
       background: "rgba(255, 255, 255, 0.95)",
@@ -280,7 +321,6 @@ export const showcaseCard = style({
       },
     },
     "screen and (max-width: 480px)": {
-      height: "420px",
       minHeight: "420px",
       borderRadius: vars.radii.lg,
       transform: "scale(1.01)",
@@ -296,22 +336,22 @@ export const showcaseCard = style({
 export const imageContainer = style({
   position: "relative",
   width: "100%",
-  height: "200px",
+  height: "180px",
   backgroundColor: vars.colors.gray[100],
   overflow: "hidden",
   "@media": {
     "screen and (max-width: 768px)": {
-      height: "200px",
+      height: "180px",
       borderRadius: `${vars.radii.xl} ${vars.radii.xl} 0 0`,
       background:
         "linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%)",
     },
     "screen and (max-width: 480px)": {
-      height: "180px",
+      height: "160px",
       borderRadius: `${vars.radii.lg} ${vars.radii.lg} 0 0`,
     },
     "screen and (max-width: 375px)": {
-      height: "160px",
+      height: "140px",
     },
   },
 })
@@ -440,22 +480,25 @@ export const description = style({
   overflow: "hidden",
   textOverflow: "ellipsis",
   display: "-webkit-box",
-  WebkitLineClamp: 3,
+  WebkitLineClamp: 2,
   WebkitBoxOrient: "vertical",
   marginBottom: vars.space.sm,
+  minHeight: "2.4em",
   "@media": {
     "screen and (max-width: 768px)": {
       fontSize: vars.fontSizes.sm,
       lineHeight: "1.5",
-      WebkitLineClamp: 3,
+      WebkitLineClamp: 2,
       marginBottom: vars.space.sm,
       color: vars.colors.textStrong,
       fontWeight: vars.fontWeights.medium,
+      minHeight: "2.4em",
     },
     "screen and (max-width: 480px)": {
       fontSize: vars.fontSizes.xs,
       lineHeight: "1.4",
       WebkitLineClamp: 2,
+      minHeight: "2.2em",
     },
   },
 })
@@ -514,7 +557,7 @@ export const navButton = style({
   position: "absolute",
   top: "50%",
   transform: "translateY(-50%)",
-  zIndex: 20,
+  zIndex: 30,
   width: "48px",
   height: "48px",
   borderRadius: "50%",
@@ -534,34 +577,34 @@ export const navButton = style({
   },
   "@media": {
     "screen and (max-width: 768px)": {
-      width: "40px",
-      height: "40px",
+      width: "44px",
+      height: "44px",
       display: "flex",
-      top: "105px",
+      top: "50%",
+      transform: "translateY(-50%)",
     },
     "screen and (max-width: 480px)": {
-      top: "105px",
-    },
-    "screen and (max-width: 375px)": {
-      top: "95px",
+      width: "40px",
+      height: "40px",
+      top: "50%",
     },
   },
 })
 
 export const prevButton = style({
-  left: "-24px",
+  left: "12px",
   "@media": {
     "screen and (max-width: 768px)": {
-      left: "20px",
+      left: "16px",
     },
   },
 })
 
 export const nextButton = style({
-  right: "-24px",
+  right: "12px",
   "@media": {
     "screen and (max-width: 768px)": {
-      right: "20px",
+      right: "16px",
     },
   },
 })
@@ -590,10 +633,9 @@ export const pagination = style({
   zIndex: 15,
   height: "32px",
   minHeight: "32px",
-  width: "auto",
-  maxWidth: "calc(100% - 40px)",
+  width: "fit-content",
   textAlign: "center",
-  padding: "0 20px",
+  padding: "0 12px",
   "@media": {
     "(max-width: 768px)": {
       bottom: "15px",

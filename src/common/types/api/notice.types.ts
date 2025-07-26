@@ -1,5 +1,9 @@
-import { NoticeProps } from '../../interfaces/content/content.interface'
-import { PaginationResponse, ApiResponse, Priority } from '../content/content.types'
+import { NoticeProps } from "../../interfaces/content/content.interface"
+import {
+  PaginationResponse,
+  ApiResponse,
+  Priority,
+} from "../content/content.types"
 
 export interface NoticeRequest {
   title: string
@@ -14,9 +18,7 @@ export interface NoticeRequest {
   isModal?: boolean
 }
 
-export interface NoticeUpdateRequest extends Partial<NoticeRequest> {
-  _id: string
-}
+export interface NoticeUpdateRequest extends Partial<NoticeRequest> {}
 
 export interface NoticeResponse extends NoticeProps {
   updatedAt: Date

@@ -52,25 +52,29 @@ export default function Home() {
             <div className={styles.swiperContainer}>
               {/* 작업자 자랑거리 섹션 */}
               {workShowcaseSection?.isActive && homePageData?.workShowcases && (
-                <ContentSection
-                  title={workShowcaseSection.title}
-                  description={workShowcaseSection.description}
-                  items={homePageData.workShowcases}
-                  type="work"
-                  link="/work-showcases"
-                />
+                <div className={styles.sectionWrapper}>
+                  <ContentSection
+                    title={workShowcaseSection.title}
+                    description={workShowcaseSection.description}
+                    items={homePageData.workShowcases}
+                    type="work"
+                    link="/work-showcases"
+                  />
+                </div>
               )}
 
               {/* 고객 리뷰 섹션 */}
               {customerReviewSection?.isActive &&
                 homePageData?.customerReviews && (
-                  <ContentSection
-                    title={customerReviewSection.title}
-                    description={customerReviewSection.description}
-                    items={homePageData.customerReviews}
-                    type="review"
-                    link="/customer-reviews"
-                  />
+                  <div className={styles.sectionWrapper}>
+                    <ContentSection
+                      title={customerReviewSection.title}
+                      description={customerReviewSection.description}
+                      items={homePageData.customerReviews}
+                      type="review"
+                      link="/customer-reviews"
+                    />
+                  </div>
                 )}
             </div>
 

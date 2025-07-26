@@ -9,50 +9,50 @@ const adminMenuItems = [
     title: "대시보드",
     href: "/admin/dashboard",
     icon: "🏠",
-    description: "전체 현황"
+    description: "전체 현황",
   },
   {
     title: "홈 페이지 관리",
     href: "/admin/home",
     icon: "🌐",
-    description: "메인 페이지 설정"
+    description: "메인 페이지 설정",
   },
   {
     title: "서비스 안내",
     href: "/admin/service-guide",
     icon: "📋",
-    description: "서비스 가이드"
+    description: "서비스 가이드",
   },
   {
     title: "장비 관리",
     href: "/admin/equipment",
     icon: "🚛",
-    description: "장비 정보"
+    description: "장비 정보",
   },
   {
     title: "이용요금 관리",
     href: "/admin/pricing-setting",
     icon: "💰",
-    description: "요금 설정"
+    description: "요금 설정",
   },
   {
     title: "작업 자랑거리",
     href: "/admin/work-showcase",
     icon: "🎨",
-    description: "포트폴리오"
+    description: "포트폴리오",
   },
   {
     title: "고객 리뷰",
     href: "/admin/customer-review",
     icon: "⭐",
-    description: "리뷰 관리"
+    description: "리뷰 관리",
   },
   {
     title: "공지사항",
     href: "/admin/notice",
     icon: "📢",
-    description: "공지 관리"
-  }
+    description: "공지 관리",
+  },
 ]
 
 export const AdminNavigation: React.FC = () => {
@@ -82,7 +82,7 @@ export const AdminNavigation: React.FC = () => {
           <span>관리자</span>
         </div>
         <div className="admin-nav-user">
-          <span>👤 {user?.username || "관리자"}</span>
+          <span>👤 {user?.name || "관리자"}</span>
           <button onClick={handleSiteView} className="site-view-btn">
             🌐 사이트 보기
           </button>
@@ -94,8 +94,9 @@ export const AdminNavigation: React.FC = () => {
 
       <nav className="admin-nav-menu">
         {adminMenuItems.map((item) => {
-          const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
-          
+          const isActive =
+            pathname === item.href || pathname.startsWith(item.href + "/")
+
           return (
             <Link
               key={item.href}
@@ -105,7 +106,9 @@ export const AdminNavigation: React.FC = () => {
               <span className="admin-nav-icon">{item.icon}</span>
               <div className="admin-nav-content">
                 <span className="admin-nav-title">{item.title}</span>
-                <span className="admin-nav-description">{item.description}</span>
+                <span className="admin-nav-description">
+                  {item.description}
+                </span>
               </div>
             </Link>
           )

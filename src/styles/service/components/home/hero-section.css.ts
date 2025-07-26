@@ -343,12 +343,14 @@ const baseButton = style({
 export const primaryButton = style([
   baseButton,
   {
-    backgroundColor: vars.colors.primary,
+    backgroundColor: vars.colors.secondary,
     color: vars.colors.white,
+    borderColor: vars.colors.secondary,
     selectors: {
       "&:hover": {
-        backgroundColor: vars.colors.primaryDark,
+        backgroundColor: vars.colors.primary,
         color: vars.colors.white,
+        borderColor: vars.colors.primary,
       },
     },
   },

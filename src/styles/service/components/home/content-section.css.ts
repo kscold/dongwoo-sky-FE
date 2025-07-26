@@ -28,7 +28,8 @@ export const contentSection = style({
     left: 0,
     right: 0,
     bottom: 0,
-    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%)",
+    background:
+      "linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%)",
     pointerEvents: "none",
   },
   "@media": {
@@ -56,7 +57,8 @@ export const contentWrapper = style({
     left: 0,
     right: 0,
     bottom: 0,
-    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%)",
+    background:
+      "linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%)",
     pointerEvents: "none",
   },
   "@media": {
@@ -92,6 +94,17 @@ export const swiperContainer = style({
     "(max-width: 480px)": {
       padding: `${vars.space.xl} ${vars.space.md}`,
       gap: vars.space.xl,
+    },
+  },
+})
+
+export const sectionWrapper = style({
+  flex: 1,
+  minWidth: 0,
+  "@media": {
+    "(max-width: 1024px)": {
+      flex: "none",
+      width: "100%",
     },
   },
 })

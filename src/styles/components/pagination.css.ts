@@ -49,11 +49,6 @@ export const pageButton = style({
     transform: "none",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
   },
-  ":disabled:hover": {
-    backgroundColor: "white",
-    borderColor: "#e2e8f0",
-    color: "#64748b",
-  },
   "@media": {
     "screen and (max-width: 768px)": {
       padding: `${vars.space.xs} ${vars.space.sm}`,
@@ -133,7 +128,8 @@ export const active = style({
     right: 0,
     bottom: 0,
     borderRadius: "10px",
-    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%)",
+    background:
+      "linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%)",
     pointerEvents: "none",
   },
 })

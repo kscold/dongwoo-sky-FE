@@ -1,5 +1,5 @@
-import { WorkShowcaseProps } from '../../interfaces/content/content.interface'
-import { PaginationResponse, ApiResponse } from '../content/content.types'
+import { WorkShowcaseProps } from "../../interfaces/content/content.interface"
+import { PaginationResponse, ApiResponse } from "../content/content.types"
 
 export interface WorkShowcaseRequest {
   title: string
@@ -15,9 +15,8 @@ export interface WorkShowcaseRequest {
   isActive?: boolean
 }
 
-export interface WorkShowcaseUpdateRequest extends Partial<WorkShowcaseRequest> {
-  _id: string
-}
+export interface WorkShowcaseUpdateRequest
+  extends Partial<WorkShowcaseRequest> {}
 
 export interface WorkShowcaseResponse extends WorkShowcaseProps {
   updatedAt: Date

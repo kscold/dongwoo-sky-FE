@@ -24,8 +24,8 @@ const WorkShowcasesPage = () => {
       setIsMobile(window.innerWidth < 768)
     }
     checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
   const workShowcases = workShowcasesData?.data || []
@@ -34,6 +34,7 @@ const WorkShowcasesPage = () => {
   return (
     <ContentListPage<WorkShowcase>
       config={workShowcaseListConfig}
+      type="work-showcase"
       data={workShowcases}
       totalPages={totalPages}
       currentPage={currentPage}

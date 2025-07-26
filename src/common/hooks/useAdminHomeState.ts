@@ -8,13 +8,25 @@ export const useAdminHomeState = (homeSettings?: HomeSettings) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   const currentTitle = isEditing
-    ? editData.heroTitle || homeSettings?.heroTitle || { preTitle: "", mainTitle: "", postTitle: "" }
+    ? editData.heroTitle ||
+      homeSettings?.heroTitle || { preTitle: "", mainTitle: "", postTitle: "" }
     : homeSettings?.heroTitle || { preTitle: "", mainTitle: "", postTitle: "" }
-  
+
   const currentButtons = isEditing
-    ? editData.heroButtons || homeSettings?.heroButtons || { primaryButtonText: "", primaryButtonLink: "", secondaryButtonText: "", secondaryButtonLink: "" }
-    : homeSettings?.heroButtons || { primaryButtonText: "", primaryButtonLink: "", secondaryButtonText: "", secondaryButtonLink: "" }
-  
+    ? editData.heroButtons ||
+      homeSettings?.heroButtons || {
+        primaryButtonText: "",
+        primaryButtonLink: "",
+        secondaryButtonText: "",
+        secondaryButtonLink: "",
+      }
+    : homeSettings?.heroButtons || {
+        primaryButtonText: "",
+        primaryButtonLink: "",
+        secondaryButtonText: "",
+        secondaryButtonLink: "",
+      }
+
   const currentImages = isEditing
     ? editData.heroImages || homeSettings?.heroImages || []
     : homeSettings?.heroImages || []
@@ -40,7 +52,9 @@ export const useAdminHomeState = (homeSettings?: HomeSettings) => {
               secondaryButtonText: "",
               secondaryButtonLink: "",
             },
-        contentSettings: homeSettings.contentSettings ? [...homeSettings.contentSettings] : [],
+        contentSettings: homeSettings.contentSettings
+          ? [...homeSettings.contentSettings]
+          : [],
         isActive: homeSettings.isActive,
         sortOrder: homeSettings.sortOrder,
       })
@@ -54,35 +68,49 @@ export const useAdminHomeState = (homeSettings?: HomeSettings) => {
   }, [])
 
   const updateEditData = useCallback((updates: Partial<HomeSettings>) => {
-    setEditData(prev => ({ ...prev, ...updates }))
+    setEditData((prev) => ({ ...prev, ...updates }))
   }, [])
 
-  const updateTitleField = useCallback((field: keyof HomeSettings['heroTitle'], value: string) => {
-    setEditData(prev => ({
-      ...prev,
-      heroTitle: {
-        ...prev.heroTitle,
-        [field]: value
-      }
-    }))
-  }, [])
+  const updateTitleField = useCallback(
+    (field: keyof HomeSettings["heroTitle"], value: string) => {
+      setEditData((prev) => ({
+        ...prev,
+        heroTitle: {
+          preTitle: prev.heroTitle?.preTitle || "",
+          mainTitle: prev.heroTitle?.mainTitle || "",
+          postTitle: prev.heroTitle?.postTitle || "",
+          [field]: value,
+        },
+      }))
+    },
+    []
+  )
 
-  const updateButtonField = useCallback((field: keyof HomeSettings['heroButtons'], value: string) => {
-    setEditData(prev => ({
-      ...prev,
-      heroButtons: {
-        ...prev.heroButtons,
-        [field]: value
-      }
-    }))
-  }, [])
+  const updateButtonField = useCallback(
+    (field: keyof HomeSettings["heroButtons"], value: string) => {
+      setEditData((prev) => ({
+        ...prev,
+        heroButtons: {
+          primaryButtonText: prev.heroButtons?.primaryButtonText || "",
+          primaryButtonLink: prev.heroButtons?.primaryButtonLink || "",
+          secondaryButtonText: prev.heroButtons?.secondaryButtonText || "",
+          secondaryButtonLink: prev.heroButtons?.secondaryButtonLink || "",
+          [field]: value,
+        },
+      }))
+    },
+    []
+  )
 
-  const updateContentSettings = useCallback((updatedSettings: HomeSettings['contentSettings']) => {
-    setEditData(prev => ({
-      ...prev,
-      contentSettings: updatedSettings
-    }))
-  }, [])
+  const updateContentSettings = useCallback(
+    (updatedSettings: HomeSettings["contentSettings"]) => {
+      setEditData((prev) => ({
+        ...prev,
+        contentSettings: updatedSettings,
+      }))
+    },
+    []
+  )
 
   return {
     isEditing,
@@ -99,6 +127,6 @@ export const useAdminHomeState = (homeSettings?: HomeSettings) => {
     updateEditData,
     updateTitleField,
     updateButtonField,
-    updateContentSettings
+    updateContentSettings,
   }
 }

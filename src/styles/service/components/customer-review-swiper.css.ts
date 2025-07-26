@@ -4,11 +4,10 @@ import { vars } from "../../common/theme.css"
 
 export const swiperSection = style({
   width: "100%",
-  maxWidth: "100vw",
-  marginTop: vars.space.xxxxl,
-  marginBottom: vars.space.xxxxl,
-  padding: `${vars.space.xxxxl} ${vars.space.xxl}`,
-  paddingBottom: `calc(${vars.space.xxxxl} + 60px)`,
+  flex: 1,
+  margin: 0,
+  padding: `${vars.space.xl} ${vars.space.lg}`,
+  paddingBottom: `calc(${vars.space.xl} + 60px)`,
   overflow: "visible",
   boxSizing: "border-box",
   backgroundColor: vars.colors.white,
@@ -21,6 +20,7 @@ export const swiperSection = style({
       marginBottom: vars.space.xxxl,
       padding: `${vars.space.xxxl} ${vars.space.xl}`,
       paddingBottom: `calc(${vars.space.xxxl} + 50px)`,
+      maxWidth: "100%",
     },
     "(max-width: 480px)": {
       marginTop: vars.space.xxl,
@@ -39,6 +39,7 @@ export const sectionHeader = style({
   gap: vars.space.xl,
   paddingBottom: vars.space.lg,
   borderBottom: `1px solid ${vars.colors.gray[200]}`,
+  minHeight: "120px",
   "@media": {
     "screen and (max-width: 768px)": {
       flexDirection: "row",
@@ -47,6 +48,7 @@ export const sectionHeader = style({
       marginBottom: vars.space.xl,
       alignItems: "flex-start",
       paddingBottom: vars.space.md,
+      minHeight: "auto",
     },
     "screen and (max-width: 480px)": {
       gap: vars.space.md,
@@ -57,45 +59,60 @@ export const sectionHeader = style({
 
 export const sectionTitleContainer = style({
   flex: 1,
+  minHeight: "80px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "flex-end",
   "@media": {
     "screen and (max-width: 768px)": {
       flex: "1",
       minWidth: "0",
+      minHeight: "auto",
+      justifyContent: "flex-start",
     },
   },
 })
 
 export const sectionTitle = style({
-  fontSize: vars.fontSizes.xxxxl,
+  fontSize: vars.fontSizes.xxxl,
   fontWeight: vars.fontWeights.extrabold,
   color: vars.colors.textStrong,
   marginBottom: vars.space.md,
   lineHeight: vars.lineHeights.heading,
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
   "@media": {
     "screen and (max-width: 768px)": {
-      fontSize: vars.fontSizes.xxxl,
+      fontSize: vars.fontSizes.xxl,
       marginBottom: vars.space.sm,
+      whiteSpace: "normal",
     },
     "screen and (max-width: 480px)": {
-      fontSize: vars.fontSizes.xxl,
+      fontSize: vars.fontSizes.xl,
       marginBottom: vars.space.sm,
     },
   },
 })
 
 export const sectionDescription = style({
-  fontSize: vars.fontSizes.xl,
+  fontSize: vars.fontSizes.lg,
   color: vars.colors.textLight,
   lineHeight: vars.lineHeights.relaxed,
   maxWidth: "600px",
+  display: "-webkit-box",
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
   "@media": {
     "screen and (max-width: 768px)": {
-      fontSize: vars.fontSizes.lg,
+      fontSize: vars.fontSizes.md,
       marginBottom: vars.space.md,
       maxWidth: "none",
+      WebkitLineClamp: 3,
     },
     "screen and (max-width: 480px)": {
-      fontSize: vars.fontSizes.md,
+      fontSize: vars.fontSizes.sm,
       lineHeight: "1.5",
     },
   },
@@ -150,12 +167,12 @@ export const swiperContainer = style({
   position: "relative",
   paddingBottom: vars.space.xl,
   paddingTop: vars.space.md,
+  paddingLeft: "60px",
+  paddingRight: "60px",
   width: "100%",
   maxWidth: "100%",
-  overflow: "visible",
+  overflow: "hidden",
   boxSizing: "border-box",
-  height: "650px",
-  minHeight: "650px",
   "@media": {
     "screen and (max-width: 768px)": {
       paddingBottom: vars.space.lg,
@@ -167,16 +184,12 @@ export const swiperContainer = style({
         "linear-gradient(135deg, rgba(168, 85, 247, 0.02) 0%, rgba(236, 72, 153, 0.02) 100%)",
       backdropFilter: "blur(5px)",
       border: "1px solid rgba(168, 85, 247, 0.05)",
-      overflow: "visible",
-      height: "610px",
-      minHeight: "610px",
+      overflow: "hidden",
     },
     "screen and (max-width: 480px)": {
       paddingBottom: vars.space.md,
       margin: "0 -8px",
       padding: "8px 8px",
-      height: "570px",
-      minHeight: "570px",
     },
   },
 })
@@ -184,15 +197,16 @@ export const swiperContainer = style({
 export const swiperWrapper = style({
   paddingBottom: vars.space.xxxl,
   paddingTop: vars.space.xl,
+  paddingLeft: "0",
+  paddingRight: "0",
   width: "100%",
   maxWidth: "100%",
   overflow: "visible",
   boxSizing: "border-box",
-  height: "620px",
-  minHeight: "620px",
+  height: "570px",
+  minHeight: "570px",
   position: "relative",
-  display: "flex",
-  flexDirection: "column",
+  display: "block",
   "@media": {
     "(max-width: 768px)": {
       paddingBottom: vars.space.xxl,
@@ -224,10 +238,9 @@ export const pagination = style({
   zIndex: 15,
   height: "32px",
   minHeight: "32px",
-  width: "auto",
-  maxWidth: "calc(100% - 40px)",
+  width: "fit-content",
   textAlign: "center",
-  padding: "0 20px",
+  padding: "0 12px",
   "@media": {
     "(max-width: 768px)": {
       bottom: "15px",
@@ -284,30 +297,58 @@ globalStyle(`${swiperWrapper} .swiper-slide`, {
   overflow: "visible",
 })
 
+// Swiper pagination 완전 중앙 정렬
+globalStyle(`.customer-review-pagination`, {
+  position: "absolute !important",
+  bottom: "20px !important",
+  left: "50% !important",
+  right: "auto !important",
+  transform: "translateX(-50%) !important",
+  width: "auto !important",
+  textAlign: "center !important",
+  display: "flex !important",
+  justifyContent: "center !important",
+  alignItems: "center !important",
+  zIndex: "25 !important",
+})
+
+globalStyle(`.customer-review-pagination .swiper-pagination-bullet`, {
+  width: "12px !important",
+  height: "12px !important",
+  margin: "0 6px !important",
+  backgroundColor: "#cbd5e1 !important",
+  opacity: "1 !important",
+  borderRadius: "50% !important",
+  transition: "all 0.3s ease !important",
+})
+
+globalStyle(`.customer-review-pagination .swiper-pagination-bullet-active`, {
+  backgroundColor: `${vars.colors.primary} !important`,
+  transform: "scale(1.2) !important",
+})
+
 export const swiperSlide = style({
-  height: "500px",
   display: "flex",
   width: "100%",
-  maxWidth: "100%",
   boxSizing: "border-box",
   minHeight: "500px",
+  flex: "0 0 auto",
   flexShrink: 0,
   "@media": {
     "screen and (max-width: 768px)": {
-      height: "460px",
       minHeight: "460px",
     },
     "screen and (max-width: 480px)": {
-      height: "420px",
       minHeight: "420px",
     },
   },
 })
 
 export const reviewCard = style({
-  display: "block",
+  display: "flex",
+  flexDirection: "column",
   width: "100%",
-  height: "500px",
+  height: "100%",
   minHeight: "500px",
   background: "rgba(255, 255, 255, 0.9)",
   backdropFilter: "blur(20px)",
@@ -325,7 +366,6 @@ export const reviewCard = style({
   },
   "@media": {
     "screen and (max-width: 768px)": {
-      height: "460px",
       minHeight: "460px",
       borderRadius: vars.radii.xl,
       background: "rgba(255, 255, 255, 0.95)",
@@ -342,7 +382,6 @@ export const reviewCard = style({
       },
     },
     "screen and (max-width: 480px)": {
-      height: "420px",
       minHeight: "420px",
       borderRadius: vars.radii.lg,
       transform: "scale(1.01)",
@@ -434,22 +473,33 @@ export const cardHeader = style({
   gap: vars.space.md,
 })
 
+export const footer = style({
+  display: "flex",
+  justifyContent: "flex-end",
+  alignItems: "center",
+  marginTop: "auto",
+  paddingTop: vars.space.sm,
+  borderTop: `1px solid ${vars.colors.gray[200]}`,
+})
+
 export const cardTitle = style({
   fontSize: vars.fontSizes.lg,
   fontWeight: vars.fontWeights.bold,
-  color: vars.colors.textStrong,
+  color: "#000000",
   lineHeight: vars.lineHeights.heading,
+  marginBottom: vars.space.sm,
   overflow: "hidden",
   textOverflow: "ellipsis",
   display: "-webkit-box",
   WebkitLineClamp: 2,
   WebkitBoxOrient: "vertical",
-  flex: 1,
   "@media": {
     "screen and (max-width: 768px)": {
       fontSize: vars.fontSizes.lg,
+      marginBottom: vars.space.sm,
       lineHeight: "1.4",
       fontWeight: vars.fontWeights.bold,
+      color: "#000000",
     },
     "screen and (max-width: 480px)": {
       fontSize: vars.fontSizes.md,
@@ -462,12 +512,23 @@ export const rating = style({
   display: "flex",
   gap: "2px",
   alignItems: "center",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      gap: "1px",
+    },
+  },
 })
 
 export const starIcon = style({
   width: "16px",
   height: "16px",
   fill: "currentColor",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      width: "14px",
+      height: "14px",
+    },
+  },
 })
 
 export const meta = style({
@@ -475,6 +536,12 @@ export const meta = style({
   flexDirection: "column",
   gap: vars.space.xs,
   marginBottom: vars.space.sm,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      gap: "2px",
+      marginBottom: vars.space.xs,
+    },
+  },
 })
 
 export const metaItem = style({
@@ -483,12 +550,24 @@ export const metaItem = style({
   gap: vars.space.xs,
   fontSize: vars.fontSizes.sm,
   color: vars.colors.textLight,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: vars.fontSizes.xs,
+      gap: "4px",
+    },
+  },
 })
 
 export const metaIcon = style({
   width: "16px",
   height: "16px",
-  color: vars.colors.secondary,
+  color: vars.colors.primary,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      width: "14px",
+      height: "14px",
+    },
+  },
 })
 
 export const serviceIcon = style({
@@ -502,45 +581,88 @@ export const description = style({
   overflow: "hidden",
   textOverflow: "ellipsis",
   display: "-webkit-box",
-  WebkitLineClamp: 3,
+  WebkitLineClamp: 2,
   WebkitBoxOrient: "vertical",
   marginBottom: vars.space.sm,
+  minHeight: "2.4em",
   "@media": {
     "screen and (max-width: 768px)": {
       fontSize: vars.fontSizes.sm,
       lineHeight: "1.5",
-      WebkitLineClamp: 3,
+      WebkitLineClamp: 2,
       marginBottom: vars.space.sm,
       color: vars.colors.textStrong,
       fontWeight: vars.fontWeights.medium,
+      minHeight: "2.4em",
     },
     "screen and (max-width: 480px)": {
       fontSize: vars.fontSizes.xs,
       lineHeight: "1.4",
       WebkitLineClamp: 2,
+      minHeight: "2.2em",
     },
   },
 })
 
-export const footer = style({
+export const stats = style({
   display: "flex",
-  justifyContent: "flex-end",
+  justifyContent: "space-between",
   alignItems: "center",
   marginTop: "auto",
   paddingTop: vars.space.sm,
   borderTop: `1px solid ${vars.colors.gray[200]}`,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      paddingTop: vars.space.xs,
+    },
+  },
+})
+
+export const stat = style({
+  display: "flex",
+  alignItems: "center",
+  gap: vars.space.xs,
+  fontSize: vars.fontSizes.sm,
+  color: vars.colors.textLight,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: vars.fontSizes.xs,
+      gap: "4px",
+    },
+  },
+})
+
+export const statIcon = style({
+  width: "16px",
+  height: "16px",
+  color: vars.colors.secondary,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      width: "14px",
+      height: "14px",
+    },
+  },
+})
+
+export const locationIcon = style({
+  fontSize: vars.fontSizes.sm,
 })
 
 export const date = style({
   fontSize: vars.fontSizes.xs,
   color: vars.colors.textLight,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: "10px",
+    },
+  },
 })
 
 export const navButton = style({
   position: "absolute",
   top: "50%",
   transform: "translateY(-50%)",
-  zIndex: 20,
+  zIndex: 30,
   width: "48px",
   height: "48px",
   borderRadius: "50%",
@@ -560,34 +682,34 @@ export const navButton = style({
   },
   "@media": {
     "screen and (max-width: 768px)": {
-      width: "40px",
-      height: "40px",
+      width: "44px",
+      height: "44px",
       display: "flex",
-      top: "95px", // imageContainer 높이 180px의 정중앙 (90px + 5px 조정)
+      top: "50%",
+      transform: "translateY(-50%)",
     },
     "screen and (max-width: 480px)": {
-      top: "95px", // imageContainer 높이 160px의 정중앙 (80px + 5px 조정)
-    },
-    "screen and (max-width: 375px)": {
-      top: "85px", // imageContainer 높이 140px의 정중앙 (70px + 5px 조정)
+      width: "40px",
+      height: "40px",
+      top: "50%",
     },
   },
 })
 
 export const prevButton = style({
-  left: "-24px",
+  left: "12px",
   "@media": {
     "screen and (max-width: 768px)": {
-      left: "20px", // 좌측 여백 늘리기
+      left: "16px",
     },
   },
 })
 
 export const nextButton = style({
-  right: "-24px",
+  right: "12px",
   "@media": {
     "screen and (max-width: 768px)": {
-      right: "20px", // 우측 여백 늘리기
+      right: "16px",
     },
   },
 })

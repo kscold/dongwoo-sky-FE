@@ -29,9 +29,9 @@ const AdminCustomerReviewPage: React.FC = () => {
   }
 
   const handleTogglePublished = (id: string, isActive: boolean) => {
-    updateCustomerReviewMutation.mutate({ 
-      id, 
-      data: { isActive: !isActive }
+    updateCustomerReviewMutation.mutate({
+      id,
+      data: { isActive: !isActive },
     })
   }
 
@@ -48,7 +48,7 @@ const AdminCustomerReviewPage: React.FC = () => {
   }
 
   const totalPages = customerReviewsData
-    ? Math.ceil(customerReviewsData.total / ITEMS_PER_PAGE)
+    ? Math.ceil(customerReviewsData.totalItems / ITEMS_PER_PAGE)
     : 0
 
   return (
@@ -117,7 +117,7 @@ const AdminCustomerReviewPage: React.FC = () => {
                   </td>
                   <td className={commonStyles.tableCell}>
                     <div style={{ display: "flex", gap: "2px" }}>
-                      {renderStars(review.rating)}
+                      {renderStars(review.rating || 0)}
                     </div>
                   </td>
                   <td className={commonStyles.tableCell}>
@@ -137,9 +137,12 @@ const AdminCustomerReviewPage: React.FC = () => {
                       <label className={commonStyles.toggle}>
                         <input
                           type="checkbox"
-                          checked={review.isActive}
+                          checked={review.isActive || false}
                           onChange={() =>
-                            handleTogglePublished(review._id, review.isActive)
+                            handleTogglePublished(
+                              review._id,
+                              review.isActive || false
+                            )
                           }
                           className={commonStyles.toggleInput}
                         />
@@ -152,7 +155,9 @@ const AdminCustomerReviewPage: React.FC = () => {
                     </div>
                   </td>
                   <td className={commonStyles.tableCell}>
-                    {new Date(review.createdAt).toLocaleDateString()}
+                    {review.createdAt
+                      ? new Date(review.createdAt).toLocaleDateString()
+                      : "날짜 없음"}
                   </td>
                   <td className={commonStyles.tableCell}>
                     <div className={commonStyles.actionButtons}>

@@ -72,7 +72,6 @@ export default function CreateNoticePage() {
       await createNoticeMutation.mutateAsync({
         ...data,
         author: "관리자",
-        tags: [],
         isModal: false,
       })
       router.push("/admin/notice")

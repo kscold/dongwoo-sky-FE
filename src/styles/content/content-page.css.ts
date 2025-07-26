@@ -3,7 +3,7 @@ import { vars } from "../common/theme.css"
 
 export const pageWrapper = style({
   minHeight: "100vh",
-  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+  background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
   width: "100%",
   paddingBottom: vars.space.xxxxl,
   position: "relative",
@@ -14,7 +14,8 @@ export const pageWrapper = style({
     left: 0,
     right: 0,
     bottom: 0,
-    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)",
+    background:
+      "linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)",
     pointerEvents: "none",
   },
 })
@@ -42,7 +43,8 @@ export const header = style({
   backdropFilter: "blur(20px)",
   borderRadius: "32px",
   border: "1px solid rgba(255, 255, 255, 0.3)",
-  boxShadow: "0 20px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+  boxShadow:
+    "0 20px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
   position: "relative",
   overflow: "hidden",
   "::before": {
@@ -52,7 +54,8 @@ export const header = style({
     left: 0,
     right: 0,
     height: "1px",
-    background: "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)",
+    background:
+      "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)",
   },
   "@media": {
     "(max-width: 768px)": {
@@ -66,7 +69,7 @@ export const title = style({
   fontSize: vars.fontSizes.xxxxl,
   fontWeight: "800",
   marginBottom: vars.space.lg,
-  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+  background: "linear-gradient(135deg, #0E4DA4 0%, #00C2B8 100%)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   backgroundClip: "text",
@@ -117,7 +120,8 @@ export const backButton = style({
     left: "-100%",
     width: "100%",
     height: "100%",
-    background: "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent)",
+    background:
+      "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent)",
     transition: "left 0.5s",
   },
   ":hover": {
@@ -125,9 +129,6 @@ export const backButton = style({
     boxShadow: "0 8px 25px rgba(79, 70, 229, 0.2)",
     borderColor: "#4f46e5",
     color: "#4f46e5",
-  },
-  ":hover::before": {
-    left: "100%",
   },
 })
 
@@ -152,7 +153,8 @@ export const card = style({
   backgroundColor: "rgba(255, 255, 255, 0.95)",
   backdropFilter: "blur(20px)",
   borderRadius: "24px",
-  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.8) inset",
+  boxShadow:
+    "0 8px 32px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.8) inset",
   overflow: "hidden",
   textDecoration: "none",
   color: "inherit",
@@ -166,17 +168,16 @@ export const card = style({
     left: 0,
     right: 0,
     height: "1px",
-    background: "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)",
+    background:
+      "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)",
     opacity: 0,
     transition: "opacity 0.3s",
   },
   ":hover": {
     transform: "translateY(-8px) scale(1.02)",
-    boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255, 255, 255, 0.9) inset",
+    boxShadow:
+      "0 25px 50px rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255, 255, 255, 0.9) inset",
     borderColor: "rgba(102, 126, 234, 0.3)",
-  },
-  ":hover::before": {
-    opacity: 1,
   },
 })
 
@@ -199,9 +200,9 @@ export const imagePlaceholder = style({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+  background: "linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%)",
   fontSize: vars.fontSizes.xxxxl,
-  color: "white",
+  color: "#64748b",
 })
 
 export const content = style({
@@ -308,7 +309,8 @@ export const emptyState = style({
     left: 0,
     right: 0,
     height: "1px",
-    background: "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)",
+    background:
+      "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)",
   },
 })
 
@@ -340,7 +342,8 @@ export const errorState = style({
     left: 0,
     right: 0,
     height: "1px",
-    background: "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)",
+    background:
+      "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)",
   },
 })
 
@@ -353,7 +356,7 @@ export const loadingState = style({
 export const noticeCard = style([
   card,
   {
-    borderLeft: "4px solid #667eea",
+    borderLeft: "4px solid #0E4DA4",
     "::after": {
       content: "",
       position: "absolute",
@@ -361,7 +364,7 @@ export const noticeCard = style([
       left: 0,
       width: "4px",
       height: "100%",
-      background: "linear-gradient(180deg, #667eea 0%, #5a67d8 100%)",
+      background: "linear-gradient(180deg, #0E4DA4 0%, #00C2B8 100%)",
     },
   },
 ])
@@ -370,12 +373,12 @@ export const pinnedBadge = style({
   position: "absolute",
   top: vars.space.md,
   right: vars.space.md,
-  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+  background: "linear-gradient(135deg, #0E4DA4 0%, #00C2B8 100%)",
   color: "white",
   padding: `${vars.space.xs} ${vars.space.sm}`,
   borderRadius: "8px",
   fontSize: vars.fontSizes.xs,
   fontWeight: "700",
   zIndex: 10,
-  boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)",
+  boxShadow: "0 4px 12px rgba(14, 77, 164, 0.3)",
 })
