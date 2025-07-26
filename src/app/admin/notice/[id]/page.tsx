@@ -25,12 +25,11 @@ export default function EditNoticePage() {
   const [formData, setFormData] = useState<UpdateNoticeDto>({
     title: "",
     content: "",
-    isPublished: true,
+    isActive: true,
     isModal: false,
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [files, setFiles] = useState<File[]>([])
 
   // 공지사항 데이터 로드 시 폼 데이터 설정
   useEffect(() => {
@@ -38,9 +37,8 @@ export default function EditNoticePage() {
       setFormData({
         title: noticeData.title,
         content: noticeData.content,
-        isPublished: noticeData.isPublished,
+        isActive: noticeData.isActive || true,
         isModal: noticeData.isModal || false,
-        attachments: noticeData.attachments,
       })
     }
   }, [noticeData])
@@ -58,53 +56,11 @@ export default function EditNoticePage() {
       setLoading(true)
       setError(null)
 
-      // 파일 업로드 처리
-      let attachments = formData.attachments || []
-      if (files.length > 0) {
-        try {
-          console.log(
-            "파일 업로드 시작:",
-            files.map((f) => f.name)
-          )
-          const uploadResult = await uploadImagesMutation.mutateAsync(files)
-          console.log("파일 업로드 결과:", uploadResult)
-
-          if (uploadResult) {
-            let newAttachments: { url: string; key: string; name: string }[] =
-              []
-
-            // 백엔드에서 AttachmentDto[] 배열을 직접 반환하는 경우
-            if (
-              uploadResult.attachments &&
-              Array.isArray(uploadResult.attachments)
-            ) {
-              newAttachments = uploadResult.attachments
-              console.log("첨부파일 처리 완료 (attachments):", newAttachments)
-            }
-            // 기존 방식 (urls 배열)
-            else if (uploadResult.urls && Array.isArray(uploadResult.urls)) {
-              newAttachments = uploadResult.urls.map((url, index) => ({
-                url,
-                key: `upload_${Date.now()}_${index}`,
-                name: files[index]?.name || `file_${index}`,
-              }))
-              console.log("첨부파일 처리 완료 (urls):", newAttachments)
-            }
-
-            attachments = [...attachments, ...newAttachments]
-          }
-        } catch (err) {
-          console.error("파일 업로드 오류:", err)
-          throw new Error("파일 업로드에 실패했습니다.")
-        }
-      }
-
       // 공지사항 수정
       const updatedNotice = await updateNoticeMutation.mutateAsync({
         id,
         data: {
           ...formData,
-          attachments,
         },
       })
 
@@ -146,22 +102,6 @@ export default function EditNoticePage() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
-
-  // 파일 선택 핸들러
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const fileList = Array.from(e.target.files)
-      setFiles(fileList)
-    }
-  }
-
-  // 첨부파일 삭제 핸들러
-  const handleRemoveAttachment = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      attachments: prev.attachments?.filter((_, i) => i !== index),
     }))
   }
 
@@ -229,13 +169,13 @@ export default function EditNoticePage() {
           <div className={notice.checkboxGroup}>
             <input
               type="checkbox"
-              id="isPublished"
-              name="isPublished"
-              checked={formData.isPublished}
+              id="isActive"
+              name="isActive"
+              checked={formData.isActive}
               onChange={handleChange}
               className={notice.checkbox}
             />
-            <label htmlFor="isPublished" className={notice.checkboxLabel}>
+            <label htmlFor="isActive" className={notice.checkboxLabel}>
               공개 상태
             </label>
           </div>
@@ -253,45 +193,6 @@ export default function EditNoticePage() {
               모달로 표시
             </label>
           </div>
-        </div>
-
-        {/* 기존 첨부파일 표시 */}
-        {formData.attachments && formData.attachments.length > 0 && (
-          <div className={notice.formGroup}>
-            <label className={notice.label}>기존 첨부파일</label>
-            <div className={notice.attachmentList}>
-              {formData.attachments.map((attachment, index) => (
-                <div key={index} className={notice.attachmentItem}>
-                  <span className={notice.attachmentName}>
-                    {attachment.name}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveAttachment(index)}
-                    className={notice.removeButton}
-                  >
-                    삭제
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className={notice.formGroup}>
-          <label htmlFor="files" className={notice.label}>
-            새 첨부 파일
-          </label>
-          <input
-            type="file"
-            id="files"
-            onChange={handleFileChange}
-            className={notice.fileInput}
-            multiple
-          />
-          <small className={notice.helpText}>
-            최대 5개의 파일을 첨부할 수 있습니다. (최대 용량: 15MB)
-          </small>
         </div>
 
         <div className={notice.formActions}>

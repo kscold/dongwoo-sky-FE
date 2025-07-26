@@ -10,6 +10,7 @@ import { ContentListConfig, ContentItem } from "../../types/content"
 
 interface ContentListPageProps<T extends ContentItem> {
   config: ContentListConfig
+  type: "customer-review" | "work-showcase" | "notice"
   data: T[] | undefined
   totalPages: number
   currentPage: number
@@ -21,6 +22,7 @@ interface ContentListPageProps<T extends ContentItem> {
 
 const ContentListPage = <T extends ContentItem>({
   config,
+  type,
   data,
   totalPages,
   currentPage,
@@ -36,8 +38,8 @@ const ContentListPage = <T extends ContentItem>({
       setIsMobile(window.innerWidth < 768)
     }
     checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
   if (isLoading) {
@@ -47,9 +49,7 @@ const ContentListPage = <T extends ContentItem>({
   if (error) {
     return (
       <div className={`content-list-container ${className}`}>
-        <div className="error-state">
-          ⚠️ {config.errorMessage}
-        </div>
+        <div className="error-state">⚠️ {config.errorMessage}</div>
       </div>
     )
   }
@@ -61,9 +61,7 @@ const ContentListPage = <T extends ContentItem>({
       {/* 헤더 */}
       <div className="content-list-header">
         <h1 className="content-list-title">{config.pageTitle}</h1>
-        <p className="content-list-subtitle">
-          {config.pageSubtitle}
-        </p>
+        <p className="content-list-subtitle">{config.pageSubtitle}</p>
         <Link href={config.backUrl} className="content-list-back-button">
           ← {config.backButtonText}
         </Link>
@@ -74,12 +72,7 @@ const ContentListPage = <T extends ContentItem>({
         <>
           <div className="content-list-grid">
             {items.map((item) => (
-              <ContentCard
-                key={item._id}
-                item={item}
-                config={config}
-                href={`${config.baseUrl}/${item._id}`}
-              />
+              <ContentCard key={item._id} item={item} type={type} />
             ))}
           </div>
 

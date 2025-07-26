@@ -44,7 +44,13 @@ export interface ContentListConfig {
   errorMessage: string
   emptyStateTitle: string
   emptyStateText: string
-  skeletonVariant: string
+  skeletonVariant:
+    | "service-guide"
+    | "pricing"
+    | "work-showcase"
+    | "customer-review"
+    | "notice"
+    | "default"
   metaFields: MetaField[]
   statFields: StatField[]
 }
@@ -55,7 +61,13 @@ export interface ContentDetailConfig {
   backButtonText: string
   errorMessage: string
   errorDescription: string
-  skeletonVariant: string
+  skeletonVariant:
+    | "service-guide"
+    | "pricing"
+    | "work-showcase"
+    | "customer-review"
+    | "notice"
+    | "default"
   headerMetaFields?: MetaField[]
   detailMetaFields?: MetaField[]
   statFields?: StatField[]

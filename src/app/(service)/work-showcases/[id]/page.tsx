@@ -1,44 +1,44 @@
-"use client";
+"use client"
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import React from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { useParams } from "next/navigation"
 
 import {
   useWorkShowcase,
   useLikeWorkShowcase,
-} from "../../../../common/hooks/useWorkShowcase";
-import PageSkeleton from "../../../../common/components/ui/PageSkeleton";
-import * as styles from "../../../../styles/service/page/work-showcase-page.css";
+} from "../../../../common/hooks/useWorkShowcase"
+import PageSkeleton from "../../../../common/components/ui/PageSkeleton"
+import * as styles from "../../../../styles/service/page/work-showcase-page.css"
 
 const WorkShowcaseDetailPage = () => {
-  const params = useParams();
-  const id = params.id as string;
+  const params = useParams()
+  const id = params.id as string
 
-  const { data: showcase, isLoading, error } = useWorkShowcase(id);
-  const likeMutation = useLikeWorkShowcase();
+  const { data: showcase, isLoading, error } = useWorkShowcase(id)
+  const likeMutation = useLikeWorkShowcase()
 
   const formatDate = (dateString: string | Date | null | undefined) => {
-    if (!dateString) return "날짜 정보 없음";
-    const date = new Date(dateString);
+    if (!dateString) return "날짜 정보 없음"
+    const date = new Date(dateString)
     return date.toLocaleDateString("ko-KR", {
       year: "numeric",
       month: "long",
       day: "numeric",
-    });
-  };
+    })
+  }
 
   const handleLike = async () => {
     try {
-      await likeMutation.mutateAsync(id);
+      await likeMutation.mutateAsync(id)
     } catch (error) {
-      console.error("좋아요 실패:", error);
+      console.error("좋아요 실패:", error)
     }
-  };
+  }
 
   if (isLoading) {
-    return <PageSkeleton variant="work-showcase" />;
+    return <PageSkeleton variant="work-showcase" />
   }
 
   if (error || !showcase) {
@@ -54,7 +54,7 @@ const WorkShowcaseDetailPage = () => {
           ← 목록으로 돌아가기
         </Link>
       </div>
-    );
+    )
   }
 
   return (
@@ -68,9 +68,6 @@ const WorkShowcaseDetailPage = () => {
         <div className={styles.meta}>
           <div className={styles.authorInfo}>
             <span className={styles.author}>👷 {showcase.authorName}</span>
-            {showcase.authorRole && (
-              <span className={styles.role}>({showcase.authorRole})</span>
-            )}
           </div>
           <div className={styles.details}>
             {showcase.projectLocation && (
@@ -142,7 +139,7 @@ const WorkShowcaseDetailPage = () => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default WorkShowcaseDetailPage;
+export default WorkShowcaseDetailPage

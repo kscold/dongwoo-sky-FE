@@ -111,13 +111,13 @@ img {
 
 /* 전체적인 일체감을 위한 추가 스타일 */
 .main-gradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
 }
 
 .card-gradient {
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 8px 32px rgba(14, 77, 164, 0.1);
 }
 
 .glass-effect {

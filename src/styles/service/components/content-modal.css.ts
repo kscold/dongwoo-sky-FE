@@ -435,3 +435,43 @@ export const downloadIcon = style({
     },
   },
 })
+
+// 모달 이미지 스타일 추가
+export const imageContainer = style({
+  marginBottom: vars.space.lg,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      marginBottom: vars.space.md,
+    },
+  },
+})
+
+export const imageWrapper = style({
+  marginBottom: vars.space.md,
+  borderRadius: vars.radii.md,
+  overflow: "hidden",
+  backgroundColor: vars.colors.backgroundLight,
+  border: `1px solid ${vars.colors.border}`,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      marginBottom: vars.space.sm,
+    },
+  },
+})
+
+export const modalImage = style({
+  width: "100%",
+  height: "auto",
+  maxHeight: "400px",
+  objectFit: "contain",
+  display: "block",
+  backgroundColor: "white",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      maxHeight: "300px",
+    },
+    "screen and (max-width: 480px)": {
+      maxHeight: "250px",
+    },
+  },
+})

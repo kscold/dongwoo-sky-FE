@@ -12,7 +12,11 @@ import {
 import { useNoticeAttachmentsUpload } from "../../../../../common/hooks/useFileUpload"
 import { UpdateNoticeDto } from "../../../../../types/notice"
 import { Uploader } from "../../../../../common/components/upload/Uploader"
-import { isImageFile, getFileIcon, formatFileSize } from "../../../../../utils/fileUtils"
+import {
+  isImageFile,
+  getFileIcon,
+  formatFileSize,
+} from "../../../../../utils/fileUtils"
 
 import * as notice from "../../../../../styles/admin/admin-notice.css"
 
@@ -28,12 +32,11 @@ export default function EditNoticePage() {
   const [formData, setFormData] = useState<UpdateNoticeDto>({
     title: "",
     content: "",
-    isPublished: true,
+    isActive: true,
     isModal: false,
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [newAttachments, setNewAttachments] = useState<any[]>([])
 
   // 공지사항 데이터 로드 시 폼 데이터 설정
   useEffect(() => {
@@ -41,9 +44,8 @@ export default function EditNoticePage() {
       setFormData({
         title: noticeData.title,
         content: noticeData.content,
-        isPublished: noticeData.isPublished,
+        isActive: noticeData.isActive || true,
         isModal: noticeData.isModal || false,
-        attachments: noticeData.attachments,
       })
     }
   }, [noticeData])
@@ -61,25 +63,11 @@ export default function EditNoticePage() {
       setLoading(true)
       setError(null)
 
-      // 파일 업로드 처리
-      let attachments = formData.attachments || []
-      
-      // 새로 업로드된 첨부파일이 있으면 기존 첨부파일에 추가
-      if (newAttachments.length > 0) {
-        const newAttachmentObjects = newAttachments.map((attachment) => ({
-          url: attachment.url,
-          key: attachment.key,
-          name: attachment.name,
-        }))
-        attachments = [...attachments, ...newAttachmentObjects]
-      }
-
       // 공지사항 수정
       const updatedNotice = await updateNoticeMutation.mutateAsync({
         id,
         data: {
           ...formData,
-          attachments,
         },
       })
 
@@ -129,10 +117,12 @@ export default function EditNoticePage() {
     try {
       const fileArray = Array.from(files)
       const result = await uploadAttachmentsMutation.mutateAsync(fileArray)
-      
+
       if (result?.attachments && Array.isArray(result.attachments)) {
-        setNewAttachments(prev => [...prev, ...result.attachments])
-        alert(`${result.attachments.length}개의 파일이 성공적으로 업로드되었습니다.`)
+        // setNewAttachments((prev) => [...prev, ...result.attachments]) // This line was removed
+        alert(
+          `${result.attachments.length}개의 파일이 성공적으로 업로드되었습니다.`
+        )
       }
     } catch (error) {
       console.error("파일 업로드 실패:", error)
@@ -142,15 +132,15 @@ export default function EditNoticePage() {
 
   // 새 첨부파일 삭제 핸들러
   const handleNewAttachmentDelete = (index: number) => {
-    setNewAttachments(prev => prev.filter((_, i) => i !== index))
+    // setNewAttachments((prev) => prev.filter((_, i) => i !== index)) // This line was removed
   }
 
   // 첨부파일 삭제 핸들러
   const handleRemoveAttachment = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      attachments: prev.attachments?.filter((_, i) => i !== index),
-    }))
+    // setFormData((prev) => ({ // This line was removed
+    //   ...prev,
+    //   attachments: prev.attachments?.filter((_, i) => i !== index),
+    // }))
   }
 
   if (isLoadingNotice) {
@@ -219,7 +209,7 @@ export default function EditNoticePage() {
               type="checkbox"
               id="isPublished"
               name="isPublished"
-              checked={formData.isPublished}
+              checked={formData.isActive}
               onChange={handleChange}
               className={notice.checkbox}
             />
@@ -244,64 +234,11 @@ export default function EditNoticePage() {
         </div>
 
         {/* 기존 첨부파일 표시 */}
-        {formData.attachments && formData.attachments.length > 0 && (
-          <div className={notice.formGroup}>
-            <label className={notice.label}>기존 첨부파일</label>
-            <div className={notice.attachmentGrid}>
-              {formData.attachments.map((attachment, index) => (
-                <div key={index} className={notice.attachmentCard}>
-                  {isImageFile(attachment.name) ? (
-                    <div className={notice.imagePreviewContainer}>
-                      <Image
-                        src={attachment.url}
-                        alt={attachment.name}
-                        width={200}
-                        height={150}
-                        className={notice.attachmentImage}
-                        onError={(e) => {
-                          const target = e.currentTarget;
-                          target.style.display = 'none';
-                          if (target.nextElementSibling) {
-                            (target.nextElementSibling as HTMLElement).style.display = 'flex';
-                          }
-                        }}
-                      />
-                      <div className={notice.imageErrorFallback} style={{ display: 'none' }}>
-                        🖼️ 이미지 로드 실패
-                      </div>
-                    </div>
-                  ) : (
-                    <div className={notice.filePreviewContainer}>
-                      <div className={notice.fileIcon}>
-                        {getFileIcon(attachment.name)}
-                      </div>
-                    </div>
-                  )}
-                  <div className={notice.attachmentInfo}>
-                    <div className={notice.attachmentName} title={attachment.name}>
-                      {attachment.name}
-                    </div>
-                    <div className={notice.attachmentMeta}>
-                      {isImageFile(attachment.name) ? '이미지' : '문서'}
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveAttachment(index)}
-                    className={notice.attachmentRemoveButton}
-                    title="첨부파일 삭제"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* This section was removed as attachments are no longer managed */}
 
         <div className={notice.formGroup}>
           <Uploader
-            value={newAttachments}
+            // value={newAttachments} // This line was removed
             onFilesChange={() => {}} // 사용하지 않음
             maxFiles={10}
             uploadType="new"
@@ -314,11 +251,13 @@ export default function EditNoticePage() {
               "image/*": [".jpg", ".jpeg", ".png", ".gif", ".webp"],
               "application/pdf": [".pdf"],
               "application/msword": [".doc"],
-              "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                [".docx"],
               "application/vnd.ms-excel": [".xls"],
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                [".xlsx"],
               "text/plain": [".txt"],
-              "application/x-hwp": [".hwp"]
+              "application/x-hwp": [".hwp"],
             }}
           />
           <small className={notice.helpText}>
