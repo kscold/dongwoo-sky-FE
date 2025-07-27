@@ -4,8 +4,7 @@ import React from "react"
 
 import { WorkShowcase } from "../../../types/work-showcase"
 import { CustomerReview } from "../../../types/customer-review"
-import WorkShowcaseSwiper from "../swiper/WorkShowcaseSwiper"
-import CustomerReviewSwiper from "../swiper/CustomerReviewSwiper"
+import ContentSwiper from "../swiper/ContentSwiper"
 
 interface ContentSectionProps {
   title?: string
@@ -22,23 +21,12 @@ export default function ContentSection({
   type,
   link,
 }: ContentSectionProps) {
-  const isWorkShowcase = type === "work"
-
-  if (isWorkShowcase) {
-    return (
-      <WorkShowcaseSwiper
-        workShowcases={items as WorkShowcase[]}
-        title={title}
-        description={description}
-        showViewAll={true}
-        viewAllLink={link}
-      />
-    )
-  }
+  const swiperType = type === "work" ? "showcase" : "review"
 
   return (
-    <CustomerReviewSwiper
-      customerReviews={items as CustomerReview[]}
+    <ContentSwiper
+      type={swiperType}
+      data={items}
       title={title}
       description={description}
       showViewAll={true}

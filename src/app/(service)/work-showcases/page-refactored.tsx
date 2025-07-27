@@ -6,7 +6,6 @@ import ContentListPage from "../../../common/components/content/ContentListPage"
 import { useWorkShowcases } from "../../../common/hooks/useWorkShowcase"
 import { workShowcaseListConfig } from "../../../common/configs/work-showcase-config"
 import type { WorkShowcase } from "../../../types/work-showcase"
-import "../../../styles/content/content-list.css"
 
 const WorkShowcasesPage = () => {
   const [currentPage, setCurrentPage] = useState(1)

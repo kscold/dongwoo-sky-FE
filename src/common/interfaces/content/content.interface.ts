@@ -7,6 +7,11 @@ export interface BaseContentItemProps {
   createdAt?: string | Date
   publishedAt?: string | Date
   isActive?: boolean
+  attachments?: Array<{
+    url: string
+    name: string
+    key: string
+  }>
 }
 
 export interface CustomerReviewProps extends BaseContentItemProps {

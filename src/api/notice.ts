@@ -12,34 +12,43 @@ export interface PaginatedNotices {
  */
 const processNoticeData = (notice: any): Notice => {
   const processedNotice = { ...notice }
-  
+
   // 첨부파일 처리
-  if (processedNotice.attachments && Array.isArray(processedNotice.attachments)) {
-    processedNotice.attachments = processedNotice.attachments.map((attachment: any) => {
-      const processed = processAttachment(attachment)
-      return {
-        ...attachment,
-        displayName: processed.displayName,
-        fileExtension: processed.fileExtension,
-        isImage: processed.isImage,
-        originalName: processed.originalName
+  if (
+    processedNotice.attachments &&
+    Array.isArray(processedNotice.attachments)
+  ) {
+    processedNotice.attachments = processedNotice.attachments.map(
+      (attachment: any) => {
+        const processed = processAttachment(attachment)
+        return {
+          ...attachment,
+          displayName: processed.displayName,
+          fileExtension: processed.fileExtension,
+          isImage: processed.isImage,
+          originalName: processed.originalName,
+        }
       }
-    })
+    )
   }
-  
+
   // 날짜 정규화
   if (processedNotice.createdAt) {
-    processedNotice.createdAt = new Date(processedNotice.createdAt).toISOString()
+    processedNotice.createdAt = new Date(
+      processedNotice.createdAt
+    ).toISOString()
   }
   if (processedNotice.updatedAt) {
-    processedNotice.updatedAt = new Date(processedNotice.updatedAt).toISOString()
+    processedNotice.updatedAt = new Date(
+      processedNotice.updatedAt
+    ).toISOString()
   }
-  
+
   // 기본값 설정
-  processedNotice.author = processedNotice.author || '관리자'
+  processedNotice.author = processedNotice.author || "관리자"
   processedNotice.isPublished = processedNotice.isPublished ?? true
   processedNotice.isModal = processedNotice.isModal ?? false
-  
+
   return processedNotice as Notice
 }
 
@@ -50,12 +59,12 @@ export const noticeApi = {
       const response = await apiClient.get("/service/notice", {
         params: { page, limit },
       })
-      
+
       const processedData = {
         ...response.data,
-        data: response.data.data.map(processNoticeData)
+        data: response.data.data.map(processNoticeData),
       }
-      
+
       return processedData
     } catch (error) {
       console.error("공지사항 목록 조회 실패:", error)
@@ -72,12 +81,12 @@ export const noticeApi = {
       const response = await apiClient.get("/admin/notice", {
         params: { page, limit },
       })
-      
+
       const processedData = {
         ...response.data,
-        data: response.data.data.map(processNoticeData)
+        data: response.data.data.map(processNoticeData),
       }
-      
+
       return processedData
     } catch (error) {
       console.error("관리자 공지사항 목록 조회 실패:", error)
@@ -90,7 +99,7 @@ export const noticeApi = {
     if (!id) {
       throw new Error("공지사항 ID가 필요합니다.")
     }
-    
+
     try {
       const response = await apiClient.get(`/service/notice/${id}`)
       return processNoticeData(response.data)
@@ -105,7 +114,7 @@ export const noticeApi = {
     if (!id) {
       throw new Error("공지사항 ID가 필요합니다.")
     }
-    
+
     try {
       const response = await apiClient.get(`/admin/notice/${id}`)
       return processNoticeData(response.data)
@@ -127,7 +136,7 @@ export const noticeApi = {
       if (!data.content?.trim()) {
         throw new Error("내용을 입력해주세요.")
       }
-      
+
       const response = await apiClient.post("/admin/notice", data)
       return processNoticeData(response.data)
     } catch (error) {
@@ -144,7 +153,7 @@ export const noticeApi = {
     if (!id) {
       throw new Error("공지사항 ID가 필요합니다.")
     }
-    
+
     try {
       const response = await apiClient.patch(`/admin/notice/${id}`, data)
       return processNoticeData(response.data)
@@ -159,7 +168,7 @@ export const noticeApi = {
     if (!id) {
       throw new Error("공지사항 ID가 필요합니다.")
     }
-    
+
     try {
       await apiClient.delete(`/admin/notice/${id}`)
     } catch (error) {
@@ -185,7 +194,9 @@ export const noticeApi = {
 
   /** 공지사항 상태 토글 (게시/비게시) */
   togglePublish: async (id: string, isPublished: boolean): Promise<Notice> => {
-    return noticeApi.update(id, { isPublished })
+    return noticeApi.update(id, {
+      publishedAt: isPublished ? new Date() : undefined,
+    })
   },
 
   /** 공지사항 모달 설정 토글 */

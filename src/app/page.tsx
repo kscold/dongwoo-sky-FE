@@ -10,7 +10,7 @@ import FloatingCallButton from "../common/components/button/FloatingCallButton"
 import PageSkeleton from "../common/components/ui/PageSkeleton"
 import ErrorComponent from "../common/components/error/ErrorComponent"
 import * as styles from "../styles/service/components/home/content-section.css"
-import "../styles/main-page.css"
+import { mainPageWrapper } from "../styles/main-page.css"
 
 export default function Home() {
   const {
@@ -42,7 +42,7 @@ export default function Home() {
   )
 
   return (
-    <div className="mainPageWrapper">
+    <div className={mainPageWrapper}>
       <main>
         {homePageData?.home && <HeroSection home={homePageData.home} />}
 

@@ -7,6 +7,18 @@ import Pagination from "../ui/Pagination"
 import PageSkeleton from "../ui/PageSkeleton"
 import ContentCard from "./ContentCard"
 import { ContentListConfig, ContentItem } from "../../types/content"
+import {
+  contentListContainer,
+  contentListHeader,
+  contentListTitle,
+  contentListSubtitle,
+  contentListBackButton,
+  contentListGrid,
+  contentListEmptyState,
+  contentListEmptyStateTitle,
+  contentListEmptyStateText,
+  errorState,
+} from "../../../styles/content/content-list.css"
 
 interface ContentListPageProps<T extends ContentItem> {
   config: ContentListConfig
@@ -48,8 +60,8 @@ const ContentListPage = <T extends ContentItem>({
 
   if (error) {
     return (
-      <div className={`content-list-container ${className}`}>
-        <div className="error-state">⚠️ {config.errorMessage}</div>
+      <div className={`${contentListContainer} ${className}`}>
+        <div className={errorState}>⚠️ {config.errorMessage}</div>
       </div>
     )
   }
@@ -57,12 +69,12 @@ const ContentListPage = <T extends ContentItem>({
   const items = data || []
 
   return (
-    <div className={`content-list-container ${className}`}>
+    <div className={`${contentListContainer} ${className}`}>
       {/* 헤더 */}
-      <div className="content-list-header">
-        <h1 className="content-list-title">{config.pageTitle}</h1>
-        <p className="content-list-subtitle">{config.pageSubtitle}</p>
-        <Link href={config.backUrl} className="content-list-back-button">
+      <div className={contentListHeader}>
+        <h1 className={contentListTitle}>{config.pageTitle}</h1>
+        <p className={contentListSubtitle}>{config.pageSubtitle}</p>
+        <Link href={config.backUrl} className={contentListBackButton}>
           ← {config.backButtonText}
         </Link>
       </div>
@@ -70,7 +82,7 @@ const ContentListPage = <T extends ContentItem>({
       {/* 컨텐츠 목록 */}
       {items.length > 0 ? (
         <>
-          <div className="content-list-grid">
+          <div className={contentListGrid}>
             {items.map((item) => (
               <ContentCard key={item._id} item={item} type={type} />
             ))}
@@ -84,11 +96,11 @@ const ContentListPage = <T extends ContentItem>({
           />
         </>
       ) : (
-        <div className="content-list-empty-state">
-          <h3 className="content-list-empty-state-title">
+        <div className={contentListEmptyState}>
+          <h3 className={contentListEmptyStateTitle}>
             {config.emptyStateTitle}
           </h3>
-          <p className="content-list-empty-state-text">
+          <p className={contentListEmptyStateText}>
             {config.emptyStateText}
           </p>
         </div>

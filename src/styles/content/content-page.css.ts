@@ -37,14 +37,18 @@ export const container = style({
 
 export const header = style({
   textAlign: "center",
-  marginBottom: vars.space.xl,
-  padding: `${vars.space.xxl} ${vars.space.xl}`,
-  background: "rgba(255, 255, 255, 0.95)",
-  backdropFilter: "blur(20px)",
+  marginTop: vars.space.md,
+  marginBottom: vars.space.xxl,
+  padding: `${vars.space.xl} ${vars.space.xl}`,
+  background: `
+    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)
+  `,
   borderRadius: "32px",
-  border: "1px solid rgba(255, 255, 255, 0.3)",
+  border: "1px solid rgba(226, 232, 240, 0.6)",
   boxShadow:
-    "0 20px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+    "0 20px 60px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
   position: "relative",
   overflow: "hidden",
   "::before": {
@@ -59,7 +63,9 @@ export const header = style({
   },
   "@media": {
     "(max-width: 768px)": {
-      padding: `${vars.space.xl} ${vars.space.lg}`,
+      marginTop: vars.space.sm,
+      marginBottom: vars.space.xl,
+      padding: `${vars.space.lg} ${vars.space.lg}`,
       borderRadius: "24px",
     },
   },
@@ -69,10 +75,7 @@ export const title = style({
   fontSize: vars.fontSizes.xxxxl,
   fontWeight: "800",
   marginBottom: vars.space.lg,
-  background: "linear-gradient(135deg, #0E4DA4 0%, #00C2B8 100%)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-  backgroundClip: "text",
+  color: vars.colors.primary,
   position: "relative",
   lineHeight: 1.2,
   letterSpacing: "-0.02em",
@@ -88,27 +91,32 @@ export const title = style({
 
 export const subtitle = style({
   fontSize: vars.fontSizes.lg,
-  color: "#64748b",
+  color: vars.colors.textLight,
   marginBottom: vars.space.lg,
   maxWidth: "600px",
   margin: `0 auto ${vars.space.lg} auto`,
   lineHeight: 1.6,
   fontWeight: "500",
+  "@media": {
+    "(max-width: 768px)": {
+      fontSize: vars.fontSizes.md,
+    },
+  },
 })
 
 export const backButton = style({
   display: "inline-flex",
   alignItems: "center",
   gap: vars.space.sm,
-  color: "#4f46e5",
+  color: vars.colors.primary,
   textDecoration: "none",
   fontSize: vars.fontSizes.md,
   padding: `${vars.space.md} ${vars.space.xl}`,
   borderRadius: "16px",
   background: "rgba(255, 255, 255, 0.9)",
   backdropFilter: "blur(10px)",
-  border: "1px solid rgba(79, 70, 229, 0.2)",
-  boxShadow: "0 4px 12px rgba(79, 70, 229, 0.1)",
+  border: `1px solid ${vars.colors.primary}20`,
+  boxShadow: `0 4px 12px ${vars.colors.primary}10`,
   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   fontWeight: "600",
   position: "relative",
@@ -126,9 +134,9 @@ export const backButton = style({
   },
   ":hover": {
     transform: "translateY(-2px)",
-    boxShadow: "0 8px 25px rgba(79, 70, 229, 0.2)",
-    borderColor: "#4f46e5",
-    color: "#4f46e5",
+    boxShadow: `0 8px 25px ${vars.colors.primary}20`,
+    borderColor: vars.colors.primary,
+    color: vars.colors.primary,
   },
 })
 
@@ -153,13 +161,12 @@ export const card = style({
   backgroundColor: "rgba(255, 255, 255, 0.95)",
   backdropFilter: "blur(20px)",
   borderRadius: "24px",
-  boxShadow:
-    "0 8px 32px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.8) inset",
+  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
   overflow: "hidden",
   textDecoration: "none",
   color: "inherit",
-  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-  border: "1px solid rgba(255, 255, 255, 0.3)",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  border: "1px solid rgba(226, 232, 240, 0.6)",
   position: "relative",
   "::before": {
     content: "",
@@ -167,17 +174,19 @@ export const card = style({
     top: 0,
     left: 0,
     right: 0,
-    height: "1px",
-    background:
-      "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)",
+    bottom: 0,
+    background: `linear-gradient(135deg, ${vars.colors.primary}05 0%, ${vars.colors.secondary}05 100%)`,
     opacity: 0,
-    transition: "opacity 0.3s",
+    transition: "opacity 0.3s ease",
+    borderRadius: "24px",
   },
   ":hover": {
-    transform: "translateY(-8px) scale(1.02)",
-    boxShadow:
-      "0 25px 50px rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255, 255, 255, 0.9) inset",
-    borderColor: "rgba(102, 126, 234, 0.3)",
+    transform: "translateY(-8px)",
+    boxShadow: `0 20px 40px rgba(59, 130, 246, 0.15), 0 8px 24px ${vars.colors.primary}20`,
+    borderColor: `${vars.colors.primary}30`,
+  },
+  ":hover::before": {
+    opacity: 1,
   },
 })
 
@@ -186,6 +195,20 @@ export const imageContainer = style({
   overflow: "hidden",
   position: "relative",
   background: "linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)",
+  "::after": {
+    content: "",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.05) 100%)",
+    opacity: 0,
+    transition: "opacity 0.3s ease",
+  },
+  ":hover::after": {
+    opacity: 1,
+  },
 })
 
 export const image = style({
@@ -208,6 +231,10 @@ export const imagePlaceholder = style({
 export const content = style({
   padding: vars.space.xl,
   position: "relative",
+  display: "flex",
+  flexDirection: "column",
+  height: "100%",
+  minHeight: "280px",
 })
 
 export const cardTitle = style({
@@ -229,6 +256,12 @@ export const rating = style({
   borderRadius: "12px",
   width: "fit-content",
   border: "1px solid rgba(251, 191, 36, 0.3)",
+  boxShadow: "0 2px 8px rgba(251, 191, 36, 0.15)",
+  transition: "all 0.3s ease",
+  ":hover": {
+    transform: "translateY(-1px)",
+    boxShadow: "0 4px 12px rgba(251, 191, 36, 0.25)",
+  },
 })
 
 export const stars = style({
@@ -270,6 +303,7 @@ export const stats = style({
   alignItems: "center",
   paddingTop: vars.space.md,
   borderTop: "1px solid rgba(226, 232, 240, 0.6)",
+  marginTop: "auto",
 })
 
 export const statsLeft = style({
@@ -298,7 +332,7 @@ export const emptyState = style({
   background: "rgba(255, 255, 255, 0.9)",
   backdropFilter: "blur(20px)",
   borderRadius: "24px",
-  border: "2px dashed rgba(102, 126, 234, 0.3)",
+  border: `2px dashed ${vars.colors.primary}30`,
   color: "#64748b",
   position: "relative",
   overflow: "hidden",
@@ -356,16 +390,7 @@ export const loadingState = style({
 export const noticeCard = style([
   card,
   {
-    borderLeft: "4px solid #0E4DA4",
-    "::after": {
-      content: "",
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "4px",
-      height: "100%",
-      background: "linear-gradient(180deg, #0E4DA4 0%, #00C2B8 100%)",
-    },
+    // 기본 card 스타일만 사용, 왼쪽 accent bar 제거
   },
 ])
 
@@ -373,12 +398,19 @@ export const pinnedBadge = style({
   position: "absolute",
   top: vars.space.md,
   right: vars.space.md,
-  background: "linear-gradient(135deg, #0E4DA4 0%, #00C2B8 100%)",
+  background: `linear-gradient(135deg, ${vars.colors.primary} 0%, ${vars.colors.secondary} 100%)`,
   color: "white",
-  padding: `${vars.space.xs} ${vars.space.sm}`,
-  borderRadius: "8px",
+  padding: `${vars.space.xs} ${vars.space.md}`,
+  borderRadius: "12px",
   fontSize: vars.fontSizes.xs,
   fontWeight: "700",
   zIndex: 10,
-  boxShadow: "0 4px 12px rgba(14, 77, 164, 0.3)",
+  boxShadow: `0 4px 16px ${vars.colors.primary}30`,
+  backdropFilter: "blur(10px)",
+  border: "1px solid rgba(255, 255, 255, 0.2)",
+  transition: "all 0.3s ease",
+  ":hover": {
+    transform: "translateY(-2px)",
+    boxShadow: `0 8px 24px ${vars.colors.primary}40`,
+  },
 })

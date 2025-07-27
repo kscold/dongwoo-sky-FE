@@ -475,3 +475,117 @@ export const modalImage = style({
     },
   },
 })
+
+export const imageCaption = style({
+  fontSize: vars.fontSizes.sm,
+  color: vars.colors.textLight,
+  padding: vars.space.sm,
+  backgroundColor: vars.colors.backgroundLight,
+  textAlign: "center",
+  fontWeight: vars.fontWeights.medium,
+  borderTop: `1px solid ${vars.colors.border}`,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: vars.fontSizes.xs,
+      padding: vars.space.xs,
+    },
+  },
+})
+
+export const attachmentContainer = style({
+  marginTop: vars.space.lg,
+  padding: vars.space.md,
+  backgroundColor: vars.colors.backgroundLight,
+  borderRadius: vars.radii.md,
+  border: `1px solid ${vars.colors.border}`,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      marginTop: vars.space.md,
+      padding: vars.space.sm,
+    },
+  },
+})
+
+export const attachmentTitle = style({
+  fontSize: vars.fontSizes.md,
+  fontWeight: vars.fontWeights.semibold,
+  color: vars.colors.textStrong,
+  marginBottom: vars.space.sm,
+  margin: 0,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: vars.fontSizes.sm,
+      marginBottom: vars.space.xs,
+    },
+  },
+})
+
+export const attachmentList = style({
+  listStyle: "none",
+  padding: 0,
+  margin: 0,
+  display: "flex",
+  flexDirection: "column",
+  gap: vars.space.sm,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      gap: vars.space.xs,
+    },
+  },
+})
+
+export const attachmentItem = style({
+  margin: 0,
+})
+
+export const attachmentLink = style({
+  display: "flex",
+  alignItems: "center",
+  gap: vars.space.sm,
+  padding: vars.space.sm,
+  backgroundColor: vars.colors.white,
+  borderRadius: vars.radii.sm,
+  textDecoration: "none",
+  color: vars.colors.text,
+  border: `1px solid ${vars.colors.border}`,
+  transition: "all 0.2s ease",
+  
+  ":hover": {
+    backgroundColor: vars.colors.background,
+    transform: "translateY(-1px)",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+  },
+  
+  "@media": {
+    "screen and (max-width: 768px)": {
+      padding: vars.space.xs,
+      gap: vars.space.xs,
+    },
+  },
+})
+
+export const attachmentIcon = style({
+  fontSize: "16px",
+  minWidth: "16px",
+  color: vars.colors.primary,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: "14px",
+      minWidth: "14px",
+    },
+  },
+})
+
+export const attachmentName = style({
+  fontSize: vars.fontSizes.sm,
+  fontWeight: vars.fontWeights.medium,
+  flex: 1,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: vars.fontSizes.xs,
+    },
+  },
+})

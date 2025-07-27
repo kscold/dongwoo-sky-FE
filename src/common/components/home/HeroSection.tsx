@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useMemo, useCallback } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 
@@ -254,42 +254,74 @@ export default function HeroSection({ home }: HeroSectionProps) {
     })
   }
 
-  // 제목을 파싱하여 pre/main/post로 분리
-  const parseTitle = (title: string) => {
-    // HTML 태그 제거 후 파싱
-    const cleanTitle = title.replace(/<[^>]*>/g, "")
+  // 제목을 <br> 태그를 기준으로 분리하고 highlightText를 하이라이트
+  const renderTitle = () => {
+    const title = heroSection.title || ""
+    const highlightText = heroSection.highlightText || ""
+    
+    if (!title) return null
 
-    // 기본값 설정
-    const defaultTitle = {
-      preTitle: "하늘 위 모든 솔루션,",
-      mainTitle: "어울림 스카이와 함께합니다.",
-      postTitle: "",
-    }
-
-    // 쉼표나 줄바꿈으로 분리 시도
-    if (cleanTitle.includes(",")) {
-      const parts = cleanTitle.split(",")
-      return {
-        preTitle: parts[0]?.trim() || defaultTitle.preTitle,
-        mainTitle: parts[1]?.trim() || defaultTitle.mainTitle,
-        postTitle: parts[2]?.trim() || defaultTitle.postTitle,
+    // <br> 태그를 기준으로 줄 분리
+    const lines = title.split(/<br\s*\/?>/gi)
+    
+    return lines.map((line, lineIndex) => {
+      // 각 줄에서 highlightText가 있는지 확인하고 하이라이트 처리
+      if (highlightText && line.includes(highlightText)) {
+        const parts = line.split(highlightText)
+        return (
+          <span key={lineIndex} style={{ display: "block", marginBottom: lineIndex < lines.length - 1 ? "0.2em" : "0" }}>
+            {parts.map((part, partIndex) => (
+              <React.Fragment key={partIndex}>
+                {partIndex > 0 && (
+                  <span
+                    style={{
+                      fontSize: "1.0em",
+                      fontWeight: "bold",
+                      color: "#00C2B8",
+                      textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
+                    }}
+                  >
+                    {getCompanyDisplayName()}
+                  </span>
+                )}
+                <span
+                  style={{
+                    fontSize: "1.0em",
+                    fontWeight: "normal",
+                    color: "white",
+                    textShadow: "3px 3px 30px rgba(0,0,0,0.8)",
+                  }}
+                >
+                  {part}
+                </span>
+              </React.Fragment>
+            ))}
+          </span>
+        )
+      } else {
+        // highlightText가 없는 일반 텍스트
+        return (
+          <span 
+            key={lineIndex}
+            style={{
+              fontSize: "1.0em",
+              fontWeight: "normal",
+              color: "white",
+              textShadow: "3px 3px 30px rgba(0,0,0,0.8)",
+              display: "block",
+              marginBottom: lineIndex < lines.length - 1 ? "0.2em" : "0",
+            }}
+          >
+            {line}
+          </span>
+        )
       }
-    }
-
-    // 기본값 반환
-    return {
-      preTitle: defaultTitle.preTitle,
-      mainTitle: cleanTitle || defaultTitle.mainTitle,
-      postTitle: defaultTitle.postTitle,
-    }
+    })
   }
-
-  const titleParts = parseTitle(heroSection.title || "")
 
   // 회사명 표시 로직 (위치 정보 포함)
   const getCompanyDisplayName = () => {
-    const baseName =
-      heroSection.highlightText || heroSection.companyName || "어울림 스카이"
+    const baseName = heroSection.highlightText || heroSection.companyName || ""
 
     if (location.isLoading) {
       return `${baseName}`
@@ -309,15 +341,6 @@ export default function HeroSection({ home }: HeroSectionProps) {
     }
 
     return baseName
-  }
-
-  // "와 함께합니다" 부분 추출
-  const getCompanySuffix = () => {
-    const mainTitle = titleParts.mainTitle
-    if (mainTitle.includes("와 함께합니다")) {
-      return "와 함께합니다."
-    }
-    return "와 함께합니다."
   }
 
   return (
@@ -346,52 +369,7 @@ export default function HeroSection({ home }: HeroSectionProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {/* "하늘 위 모든 솔루션," 부분 */}
-            <span
-              style={{
-                fontSize: "1.0em", // 기본 크기
-                fontWeight: "normal",
-                color: "white",
-                textShadow: "3px 3px 30px rgba(0,0,0,0.8)",
-                display: "block",
-                marginBottom: "0.2em",
-              }}
-            >
-              {titleParts.preTitle}
-            </span>
-
-            {/* "어울림 스카이" 부분 */}
-            <span
-              style={{
-                fontSize: "1.0em", // 같은 크기
-                fontWeight: "bold",
-                color: "#00C2B8",
-                textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
-                display: "block",
-                marginBottom: "0.1em",
-              }}
-            >
-              {getCompanyDisplayName()}
-            </span>
-
-            {/* "와 함께합니다." 부분 */}
-            <span
-              style={{
-                fontSize: "1.0em", // 같은 크기
-                fontWeight: "normal",
-                color: "white",
-                textShadow: "3px 3px 30px rgba(0,0,0,0.8)",
-                display: "block",
-              }}
-            >
-              {getCompanySuffix()}
-            </span>
-
-            {titleParts.postTitle && (
-              <span className={styles.heroPostTitle}>
-                {titleParts.postTitle}
-              </span>
-            )}
+            {renderTitle()}
           </motion.h1>
 
           {/* 부제목 */}

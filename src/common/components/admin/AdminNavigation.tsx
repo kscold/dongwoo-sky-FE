@@ -2,7 +2,25 @@ import React from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useAdmin } from "../../context/AdminContext"
-import "./AdminNavigation.css"
+import {
+  adminNav,
+  adminNavHeader,
+  adminNavBrand,
+  adminNavBrandTitle,
+  adminNavBrandSubtitle,
+  adminNavUser,
+  adminNavUserSpan,
+  siteViewBtn,
+  logoutBtn,
+  adminNavMenu,
+  adminNavItem,
+  adminNavItemActive,
+  adminNavIcon,
+  adminNavContent,
+  adminNavTitle,
+  adminNavDescription,
+  adminNavDescriptionActive,
+} from "../../../styles/admin/admin-navigation.css"
 
 const adminMenuItems = [
   {
@@ -75,24 +93,24 @@ export const AdminNavigation: React.FC = () => {
   }
 
   return (
-    <div className="admin-nav">
-      <div className="admin-nav-header">
-        <div className="admin-nav-brand">
-          <h1>어울림 스카이</h1>
-          <span>관리자</span>
+    <div className={adminNav}>
+      <div className={adminNavHeader}>
+        <div className={adminNavBrand}>
+          <h1 className={adminNavBrandTitle}>어울림 스카이</h1>
+          <span className={adminNavBrandSubtitle}>관리자</span>
         </div>
-        <div className="admin-nav-user">
-          <span>👤 {user?.name || "관리자"}</span>
-          <button onClick={handleSiteView} className="site-view-btn">
+        <div className={adminNavUser}>
+          <span className={adminNavUserSpan}>👤 {user?.name || "관리자"}</span>
+          <button onClick={handleSiteView} className={siteViewBtn}>
             🌐 사이트 보기
           </button>
-          <button onClick={handleLogout} className="logout-btn">
+          <button onClick={handleLogout} className={logoutBtn}>
             🚪 로그아웃
           </button>
         </div>
       </div>
 
-      <nav className="admin-nav-menu">
+      <nav className={adminNavMenu}>
         {adminMenuItems.map((item) => {
           const isActive =
             pathname === item.href || pathname.startsWith(item.href + "/")
@@ -101,12 +119,12 @@ export const AdminNavigation: React.FC = () => {
             <Link
               key={item.href}
               href={item.href}
-              className={`admin-nav-item ${isActive ? "active" : ""}`}
+              className={`${adminNavItem} ${isActive ? adminNavItemActive : ""}`}
             >
-              <span className="admin-nav-icon">{item.icon}</span>
-              <div className="admin-nav-content">
-                <span className="admin-nav-title">{item.title}</span>
-                <span className="admin-nav-description">
+              <span className={adminNavIcon}>{item.icon}</span>
+              <div className={adminNavContent}>
+                <span className={adminNavTitle}>{item.title}</span>
+                <span className={`${adminNavDescription} ${isActive ? adminNavDescriptionActive : ""}`}>
                   {item.description}
                 </span>
               </div>

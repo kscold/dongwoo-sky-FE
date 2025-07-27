@@ -74,26 +74,29 @@ export const contentWrapper = style({
 export const swiperContainer = style({
   display: "flex",
   gap: vars.space.xxxxl,
-  padding: `${vars.space.xxxxl} ${vars.space.xxxl}`,
+  padding: `${vars.space.xxxl} ${vars.space.xl}`,
   maxWidth: "1600px",
   margin: "0 auto",
   position: "relative",
   zIndex: 1,
   "@media": {
+    "(min-width: 1200px)": {
+      gap: "6rem",
+    },
     "(max-width: 1024px)": {
       flexDirection: "column",
-      gap: vars.space.xxxl,
-      padding: `${vars.space.xxxl} ${vars.space.xl}`,
+      gap: vars.space.xxl,
+      padding: `${vars.space.xxl} ${vars.space.lg}`,
       maxWidth: "1400px",
     },
     "(max-width: 768px)": {
-      padding: `${vars.space.xxl} ${vars.space.lg}`,
-      gap: vars.space.xxl,
+      padding: `${vars.space.xl} ${vars.space.md}`,
+      gap: vars.space.xl,
       maxWidth: "100%",
     },
     "(max-width: 480px)": {
-      padding: `${vars.space.xl} ${vars.space.md}`,
-      gap: vars.space.xl,
+      padding: `${vars.space.lg} ${vars.space.sm}`,
+      gap: vars.space.lg,
     },
   },
 })

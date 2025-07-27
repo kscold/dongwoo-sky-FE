@@ -32,11 +32,11 @@ const AdminNoticePage: React.FC = () => {
     }
   }
 
-  const handleTogglePublish = async (id: string, isPublished: boolean) => {
+  const handleTogglePublish = async (id: string, isActive: boolean) => {
     try {
       await updateNoticeMutation.mutateAsync({
         id,
-        data: { isPublished: !isPublished }
+        data: { isActive: !isActive }
       })
     } catch (error) {
       alert("상태 변경 중 오류가 발생했습니다.")
@@ -54,8 +54,8 @@ const AdminNoticePage: React.FC = () => {
     }
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ko-KR', {
+  const formatDate = (dateInput: string | Date) => {
+    return new Date(dateInput).toLocaleDateString('ko-KR', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -116,7 +116,7 @@ const AdminNoticePage: React.FC = () => {
           <div className="statIcon">✅</div>
           <div className="statContent">
             <span className="statNumber">
-              {noticesData?.data.filter(n => n.isPublished).length || 0}
+              {noticesData?.data.filter(n => n.isActive).length || 0}
             </span>
             <span className="statLabel">게시중</span>
           </div>
@@ -136,7 +136,7 @@ const AdminNoticePage: React.FC = () => {
         {noticesData?.data && noticesData.data.length > 0 ? (
           <div className="noticeGrid">
             {noticesData.data.map((notice) => {
-              const attachmentSummary = getAttachmentSummary(notice.attachments)
+              const attachmentSummary = getAttachmentSummary(notice.imageUrls || [])
               const isExpanded = selectedNotice === notice._id
 
               return (
@@ -146,7 +146,7 @@ const AdminNoticePage: React.FC = () => {
                       <h3>{notice.title}</h3>
                       <div className="noticeMeta">
                         <span className="noticeAuthor">👤 {notice.author || '관리자'}</span>
-                        <span className="noticeDate">📅 {formatDate(notice.createdAt)}</span>
+                        <span className="noticeDate">📅 {notice.createdAt ? formatDate(notice.createdAt) : '날짜 없음'}</span>
                       </div>
                     </div>
                     <div className="noticeActions">
@@ -179,8 +179,8 @@ const AdminNoticePage: React.FC = () => {
                       <label className="toggleContainer">
                         <input
                           type="checkbox"
-                          checked={notice.isPublished}
-                          onChange={() => handleTogglePublish(notice._id, notice.isPublished)}
+                          checked={notice.isActive}
+                          onChange={() => handleTogglePublish(notice._id, notice.isActive || false)}
                         />
                         <span className="toggleSlider"></span>
                         <span className="toggleLabel">게시</span>
@@ -189,7 +189,7 @@ const AdminNoticePage: React.FC = () => {
                         <input
                           type="checkbox"
                           checked={notice.isModal}
-                          onChange={() => handleToggleModal(notice._id, notice.isModal)}
+                          onChange={() => handleToggleModal(notice._id, notice.isModal || false)}
                         />
                         <span className="toggleSlider"></span>
                         <span className="toggleLabel">팝업</span>
@@ -224,9 +224,9 @@ const AdminNoticePage: React.FC = () => {
                         </div>
                       </div>
                       
-                      {notice.attachments && notice.attachments.length > 0 && (
+                      {notice.imageUrls && notice.imageUrls.length > 0 && (
                         <AttachmentDisplay
-                          attachments={notice.attachments}
+                          attachments={notice.imageUrls}
                           variant="admin"
                           showImages={true}
                           showDownload={true}
