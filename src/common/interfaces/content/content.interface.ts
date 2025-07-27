@@ -2,6 +2,7 @@ export interface BaseContentItemProps {
   _id: string
   title: string
   content: string
+  summary?: string
   imageUrls?: string[]
   viewCount?: number
   createdAt?: string | Date

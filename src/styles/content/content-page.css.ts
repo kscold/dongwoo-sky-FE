@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css"
+import { style, globalStyle } from "@vanilla-extract/css"
 import { vars } from "../common/theme.css"
 
 export const pageWrapper = style({
@@ -143,6 +143,7 @@ export const backButton = style({
 export const grid = style({
   display: "grid",
   gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
+  gridAutoRows: "1fr", // 모든 행의 높이를 동일하게
   gap: vars.space.xl,
   marginBottom: vars.space.xl,
   "@media": {
@@ -168,6 +169,9 @@ export const card = style({
   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   border: "1px solid rgba(226, 232, 240, 0.6)",
   position: "relative",
+  display: "flex",
+  flexDirection: "column",
+  height: "100%", // 그리드 셀 전체 높이 사용
   "::before": {
     content: "",
     position: "absolute",
@@ -185,16 +189,14 @@ export const card = style({
     boxShadow: `0 20px 40px rgba(59, 130, 246, 0.15), 0 8px 24px ${vars.colors.primary}20`,
     borderColor: `${vars.colors.primary}30`,
   },
-  ":hover::before": {
-    opacity: 1,
-  },
 })
 
 export const imageContainer = style({
-  height: "220px",
+  height: "180px",
   overflow: "hidden",
   position: "relative",
   background: "linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)",
+  flexShrink: 0, // 이미지 영역은 고정 크기 유지
   "::after": {
     content: "",
     position: "absolute",
@@ -205,9 +207,6 @@ export const imageContainer = style({
     background: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.05) 100%)",
     opacity: 0,
     transition: "opacity 0.3s ease",
-  },
-  ":hover::after": {
-    opacity: 1,
   },
 })
 
@@ -229,12 +228,12 @@ export const imagePlaceholder = style({
 })
 
 export const content = style({
-  padding: vars.space.xl,
+  padding: vars.space.lg,
   position: "relative",
   display: "flex",
   flexDirection: "column",
-  height: "100%",
-  minHeight: "280px",
+  flex: 1, // 남은 공간을 모두 차지
+  minHeight: 0, // flexbox에서 shrink 방지
 })
 
 export const cardTitle = style({
@@ -276,25 +275,36 @@ export const ratingText = style({
 })
 
 export const meta = style({
-  marginBottom: vars.space.lg,
+  marginBottom: vars.space.md,
+  display: "flex",
+  flexWrap: "wrap",
+  gap: vars.space.xs,
 })
 
 export const metaItem = style({
   display: "flex",
   alignItems: "center",
   gap: vars.space.xs,
-  fontSize: vars.fontSizes.sm,
+  fontSize: vars.fontSizes.xs,
   color: "#64748b",
-  marginBottom: vars.space.xs,
-  padding: `${vars.space.xs} 0`,
+  padding: `${vars.space.xs} ${vars.space.sm}`,
+  backgroundColor: "#f8fafc",
+  borderRadius: vars.radii.sm,
   fontWeight: "500",
+  border: "1px solid #e2e8f0",
+  whiteSpace: "nowrap",
 })
 
 export const description = style({
-  fontSize: vars.fontSizes.md,
+  fontSize: vars.fontSizes.sm,
   color: "#64748b",
-  lineHeight: 1.6,
-  marginBottom: vars.space.lg,
+  lineHeight: 1.5,
+  marginBottom: vars.space.md,
+  display: "-webkit-box",
+  WebkitLineClamp: 3,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
+  flex: 1,
 })
 
 export const stats = style({
@@ -413,4 +423,14 @@ export const pinnedBadge = style({
     transform: "translateY(-2px)",
     boxShadow: `0 8px 24px ${vars.colors.primary}40`,
   },
+})
+
+// Card hover effect for ::before pseudo-element
+globalStyle(`${card}:hover::before`, {
+  opacity: 1,
+})
+
+// Image container hover effect for ::after pseudo-element
+globalStyle(`${imageContainer}:hover::after`, {
+  opacity: 1,
 })

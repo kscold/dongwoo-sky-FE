@@ -23,11 +23,33 @@ const ContentCard: React.FC<ContentCardProps> = ({ item, type, onItemClick }) =>
   const formatDate = (dateString: string | Date | null | undefined) => {
     if (!dateString) return "날짜 미정"
     const date = new Date(dateString)
+    if (isNaN(date.getTime())) return "날짜 오류"
     return date.toLocaleDateString("ko-KR", {
       year: "numeric",
-      month: "long",
-      day: "numeric",
+      month: "2-digit",
+      day: "2-digit",
     })
+  }
+
+  const getDisplayDate = () => {
+    // 디버깅을 위해 로그 추가
+    console.log('Date debug:', {
+      createdAt: item.createdAt,
+      publishedAt: item.publishedAt,
+      type: typeof item.createdAt,
+    })
+    
+    const dateToUse = item.createdAt || item.publishedAt
+    return formatDate(dateToUse)
+  }
+
+  const getDisplayText = () => {
+    // summary가 있으면 summary를 사용하고, 없으면 content에서 추출
+    if (item.summary) {
+      return item.summary
+    }
+    const cleanText = stripHtml(item.content)
+    return cleanText.length > 120 ? cleanText.slice(0, 120) + '...' : cleanText
   }
 
   const getItemUrl = () => {
@@ -79,35 +101,73 @@ const ContentCard: React.FC<ContentCardProps> = ({ item, type, onItemClick }) =>
           <span className={styles.stat}>👍 {review.helpfulCount || 0}</span>
         </div>
         <span className={styles.date}>
-          {formatDate(item.publishedAt)}
+          {getDisplayDate()}
         </span>
       </div>
     </>
   )
 
-  const renderWorkShowcaseContent = () => (
-    <div className={styles.stats}>
-      <div className={styles.statsLeft}>
-        <span className={styles.stat}>👀 {item.viewCount || 0}</span>
+  const renderWorkShowcaseContent = (showcase: any) => (
+    <>
+      <div className={styles.meta}>
+        {showcase.authorName && (
+          <span className={styles.metaItem}>
+            👤 {showcase.authorName}
+          </span>
+        )}
+        {showcase.projectLocation && (
+          <span className={styles.metaItem}>
+            📍 {showcase.projectLocation}
+          </span>
+        )}
+        {showcase.equipmentUsed && (
+          <span className={styles.metaItem}>
+            🔧 {showcase.equipmentUsed}
+          </span>
+        )}
       </div>
-      <span className={styles.date}>
-        {formatDate(item.publishedAt)}
-      </span>
-    </div>
+      <div className={styles.stats}>
+        <div className={styles.statsLeft}>
+          <span className={styles.stat}>👀 {item.viewCount || 0}</span>
+          {showcase.likeCount && (
+            <span className={styles.stat}>❤️ {showcase.likeCount}</span>
+          )}
+        </div>
+        <span className={styles.date}>
+          {getDisplayDate()}
+        </span>
+      </div>
+    </>
   )
 
   const renderNoticeContent = (notice: NoticeProps) => (
-    <div className={styles.stats}>
-      <div className={styles.statsLeft}>
-        <span className={styles.stat}>👀 {item.viewCount || 0}</span>
+    <>
+      <div className={styles.meta}>
         {notice.author && (
-          <span className={styles.stat}>✍️ {notice.author}</span>
+          <span className={styles.metaItem}>
+            ✍️ {notice.author}
+          </span>
+        )}
+        {notice.category && (
+          <span className={styles.metaItem}>
+            🏷️ {notice.category}
+          </span>
+        )}
+        {item.attachments && item.attachments.length > 0 && (
+          <span className={styles.metaItem}>
+            📎 첨부파일 {item.attachments.length}개
+          </span>
         )}
       </div>
-      <span className={styles.date}>
-        {formatDate(item.publishedAt)}
-      </span>
-    </div>
+      <div className={styles.stats}>
+        <div className={styles.statsLeft}>
+          <span className={styles.stat}>👀 {item.viewCount || 0}</span>
+        </div>
+        <span className={styles.date}>
+          {getDisplayDate()}
+        </span>
+      </div>
+    </>
   )
 
   const cardClassName = type === 'notice' ? styles.noticeCard : styles.card
@@ -141,13 +201,13 @@ const ContentCard: React.FC<ContentCardProps> = ({ item, type, onItemClick }) =>
       <div className={styles.content}>
         <h3 className={styles.cardTitle}>{item.title}</h3>
         
-        {type === 'customer-review' && renderCustomerReviewContent(item as CustomerReviewProps)}
-        {type === 'work-showcase' && renderWorkShowcaseContent()}
-        {type === 'notice' && renderNoticeContent(item as NoticeProps)}
-        
         <p className={styles.description}>
-          {stripHtml(item.content).slice(0, 120)}...
+          {getDisplayText()}
         </p>
+        
+        {type === 'customer-review' && renderCustomerReviewContent(item as CustomerReviewProps)}
+        {type === 'work-showcase' && renderWorkShowcaseContent(item)}
+        {type === 'notice' && renderNoticeContent(item as NoticeProps)}
       </div>
     </Link>
   )

@@ -202,7 +202,7 @@ export const swiperContainer = style({
 })
 
 export const swiperWrapper = style({
-  paddingBottom: "60px",
+  paddingBottom: "80px", // 페이지네이션과 카드 사이 간격 증가
   paddingTop: vars.space.lg,
   paddingLeft: "0",
   paddingRight: "0",
@@ -210,24 +210,23 @@ export const swiperWrapper = style({
   maxWidth: "100%",
   overflow: "visible",
   boxSizing: "border-box",
-  height: "520px",
-  minHeight: "520px",
+  height: "540px", // 높이 증가
+  minHeight: "540px",
   position: "relative",
   display: "block",
   "@media": {
     "(max-width: 768px)": {
-      paddingBottom: "50px",
+      paddingBottom: "70px", // 모바일에서도 간격 증가
       paddingTop: vars.space.md,
-      borderRadius: vars.radii.lg,
-      overflow: "hidden",
-      height: "480px",
-      minHeight: "480px",
+      overflow: "visible", // 밑줄 제거를 위해 overflow 변경
+      height: "500px",
+      minHeight: "500px",
     },
     "(max-width: 480px)": {
-      paddingBottom: "40px",
+      paddingBottom: "60px",
       paddingTop: vars.space.sm,
-      height: "450px",
-      minHeight: "450px",
+      height: "470px",
+      minHeight: "470px",
     },
   },
 })
@@ -317,7 +316,7 @@ globalStyle(`@media (max-width: 480px) .swiper-slide`, {
 // Swiper pagination 완전 중앙 정렬 및 데이터 없을 때도 표시
 globalStyle(".customer-review-pagination", {
   position: "absolute",
-  bottom: "12px",
+  bottom: "20px", // 페이지네이션 위치를 더 위로
   left: "0",
   right: "0",
   margin: "0 auto",
@@ -334,7 +333,7 @@ globalStyle(".customer-review-pagination", {
 globalStyle(".customer-review-pagination .swiper-pagination-bullet", {
   width: "12px",
   height: "12px",
-  margin: "0 6px",
+  margin: "0 20px", // 데스크탑에서 더 넓은 간격
   backgroundColor: "#cbd5e1",
   opacity: 1,
   borderRadius: "50%",
@@ -351,7 +350,7 @@ globalStyle(".customer-review-pagination .swiper-pagination-bullet-active", {
 
 globalStyle(".work-showcase-pagination", {
   position: "absolute",
-  bottom: "12px",
+  bottom: "20px", // 페이지네이션 위치를 더 위로
   left: "0",
   right: "0",
   margin: "0 auto",
@@ -368,7 +367,7 @@ globalStyle(".work-showcase-pagination", {
 globalStyle(".work-showcase-pagination .swiper-pagination-bullet", {
   width: "12px",
   height: "12px",
-  margin: "0 6px",
+  margin: "0 20px", // 데스크탑에서 더 넓은 간격
   backgroundColor: "#cbd5e1",
   opacity: 1,
   borderRadius: "50%",
@@ -387,11 +386,11 @@ globalStyle(".work-showcase-pagination .swiper-pagination-bullet-active", {
 globalStyle(".customer-review-pagination", {
   "@media": {
     "screen and (max-width: 768px)": {
-      bottom: "8px",
+      bottom: "15px", // 모바일에서도 간격 증가
       minHeight: "20px",
     },
     "screen and (max-width: 480px)": {
-      bottom: "6px",
+      bottom: "12px",
       minHeight: "18px",
     },
   },
@@ -400,11 +399,11 @@ globalStyle(".customer-review-pagination", {
 globalStyle(".work-showcase-pagination", {
   "@media": {
     "screen and (max-width: 768px)": {
-      bottom: "8px",
+      bottom: "15px", // 모바일에서도 간격 증가
       minHeight: "20px",
     },
     "screen and (max-width: 480px)": {
-      bottom: "6px",
+      bottom: "12px",
       minHeight: "18px",
     },
   },
