@@ -1,9 +1,11 @@
 import { style } from "@vanilla-extract/css"
+import { vars } from "../common/theme.css"
 
 export const adminNav = style({
-  background: "white",
-  borderBottom: "1px solid #e2e8f0",
-  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
+  background: "rgba(255, 255, 255, 0.95)",
+  backdropFilter: "blur(20px)",
+  borderBottom: "1px solid rgba(59, 130, 246, 0.1)",
+  boxShadow: "0 2px 20px rgba(59, 130, 246, 0.08)",
   position: "sticky",
   top: 0,
   zIndex: 100,
@@ -11,16 +13,13 @@ export const adminNav = style({
 
 export const adminNavHeader = style({
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "center",
   alignItems: "center",
   padding: "1rem 2rem",
-  borderBottom: "1px solid #f1f5f9",
+  borderBottom: "1px solid rgba(59, 130, 246, 0.08)",
   "@media": {
     "(max-width: 768px)": {
       padding: "1rem",
-      flexDirection: "column",
-      gap: "1rem",
-      textAlign: "center",
     },
   },
 })
@@ -30,12 +29,12 @@ export const adminNavBrand = style({})
 export const adminNavBrandTitle = style({
   fontSize: "1.5rem",
   fontWeight: 700,
-  color: "#1e293b",
+  color: vars.colors.text,
   margin: 0,
-  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+  background: `linear-gradient(135deg, ${vars.colors.primary} 0%, ${vars.colors.primaryDark} 100%)`,
+  backgroundClip: "text",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
-  backgroundClip: "text",
   "@media": {
     "(max-width: 768px)": {
       fontSize: "1.25rem",
@@ -45,7 +44,7 @@ export const adminNavBrandTitle = style({
 
 export const adminNavBrandSubtitle = style({
   fontSize: "0.875rem",
-  color: "#64748b",
+  color: vars.colors.textLight,
   fontWeight: 500,
 })
 
@@ -64,7 +63,7 @@ export const adminNavUser = style({
 
 export const adminNavUserSpan = style({
   fontSize: "0.875rem",
-  color: "#374151",
+  color: vars.colors.text,
   fontWeight: 500,
 })
 
@@ -81,10 +80,13 @@ export const baseButton = style({
 export const siteViewBtn = style([
   baseButton,
   {
-    background: "#f1f5f9",
-    color: "#475569",
+    background: `linear-gradient(135deg, ${vars.colors.primary} 0%, ${vars.colors.primaryDark} 100%)`,
+    color: vars.colors.white,
+    border: "none",
+    boxShadow: "0 2px 8px rgba(59, 130, 246, 0.2)",
     ":hover": {
-      background: "#e2e8f0",
+      transform: "translateY(-1px)",
+      boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)",
     },
   },
 ])
@@ -92,10 +94,13 @@ export const siteViewBtn = style([
 export const logoutBtn = style([
   baseButton,
   {
-    background: "#fee2e2",
-    color: "#dc2626",
+    background: "transparent",
+    color: "#ef4444",
+    border: "1px solid #ef4444",
     ":hover": {
-      background: "#fecaca",
+      background: "#ef4444",
+      color: vars.colors.white,
+      transform: "translateY(-1px)",
     },
   },
 ])
@@ -125,15 +130,16 @@ export const adminNavItem = style({
   gap: "0.75rem",
   padding: "1rem 1.25rem",
   textDecoration: "none",
-  color: "#64748b",
-  transition: "all 0.2s ease",
+  color: vars.colors.textLight,
+  transition: "all 0.3s ease",
   borderRadius: "8px",
   whiteSpace: "nowrap",
   minWidth: "fit-content",
   position: "relative",
   ":hover": {
-    background: "#f8fafc",
-    color: "#374151",
+    background: "rgba(59, 130, 246, 0.05)",
+    color: vars.colors.primary,
+    transform: "translateY(-1px)",
   },
   "@media": {
     "(max-width: 768px)": {
@@ -150,19 +156,18 @@ export const adminNavItem = style({
 })
 
 export const adminNavItemActive = style({
-  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-  color: "white",
-  "::after": {
+  background: `linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%)`,
+  color: vars.colors.primary,
+  fontWeight: 600,
+  "::before": {
     content: '""',
     position: "absolute",
-    bottom: "-1px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    width: 0,
-    height: 0,
-    borderLeft: "8px solid transparent",
-    borderRight: "8px solid transparent",
-    borderBottom: "8px solid #f8fafc",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: "3px",
+    background: `linear-gradient(135deg, ${vars.colors.primary} 0%, ${vars.colors.primaryDark} 100%)`,
+    borderRadius: "2px 2px 0 0",
   },
 })
 

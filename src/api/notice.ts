@@ -1,206 +1,150 @@
 import { apiClient } from "./client"
-import { Notice } from "../types/notice"
-import { processAttachment } from "../common/utils/fileUtils"
+import type {
+  Notice,
+  CreateNoticeDto,
+  UpdateNoticeDto,
+  PaginatedNotices,
+} from "../types/notice"
 
-export interface PaginatedNotices {
-  data: Notice[]
-  total: number
+/**
+ * 공개용 공지사항 목록 조회 (페이지네이션)
+ */
+export const getAll = async (
+  page: number = 1,
+  limit: number = 10
+): Promise<PaginatedNotices> => {
+  try {
+    const response = await apiClient.get<PaginatedNotices>(
+      "/service/notice",
+      {
+        params: { page, limit },
+      }
+    )
+    console.log(`[getAll] 공지사항 목록:`, response.data)
+    return response.data
+  } catch (error) {
+    console.error(`[getAll] 공지사항 목록 조회 실패:`, error)
+    throw error
+  }
 }
 
 /**
- * 공지사항 데이터를 정리하고 첨부파일을 처리합니다.
+ * 관리자용 공지사항 목록 조회 (페이지네이션)
  */
-const processNoticeData = (notice: any): Notice => {
-  const processedNotice = { ...notice }
-
-  // 첨부파일 처리
-  if (
-    processedNotice.attachments &&
-    Array.isArray(processedNotice.attachments)
-  ) {
-    processedNotice.attachments = processedNotice.attachments.map(
-      (attachment: any) => {
-        const processed = processAttachment(attachment)
-        return {
-          ...attachment,
-          displayName: processed.displayName,
-          fileExtension: processed.fileExtension,
-          isImage: processed.isImage,
-          originalName: processed.originalName,
-        }
+export const getAllAdmin = async (
+  page: number = 1,
+  limit: number = 10
+): Promise<PaginatedNotices> => {
+  try {
+    const response = await apiClient.get<PaginatedNotices>(
+      "/admin/notice",
+      {
+        params: { page, limit },
       }
     )
+    console.log(`[getAllAdmin] 관리자 공지사항 목록:`, response.data)
+    return response.data
+  } catch (error) {
+    console.error(`[getAllAdmin] 관리자 공지사항 목록 조회 실패:`, error)
+    throw error
   }
-
-  // 날짜 정규화
-  if (processedNotice.createdAt) {
-    processedNotice.createdAt = new Date(
-      processedNotice.createdAt
-    ).toISOString()
-  }
-  if (processedNotice.updatedAt) {
-    processedNotice.updatedAt = new Date(
-      processedNotice.updatedAt
-    ).toISOString()
-  }
-
-  // 기본값 설정
-  processedNotice.author = processedNotice.author || "관리자"
-  processedNotice.isPublished = processedNotice.isPublished ?? true
-  processedNotice.isModal = processedNotice.isModal ?? false
-
-  return processedNotice as Notice
 }
 
+/**
+ * 공개용 단일 공지사항 조회
+ */
+export const getById = async (id: string): Promise<Notice> => {
+  try {
+    const response = await apiClient.get<Notice>(`/service/notice/${id}`)
+    console.log(`[getById] 공지사항 상세:`, response.data)
+    return response.data
+  } catch (error) {
+    console.error(`[getById] 공지사항 상세 조회 실패:`, error)
+    throw error
+  }
+}
+
+/**
+ * 관리자용 단일 공지사항 조회
+ */
+export const getByIdAdmin = async (id: string): Promise<Notice> => {
+  try {
+    const response = await apiClient.get<Notice>(`/admin/notice/${id}`)
+    console.log(`[getByIdAdmin] 관리자 공지사항 상세:`, response.data)
+    return response.data
+  } catch (error) {
+    console.error(`[getByIdAdmin] 관리자 공지사항 상세 조회 실패:`, error)
+    throw error
+  }
+}
+
+/**
+ * 공지사항 생성
+ */
+export const create = async (data: CreateNoticeDto): Promise<Notice> => {
+  try {
+    const response = await apiClient.post<Notice>("/admin/notice", data)
+    console.log(`[create] 공지사항 생성 성공:`, response.data)
+    return response.data
+  } catch (error) {
+    console.error(`[create] 공지사항 생성 실패:`, error)
+    throw error
+  }
+}
+
+/**
+ * 공지사항 수정
+ */
+export const update = async (id: string, data: UpdateNoticeDto): Promise<Notice> => {
+  try {
+    const response = await apiClient.patch<Notice>(`/admin/notice/${id}`, data)
+    console.log(`[update] 공지사항 수정 성공:`, response.data)
+    return response.data
+  } catch (error) {
+    console.error(`[update] 공지사항 수정 실패:`, error)
+    throw error
+  }
+}
+
+/**
+ * 공지사항 삭제
+ */
+export const deleteNotice = async (id: string): Promise<void> => {
+  try {
+    await apiClient.delete(`/admin/notice/${id}`)
+    console.log(`[delete] 공지사항 삭제 성공`)
+  } catch (error) {
+    console.error(`[delete] 공지사항 삭제 실패:`, error)
+    throw error
+  }
+}
+
+/**
+ * 모달용 공지사항 조회
+ */
+export const getModalNotice = async (): Promise<Notice | null> => {
+  try {
+    const response = await apiClient.get<Notice>("/service/notice/modal")
+    console.log(`[getModalNotice] 모달 공지사항:`, response.data)
+    return response.data
+  } catch (error) {
+    console.error(`[getModalNotice] 모달 공지사항 조회 실패:`, error)
+    // 모달 공지사항이 없을 수 있으므로 null 반환
+    return null
+  }
+}
+
+// named export로 noticeApi 객체 생성
 export const noticeApi = {
-  /** 공개용 공지사항 목록 조회 */
-  getAll: async (page: number, limit: number): Promise<PaginatedNotices> => {
-    try {
-      const response = await apiClient.get("/service/notice", {
-        params: { page, limit },
-      })
-
-      const processedData = {
-        ...response.data,
-        data: response.data.data.map(processNoticeData),
-      }
-
-      return processedData
-    } catch (error) {
-      console.error("공지사항 목록 조회 실패:", error)
-      throw error
-    }
-  },
-
-  /** 전체 공지사항 (관리자용, 페이지네이션) */
-  getAllAdmin: async (
-    page: number,
-    limit: number
-  ): Promise<PaginatedNotices> => {
-    try {
-      const response = await apiClient.get("/admin/notice", {
-        params: { page, limit },
-      })
-
-      const processedData = {
-        ...response.data,
-        data: response.data.data.map(processNoticeData),
-      }
-
-      return processedData
-    } catch (error) {
-      console.error("관리자 공지사항 목록 조회 실패:", error)
-      throw error
-    }
-  },
-
-  /** 공개용 단일 공지사항 조회 */
-  getById: async (id: string): Promise<Notice> => {
-    if (!id) {
-      throw new Error("공지사항 ID가 필요합니다.")
-    }
-
-    try {
-      const response = await apiClient.get(`/service/notice/${id}`)
-      return processNoticeData(response.data)
-    } catch (error) {
-      console.error(`공지사항 조회 실패 (ID: ${id}):`, error)
-      throw error
-    }
-  },
-
-  /** 관리자용 단일 공지사항 조회 */
-  getByIdAdmin: async (id: string): Promise<Notice> => {
-    if (!id) {
-      throw new Error("공지사항 ID가 필요합니다.")
-    }
-
-    try {
-      const response = await apiClient.get(`/admin/notice/${id}`)
-      return processNoticeData(response.data)
-    } catch (error) {
-      console.error(`관리자 공지사항 조회 실패 (ID: ${id}):`, error)
-      throw error
-    }
-  },
-
-  /** 공지사항 생성 */
-  create: async (
-    data: Omit<Notice, "_id" | "createdAt" | "updatedAt">
-  ): Promise<Notice> => {
-    try {
-      // 데이터 검증
-      if (!data.title?.trim()) {
-        throw new Error("제목을 입력해주세요.")
-      }
-      if (!data.content?.trim()) {
-        throw new Error("내용을 입력해주세요.")
-      }
-
-      const response = await apiClient.post("/admin/notice", data)
-      return processNoticeData(response.data)
-    } catch (error) {
-      console.error("공지사항 생성 실패:", error)
-      throw error
-    }
-  },
-
-  /** 공지사항 수정 */
-  update: async (
-    id: string,
-    data: Partial<Omit<Notice, "id" | "createdAt" | "updatedAt">>
-  ): Promise<Notice> => {
-    if (!id) {
-      throw new Error("공지사항 ID가 필요합니다.")
-    }
-
-    try {
-      const response = await apiClient.patch(`/admin/notice/${id}`, data)
-      return processNoticeData(response.data)
-    } catch (error) {
-      console.error(`공지사항 수정 실패 (ID: ${id}):`, error)
-      throw error
-    }
-  },
-
-  /** 공지사항 삭제 */
-  delete: async (id: string): Promise<void> => {
-    if (!id) {
-      throw new Error("공지사항 ID가 필요합니다.")
-    }
-
-    try {
-      await apiClient.delete(`/admin/notice/${id}`)
-    } catch (error) {
-      console.error(`공지사항 삭제 실패 (ID: ${id}):`, error)
-      throw error
-    }
-  },
-
-  /** 팝업으로 띄울 공지사항 조회 */
-  getModalNotice: async (): Promise<Notice | null> => {
-    try {
-      const response = await apiClient.get("/service/notice/modal")
-      return processNoticeData(response.data)
-    } catch (error: any) {
-      // 404 Not Found의 경우, null을 반환하여 처리
-      if (error.response && error.response.status === 404) {
-        return null
-      }
-      console.error("모달 공지사항 조회 실패:", error)
-      throw error // 그 외 다른 에러는 다시 던짐
-    }
-  },
-
-  /** 공지사항 상태 토글 (게시/비게시) */
-  togglePublish: async (id: string, isPublished: boolean): Promise<Notice> => {
-    return noticeApi.update(id, {
-      publishedAt: isPublished ? new Date() : undefined,
-    })
-  },
-
-  /** 공지사항 모달 설정 토글 */
-  toggleModal: async (id: string, isModal: boolean): Promise<Notice> => {
-    return noticeApi.update(id, { isModal })
-  },
+  getAll,
+  getAllAdmin,
+  getById,
+  getByIdAdmin,
+  create,
+  update,
+  delete: deleteNotice,
+  getModalNotice,
 }
+
+// default export (이전 버전과의 호환성)
+export default noticeApi

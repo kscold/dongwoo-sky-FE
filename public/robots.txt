@@ -1,1 +1,34 @@
- 
+# 동우스카이 robots.txt
+# https://dongwoo-sky.com
+
+# 모든 검색엔진 봇 허용
+User-agent: *
+Allow: /
+
+# 관리자 페이지 차단
+Disallow: /admin/
+Disallow: /api/
+
+# 사이트맵 위치
+Sitemap: https://dongwoo-sky.com/sitemap.xml
+
+# 주요 검색엔진 봇 설정
+# Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Naver
+User-agent: Yeti
+Allow: /
+Crawl-delay: 0
+
+# Daum
+User-agent: Daumoa
+Allow: /
+Crawl-delay: 0
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0

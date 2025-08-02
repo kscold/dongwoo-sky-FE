@@ -2,29 +2,50 @@ import { style } from "@vanilla-extract/css"
 
 import { vars } from "../../common/theme.css"
 
-export const container = style({
-  maxWidth: "1200px",
-  margin: "0 auto",
-  padding: "32px",
+// 전체 페이지 배경
+export const pageWrapper = style({
+  backgroundColor: vars.colors.backgroundLight,
   minHeight: "100vh",
+  fontFamily: vars.fonts.body,
+});
+
+export const container = style({
+  maxWidth: "1400px",
+  margin: "0 auto",
+  padding: `${vars.space.md} ${vars.space.lg} 0`,
   "@media": {
-    "screen and (max-width: 768px)": {
-      padding: "16px",
-    },
-    "screen and (max-width: 480px)": {
-      padding: "12px",
+    "(max-width: 768px)": {
+      padding: `${vars.space.sm} ${vars.space.md} 0`,
     },
   },
 })
 
 export const header = style({
   marginBottom: "32px",
+  paddingBottom: "24px",
+  borderBottom: `2px solid ${vars.colors.gray[100]}`,
   "@media": {
     "screen and (max-width: 768px)": {
       marginBottom: "24px",
+      paddingBottom: "20px",
     },
     "screen and (max-width: 480px)": {
       marginBottom: "16px",
+      paddingBottom: "16px",
+    },
+  },
+})
+
+export const headerTop = style({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "16px",
+  "@media": {
+    "screen and (max-width: 768px)": {
+      flexDirection: "column",
+      gap: "12px",
+      alignItems: "flex-start",
     },
   },
 })
@@ -43,19 +64,56 @@ export const errorState = style({
 export const backButton = style({
   display: "inline-flex",
   alignItems: "center",
+  gap: "8px",
   color: "#3b82f6",
   textDecoration: "none",
   fontSize: "14px",
-  marginBottom: "16px",
+  fontWeight: "600",
+  padding: "8px 16px",
+  borderRadius: "12px",
+  transition: "all 0.3s ease",
   ":hover": {
-    textDecoration: "underline",
+    backgroundColor: "#f8fafc",
+    color: "#2563eb",
   },
   "@media": {
     "screen and (max-width: 768px)": {
-      marginBottom: "12px",
+      fontSize: "13px",
+      padding: "6px 12px",
+    },
+  },
+})
+
+export const breadcrumb = style({
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+  fontSize: "14px",
+  color: vars.colors.textLight,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      order: -1,
       fontSize: "13px",
     },
   },
+})
+
+export const breadcrumbLink = style({
+  color: vars.colors.textLight,
+  textDecoration: "none",
+  transition: "color 0.3s ease",
+  ":hover": {
+    color: vars.colors.primary,
+  },
+})
+
+export const separator = style({
+  color: vars.colors.gray[300],
+})
+
+export const current = style({
+  color: vars.colors.textStrong,
+  fontWeight: "600",
 })
 
 export const title = style({

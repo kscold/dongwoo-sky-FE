@@ -3,85 +3,60 @@ import { style } from "@vanilla-extract/css"
 import { vars } from "../../common/theme.css"
 
 export const pageWrapper = style({
-  backgroundColor: "#f8fafc",
-  minHeight: "100vh",
+  backgroundColor: vars.colors.gray[50],
+  minHeight: '100vh',
   fontFamily: vars.fonts.body,
 })
 
 export const container = style({
   maxWidth: "1400px",
   margin: "0 auto",
-  padding: `${vars.space.md} ${vars.space.lg} 0`,
-  minHeight: "100vh",
-  background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
-  width: "100%",
+  padding: `${vars.space.xl} ${vars.space.lg} ${vars.space.xl}`,
   "@media": {
+    "(max-width: 1440px)": {
+      maxWidth: "1200px",
+    },
+    "(max-width: 1200px)": {
+      maxWidth: "1000px",
+    },
     "(max-width: 768px)": {
-      padding: `${vars.space.sm} ${vars.space.md} 0`,
+      padding: `${vars.space.lg} ${vars.space.md} ${vars.space.lg}`,
+    },
+    "(max-width: 480px)": {
+      padding: `${vars.space.md} ${vars.space.sm} ${vars.space.md}`,
     },
   },
 })
 
 export const heroSection = style({
-  textAlign: "center",
-  marginBottom: vars.space.xl,
-  padding: `${vars.space.xxl} ${vars.space.xl}`,
-  background: `
-    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-    linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)
-  `,
-  borderRadius: "32px",
-  border: "1px solid rgba(226, 232, 240, 0.6)",
-  boxShadow:
-    "0 20px 60px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
-  position: "relative",
-  overflow: "hidden",
-  "::before": {
-    content: "",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    height: "1px",
-    background:
-      "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)",
-  },
-  "@media": {
-    "(max-width: 768px)": {
-      padding: `${vars.space.xl} ${vars.space.lg}`,
-      borderRadius: "24px",
-    },
-  },
+  background: `linear-gradient(to right, ${vars.colors.primary}, ${vars.colors.secondary})`,
+  color: vars.colors.white,
+  paddingTop: vars.space.xxxxl,
+  paddingBottom: vars.space.xxxxl,
+  paddingLeft: vars.space.lg,
+  paddingRight: vars.space.lg,
+  textAlign: 'center',
 })
 
 export const heroTitle = style({
   fontSize: vars.fontSizes.xxxxl,
-  fontWeight: "800",
+  fontWeight: vars.fontWeights.bold,
   marginBottom: vars.space.lg,
-  color: vars.colors.primary,
-  position: "relative",
-  lineHeight: 1.2,
-  letterSpacing: "-0.02em",
-  "@media": {
-    "(max-width: 768px)": {
-      fontSize: vars.fontSizes.xxxl,
-    },
-    "(max-width: 480px)": {
-      fontSize: vars.fontSizes.xxl,
-    },
-  },
+  '@media': {
+    '(min-width: 768px)': {
+      fontSize: vars.fontSizes.xxxxxl,
+    }
+  }
 })
 
 export const heroSubtitle = style({
-  fontSize: vars.fontSizes.lg,
-  color: vars.colors.textLight,
-  marginBottom: vars.space.lg,
-  maxWidth: "600px",
-  margin: `0 auto ${vars.space.lg} auto`,
-  lineHeight: 1.6,
+  fontSize: vars.fontSizes.xl,
+  marginBottom: vars.space.xxl,
   fontWeight: "500",
   "@media": {
+    "(min-width: 768px)": {
+      fontSize: vars.fontSizes.xxl,
+    },
     "(max-width: 768px)": {
       fontSize: vars.fontSizes.md,
     },
@@ -104,10 +79,27 @@ export const phoneLinkButton = style({
   display: "inline-block",
   position: "relative",
   border: "1px solid rgba(226, 232, 240, 0.8)",
+  marginBottom: vars.space.md,
   selectors: {
     "&:hover": {
       transform: "translateY(-2px)",
       boxShadow: "0 8px 24px rgba(0, 0, 0, 0.1)",
+    },
+  },
+  "@media": {
+    "(max-width: 768px)": {
+      fontSize: vars.fontSizes.lg,
+      paddingLeft: vars.space.xl,
+      paddingRight: vars.space.xl,
+      paddingTop: vars.space.md,
+      paddingBottom: vars.space.md,
+      width: "100%",
+      maxWidth: "320px",
+    },
+    "(max-width: 480px)": {
+      fontSize: vars.fontSizes.md,
+      paddingLeft: vars.space.lg,
+      paddingRight: vars.space.lg,
     },
   },
 })
@@ -167,6 +159,43 @@ export const formDescription = style({
   textAlign: "center",
   lineHeight: vars.lineHeights.relaxed,
   fontWeight: "500",
+})
+
+export const inquiryTypeSelector = style({
+  display: "flex",
+  gap: "1rem",
+  justifyContent: "center",
+  marginBottom: vars.space.xl,
+  padding: "1rem",
+  backgroundColor: "#f8fafc",
+  borderRadius: "12px",
+  border: "1px solid #e2e8f0",
+})
+
+export const inquiryTypeLabel = style({
+  display: "flex",
+  alignItems: "center",
+  gap: "0.5rem",
+  padding: "0.75rem 1.5rem",
+  borderRadius: "8px",
+  cursor: "pointer",
+  fontSize: "1rem",
+  fontWeight: "500",
+  color: vars.colors.text,
+  border: "2px solid transparent",
+  backgroundColor: "#ffffff",
+  transition: "all 0.2s ease-in-out",
+  
+  ":hover": {
+    borderColor: "#3b82f6",
+    backgroundColor: "#eff6ff",
+  },
+})
+
+export const inquiryTypeRadio = style({
+  width: "1.125rem",
+  height: "1.125rem",
+  accentColor: "#3b82f6",
 })
 
 export const formDescriptionLink = style({
@@ -273,6 +302,38 @@ export const kakaoButton = style({
     "&:hover": {
       transform: "translateY(-2px)",
       boxShadow: "0 8px 24px rgba(0, 0, 0, 0.1)",
+    },
+  },
+  "@media": {
+    "(max-width: 768px)": {
+      fontSize: vars.fontSizes.lg,
+      paddingLeft: vars.space.xl,
+      paddingRight: vars.space.xl,
+      paddingTop: vars.space.md,
+      paddingBottom: vars.space.md,
+      width: "100%",
+      maxWidth: "320px",
+      justifyContent: "center",
+    },
+    "(max-width: 480px)": {
+      fontSize: vars.fontSizes.md,
+      paddingLeft: vars.space.lg,
+      paddingRight: vars.space.lg,
+    },
+  },
+})
+
+export const buttonGroup = style({
+  display: "flex",
+  gap: vars.space.md,
+  alignItems: "center",
+  justifyContent: "center",
+  flexWrap: "wrap",
+  width: "100%",
+  "@media": {
+    "(max-width: 768px)": {
+      flexDirection: "column",
+      gap: vars.space.sm,
     },
   },
 })

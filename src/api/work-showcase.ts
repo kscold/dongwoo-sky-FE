@@ -21,17 +21,29 @@ export const getPublishedWorkShowcases = async (
   limit: number = 10
 ): Promise<PaginatedWorkShowcases> => {
   try {
-    const response = await apiClient.get<PaginatedWorkShowcases>(
-      "/service/work-showcase",
-      {
-        params: { page, limit },
-      }
-    )
+    const response = await apiClient.get<{
+      data: WorkShowcase[]
+      total: number
+      page: number
+      limit: number
+      totalPages: number
+    }>("/service/work-showcase", {
+      params: { page, limit },
+    })
+    
     console.log(
       `[getPublishedWorkShowcases] 작업자 자랑거리 데이터:`,
       response.data
     )
-    return response.data
+    
+    // Transform the API response to match our expected structure
+    return {
+      data: response.data.data || [],
+      totalPages: response.data.totalPages || 1,
+      currentPage: response.data.page || 1,
+      totalItems: response.data.total || 0,
+      limit: response.data.limit || limit,
+    }
   } catch (error) {
     console.error(
       `[getPublishedWorkShowcases] 작업자 자랑거리 조회 실패:`,
@@ -91,17 +103,31 @@ export const getAdminWorkShowcases = async (
   limit: number = 10
 ): Promise<PaginatedWorkShowcases> => {
   try {
-    const response = await apiClient.get<PaginatedWorkShowcases>(
-      "/admin/work-showcase",
-      {
-        params: { page, limit },
+    const response = await apiClient.get<{
+      success: boolean
+      data: {
+        items: WorkShowcase[]
+        totalPages: number
+        currentPage: string
+        totalItems: number
       }
-    )
+    }>("/admin/work-showcase", {
+      params: { page, limit },
+    })
+    
     console.log(
       `[getAdminWorkShowcases] 관리자 작업자 자랑거리 목록:`,
       response.data
     )
-    return response.data
+    
+    // Transform the API response to match our expected structure
+    return {
+      data: response.data.data.items,
+      totalPages: response.data.data.totalPages,
+      currentPage: parseInt(response.data.data.currentPage),
+      totalItems: response.data.data.totalItems,
+      limit: limit,
+    }
   } catch (error) {
     console.error(
       `[getAdminWorkShowcases] 관리자 작업자 자랑거리 목록 조회 실패:`,

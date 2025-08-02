@@ -37,8 +37,9 @@ export const usePublishedWorkShowcases = () => {
   return useQuery({
     queryKey: workShowcaseKeys.public(),
     queryFn: async () => {
-      const data = await getPublishedWorkShowcases()
-      return data.data || []
+      const result = await getPublishedWorkShowcases()
+      console.log("[usePublishedWorkShowcases] API 결과:", result)
+      return result
     },
     staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
     gcTime: 10 * 60 * 1000, // 10분간 메모리에 유지
@@ -195,7 +196,11 @@ export const useTopCustomerReviews = (limit: number = 5) => {
 export const useWorkShowcases = (page: number = 1, limit: number = 10) => {
   return useQuery({
     queryKey: [...workShowcaseKeys.all, "showcases", page, limit],
-    queryFn: () => getPublishedWorkShowcases(page, limit),
+    queryFn: async () => {
+      const result = await getPublishedWorkShowcases(page, limit)
+      console.log("[useWorkShowcases] API 결과:", result)
+      return result
+    },
     staleTime: 5 * 60 * 1000,
   })
 }

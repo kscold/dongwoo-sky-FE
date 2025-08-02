@@ -48,12 +48,6 @@ const adminMenuItems = [
     description: "장비 정보",
   },
   {
-    title: "이용요금 관리",
-    href: "/admin/pricing-setting",
-    icon: "💰",
-    description: "요금 설정",
-  },
-  {
     title: "작업 자랑거리",
     href: "/admin/work-showcase",
     icon: "🎨",
@@ -70,6 +64,24 @@ const adminMenuItems = [
     href: "/admin/notice",
     icon: "📢",
     description: "공지 관리",
+  },
+  {
+    title: "연락 관리",
+    href: "/admin/contact",
+    icon: "📞",
+    description: "문의 내역",
+  },
+  {
+    title: "요금 관리",
+    href: "/admin/pricing",
+    icon: "💰",
+    description: "견적 및 요금",
+  },
+  {
+    title: "SEO 관리",
+    href: "/admin/seo",
+    icon: "🔍",
+    description: "검색 최적화",
   },
 ]
 
@@ -98,15 +110,6 @@ export const AdminNavigation: React.FC = () => {
         <div className={adminNavBrand}>
           <h1 className={adminNavBrandTitle}>어울림 스카이</h1>
           <span className={adminNavBrandSubtitle}>관리자</span>
-        </div>
-        <div className={adminNavUser}>
-          <span className={adminNavUserSpan}>👤 {user?.name || "관리자"}</span>
-          <button onClick={handleSiteView} className={siteViewBtn}>
-            🌐 사이트 보기
-          </button>
-          <button onClick={handleLogout} className={logoutBtn}>
-            🚪 로그아웃
-          </button>
         </div>
       </div>
 

@@ -22,6 +22,13 @@ export interface Equipment {
   showInPricing: boolean;
   sortOrder: number;
   iconUrl?: string;
+  // SEO 메타데이터
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -48,6 +55,13 @@ export interface CreateEquipmentDto {
   workingTimeRanges?: string[];
   showInService?: boolean;
   showInPricing?: boolean;
+  // SEO 메타데이터
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
 }
 
 export type UpdateEquipmentDto = Partial<CreateEquipmentDto>;

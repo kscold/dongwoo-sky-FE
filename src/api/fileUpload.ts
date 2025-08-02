@@ -1,4 +1,5 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL
+// Next.js rewrite를 사용하므로 BASE_URL 불필요
+// const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 export const fileUploadApi = {
   // 범용 파일 업로드 함수
@@ -20,7 +21,7 @@ export const fileUploadApi = {
     const token =
       typeof window !== "undefined" ? localStorage.getItem("auth_token") : null
 
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
+    const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         ...(token && { Authorization: `Bearer ${token}` }),
@@ -57,7 +58,7 @@ export const fileUploadApi = {
     const token =
       typeof window !== "undefined" ? localStorage.getItem("auth_token") : null
 
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
+    const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         ...(token && { Authorization: `Bearer ${token}` }),
@@ -71,6 +72,11 @@ export const fileUploadApi = {
 
     const data = await response.json()
     console.log("단일 파일 업로드 API 응답:", data)
+
+    // 백엔드에서 { imageUrl: "..." } 형태로 반환하는 경우 처리
+    if (data && data.imageUrl) {
+      return { url: data.imageUrl, imageUrl: data.imageUrl, attachment: data }
+    }
 
     // 백엔드에서 AttachmentDto 객체를 직접 반환하는 경우 처리
     if (data && data.url) {

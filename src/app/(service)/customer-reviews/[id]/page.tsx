@@ -62,9 +62,22 @@ const CustomerReviewDetailPage = () => {
     <div className={styles.container}>
       {/* 헤더 */}
       <div className={styles.header}>
-        <Link href="/customer-reviews" className={styles.backButton}>
-          ← 목록으로 돌아가기
-        </Link>
+        <div className={styles.headerTop}>
+          <Link href="/customer-reviews" className={styles.backButton}>
+            ← 목록으로 돌아가기
+          </Link>
+          <nav className={styles.breadcrumb}>
+            <Link href="/" className={styles.breadcrumbLink}>
+              홈
+            </Link>
+            <span className={styles.separator}>›</span>
+            <Link href="/customer-reviews" className={styles.breadcrumbLink}>
+              고객 후기
+            </Link>
+            <span className={styles.separator}>›</span>
+            <span className={styles.current}>상세보기</span>
+          </nav>
+        </div>
         <h1 className={styles.title}>{review.title}</h1>
 
         {/* 평점 */}

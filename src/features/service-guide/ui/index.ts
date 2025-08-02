@@ -1,0 +1,6 @@
+export { HeroSection } from "./HeroSection"
+export { EquipmentShowcase } from "./EquipmentShowcase"
+export { ScopeOfWorkSection } from "./ScopeOfWorkSection"
+export { OperatorProfileSection } from "./OperatorProfileSection"
+export { ServiceProcessSection } from "./ServiceProcessSection"
+export { PricingCTA } from "./PricingCTA"
