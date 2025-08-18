@@ -3,7 +3,7 @@
 import React, { useRef, useCallback } from "react";
 import Image from "next/image";
 
-import * as styles from "../../../styles/components/uploader.css";
+import * as styles from "../../../shared/styles/uploader.css";
 // import { getFileIcon } from "../../../utils/fileUtils"; // 현재 사용하지 않음
 
 interface UploaderProps {

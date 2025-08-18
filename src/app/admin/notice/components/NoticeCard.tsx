@@ -4,7 +4,7 @@ import { TrashIcon, EditIcon, EyeIcon, ImageIcon, FileTextIcon } from "lucide-re
 import { Notice } from "../../../../types/notice"
 import { AttachmentDisplay } from "../../../../common/components/notice/AttachmentDisplay"
 import { formatDate, getAttachmentSummary } from "../utils/noticeUtils"
-import * as styles from "../../../../styles/admin/admin-notice.css"
+import * as styles from "../../../../features/admin/styles/admin-notice.css"
 
 interface NoticeCardProps {
   notice: Notice

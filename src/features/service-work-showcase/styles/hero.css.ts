@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-import { vars } from "../../../styles/common/theme.css";
+import { vars } from "../../../shared/styles/theme.css";
 
 // Hero 섹션 - pricing/service-guide와 동일한 카드 스타일
 export const heroSection = style({

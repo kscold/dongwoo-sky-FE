@@ -104,9 +104,11 @@ export const checkboxLabel = style({
     borderColor: "#3b82f6",
     backgroundColor: "#fafbff",
   },
-  ":has(input:checked)": {
-    borderColor: "#3b82f6",
-    backgroundColor: "#eff6ff",
+  selectors: {
+    "&:has(input:checked)": {
+      borderColor: "#3b82f6",
+      backgroundColor: "#eff6ff",
+    },
   },
 })
 

@@ -7,7 +7,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable"
-import { Equipment } from "../../../../types/equipment"
+import { Equipment } from "../../../types/equipment"
 import SortableEquipmentItem from "./SortableEquipmentItem"
 import * as styles from "./EquipmentList.css"
 

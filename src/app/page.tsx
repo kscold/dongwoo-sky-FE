@@ -9,8 +9,8 @@ import NoticeSection from "../common/components/home/NoticeSection"
 import FloatingCallButton from "../common/components/button/FloatingCallButton"
 import PageSkeleton from "../common/components/ui/PageSkeleton"
 import ErrorComponent from "../common/components/error/ErrorComponent"
-import * as styles from "../styles/service/components/home/content-section.css"
-import { mainPageWrapper } from "../styles/main-page.css"
+import * as styles from "../features/home/styles/content-section.css"
+import { mainPageWrapper } from "../features/home/styles/main-page.css"
 
 export default function Home() {
   const {

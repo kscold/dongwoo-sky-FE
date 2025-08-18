@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-import { vars } from "../../../styles/common/theme.css";
+import { vars } from "../../../shared/styles/theme.css";
 
 // 그리드 레이아웃
 export const grid = style({

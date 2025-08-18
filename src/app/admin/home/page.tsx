@@ -14,6 +14,7 @@ import {
   SectionWrapper,
   useHomePageAdmin
 } from "../../../features/admin-home"
+import { HomeSettings } from "../../../types/home"
 import * as styles from "../../../features/admin-home/ui/page.css"
 
 function HomePageAdminContent() {
@@ -102,7 +103,7 @@ function HomePageAdminContent() {
         <HeroTitleSection
           currentTitle={currentTitle}
           isEditing={isEditing}
-          onUpdateTitle={updateTitleField}
+          onUpdateTitle={(field, value) => updateTitleField(field as keyof HomeSettings["heroTitle"], value)}
         />
       </SectionWrapper>
 
@@ -110,7 +111,7 @@ function HomePageAdminContent() {
         <HeroButtonSection
           currentButtons={currentButtons}
           isEditing={isEditing}
-          onUpdateButton={updateButtonField}
+          onUpdateButton={(field, value) => updateButtonField(field as keyof HomeSettings["heroButtons"], value)}
         />
       </SectionWrapper>
 

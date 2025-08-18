@@ -2,7 +2,7 @@
 
 import React from "react"
 import Link from "next/link"
-import * as styles from "../styles/common/error-fallback.css"
+import * as styles from "../shared/styles/error-fallback.css"
 
 interface ErrorFallbackProps {
   error?: Error

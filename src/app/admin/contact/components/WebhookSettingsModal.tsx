@@ -1,7 +1,7 @@
 import React from "react"
 import { DiscordWebhookSettings } from "../../../../api/discord"
 import { formatDate } from "../utils"
-import * as styles from "../../../../styles/admin/admin-contact.css"
+import * as styles from "../../../../features/admin/styles/admin-contact.css"
 
 interface WebhookSettingsModalProps {
   isOpen: boolean

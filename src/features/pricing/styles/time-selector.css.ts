@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-import { vars } from "../../../styles/common/theme.css";
+import { vars } from "../../../shared/styles/theme.css";
 import { fadeInUp } from "./animations.css";
 
 // 시간 선택기
@@ -150,6 +150,55 @@ export const sliderLabels = style({
   "@media": {
     "(max-width: 768px)": {
       fontSize: vars.fontSizes.xs,
+    },
+  },
+});
+
+// CTA 섹션 스타일
+export const ctaSection = style({
+  textAlign: "center",
+  flexShrink: 0,
+  padding: `${vars.space.lg} 0`,
+  "@media": {
+    "(max-width: 768px)": {
+      padding: `${vars.space.md} 0`,
+    },
+  },
+});
+
+export const ctaButton = style({
+  width: "100%",
+  padding: `${vars.space.lg} ${vars.space.xl}`,
+  backgroundColor: vars.colors.primary,
+  color: "white",
+  border: "none",
+  borderRadius: "16px",
+  fontSize: "1.25rem",
+  fontWeight: "600",
+  cursor: "pointer",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  marginBottom: vars.space.md,
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+  ":hover": {
+    transform: "translateY(-2px)",
+    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.1)",
+  },
+  "@media": {
+    "(max-width: 768px)": {
+      fontSize: "1.125rem",
+      padding: `${vars.space.md} ${vars.space.lg}`,
+    },
+  },
+});
+
+export const ctaSubtext = style({
+  fontSize: "0.9rem",
+  color: vars.colors.textLight,
+  margin: 0,
+  fontWeight: "500",
+  "@media": {
+    "(max-width: 768px)": {
+      fontSize: "0.8rem",
     },
   },
 });

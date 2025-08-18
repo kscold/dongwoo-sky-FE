@@ -1,6 +1,6 @@
 export { EquipmentHeader } from "./EquipmentHeader"
 export { EquipmentList } from "./EquipmentList"
-export { SortableEquipmentItem } from "./SortableEquipmentItem"
+export { default as SortableEquipmentItem } from "./SortableEquipmentItem"
 export { EmptyState } from "./EmptyState"
 export { ErrorState } from "./ErrorState"
 export { default as EquipmentFormModal } from "./EquipmentFormModal"

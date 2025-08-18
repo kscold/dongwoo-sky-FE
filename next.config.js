@@ -30,7 +30,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_URL || 'https://ru5diuqn9d.execute-api.ap-northeast-2.amazonaws.com/dev/api'}/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_API_URL || 'https://kt7v4q8o60.execute-api.ap-northeast-2.amazonaws.com/production/api'}/:path*`,
       },
     ]
   },

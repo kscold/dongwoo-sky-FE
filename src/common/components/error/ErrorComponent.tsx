@@ -3,7 +3,7 @@
 import React from "react"
 import Link from "next/link"
 
-import * as errorStyles from "../../../styles/common/error-fallback.css"
+import * as errorStyles from "../../../shared/styles/error-fallback.css"
 
 interface ErrorProps {
   error: Error & { digest?: string }

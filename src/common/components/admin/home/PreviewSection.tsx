@@ -1,6 +1,6 @@
 import React from "react"
 import Image from "next/image"
-import "../../../../../styles/admin/admin-home-page.css"
+import "../../../../../features/admin/styles/admin-home-page.css"
 
 interface PreviewSectionProps {
   currentTitle: any

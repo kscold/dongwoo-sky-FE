@@ -11,7 +11,7 @@ import {
 import { useNoticeImagesUpload } from "../../../../common/hooks/useFileUpload"
 import { UpdateNoticeDto } from "../../../../types/notice"
 
-import * as notice from "../../../../styles/admin/admin-notice.css"
+import * as notice from "../../../../features/admin/styles/admin-notice.css"
 
 export default function EditNoticePage() {
   const router = useRouter()

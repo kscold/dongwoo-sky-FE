@@ -81,7 +81,7 @@ export const ShowcaseList: React.FC<ShowcaseListProps> = ({ items, isLoading, er
               <span className={styles.stat}>👀 {item.viewCount}</span>
               <span className={styles.stat}>❤️ {item.likeCount}</span>
               <span className={styles.date}>
-                {new Date(item.publishedAt).toLocaleDateString('ko-KR')}
+                {item.publishedAt ? new Date(item.publishedAt).toLocaleDateString('ko-KR') : '날짜 없음'}
               </span>
             </div>
           </div>

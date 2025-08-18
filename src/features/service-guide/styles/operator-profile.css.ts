@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-import { vars } from "../../../styles/common/theme.css";
+import { vars } from "../../../shared/styles/theme.css";
 import { sectionContainer } from "./layout.css";
 
 // 작업자 프로필 섹션

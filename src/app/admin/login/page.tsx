@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 
 import { useAdmin } from "../../../common/context/AdminContext"
-import * as styles from "../../../styles/admin/admin-login.css"
+import * as styles from "../../../features/admin/styles/admin-login.css"
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("")

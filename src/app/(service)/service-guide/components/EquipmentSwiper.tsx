@@ -9,7 +9,7 @@ import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 
-import * as styles from "../../../../styles/service/components/equipment-swiper.css"
+import * as styles from "../../../../shared/styles/equipment-swiper.css"
 import { Equipment } from "../../../../types/equipment"
 
 interface EquipmentSwiperProps {

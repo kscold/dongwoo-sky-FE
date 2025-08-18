@@ -1,6 +1,6 @@
 import React from "react"
 
-import "../../../styles/admin/stats-card.css"
+import "../../../features/admin/styles/stats-card.css"
 
 interface StatsCardProps {
   title: string

@@ -129,10 +129,12 @@ export const inquiryTypeLabel = style({
     backgroundColor: "#fafbff",
     transform: "translateY(-1px)",
   },
-  ":has(input:checked)": {
-    borderColor: "#3b82f6",
-    backgroundColor: "#eff6ff",
-    color: "#3b82f6",
+  selectors: {
+    "&:has(input:checked)": {
+      borderColor: "#3b82f6",
+      backgroundColor: "#eff6ff",
+      color: "#3b82f6",
+    },
   },
   "@media": {
     "(max-width: 480px)": {

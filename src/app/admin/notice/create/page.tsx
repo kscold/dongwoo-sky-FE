@@ -10,7 +10,7 @@ import { useCreateNotice } from "../../../../common/hooks/useNotices"
 import { Uploader } from "../../../../common/components/upload/Uploader"
 import { useAdmin } from "../../../../common/context/AdminContext"
 import { useFileUpload } from "../../../../common/hooks/useFileUpload"
-import * as commonStyles from "../../../../styles/common/admin-common.css"
+import * as commonStyles from "../../../../shared/styles/admin-common.css"
 
 const attachmentSchema = z.object({
   name: z.string(),

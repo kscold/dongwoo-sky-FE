@@ -5,7 +5,7 @@ import PageHeader from './PageHeader'
 import ContentCard from './ContentCard'
 import Pagination from '../ui/Pagination'
 import PageSkeleton from '../ui/PageSkeleton'
-import * as styles from '../../../styles/content/content-page.css'
+import * as styles from '../../../features/content/styles/content-page.css'
 
 const ContentList: React.FC<ContentListProps> = ({
   items,

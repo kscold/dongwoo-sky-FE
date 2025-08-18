@@ -1,7 +1,7 @@
 import React from "react"
 import { Button } from "../../../../common/components/atoms"
 import { ContactSettings, UpdateContactSettingsDto } from "../../../../api/contact"
-import * as styles from "../../../../styles/admin/admin-contact-settings.css"
+import * as styles from "../../../../features/admin/styles/admin-contact-settings.css"
 
 interface ActionButtonsProps {
   isEditing: boolean

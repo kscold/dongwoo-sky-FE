@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css"
 
-import { vars } from "../../../styles/common/theme.css"
+import { vars } from "../../../shared/styles/theme.css"
 
 // // 서비스 계약 프로세스
 // export const serviceProcessSection = style({

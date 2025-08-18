@@ -2,7 +2,7 @@ import React from "react"
 import { WorkShowcase } from "../../../../types/work-showcase"
 import { WorkShowcaseTableRow } from "./WorkShowcaseTableRow"
 import { LoadingSkeleton } from "./LoadingSkeleton"
-import * as commonStyles from "../../../../styles/admin/admin-notice.css"
+import * as commonStyles from "../../../../features/admin/styles/admin-notice.css"
 
 interface WorkShowcaseTableProps {
   data: WorkShowcase[] | undefined

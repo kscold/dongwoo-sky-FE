@@ -1,5 +1,5 @@
 import React from "react"
-import * as styles from "../../../styles/admin/admin-form.css"
+import * as styles from "../../../features/admin/styles/admin-form.css"
 
 interface WorkShowcaseEditFormProps {
   formData: {

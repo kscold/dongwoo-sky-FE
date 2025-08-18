@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-import { vars } from "../../../styles/common/theme.css";
+import { vars } from "../../../shared/styles/theme.css";
 
 // 페이지 전체 래퍼
 export const pageWrapper = style({

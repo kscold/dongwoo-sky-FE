@@ -4,7 +4,7 @@ import React, { useState } from "react"
 import { useEquipments } from "../../hooks/useEquipment"
 import { useContactSettings } from "../../hooks/useContact"
 import { PricingInquiryData } from "../../../api/contact"
-import * as styles from "../../../styles/service/components/pricing-inquiry.css"
+import * as styles from "../../../shared/styles/pricing-inquiry.css"
 
 interface PricingInquiryFormProps {
   onPricingDataChange: (data: PricingInquiryData | null) => void

@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css"
-import { vars } from "../../../styles/common/theme.css"
+import { vars } from "../../../shared/styles/theme.css"
 import { fadeInUp } from "./animations.css"
 
 export const timeSelector = style({

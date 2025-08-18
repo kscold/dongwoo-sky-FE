@@ -1,6 +1,6 @@
 import React from "react"
 import { Equipment } from "../../../types/equipment"
-import * as styles from "../../../styles/page/pricing-page.css"
+import * as styles from "../../../features/pricing/styles/time-selector.css"
 
 interface WorkingHoursSelectorProps {
   selectedEquipment: Equipment | undefined

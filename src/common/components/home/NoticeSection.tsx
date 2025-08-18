@@ -4,7 +4,7 @@ import React from "react"
 import Link from "next/link"
 
 import { Notice } from "../../../types/notice"
-import * as styles from "../../../styles/service/components/home/notice-section.css.ts"
+import * as styles from "../../../features/home/styles/notice-section.css.ts"
 
 interface NoticeSectionProps {
   notices: Notice[]

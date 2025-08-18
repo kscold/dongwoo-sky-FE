@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import Image from "next/image"
-import { HomeSettings } from "../../../../types/home"
+import { HomeSettings } from "../../../types/home"
 import * as styles from "./preview-section.css"
 
 interface PreviewSectionProps {

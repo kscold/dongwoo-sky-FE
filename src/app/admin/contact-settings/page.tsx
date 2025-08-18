@@ -8,7 +8,7 @@ import { CompanyInfoSection } from "./components/CompanyInfoSection"
 import { PricingServiceSection } from "./components/PricingServiceSection"
 import { DiscordWebhookSection } from "./components/DiscordWebhookSection"
 import { ActionButtons } from "./components/ActionButtons"
-import * as styles from "../../../styles/admin/admin-contact-settings.css"
+import * as styles from "../../../features/admin/styles/admin-contact-settings.css"
 
 export default function ContactSettingsPage() {
   const { data: settings, isLoading, error } = useContactSettings()

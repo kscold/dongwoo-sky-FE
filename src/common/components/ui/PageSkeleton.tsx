@@ -3,7 +3,7 @@
 import React from "react"
 
 import LoadingSkeleton from "./LoadingSkeleton"
-import * as styles from "../../../styles/common/page-skeleton.css"
+import * as styles from "../../../shared/styles/page-skeleton.css"
 
 interface PageSkeletonProps {
   variant?:

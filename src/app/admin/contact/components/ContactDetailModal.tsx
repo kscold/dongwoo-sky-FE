@@ -2,7 +2,7 @@ import React from "react"
 import { ContactInquiry } from "../types"
 import { StatusBadge } from "./StatusBadge"
 import { formatDate } from "../utils"
-import * as styles from "../../../../styles/admin/admin-contact.css"
+import * as styles from "../../../../features/admin/styles/admin-contact.css"
 
 interface ContactDetailModalProps {
   contact: ContactInquiry

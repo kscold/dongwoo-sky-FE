@@ -7,8 +7,8 @@ import { GiHamburgerMenu } from "react-icons/gi"
 import { IoMenu, IoClose } from "react-icons/io5"
 import { FaPhoneAlt } from "react-icons/fa"
 
-import * as styles from "../../../styles/service/layout/header.css"
-import * as mobileStyles from "../../../styles/service/layout/mobile-menu.css"
+import * as styles from "../../../shared/styles/layout/header.css"
+import * as mobileStyles from "../../../shared/styles/layout/mobile-menu.css"
 import { useHomePageData } from "../../hooks/useHome"
 
 // Static navigation items for service

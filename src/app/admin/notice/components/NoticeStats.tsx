@@ -1,6 +1,6 @@
 import React from "react"
 import { Notice } from "../../../../types/notice"
-import * as styles from "../../../../styles/admin/admin-notice.css"
+import * as styles from "../../../../features/admin/styles/admin-notice.css"
 
 interface NoticeStatsProps {
   notices: Notice[]

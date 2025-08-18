@@ -20,7 +20,7 @@ import {
   adminNavTitle,
   adminNavDescription,
   adminNavDescriptionActive,
-} from "../../../styles/admin/admin-navigation.css"
+} from "../../../features/admin/styles/admin-navigation.css"
 
 const adminMenuItems = [
   {

@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import * as styles from "../../../styles/components/pagination.css"
+import * as styles from "../../../shared/styles/pagination.css"
 
 interface PaginationProps {
   currentPage: number

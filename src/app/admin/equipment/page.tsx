@@ -36,23 +36,24 @@ function EquipmentAdminContent() {
   if (error) {
     return (
       <div className={styles.container}>
-        <ErrorState />
+        <ErrorState error={error.message || "알 수 없는 오류가 발생했습니다."} />
       </div>
     )
   }
 
   return (
     <div className={styles.container}>
-      <EquipmentHeader onAddClick={() => openModal()} />
+      <EquipmentHeader onAddEquipment={() => openModal()} />
 
       {equipments.length === 0 ? (
-        <EmptyState onAddClick={() => openModal()} />
+        <EmptyState onAddEquipment={() => openModal()} />
       ) : (
         <EquipmentList
           equipments={equipments}
           onDragEnd={handleDragEnd}
-          onEdit={openModal}
-          onDelete={handleDelete}
+          onEditEquipment={openModal}
+          onDeleteEquipment={handleDelete}
+          sensors={[]}
         />
       )}
 

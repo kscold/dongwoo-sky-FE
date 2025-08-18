@@ -3,7 +3,7 @@ import { TrashIcon } from "lucide-react"
 import Link from "next/link"
 import { WorkShowcase } from "../../../../types/work-showcase"
 import { StatusToggle } from "./StatusToggle"
-import * as commonStyles from "../../../../styles/admin/admin-notice.css"
+import * as commonStyles from "../../../../features/admin/styles/admin-notice.css"
 
 interface WorkShowcaseTableRowProps {
   showcase: WorkShowcase

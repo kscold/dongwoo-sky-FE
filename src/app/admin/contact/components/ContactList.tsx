@@ -1,7 +1,7 @@
 import React from "react"
 import { ContactInquiry } from "../types"
 import { ContactCard } from "./ContactCard"
-import * as styles from "../../../../styles/admin/admin-contact.css"
+import * as styles from "../../../../features/admin/styles/admin-contact.css"
 
 interface ContactListProps {
   contacts: ContactInquiry[]

@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import * as styles from "../../../styles/service/components/form-fields.css"
+import * as styles from "../../../shared/styles/form-fields.css"
 
 interface FormFieldProps {
   label: string

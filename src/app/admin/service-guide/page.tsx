@@ -10,7 +10,7 @@ import {
   ProcessStepsSection,
   useServiceGuideForm
 } from "../../../features/admin-service-guide"
-import * as commonStyles from "../../../styles/common/admin-common.css"
+import * as commonStyles from "../../../shared/styles/admin-common.css"
 import * as pageStyles from "../../../features/admin-service-guide/ui/page.css"
 
 const ServiceGuideAdminPage = () => {

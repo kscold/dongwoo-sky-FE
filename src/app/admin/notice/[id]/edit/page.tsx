@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { NoticeEditForm, useNoticeEdit } from "../../../../../features/admin-notice-edit"
-import * as notice from "../../../../../styles/admin/admin-notice.css"
+import * as notice from "../../../../../features/admin/styles/admin-notice.css"
 
 export default function EditNoticePage() {
   const params = useParams()

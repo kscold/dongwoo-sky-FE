@@ -1,5 +1,5 @@
 import React from "react"
-import { Equipment } from "../../../../types/equipment"
+import { Equipment } from "../../../types/equipment"
 import { EquipmentList } from "./EquipmentList"
 import { EmptyState } from "./EmptyState"
 import * as styles from "./EquipmentSection.css"

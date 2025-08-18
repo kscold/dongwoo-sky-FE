@@ -7,7 +7,7 @@ import Image from "next/image"
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline"
 
 import { Equipment } from "../../../types/equipment"
-import * as styles from "../../../styles/service/components/equipment-swiper.css"
+import * as styles from "../../../shared/styles/equipment-swiper.css"
 
 import "swiper/css"
 import "swiper/css/navigation"

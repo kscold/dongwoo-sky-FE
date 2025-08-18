@@ -97,7 +97,7 @@ export function EquipmentSelector({
                 <div className={styles.equipmentInfo}>
                   <h3 className={styles.equipmentName}>{equipment.name}</h3>
                   <p className={styles.equipmentPrice}>
-                    {equipment.basePrice.toLocaleString()}원/{equipment.baseHours}시간
+                    {equipment.basePrice?.toLocaleString() || 0}원/{equipment.baseHours || 0}시간
                   </p>
                 </div>
               </div>

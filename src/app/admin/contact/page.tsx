@@ -8,7 +8,7 @@ import { ContactDetailModal } from "./components/ContactDetailModal"
 import { WebhookSettingsModal } from "./components/WebhookSettingsModal"
 import { useContactManagement } from "./hooks/useContactManagement"
 import { useWebhookManagement } from "./hooks/useWebhookManagement"
-import * as styles from "../../../styles/admin/admin-contact.css"
+import * as styles from "../../../features/admin/styles/admin-contact.css"
 
 function ContactAdminContent() {
   const {

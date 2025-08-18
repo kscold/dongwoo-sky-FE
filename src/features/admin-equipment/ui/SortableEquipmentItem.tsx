@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 
-import { Equipment } from "../../../../types/equipment"
+import { Equipment } from "../../../types/equipment"
 import * as styles from "./SortableEquipmentItem.css"
 
 interface SortableEquipmentItemProps {

@@ -42,10 +42,9 @@ export function TimeSelector({
     )
   }
 
-  const percentage =
-    ((workingHours - selectedEquipment.minHours) /
-      (selectedEquipment.maxHours - selectedEquipment.minHours)) *
-    100
+  const minHours = selectedEquipment.minHours || 1
+  const maxHours = selectedEquipment.maxHours || 24
+  const percentage = ((workingHours - minHours) / (maxHours - minHours)) * 100
 
   return (
     <div className={styles.timeSelector}>

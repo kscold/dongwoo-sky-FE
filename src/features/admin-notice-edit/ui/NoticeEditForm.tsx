@@ -2,7 +2,7 @@ import React from "react"
 import Link from "next/link"
 import { UpdateNoticeDto } from "../../../types/notice"
 import { Uploader } from "../../../common/components/upload/Uploader"
-import * as notice from "../../../styles/admin/admin-notice.css"
+import * as notice from "../../../features/admin/styles/admin-notice.css"
 
 interface NoticeEditFormProps {
   formData: UpdateNoticeDto

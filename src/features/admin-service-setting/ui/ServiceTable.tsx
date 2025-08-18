@@ -1,6 +1,6 @@
 import React from "react"
 import { Service } from "../../../types/service"
-import * as styles from "../../../styles/common/admin-common.css"
+import * as styles from "../../../shared/styles/admin-common.css"
 
 interface ServiceTableProps {
   services: Service[]

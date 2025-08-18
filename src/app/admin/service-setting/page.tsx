@@ -2,7 +2,7 @@
 
 import React from "react"
 import { ServiceTable, ServiceFormModal, useServiceManagement } from "../../../features/admin-service-setting"
-import * as styles from "../../../styles/common/admin-common.css"
+import * as styles from "../../../shared/styles/admin-common.css"
 
 export default function AdminServicePage() {
   const {

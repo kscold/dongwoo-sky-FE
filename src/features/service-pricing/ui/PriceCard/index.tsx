@@ -60,7 +60,7 @@ export function PriceCard({
     )
   }
 
-  const additionalHours = Math.max(0, workingHours - selectedEquipment.baseHours)
+  const additionalHours = Math.max(0, workingHours - (selectedEquipment.baseHours || 0))
 
   return (
     <div className={styles.priceCard}>
@@ -94,9 +94,9 @@ export function PriceCard({
       <div className={styles.priceBreakdown}>
         <div className={styles.breakdownItem}>
           <span>
-            {baseHoursLabel || "기본"} {selectedEquipment.baseHours} {hourUnit || "시간"}
+            {baseHoursLabel || "기본"} {selectedEquipment.baseHours || 0} {hourUnit || "시간"}
           </span>
-          <span>{selectedEquipment.basePrice.toLocaleString()}원</span>
+          <span>{selectedEquipment.basePrice?.toLocaleString() || 0}원</span>
         </div>
         {additionalHours > 0 && (
           <div className={styles.breakdownItem}>
@@ -104,13 +104,13 @@ export function PriceCard({
               {additionalHoursLabel || "추가"} {additionalHours} {hourUnit || "시간"}
             </span>
             <span>
-              {(additionalHours * selectedEquipment.hourlyRate).toLocaleString()}원
+              {(additionalHours * (selectedEquipment.hourlyRate || 0)).toLocaleString()}원
             </span>
           </div>
         )}
         <div className={styles.breakdownItem}>
           <span>{hourlyRateLabel || "시간당 요금"}</span>
-          <span>{selectedEquipment.hourlyRate.toLocaleString()}원</span>
+          <span>{selectedEquipment.hourlyRate?.toLocaleString() || 0}원</span>
         </div>
       </div>
 

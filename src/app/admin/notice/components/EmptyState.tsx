@@ -1,7 +1,7 @@
 import React from "react"
 import Link from "next/link"
 import { PlusIcon } from "lucide-react"
-import * as styles from "../../../../styles/admin/admin-notice.css"
+import * as styles from "../../../../features/admin/styles/admin-notice.css"
 
 export const EmptyState: React.FC = () => {
   return (

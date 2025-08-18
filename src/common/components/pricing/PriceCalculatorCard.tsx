@@ -1,6 +1,6 @@
 import React from "react"
 import { Equipment } from "../../../types/equipment"
-import * as styles from "../../../styles/page/pricing-page.css"
+import * as styles from "../../../features/pricing/styles/price-card.css"
 
 interface PriceCalculatorCardProps {
   selectedEquipment: Equipment | undefined

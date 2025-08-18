@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { PageHeaderProps } from '../../interfaces/content/content.interface'
-import * as styles from '../../../styles/content/content-page.css'
+import * as styles from '../../../features/content/styles/content-page.css'
 
 export const PageHeader: React.FC<PageHeaderProps> = ({
   title,

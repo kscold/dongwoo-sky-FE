@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-import { vars } from "../../../styles/common/theme.css";
+import { vars } from "../../../shared/styles/theme.css";
 
 // 장비 소개 섹션 (Swiper 컴테이너용)
 export const equipmentSwiperSection = style({

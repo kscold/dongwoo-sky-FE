@@ -1,5 +1,5 @@
 import React from "react"
-import "../../../../../styles/admin/admin-home-page.css"
+import "../../../../../features/admin/styles/admin-home-page.css"
 
 interface ActionButtonsProps {
   isEditing: boolean

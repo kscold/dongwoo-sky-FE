@@ -4,7 +4,7 @@ import React from "react"
 import ProtectedRoute from "../../../../../common/auth/ProtectedRoute"
 import PageSkeleton from "../../../../../common/components/ui/PageSkeleton"
 import { WorkShowcaseEditForm, useWorkShowcaseEdit } from "../../../../../features/admin-work-showcase-edit"
-import * as styles from "../../../../../styles/admin/admin-form.css"
+import * as styles from "../../../../../features/admin/styles/admin-form.css"
 
 interface EditWorkShowcasePageProps {
   params: Promise<{

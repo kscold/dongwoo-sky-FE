@@ -10,7 +10,7 @@ import {
   useMarkReviewHelpful,
 } from "../../../../common/hooks/useCustomerReview"
 import PageSkeleton from "../../../../common/components/ui/PageSkeleton"
-import * as styles from "../../../../styles/service/page/customer-review-page.css.ts"
+import * as styles from "../../../../features/service-customer-review/styles"
 
 const CustomerReviewDetailPage = () => {
   const params = useParams()
@@ -59,53 +59,53 @@ const CustomerReviewDetailPage = () => {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.detailContainer}>
       {/* 헤더 */}
-      <div className={styles.header}>
-        <div className={styles.headerTop}>
-          <Link href="/customer-reviews" className={styles.backButton}>
+      <div className={styles.detailHeader}>
+        <div className={styles.detailHeaderTop}>
+          <Link href="/customer-reviews" className={styles.detailBackButton}>
             ← 목록으로 돌아가기
           </Link>
-          <nav className={styles.breadcrumb}>
-            <Link href="/" className={styles.breadcrumbLink}>
+          <nav className={styles.detailBreadcrumb}>
+            <Link href="/" className={styles.detailBreadcrumbLink}>
               홈
             </Link>
-            <span className={styles.separator}>›</span>
-            <Link href="/customer-reviews" className={styles.breadcrumbLink}>
+            <span className={styles.detailSeparator}>›</span>
+            <Link href="/customer-reviews" className={styles.detailBreadcrumbLink}>
               고객 후기
             </Link>
-            <span className={styles.separator}>›</span>
-            <span className={styles.current}>상세보기</span>
+            <span className={styles.detailSeparator}>›</span>
+            <span className={styles.detailCurrent}>상세보기</span>
           </nav>
         </div>
-        <h1 className={styles.title}>{review.title}</h1>
+        <h1 className={styles.detailTitle}>{review.title}</h1>
 
         {/* 평점 */}
-        <div className={styles.ratingSection}>
-          <div className={styles.stars}>{renderStars(review.rating || 0)}</div>
-          <span className={styles.ratingText}>({review.rating || 0}/5)</span>
+        <div className={styles.detailRatingSection}>
+          <div className={styles.detailStars}>{renderStars(review.rating || 0)}</div>
+          <span className={styles.detailRatingText}>({review.rating || 0}/5)</span>
         </div>
 
         {/* 메타 정보 */}
-        <div className={styles.meta}>
-          <div className={styles.customerInfo}>
-            <span className={styles.customer}>👤 {review.customerName}</span>
+        <div className={styles.detailMeta}>
+          <div className={styles.detailCustomerInfo}>
+            <span className={styles.detailCustomer}>👤 {review.customerName}</span>
             {review.customerCompany && (
-              <span className={styles.company}>({review.customerCompany})</span>
+              <span className={styles.detailCompany}>({review.customerCompany})</span>
             )}
           </div>
-          <div className={styles.details}>
+          <div className={styles.detailDetails}>
             {review.serviceType && (
-              <span className={styles.detail}>🔧 {review.serviceType}</span>
+              <span className={styles.detailDetail}>🔧 {review.serviceType}</span>
             )}
             {review.projectLocation && (
-              <span className={styles.detail}>📍 {review.projectLocation}</span>
+              <span className={styles.detailDetail}>📍 {review.projectLocation}</span>
             )}
           </div>
-          <div className={styles.stats}>
-            <span className={styles.stat}>👀 조회수 {review.viewCount}</span>
-            <span className={styles.stat}>👍 도움됨 {review.helpfulCount}</span>
-            <span className={styles.date}>
+          <div className={styles.detailStats}>
+            <span className={styles.detailStat}>👀 조회수 {review.viewCount}</span>
+            <span className={styles.detailStat}>👍 도움됨 {review.helpfulCount}</span>
+            <span className={styles.detailDate}>
               {review.publishedAt
                 ? formatDate(review.publishedAt)
                 : formatDate(review.createdAt)}
@@ -116,25 +116,25 @@ const CustomerReviewDetailPage = () => {
 
       {/* 이미지 갤러리 */}
       {review.imageUrls && review.imageUrls.length > 0 && (
-        <div className={styles.imageGallery}>
-          <div className={styles.mainImage}>
+        <div className={styles.detailImageGallery}>
+          <div className={styles.detailMainImage}>
             <Image
               src={review.imageUrls[0]}
               alt={review.title}
-              className={styles.image}
+              className={styles.detailImage}
               width={600}
               height={400}
               style={{ objectFit: "cover" }}
             />
           </div>
           {review.imageUrls.length > 1 && (
-            <div className={styles.thumbnails}>
+            <div className={styles.detailThumbnails}>
               {review.imageUrls.slice(1).map((url, index) => (
                 <Image
                   key={index}
                   src={url}
                   alt={`${review.title} ${index + 2}`}
-                  className={styles.thumbnail}
+                  className={styles.detailThumbnail}
                   width={150}
                   height={100}
                   style={{ objectFit: "cover" }}
@@ -146,17 +146,17 @@ const CustomerReviewDetailPage = () => {
       )}
 
       {/* 리뷰 내용 */}
-      <div className={styles.content}>
+      <div className={styles.detailContent}>
         <div
-          className={styles.contentBody}
+          className={styles.detailContentBody}
           dangerouslySetInnerHTML={{ __html: review.content }}
         />
       </div>
 
       {/* 액션 버튼 */}
-      <div className={styles.actions}>
+      <div className={styles.detailActions}>
         <button
-          className={styles.helpfulButton}
+          className={styles.detailHelpfulButton}
           onClick={handleHelpful}
           disabled={helpfulMutation.isPending}
         >

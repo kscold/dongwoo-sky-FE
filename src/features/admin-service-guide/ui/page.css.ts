@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css"
-import { vars } from "../../../styles/common/theme.css"
+import { vars } from "../../../shared/styles/theme.css"
 
 export const pageContainer = style({
   padding: "32px",
@@ -62,7 +62,7 @@ export const saveButton = style({
   cursor: "pointer",
   transition: "background-color 0.2s",
   ":hover": {
-    backgroundColor: vars.colors.primaryHover,
+    backgroundColor: vars.colors.primaryDark,
   },
   ":disabled": {
     backgroundColor: vars.colors.textLight,

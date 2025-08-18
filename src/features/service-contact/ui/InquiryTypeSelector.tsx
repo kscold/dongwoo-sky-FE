@@ -1,4 +1,4 @@
-import * as styles from "./inquiry-type-selector.css"
+import * as styles from "./contact-form.css"
 
 interface InquiryTypeSelectorProps {
   isPricingInquiry: boolean
@@ -10,26 +10,26 @@ export function InquiryTypeSelector({
   onTypeChange,
 }: InquiryTypeSelectorProps) {
   return (
-    <div className={styles.container}>
-      <label className={styles.label}>
+    <div className={styles.inquiryTypeSelector}>
+      <label className={styles.inquiryTypeLabel}>
         <input
           type="radio"
           name="inquiryType"
           value="general"
           checked={!isPricingInquiry}
           onChange={() => onTypeChange(false)}
-          className={styles.radio}
+          className={styles.inquiryTypeRadio}
         />
         일반 문의
       </label>
-      <label className={styles.label}>
+      <label className={styles.inquiryTypeLabel}>
         <input
           type="radio"
           name="inquiryType"
           value="pricing"
           checked={isPricingInquiry}
           onChange={() => onTypeChange(true)}
-          className={styles.radio}
+          className={styles.inquiryTypeRadio}
         />
         견적 문의
       </label>

@@ -19,7 +19,7 @@ import {
 } from "@heroicons/react/24/outline"
 import { CustomerReview } from "../../../types/customer-review"
 import { WorkShowcase } from "../../../types/work-showcase"
-import * as styles from "../../../styles/service/components/content-swiper.css"
+import * as styles from "../../../shared/styles/content-swiper.css"
 
 interface ContentSwiperProps {
   type: "review" | "showcase"

@@ -1,5 +1,5 @@
 import React from "react"
-import * as commonStyles from "../../../../styles/admin/admin-notice.css"
+import * as commonStyles from "../../../../features/admin/styles/admin-notice.css"
 
 export const LoadingSkeleton: React.FC = () => {
   return (

@@ -1,6 +1,6 @@
 import React from "react"
 import { ContactInquiry } from "../types"
-import * as styles from "../../../../styles/admin/admin-contact.css"
+import * as styles from "../../../../features/admin/styles/admin-contact.css"
 
 interface StatusBadgeProps {
   status: ContactInquiry["status"]

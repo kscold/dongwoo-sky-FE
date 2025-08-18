@@ -1,5 +1,5 @@
 import React from "react"
-import { HomeSettings } from "../../../../types/home"
+import { HomeSettings } from "../../../types/home"
 import * as styles from "./hero-button.css"
 
 interface HeroButtonSectionProps {

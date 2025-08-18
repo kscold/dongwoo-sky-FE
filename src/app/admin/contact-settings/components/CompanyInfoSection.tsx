@@ -2,7 +2,7 @@ import React from "react"
 import { Input } from "../../../../common/components/atoms"
 import { Card, CardHeader, CardBody, CardTitle, CardDescription, FormGroup } from "../../../../common/components/molecules"
 import { UpdateContactSettingsDto } from "../../../../api/contact"
-import * as styles from "../../../../styles/admin/admin-contact-settings.css"
+import * as styles from "../../../../features/admin/styles/admin-contact-settings.css"
 
 interface CompanyInfoSectionProps {
   formData: UpdateContactSettingsDto

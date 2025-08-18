@@ -1,5 +1,5 @@
 import { style, globalKeyframes } from "@vanilla-extract/css"
-import { vars } from "../../../styles/common/theme.css"
+import { vars } from "../../../shared/styles/theme.css"
 
 export const equipmentCard = style({
   position: "relative",

@@ -4,7 +4,7 @@ import Image from "next/image"
 import { format } from "date-fns"
 import { ko } from "date-fns/locale"
 import { NoticeProps } from "../../../common/interfaces/content/content.interface"
-import * as styles from "../styles/notice-detail.css"
+import * as styles from "../styles"
 
 interface NoticeDetailProps {
   notice: NoticeProps
@@ -57,9 +57,12 @@ export const NoticeDetail: React.FC<NoticeDetailProps> = ({ notice }) => {
     <div className={styles.container}>
       {/* 헤더 */}
       <div className={styles.header}>
-        <div className={styles.headerTop}>
+        <div className={styles.breadcrumb}>
           <Link href="/notice" className={styles.backButton}>
-            ← 목록으로 돌아가기
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.42-1.41L7.83 13H20v-2z"/>
+            </svg>
+            목록으로 돌아가기
           </Link>
           <nav className={styles.breadcrumb}>
             <Link href="/" className={styles.breadcrumbLink}>
@@ -73,88 +76,119 @@ export const NoticeDetail: React.FC<NoticeDetailProps> = ({ notice }) => {
             <span className={styles.current}>상세보기</span>
           </nav>
         </div>
-        <h1 className={styles.title}>{notice.title}</h1>
+      </div>
 
-        {/* 우선순위 및 고정 배지 */}
-        <div className={styles.badgeSection}>
-          <span className={getPriorityBadgeStyle(notice.priority)}>
-            {getPriorityText(notice.priority)}
-          </span>
-          {notice.pinned && (
-            <span className={styles.pinnedBadge}>📌 고정</span>
-          )}
-        </div>
-
-        {/* 메타 정보 */}
-        <div className={styles.meta}>
-          <div className={styles.authorInfo}>
-            <span className={styles.author}>👤 {notice.author || "관리자"}</span>
-          </div>
-          <div className={styles.details}>
-            {notice.category && (
-              <span className={styles.detail}>📁 {notice.category}</span>
-            )}
+      {/* 공지사항 컨테이너 */}
+      <div className={styles.noticeContainer}>
+        <div className={styles.noticeHeader}>
+          <div className={styles.titleSection}>
+            <h1 className={styles.title}>{notice.title}</h1>
             {notice.summary && (
-              <span className={styles.detail}>📝 {notice.summary}</span>
+              <p className={styles.summary}>{notice.summary}</p>
             )}
           </div>
-          <div className={styles.stats}>
-            <span className={styles.stat}>👀 조회수 {notice.viewCount || 0}</span>
-            <span className={styles.date}>
+
+          {/* 메타 정보 */}
+          <div className={styles.metaInfo}>
+            <span className={styles.metaItem}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className={styles.metaItemIcon}>
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              {notice.author || "관리자"}
+            </span>
+            
+            {notice.category && (
+              <span className={styles.metaItem}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className={styles.metaItemIcon}>
+                  <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+                </svg>
+                {notice.category}
+              </span>
+            )}
+
+            <span className={styles.metaItem}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className={styles.metaItemIcon}>
+                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+              </svg>
+              조회수 {notice.viewCount || 0}
+            </span>
+
+            <span className={styles.metaItem}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className={styles.metaItemIcon}>
+                <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+              </svg>
               {notice.publishedAt
                 ? formatDate(notice.publishedAt)
                 : formatDate(notice.createdAt)}
             </span>
+
+            {/* 우선순위 및 고정 배지 */}
+            <span className={getPriorityBadgeStyle(notice.priority)}>
+              {getPriorityText(notice.priority)}
+            </span>
+            {notice.pinned && (
+              <span className={styles.pinnedBadge}>
+                고정
+              </span>
+            )}
           </div>
         </div>
-      </div>
 
-      {/* 이미지 갤러리 */}
-      {notice.imageUrls && notice.imageUrls.length > 0 && (
-        <div className={styles.imageGallery}>
-          <div className={styles.mainImage}>
-            <Image
-              src={notice.imageUrls[0]}
-              alt={notice.title}
-              className={styles.image}
-              width={600}
-              height={400}
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-          {notice.imageUrls.length > 1 && (
-            <div className={styles.thumbnails}>
-              {notice.imageUrls.slice(1).map((url, index) => (
+        {/* 콘텐츠 섹션 */}
+        <div className={styles.contentSection}>
+          {/* 이미지 갤러리 */}
+          {notice.imageUrls && notice.imageUrls.length > 0 && (
+            <div style={{ marginBottom: "2rem" }}>
+              <div style={{ marginBottom: "1rem" }}>
                 <Image
-                  key={index}
-                  src={url}
-                  alt={`${notice.title} ${index + 2}`}
-                  className={styles.thumbnail}
-                  width={150}
-                  height={100}
+                  src={notice.imageUrls[0]}
+                  alt={notice.title}
+                  className={styles.contentImage}
+                  width={800}
+                  height={400}
                   style={{ objectFit: "cover" }}
                 />
-              ))}
+              </div>
+              {notice.imageUrls.length > 1 && (
+                <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                  {notice.imageUrls.slice(1).map((url, index) => (
+                    <Image
+                      key={index}
+                      src={url}
+                      alt={`${notice.title} ${index + 2}`}
+                      className={styles.contentImage}
+                      width={200}
+                      height={150}
+                      style={{ objectFit: "cover", borderRadius: "12px" }}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
+
+          {/* 공지사항 내용 */}
+          <div className={styles.content}>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: notice.content.replace(/\n/g, "<br>"),
+              }}
+            />
+          </div>
         </div>
-      )}
 
-      {/* 공지사항 내용 */}
-      <div className={styles.content}>
-        <div
-          className={styles.contentBody}
-          dangerouslySetInnerHTML={{
-            __html: notice.content.replace(/\n/g, "<br>"),
-          }}
-        />
-      </div>
-
-      {/* 액션 버튼 */}
-      <div className={styles.actions}>
-        <Link href="/notice" className={styles.listButton}>
-          목록보기
-        </Link>
+        {/* 네비게이션 섹션 */}
+        <div className={styles.navigationSection}>
+          <div className={styles.divider}></div>
+          <div className={styles.navigationButtons}>
+            <Link href="/notice" className={styles.listButton}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.42-1.41L7.83 13H20v-2z"/>
+              </svg>
+              목록보기
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   )

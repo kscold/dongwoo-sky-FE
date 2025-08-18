@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import * as styles from "../../../styles/common/loading-skeleton.css"
+import * as styles from "../../../shared/styles/loading-skeleton.css"
 
 interface LoadingSkeletonProps {
   className?: string

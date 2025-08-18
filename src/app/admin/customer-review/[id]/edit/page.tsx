@@ -4,7 +4,7 @@ import React from "react"
 import ProtectedRoute from "../../../../../common/auth/ProtectedRoute"
 import PageSkeleton from "../../../../../common/components/ui/PageSkeleton"
 import { CustomerReviewEditForm, useCustomerReviewEdit } from "../../../../../features/admin-customer-review-edit"
-import * as styles from "../../../../../styles/admin/admin-form.css"
+import * as styles from "../../../../../features/admin/styles/admin-form.css"
 
 interface EditCustomerReviewPageProps {
   params: Promise<{

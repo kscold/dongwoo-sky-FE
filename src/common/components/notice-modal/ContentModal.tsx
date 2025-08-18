@@ -5,7 +5,7 @@ import Image from "next/image"
 
 import { Notice } from "../../../types/notice"
 import { isImageFile, getFileIcon } from "../../../utils/fileUtils"
-import * as styles from "../../../styles/service/components/content-modal.css"
+import * as styles from "../../../shared/styles/content-modal.css"
 
 export interface ContentModalProps {
   notice: Notice
