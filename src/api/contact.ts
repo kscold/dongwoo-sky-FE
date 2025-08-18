@@ -1,5 +1,35 @@
 import { apiClient } from "./client";
 
+export interface PricingServiceConfig {
+  enabled: boolean;
+  title: string;
+  description: string;
+  pricingInquiryTypes: string[];
+  equipmentPricing: EquipmentPricing[];
+  baseCalculationRules: CalculationRule[];
+  disclaimerText: string;
+}
+
+export interface EquipmentPricing {
+  equipmentId: string;
+  equipmentName: string;
+  basePrice: number;
+  hourlyRate: number;
+  baseHours: number;
+  minHours: number;
+  maxHours: number;
+  workingTimeRanges: string[];
+  priceRanges: string[];
+  calculationNotes: string;
+}
+
+export interface CalculationRule {
+  name: string;
+  description: string;
+  multiplier: number;
+  conditions: string[];
+}
+
 export interface ContactSettings {
   _id: string;
   pageTitle: string;
@@ -40,6 +70,8 @@ export interface ContactSettings {
   discordEnabled: boolean;
   discordMessageTitle: string;
   discordEmbedColor: string;
+  // 요금 서비스 설정
+  pricingService: PricingServiceConfig;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -84,6 +116,8 @@ export interface UpdateContactSettingsDto {
   discordEnabled?: boolean;
   discordMessageTitle?: string;
   discordEmbedColor?: string;
+  // 요금 서비스 설정
+  pricingService?: PricingServiceConfig;
   isActive?: boolean;
 }
 
@@ -103,8 +137,48 @@ export interface ContactInquiry {
   adminNote?: string;
   respondedBy?: string;
   respondedAt?: Date;
+  // 요금 문의 관련 필드
+  pricingInquiry?: PricingInquiryData;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface PricingInquiryData {
+  equipmentIds: string[];
+  workLocation: string;
+  workingHours: number;
+  workingDays: number;
+  workStartDate?: Date;
+  workEndDate?: Date;
+  specialRequirements?: string;
+  siteConditions?: string;
+  accessRequirements?: string;
+  calculatedEstimate?: PricingEstimate;
+}
+
+export interface PricingEstimate {
+  totalCost: number;
+  breakdown: PricingBreakdown[];
+  disclaimers: string[];
+  validUntil: Date;
+}
+
+export interface PricingBreakdown {
+  equipmentId: string;
+  equipmentName: string;
+  basePrice: number;
+  hourlyRate: number;
+  hours: number;
+  days: number;
+  subtotal: number;
+  additionalCharges: AdditionalCharge[];
+}
+
+export interface AdditionalCharge {
+  name: string;
+  description: string;
+  amount: number;
+  type: 'fixed' | 'percentage';
 }
 
 export interface ContactInquiryListResponse {
@@ -166,8 +240,15 @@ export const contactApi = {
     subject: string;
     message: string;
     isUrgent: boolean;
+    pricingInquiry?: PricingInquiryData;
   }): Promise<ContactInquiry> => {
     const response = await apiClient.post("/service/contact/inquiry", inquiry);
+    return response.data;
+  },
+
+  // 견적 계산 (내부 API용)
+  calculatePricingEstimate: async (pricingData: PricingInquiryData): Promise<PricingEstimate> => {
+    const response = await apiClient.post("/admin/pricing/calculate", pricingData);
     return response.data;
   },
 };

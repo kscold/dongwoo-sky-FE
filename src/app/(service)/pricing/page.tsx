@@ -3,14 +3,17 @@
 import React from "react"
 import { usePricingCalculator } from "../../../common/hooks/usePricingCalculator"
 import { useHomePageData } from "../../../common/hooks/useHome"
-import { PricingHeroSection } from "../../../common/components/pricing/PricingHeroSection"
-import { EquipmentSelector } from "../../../common/components/pricing/EquipmentSelector"
-import { WorkingHoursSelector } from "../../../common/components/pricing/WorkingHoursSelector"
-import { PriceCalculatorCard } from "../../../common/components/pricing/PriceCalculatorCard"
-import { EquipmentDetailCard } from "../../../common/components/pricing/EquipmentDetailCard"
+import { Equipment } from "../../../types/equipment"
+import {
+  PricingHero,
+  EquipmentSelector,
+  TimeSelector,
+  PriceCard,
+  EquipmentDetail,
+} from "../../../features/pricing/ui"
 import ErrorComponent from "../../../common/components/error/ErrorComponent"
 import PageSkeleton from "../../../common/components/ui/PageSkeleton"
-import * as styles from "../../../styles/page/pricing-page.css"
+import * as styles from "../../../features/pricing/styles"
 
 export default function PricingPage() {
   const {
@@ -62,7 +65,7 @@ export default function PricingPage() {
     onlinePriceLabel: "온라인 견적",
     contactPriceLabel: "직접 문의 시",
     savingsLabel: "원 절약!",
-    ctaButtonText: "📞 직접 문의하고 할인받기",
+    ctaButtonText: "직접 문의하고 할인받기",
     ctaSubtext: "전화 상담을 통해 더 정확한 견적과 할인 혜택을 받아보세요",
     detailCardTitle: "선택한 장비 정보",
   }
@@ -76,10 +79,10 @@ export default function PricingPage() {
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.container}>
-        <PricingHeroSection settings={settings} />
+        <PricingHero settings={settings} />
         <EquipmentSelector
           activeEquipments={activeEquipments}
-          selectedId={selectedId}
+          selectedId={selectedId || ""}
           onEquipmentSelect={handleEquipmentSelect}
           settings={settings}
           scrollLeftAriaLabel={pricingSetting?.scrollLeftAriaLabel}
@@ -92,8 +95,8 @@ export default function PricingPage() {
           </p>
         </div>
         <div className={styles.resultSection}>
-          <WorkingHoursSelector
-            selectedEquipment={selectedEquipment}
+          <TimeSelector
+            selectedEquipment={selectedEquipment || undefined}
             workingHours={workingHours}
             onWorkingHoursChange={setWorkingHours}
             settings={settings}
@@ -102,8 +105,8 @@ export default function PricingPage() {
             onContactClick={handleContactClick}
           />
 
-          <PriceCalculatorCard
-            selectedEquipment={selectedEquipment}
+          <PriceCard
+            selectedEquipment={selectedEquipment || undefined}
             workingHours={workingHours}
             estimatedPrice={estimatedPrice}
             discountedPrice={discountedPrice}
@@ -118,7 +121,7 @@ export default function PricingPage() {
           />
 
           {selectedEquipment && (
-            <EquipmentDetailCard
+            <EquipmentDetail
               equipment={selectedEquipment}
               title={settings.detailCardTitle}
               specificationsLabel={pricingSetting?.specificationsLabel}

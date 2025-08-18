@@ -6,7 +6,7 @@ import { Navigation, Pagination } from "swiper/modules"
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline"
 
 import { ProcessStep } from "../../../types/service-guide"
-import * as styles from "../../../styles/service/components/process-swiper.css.ts"
+import * as styles from "../../../shared/styles/process-swiper.css.ts"
 
 import "swiper/css"
 import "swiper/css/navigation"

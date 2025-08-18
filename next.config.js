@@ -30,7 +30,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_URL || 'https://ru5diuqn9d.execute-api.ap-northeast-2.amazonaws.com/dev/api'}/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_API_URL || 'https://kt7v4q8o60.execute-api.ap-northeast-2.amazonaws.com/production/api'}/:path*`,
       },
     ]
   },
@@ -38,7 +38,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "d1h7waosxik1t4.cloudfront.net",
+        hostname: process.env.NEXT_PUBLIC_CDN_URL?.replace('https://', '') || "d1h7waosxik1t4.cloudfront.net",
         port: "",
         pathname: "/**",
       },

@@ -16,8 +16,30 @@ const DOCUMENT_EXTENSIONS = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt', '
 export function isImageFile(fileName: string): boolean {
   if (!fileName) return false;
   
+  // CloudFront나 CDN URL의 경우 확장자가 없을 수 있으므로 추가 검사
   const extension = getFileExtension(fileName);
-  return IMAGE_EXTENSIONS.includes(extension);
+  
+  // 확장자가 있는 경우 기존 방식
+  if (extension && IMAGE_EXTENSIONS.includes(extension)) {
+    return true;
+  }
+  
+  // CDN URL 패턴 검사
+  const cdnDomain = process.env.NEXT_PUBLIC_CDN_URL?.replace('https://', '') || 'd1h7waosxik1t4.cloudfront.net'
+  if (fileName.includes(cdnDomain)) {
+    // CDN URL은 이미지로 간주 (업로드된 파일은 대부분 이미지)
+    return true;
+  }
+  
+  // S3 URL 패턴 검사
+  if (fileName.includes('s3.') && fileName.includes('amazonaws.com')) {
+    // S3 URL도 이미지로 간주 (장비 이미지 저장용)
+    return true;
+  }
+  
+  // 다른 CDN 패턴도 추가할 수 있음
+  
+  return false;
 }
 
 /**

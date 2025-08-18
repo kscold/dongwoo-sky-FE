@@ -1,6 +1,6 @@
 import React from "react"
 import { UseFormRegister, FieldArrayWithId } from "react-hook-form"
-import * as styles from "../../../../styles/admin/admin-pricing-setting.css"
+import * as styles from "../../../../features/admin/styles/admin-pricing-setting.css"
 
 interface FormValues {
   infoNotes: string[]

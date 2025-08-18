@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ContentCardProps, CustomerReviewProps, NoticeProps } from '../../interfaces/content/content.interface'
 import { ContentType } from '../../types/content/content.types'
-import * as styles from '../../../styles/content/content-page.css'
+import * as styles from '../../../features/content/styles/content-page.css'
 
 const ContentCard: React.FC<ContentCardProps> = ({ item, type, onItemClick }) => {
   const stripHtml = (html: string) => {

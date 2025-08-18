@@ -1,7 +1,7 @@
 import React from "react"
 import Image from "next/image"
 import { Equipment } from "../../../types/equipment"
-import * as styles from "../../../styles/page/pricing-page.css"
+import * as styles from "../../../features/pricing/styles/equipment.css"
 
 interface EquipmentDetailCardProps {
   equipment: Equipment

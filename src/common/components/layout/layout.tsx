@@ -4,7 +4,7 @@
 import { Inter } from "next/font/google"
 import { usePathname } from "next/navigation"
 
-import "../../../styles/common/reset.css"
+import "../../../shared/styles/reset.css"
 import "./globals.css"
 
 const inter = Inter({

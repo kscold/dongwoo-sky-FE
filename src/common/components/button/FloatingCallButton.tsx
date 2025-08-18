@@ -4,7 +4,7 @@ import { FaPhoneAlt } from "react-icons/fa"
 import { usePathname } from "next/navigation"
 
 import { useHomePageData } from "../../hooks/useHome"
-import * as styles from "../../../styles/service/components/floating-call.css"
+import * as styles from "../../../shared/styles/floating-call.css"
 
 const FloatingCallButton = () => {
   const { data, isLoading, error } = useHomePageData()

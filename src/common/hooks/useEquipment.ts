@@ -70,6 +70,6 @@ export const useUpdateEquipmentOrder = () => {
 export const useUploadEquipmentImage = () => {
   return useMutation({
     mutationFn: (file: File) =>
-      fileUploadApi.uploadFile("/admin/equipment/upload-image", file),
+      fileUploadApi.uploadFile("/api/admin/equipment/upload-image", file),
   })
 }

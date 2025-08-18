@@ -1,5 +1,5 @@
 import React from "react"
-import * as styles from "../../../../styles/admin/admin-pricing-setting.css"
+import * as styles from "../../../../features/admin/styles/admin-pricing-setting.css"
 
 interface StatusMessagesProps {
   saveStatus: "idle" | "saving" | "success" | "error"

@@ -1,67 +1,45 @@
 "use client"
 
-import React, { useState } from "react"
-import { useWorkShowcases } from "../../../common/hooks/useWorkShowcase"
-import { WorkShowcaseProps } from "../../../common/interfaces/content/content.interface"
-import ContentList from "../../../common/components/content/ContentList"
-import { getContentConfig } from "../../../common/configs/content/content.config"
-import * as styles from "../../../styles/content/content-page.css"
+import React from "react"
+import {
+  ShowcaseList,
+  ShowcasePagination,
+  useShowcaseList
+} from "../../../features/service-work-showcase"
+import * as styles from "../../../features/service-work-showcase/styles"
 
 const WorkShowcasesPage = () => {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [isMobile, setIsMobile] = useState(false)
-  const config = getContentConfig("work-showcase")
-  const limit = isMobile ? config.mobileItemsPerPage : config.itemsPerPage
-
   const {
-    data: workShowcasesData,
+    items,
     isLoading,
     error,
-  } = useWorkShowcases(currentPage, limit)
-
-  React.useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
-    return () => window.removeEventListener("resize", checkMobile)
-  }, [])
-
-  // Transform the data to match our interface
-  const transformedItems: WorkShowcaseProps[] = (
-    workShowcasesData?.data || []
-  ).map((item) => ({
-    ...item,
-    // Ensure all required properties are present
-    _id: item._id,
-    title: item.title,
-    content: item.content,
-    imageUrls: item.imageUrls,
-    viewCount: item.viewCount,
-    createdAt: item.createdAt,
-    publishedAt: item.publishedAt,
-    isActive: item.isActive,
-    category: item.category,
-    projectDuration: item.projectDuration,
-    clientName: item.clientName || item.authorName, // Map authorName to clientName if needed
-    description: item.description,
-    tags: item.tags,
-    beforeImageUrls: item.beforeImageUrls,
-    afterImageUrls: item.afterImageUrls,
-  }))
+    currentPage,
+    totalPages,
+    onPageChange
+  } = useShowcaseList()
 
   return (
     <div className={styles.pageWrapper}>
-      <ContentList
-        items={transformedItems}
-        type="work-showcase"
-        isLoading={isLoading}
-        error={error ? String(error) : null}
-        currentPage={currentPage}
-        totalPages={workShowcasesData?.totalPages || 1}
-        onPageChange={setCurrentPage}
-      />
+      <div className={styles.container}>
+        {/* Header */}
+        <div className={styles.header}>
+          <h1 className={styles.title}>작업자의 자랑거리</h1>
+          <p className={styles.subtitle}>
+            전문 기술과 안전한 작업으로 완성한 다양한 프로젝트 사례를 소개합니다.
+            고객 만족과 품질을 최우선으로 하는 저희의 작업 결과를 확인해보세요.
+          </p>
+        </div>
+
+        {/* Showcase List */}
+        <ShowcaseList items={items} isLoading={isLoading} error={error} />
+        
+        {/* Pagination */}
+        <ShowcasePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
+      </div>
     </div>
   )
 }

@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import * as styles from "../../../styles/service/components/loading.css"
+import * as styles from "../../../shared/styles/loading.css"
 
 const LoadingComponent = () => (
   <div className={styles.loadingContainer}>

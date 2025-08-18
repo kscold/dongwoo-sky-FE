@@ -18,7 +18,7 @@ import {
   contentListEmptyStateTitle,
   contentListEmptyStateText,
   errorState,
-} from "../../../styles/content/content-list.css"
+} from "../../../features/content/styles/content-list.css"
 
 interface ContentListPageProps<T extends ContentItem> {
   config: ContentListConfig

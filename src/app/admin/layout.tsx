@@ -45,6 +45,33 @@ function AdminAuthCheck({ children }: { children: React.ReactNode }) {
   )
 }
 
+function AdminLayoutContent({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    // 관리자 페이지에서 body 배경색 변경
+    const originalBackground = document.body.style.background
+    document.body.style.background = '#f8fafc'
+    
+    // 컴포넌트 언마운트 시 원래 배경으로 복원
+    return () => {
+      document.body.style.background = originalBackground || 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)'
+    }
+  }, [])
+
+  return (
+    <div 
+      style={{ 
+        minHeight: "100vh", 
+        backgroundColor: "#f8fafc",
+        position: "relative"
+      }}
+    >
+      <AdminAuthCheck>
+        <main style={{ padding: "0", margin: "0" }}>{children}</main>
+      </AdminAuthCheck>
+    </div>
+  )
+}
+
 export default function AdminLayout({
   children,
 }: {
@@ -52,11 +79,7 @@ export default function AdminLayout({
 }) {
   return (
     <AdminProvider>
-      <div style={{ minHeight: "100vh", backgroundColor: "#f8fafc" }}>
-        <AdminAuthCheck>
-          <main style={{ padding: "0", margin: "0" }}>{children}</main>
-        </AdminAuthCheck>
-      </div>
+      <AdminLayoutContent>{children}</AdminLayoutContent>
     </AdminProvider>
   )
 }

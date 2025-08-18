@@ -1,6 +1,6 @@
 import React from "react"
 import Head from "next/head"
-import * as styles from "../../../styles/page/pricing-page.css"
+import * as styles from "../../../features/pricing/styles/hero.css"
 
 interface PricingHeroSectionProps {
   settings: {
@@ -24,26 +24,17 @@ export const PricingHeroSection: React.FC<PricingHeroSectionProps> = ({
         />
       </Head>
 
-      <div className={styles.heroSection}>
-        <div className={styles.heroContent}>
-          <h1 className={styles.mainTitle}>{settings.mainTitle}</h1>
-          <p className={styles.mainSubtitle}>
-            {settings.mainSubtitle.split("\n").map((line, index) => (
-              <React.Fragment key={index}>
-                {line}
-                {index < settings.mainSubtitle.split("\n").length - 1 && <br />}
-              </React.Fragment>
-            ))}
-          </p>
-          <div className={styles.discountBanner}>
-            <div className={styles.discountIcon}>💰</div>
-            <div className={styles.discountText}>
-              <strong>{settings.discountBannerTitle}</strong>
-              <span>{settings.discountBannerSubtitle}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <section className={styles.heroSection}>
+        <h1 className={styles.heroTitle}>{settings.mainTitle}</h1>
+        <p className={styles.heroSubtitle}>
+          {settings.mainSubtitle.split("\n").map((line, index) => (
+            <React.Fragment key={index}>
+              {line}
+              {index < settings.mainSubtitle.split("\n").length - 1 && <br />}
+            </React.Fragment>
+          ))}
+        </p>
+      </section>
     </>
   )
 }

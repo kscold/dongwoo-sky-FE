@@ -32,6 +32,12 @@ export interface WorkShowcaseProps extends BaseContentItemProps {
   tags?: string[]
   beforeImageUrls?: string[]
   afterImageUrls?: string[]
+  // API 데이터 구조에 맞는 추가 필드들
+  authorName?: string
+  authorRole?: string
+  projectLocation?: string
+  equipmentUsed?: string
+  likeCount?: number
 }
 
 export interface NoticeProps extends BaseContentItemProps {

@@ -1,6 +1,6 @@
 import React from "react"
 import { UseFormRegister } from "react-hook-form"
-import * as styles from "../../../../styles/admin/admin-pricing-setting.css"
+import * as styles from "../../../../features/admin/styles/admin-pricing-setting.css"
 
 interface FormValues {
   equipmentSectionTitle: string
